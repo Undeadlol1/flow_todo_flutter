@@ -6,7 +6,11 @@ class TasksDoneToday extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [Text('Wins today: 0')],
+      children: const [
+        Text('Wins today: 0'),
+        LinearProgressIndicator(value: 1),
+        Text('Won days in a row: 0'),
+      ],
     );
   }
 }

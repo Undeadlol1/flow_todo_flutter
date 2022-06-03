@@ -13,6 +13,24 @@ void main() {
           expect(find.text('Wins today: 0'), findsOneWidget);
         },
       );
+
+      testWidgets(
+        'THEN displays progress indicator',
+        (tester) async {
+          await tester.pumpWithDependencies(const TasksDoneToday());
+
+          expect(find.byType(LinearProgressIndicator), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'THEN displays daily streak',
+        (tester) async {
+          await tester.pumpWithDependencies(const TasksDoneToday());
+
+          expect(find.text('Won days in a row: 0'), findsOneWidget);
+        },
+      );
     });
   });
 }
