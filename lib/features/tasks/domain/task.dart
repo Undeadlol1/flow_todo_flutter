@@ -1,28 +1,36 @@
-class Task {
+import 'package:flow_todo_flutter_2022/features/common/domain/user_created_document.dart';
+
+class Task implements UserCreatedDocument {
   final String id;
-  final String userId;
   final String? note;
-  final bool isDOne;
+  final bool isDone;
   final num? repetitionLevel;
   final List<String>? tags;
   final num dueAt;
   final num? doneAt;
-  final num createdAt;
-  final num? updatedAt;
   // final bool? isCurrent;
   // subtasks?: Subtask[];
   // history?: TaskHistory[];
 
+  @override
+  String userId;
+
+  @override
+  num createdAt;
+
+  @override
+  num? updatedAt;
+
   Task({
     required this.id,
     required this.dueAt,
+    required this.isDone,
     required this.userId,
-    required this.isDOne,
     required this.createdAt,
+    this.updatedAt,
     this.note,
     this.tags,
     this.doneAt,
-    this.updatedAt,
     this.repetitionLevel,
   });
 }
