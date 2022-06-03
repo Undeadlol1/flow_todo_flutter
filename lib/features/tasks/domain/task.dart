@@ -2,6 +2,7 @@ import 'package:flow_todo_flutter_2022/features/common/domain/user_created_docum
 
 class Task implements UserCreatedDocument {
   final String id;
+  final String title;
   final String? note;
   final bool isDone;
   final num? repetitionLevel;
@@ -23,6 +24,7 @@ class Task implements UserCreatedDocument {
 
   Task({
     required this.id,
+    required this.title,
     required this.dueAt,
     required this.isDone,
     required this.userId,
