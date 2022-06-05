@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_list.dart';
@@ -31,9 +32,11 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      child: const TasksList(),
-      create: (context) => _tasksCubit,
+    return PageLayoutAndDependencies(
+      child: BlocProvider(
+        child: const TasksList(),
+        create: (context) => _tasksCubit,
+      ),
     );
   }
 }

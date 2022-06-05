@@ -12,6 +12,8 @@ class TasksList extends StatelessWidget {
     return BlocBuilder<TasksCubit, TasksState>(
       builder: (context, state) {
         return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: state.tasks.length,
           itemBuilder: (_, index) {
             return Padding(

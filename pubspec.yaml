@@ -38,6 +38,7 @@ dependencies:
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1
   meta: ^1.7.0
+  build_context_provider: ^0.0.2
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +51,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   bloc_test: ^9.0.3
+  mocktail: ^0.3.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
