@@ -14,7 +14,10 @@ class TasksList extends StatelessWidget {
         return ListView.builder(
           itemCount: state.tasks.length,
           itemBuilder: (_, index) {
-            return TasksListItem(task: state.tasks[index]);
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TasksListItem(task: state.tasks[index]),
+            );
           },
         );
       },

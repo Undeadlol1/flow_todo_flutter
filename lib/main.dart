@@ -14,7 +14,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData.dark(),
-      home: const Scaffold(body: MainPage()),
+      home: Navigator(
+        pages: const [
+          MaterialPage(
+            key: ValueKey('MainPage'),
+            child: Scaffold(body: MainPage()),
+          ),
+        ],
+        onPopPage: (route, result) => route.didPop(result),
+      ),
     );
   }
 }

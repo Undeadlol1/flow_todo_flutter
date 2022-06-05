@@ -8,10 +8,13 @@ class TasksListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(task.title),
-      ],
+    return TextButton(
+      onPressed: () {},
+      child: Row(
+        children: [
+          Text(task.title),
+        ],
+      ),
     );
   }
 }

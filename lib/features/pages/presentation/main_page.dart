@@ -17,7 +17,7 @@ class _MainPageState extends State<MainPage> {
   final _taskFixture = Task(
     id: 'id',
     title: 'title',
-    dueAt: 00,
+    dueAt: 0,
     isDone: false,
     userId: 'userId',
     createdAt: 0,
