@@ -1,4 +1,4 @@
-import 'package:flow_todo_flutter_2022/features/common/domain/user_created_document.dart';
+import '../../common/domain/user_created_document.dart';
 
 class Task implements UserCreatedDocument {
   final String id;
