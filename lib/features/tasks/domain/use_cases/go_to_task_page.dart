@@ -1,3 +1,4 @@
+import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flutter/widgets.dart';
 
 class GoToTaskPage {
@@ -6,7 +7,7 @@ class GoToTaskPage {
   const GoToTaskPage({required this.contextProvider});
 
   void call() {
-    contextProvider.provideBuildContext((context) {
+    BuildContextProvider.provideBuildContext((context) {
       Navigator.pushNamed(context, '/task');
     });
   }
