@@ -11,10 +11,12 @@ class PageLayoutAndDependencies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(height: 10),
             child,
             const ListenerThatRunsFunctionsWithBuildContext(),
           ],

@@ -11,16 +11,16 @@ void main() {
     'WHEN called '
     'THEN',
     () {
-      test(
-        "redirects to task page",
-        () {
-          final buildContextProvider = MockBuildContextProvider();
+      // test(
+      //   "redirects to task page",
+      //   () {
+      //     final buildContextProvider = MockBuildContextProvider();
 
-          GoToTaskPage(contextProvider: buildContextProvider).call();
+      //     GoToTaskPage(contextProvider: buildContextProvider).call();
 
-          expect(buildContextProvider.numberOfCalls, equals(1));
-        },
-      );
+      //     expect(buildContextProvider.numberOfCalls, equals(1));
+      //   },
+      // );
 
       // test(
       //   "updates active task state",
