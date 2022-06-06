@@ -10,7 +10,7 @@ import 'features/pages/presentation/main_page.dart';
 void main() {
   setUpDI() {
     GetIt.I.registerSingleton(BuildContextProvider());
-    GetIt.I.registerSingleton(GoToTaskPage(contextProvider: GetIt.I));
+    GetIt.I.registerSingleton(GoToTaskPage(contextProvider: GetIt.I.get()));
   }
 
   setUpDI();

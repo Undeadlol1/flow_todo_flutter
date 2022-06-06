@@ -7,7 +7,8 @@ class MockBuildContextProvider implements BuildContextProvider {
     numberOfCalls = 0;
   }
 
-  void provideBuildContext(dynamic args) {
+  @override
+  void call(dynamic args) {
     numberOfCalls = numberOfCalls + 1;
   }
 }

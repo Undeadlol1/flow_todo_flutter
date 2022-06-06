@@ -38,7 +38,7 @@ dependencies:
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1
   meta: ^1.7.0
-  build_context_provider: ^0.0.2
+  build_context_provider: ^1.0.0
 
 dev_dependencies:
   flutter_test:
