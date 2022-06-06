@@ -8,14 +8,14 @@ import 'package:get_it/get_it.dart';
 import 'features/pages/presentation/main_page.dart';
 
 void main() {
-  setUpDI() {
-    GetIt.I.registerSingleton(BuildContextProvider());
-    GetIt.I.registerSingleton(GoToTaskPage(contextProvider: GetIt.I.get()));
-  }
-
-  setUpDI();
+  _setUpDI();
 
   runApp(const MyApp());
+}
+
+_setUpDI() {
+  GetIt.I.registerSingleton(BuildContextProvider());
+  GetIt.I.registerSingleton(GoToTaskPage(contextProvider: GetIt.I.get()));
 }
 
 class MyApp extends StatelessWidget {

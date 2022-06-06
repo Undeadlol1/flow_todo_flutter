@@ -11,7 +11,7 @@ class TaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageLayoutAndDependencies(
-      child: Row(
+      child: Column(
         children: [
           Text(task.title),
           const WhatDoYouFeelAboutTheTask(),
