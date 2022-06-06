@@ -42,17 +42,10 @@ class _MainPageState extends State<MainPage> {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: ((context, AsyncSnapshot<User?> snapshot) {
                 return snapshot.data != null
-                    ? Text('Logged in as: ${snapshot.data?.email}')
+                    ? SignOutButton()
                     : const SizedBox(
                         height: 300,
-                        child: SignInScreen(
-                          providerConfigs: [
-                            GoogleProviderConfiguration(
-                              clientId:
-                                  '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
-                            )
-                          ],
-                        ),
+                        child: SignInScreen(),
                       );
               }),
             ),
