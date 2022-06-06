@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
 import 'package:flutter/material.dart';
 
 class WhatDoYouFeelAboutTheTask extends StatelessWidget {
@@ -9,26 +10,26 @@ class WhatDoYouFeelAboutTheTask extends StatelessWidget {
       children: [
         IconButton(
           icon: const Icon(Icons.thumb_up),
-          onPressed: () => _showBottomSheet(context),
+          onPressed: () => showModalBottomSheet(
+            context: context,
+            builder: (_) {
+              return const _ModalBody();
+            },
+          ),
         ),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.thumb_down)),
+        IconButton(
+          onPressed: () {
+            Navigator.pushNamed(context, WorkOnTaskPage.pathName);
+          },
+          icon: const Icon(Icons.thumb_down),
+        ),
       ],
     );
-  }
-
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return const _ModalBody();
-        });
   }
 }
 
 class _ModalBody extends StatelessWidget {
-  const _ModalBody({
-    Key? key,
-  }) : super(key: key);
+  const _ModalBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

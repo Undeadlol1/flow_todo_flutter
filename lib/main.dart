@@ -2,6 +2,7 @@ import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/main': (contex) => const Scaffold(body: MainPage()),
         '/task': (contex) => TaskPage(task: taskFixture),
+        WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
       },
     );
   }
