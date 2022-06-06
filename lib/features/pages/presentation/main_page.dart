@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterfire_ui/auth.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -34,7 +36,29 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return PageLayoutAndDependencies(
       child: BlocProvider(
-        child: const TasksList(),
+        child: Column(
+          children: [
+            StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: ((context, AsyncSnapshot<User?> snapshot) {
+                return snapshot.data != null
+                    ? Text('Logged in as: ${snapshot.data?.email}')
+                    : const SizedBox(
+                        height: 300,
+                        child: SignInScreen(
+                          providerConfigs: [
+                            GoogleProviderConfiguration(
+                              clientId:
+                                  '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
+                            )
+                          ],
+                        ),
+                      );
+              }),
+            ),
+            const TasksList(),
+          ],
+        ),
         create: (context) => _tasksCubit,
       ),
     );
