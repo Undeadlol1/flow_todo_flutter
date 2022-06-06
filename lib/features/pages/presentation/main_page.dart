@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
@@ -37,17 +37,18 @@ class _MainPageState extends State<MainPage> {
     return PageLayoutAndDependencies(
       child: BlocProvider(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: ((context, AsyncSnapshot<User?> snapshot) {
-                return snapshot.data != null
-                    ? SignOutButton()
-                    : const SizedBox(
-                        height: 300,
-                        child: SignInScreen(),
-                      );
-              }),
+            BlocBuilder<AuthentificationCubit, AuthentificationState>(
+              builder: (context, authState) {
+                if (authState is Authenticated) {
+                  return const SignOutButton();
+                }
+                return const SizedBox(
+                  height: 300,
+                  child: SignInScreen(),
+                );
+              },
             ),
             const TasksList(),
           ],

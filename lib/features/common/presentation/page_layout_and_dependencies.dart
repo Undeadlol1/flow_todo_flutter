@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 
 class PageLayoutAndDependencies extends StatelessWidget {
   final Widget child;
-  const PageLayoutAndDependencies({
-    Key? key,
-    required this.child,
-  }) : super(key: key);
+  const PageLayoutAndDependencies({Key? key, required this.child})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
