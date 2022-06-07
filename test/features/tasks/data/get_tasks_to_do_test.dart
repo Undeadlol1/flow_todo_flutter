@@ -8,8 +8,6 @@ import '../../../test_utilities/fixtures/task_fixture.dart';
 
 class _MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
-final _mockFirestore = _MockFirebaseFirestore();
-
 const _properUserId = 'proper userId';
 const _improperUserId = 'should not find this';
 
@@ -19,8 +17,9 @@ void main() {
     'WHEN error was thrown by firestore '
     'THEN returns error',
     () async {
+      final mockFirestore = _MockFirebaseFirestore();
       when(
-        () => _mockFirestore
+        () => mockFirestore
             .collection('tasks')
             .where('userId', isEqualTo: _properUserId)
             .where('isDone', isEqualTo: false)
@@ -30,9 +29,33 @@ void main() {
       ).thenThrow(Exception('Something went wrong'));
 
       expect(
-        () => GetTasksToDo(firestore: _mockFirestore).call(userId: ''),
+        () => GetTasksToDo(firestore: mockFirestore).call(userId: ''),
         throwsA(isA<Exception>()),
       );
+    },
+  );
+
+  test(
+    'GIVEN GetTasksToDo '
+    'WHEN called '
+    'THEN constructs query to firestore properly',
+    () async {
+      final mockFirestore = _MockFirebaseFirestore();
+      void firestoreCall() => mockFirestore
+          .collection('tasks')
+          .where('userId', isEqualTo: _properUserId)
+          .where('isDone', isEqualTo: false)
+          .where('dueAt', isLessThanOrEqualTo: DateTime.now().millisecondsSinceEpoch)
+          .limit(100)
+          .get();
+
+      when(firestoreCall).thenAnswer((_) => null as Future<QuerySnapshot<Map<String, dynamic>>>);
+
+      try {
+        await GetTasksToDo(firestore: mockFirestore).call(userId: _properUserId);
+      } catch (e) {
+        verify(firestoreCall).called(1);
+      }
     },
   );
 
