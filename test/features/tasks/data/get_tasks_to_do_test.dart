@@ -1,13 +1,41 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../test_utilities/fixtures/task_fixture.dart';
+
+class _MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
+
+final _mockFirestore = _MockFirebaseFirestore();
 
 const _properUserId = 'proper userId';
 const _improperUserId = 'should not find this';
 
 void main() {
+  test(
+    'GIVEN GetTasksToDo '
+    'WHEN error was thrown by firestore '
+    'THEN returns error',
+    () async {
+      when(
+        () => _mockFirestore
+            .collection('tasks')
+            .where('userId', isEqualTo: _properUserId)
+            .where('isDone', isEqualTo: false)
+            .where('dueAt', isLessThanOrEqualTo: DateTime.now().millisecondsSinceEpoch)
+            .limit(100)
+            .get(),
+      ).thenThrow(Exception('Something went wrong'));
+
+      expect(
+        () => GetTasksToDo(firestore: _mockFirestore).call(userId: ''),
+        throwsA(isA<Exception>()),
+      );
+    },
+  );
+
   group('GIVEN GetTasksToDo WHEN called', () {
     test(
       'THEN returns only single users tasks',

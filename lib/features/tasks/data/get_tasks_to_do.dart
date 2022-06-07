@@ -8,29 +8,23 @@ class GetTasksToDo {
   Future<List<Task>> call({required String userId}) async {
     final tasks = await firestore
         .collection('tasks')
-        .where(
-          'userId',
-          isEqualTo: userId,
-        )
+        .where('userId', isEqualTo: userId)
         .where('isDone', isEqualTo: false)
         .where('dueAt', isLessThanOrEqualTo: DateTime.now().millisecondsSinceEpoch)
         .limit(100)
         .get();
 
-    if (tasks.size == 0) {
-      return [];
-    } else {
-      return tasks.docs.map((e) {
-        final data = e.data();
-        return Task(
-          id: data['id'].toString(),
-          title: data['title'].toString(),
-          userId: data['userId'].toString(),
-          isDone: data['isDone'],
-          dueAt: data['dueAt'],
-          createdAt: data['createdAt'],
-        );
-      }).toList();
-    }
+    return tasks.docs.map((e) {
+      final data = e.data();
+      return Task(
+        // TODO are all fields properly set?
+        dueAt: data['dueAt'],
+        isDone: data['isDone'],
+        id: data['id'].toString(),
+        createdAt: data['createdAt'],
+        title: data['title'].toString(),
+        userId: data['userId'].toString(),
+      );
+    }).toList();
   }
 }
