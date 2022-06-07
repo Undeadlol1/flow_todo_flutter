@@ -4,16 +4,23 @@ import 'package:flutter/material.dart';
 
 import '../../domain/task.dart';
 
-class TaskPage extends StatelessWidget {
+class TaskPageArguments {
   final Task task;
-  const TaskPage({Key? key, required this.task}) : super(key: key);
+  TaskPageArguments({required this.task});
+}
+
+class TaskPage extends StatelessWidget {
+  static const pathName = '/task';
+  const TaskPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as TaskPageArguments;
+
     return PageLayoutAndDependencies(
       child: Column(
         children: [
-          Text(task.title),
+          Text(args.task.title),
           const WhatDoYouFeelAboutTheTask(),
         ],
       ),

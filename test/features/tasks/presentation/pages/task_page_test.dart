@@ -46,9 +46,14 @@ Future<void> Function(WidgetTester tester) _pumpAndRunCallback(
 Future<void> _pumpWidget(WidgetTester tester) async {
   await tester.pumpWidget(
     MaterialApp(
-      home: TaskPage(
-        task: taskFixture,
-      ),
+      onGenerateRoute: (settings) {
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            arguments: TaskPageArguments(task: taskFixture),
+          ),
+          builder: (_) => const TaskPage(),
+        );
+      },
     ),
   );
 }

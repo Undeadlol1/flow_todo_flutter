@@ -12,11 +12,13 @@ class TasksListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        GetIt.instance<GoToTaskPage>()();
+        GetIt.instance<GoToTaskPage>()(task: task);
       },
       child: Row(
         children: [
-          Text(task.title),
+          Flexible(
+            child: Text(task.title),
+          ),
         ],
       ),
     );

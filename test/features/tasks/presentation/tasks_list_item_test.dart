@@ -13,7 +13,7 @@ void main() {
   final mockGoToTaskpage = _MockGoToTaskpage();
 
   setUpAll(() {
-    when(() => mockGoToTaskpage()).thenAnswer((_) async {});
+    when(() => mockGoToTaskpage(task: taskFixture)).thenAnswer((_) async {});
 
     GetIt.I.registerFactory<GoToTaskPage>(() => mockGoToTaskpage);
   });
@@ -39,7 +39,7 @@ void main() {
         );
         await tester.tap(find.text(taskFixture.title));
 
-        verify(() => mockGoToTaskpage.call()).called(1);
+        verify(() => mockGoToTaskpage.call(task: taskFixture)).called(1);
       },
     );
   });

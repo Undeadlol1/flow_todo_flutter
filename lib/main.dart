@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
@@ -63,15 +62,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    var taskFixture = Task(
-      id: 'id',
-      title: 'title',
-      dueAt: 0,
-      isDone: false,
-      userId: 'userId',
-      createdAt: 0,
-    );
-
     return BlocProvider(
       create: (context) {
         return _authentificationCubit;
@@ -82,7 +72,7 @@ class _MyAppState extends State<MyApp> {
         initialRoute: MainPage.pathName,
         routes: {
           MainPage.pathName: (contex) => const Scaffold(body: MainPage()),
-          '/task': (contex) => TaskPage(task: taskFixture),
+          TaskPage.pathName: (contex) => const TaskPage(),
           WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
         },
       ),
