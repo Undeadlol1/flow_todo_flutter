@@ -74,9 +74,9 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData.dark(),
-        initialRoute: '/main',
+        initialRoute: MainPage.pathName,
         routes: {
-          '/main': (contex) => const Scaffold(body: MainPage()),
+          '/': (contex) => const Scaffold(body: MainPage()),
           '/task': (contex) => TaskPage(task: taskFixture),
           WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
         },

@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
 
 class MainPage extends StatefulWidget {
+  static const pathName = '/main';
   const MainPage({Key? key}) : super(key: key);
 
   @override
