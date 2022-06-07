@@ -18,12 +18,12 @@ class GetTasksToDo {
       final data = e.data();
       return Task(
         // TODO are all fields properly set?
+        title: data['name'],
         dueAt: data['dueAt'],
         isDone: data['isDone'],
         id: data['id'].toString(),
-        createdAt: data['createdAt'],
-        title: data['title'].toString(),
         userId: data['userId'].toString(),
+        createdAt: data['createdAt'] ?? DateTime.now().millisecondsSinceEpoch,
       );
     }).toList();
   }

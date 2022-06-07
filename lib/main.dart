@@ -81,7 +81,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData.dark(),
         initialRoute: MainPage.pathName,
         routes: {
-          '/': (contex) => const Scaffold(body: MainPage()),
+          MainPage.pathName: (contex) => const Scaffold(body: MainPage()),
           '/task': (contex) => TaskPage(task: taskFixture),
           WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
         },

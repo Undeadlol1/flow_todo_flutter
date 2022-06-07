@@ -1,11 +1,13 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
+import 'package:get_it/get_it.dart';
 
 class MainPage extends StatefulWidget {
   static const pathName = '/main';
@@ -40,7 +42,14 @@ class _MainPageState extends State<MainPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            BlocBuilder<AuthentificationCubit, AuthentificationState>(
+            BlocConsumer<AuthentificationCubit, AuthentificationState>(
+              listener: (context, authState) async {
+                // if (authState is Authenticated) {
+                //   final tasks =
+                //       await GetTasksToDo(firestore: GetIt.I()).call(userId: authState.user.id);
+                //   _tasksCubit.update(tasks);
+                // }
+              },
               builder: (context, authState) {
                 if (authState is Authenticated) {
                   return const SignOutButton();

@@ -141,7 +141,7 @@ Map<String, Object> _buildTaskMap({
     'isDone': isDone,
     'userId': userId,
     'id': taskFixture.id,
-    'title': taskFixture.title,
+    'name': taskFixture.title,
     'createdAt': taskFixture.createdAt,
     'dueAt': dueAt ?? DateTime.now().millisecondsSinceEpoch,
   };
