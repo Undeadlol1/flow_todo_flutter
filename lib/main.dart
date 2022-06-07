@@ -25,8 +25,7 @@ void main() async {
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
-      clientId:
-          '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
+      clientId: '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
 
@@ -85,7 +84,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  FutureOr<Null> _syncFirebaseAuthWithAuthenticationCubit() {
+  FutureOr<void> _syncFirebaseAuthWithAuthenticationCubit() {
     firebase_auth.FirebaseAuth.instance.authStateChanges().listen((event) {
       if (event == null) {
         _authentificationCubit.setNotAuthenticated();
