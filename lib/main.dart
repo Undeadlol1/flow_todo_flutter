@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/get_tasks_to_do.dart'
+    as get_tasks_use_case;
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
@@ -13,9 +15,13 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'features/authentification/domain/entities/user.dart';
+import 'features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'firebase_options.dart';
 
 import 'features/pages/presentation/main_page.dart';
+
+final _tasksCubit = TasksCubit();
+final _authentificationCubit = AuthentificationCubit();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,13 +43,13 @@ void main() async {
 
 _setUpDI() {
   final injector = GetIt.I;
-  GetIt.I.registerSingleton(BuildContextProvider());
-  GetIt.I.registerSingleton(FirebaseFirestore.instance);
-  GetIt.I.registerSingleton(GetTasksToDo(firestore: injector.get()));
-  GetIt.I.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
+  injector.registerSingleton(BuildContextProvider());
+  injector.registerSingleton(FirebaseFirestore.instance);
+  injector.registerSingleton(GetTasksToDo(firestore: injector.get()));
+  injector.registerSingleton(const get_tasks_use_case.GetTasksToDo());
+  injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
+  injector.registerSingleton(_tasksCubit);
 }
-
-final _authentificationCubit = AuthentificationCubit();
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -62,10 +68,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        return _authentificationCubit;
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => _tasksCubit),
+        BlocProvider(create: (context) => _authentificationCubit),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData.dark(),
