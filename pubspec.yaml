@@ -57,6 +57,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   bloc_test: ^9.0.3
   mocktail: ^0.3.0
+  fake_cloud_firestore: ^1.2.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

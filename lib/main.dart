@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:build_context_provider/build_context_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
@@ -35,8 +37,11 @@ void main() async {
 }
 
 _setUpDI() {
+  final injector = GetIt.I;
   GetIt.I.registerSingleton(BuildContextProvider());
-  GetIt.I.registerSingleton(GoToTaskPage(contextProvider: GetIt.I.get()));
+  GetIt.I.registerSingleton(FirebaseFirestore.instance);
+  GetIt.I.registerSingleton(GetTasksToDo(firestore: injector.get()));
+  GetIt.I.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
 }
 
 final _authentificationCubit = AuthentificationCubit();

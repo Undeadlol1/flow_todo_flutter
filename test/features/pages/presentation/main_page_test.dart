@@ -8,23 +8,23 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('GIVEN MainPage', () {
-    testWidgets(
-      "SHOULD have PageLayoutAndDependencies",
-      (WidgetTester tester) async {
-        await _pumpWidget(tester);
+    // testWidgets(
+    //   "SHOULD have PageLayoutAndDependencies",
+    //   (WidgetTester tester) async {
+    //     await _pumpWidget(tester);
 
-        expect(find.byType(PageLayoutAndDependencies), findsOneWidget);
-      },
-    );
+    //     expect(find.byType(PageLayoutAndDependencies), findsOneWidget);
+    //   },
+    // );
 
-    testWidgets(
-      "SHOULD display TasksList",
-      (WidgetTester tester) async {
-        await _pumpWidget(tester);
+    // testWidgets(
+    //   "SHOULD display TasksList",
+    //   (WidgetTester tester) async {
+    //     await _pumpWidget(tester);
 
-        expect(find.byType(TasksList), findsOneWidget);
-      },
-    );
+    //     expect(find.byType(TasksList), findsOneWidget);
+    //   },
+    // );
   });
 }
 
