@@ -6,14 +6,15 @@ class Pagination extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
         IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.arrow_forward),
+          icon: const Icon(Icons.arrow_forward_ios),
         ),
       ],
     );

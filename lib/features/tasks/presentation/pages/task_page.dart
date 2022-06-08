@@ -21,6 +21,7 @@ class TaskPage extends StatelessWidget {
       child: Column(
         children: [
           Text(args.task.title),
+          const SizedBox(height: 20),
           const WhatDoYouFeelAboutTheTask(),
         ],
       ),
