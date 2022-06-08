@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -13,7 +13,7 @@ const _improperUserId = 'should not find this';
 
 void main() {
   test(
-    'GIVEN GetTasksToDo '
+    'GIVEN GetTasksToDoRepository '
     'WHEN error was thrown by firestore '
     'THEN returns error',
     () async {
@@ -29,14 +29,14 @@ void main() {
       ).thenThrow(Exception('Something went wrong'));
 
       expect(
-        () => GetTasksToDo(firestore: mockFirestore).call(userId: ''),
+        () => GetTasksToDoRepository(firestore: mockFirestore).call(userId: ''),
         throwsA(isA<Exception>()),
       );
     },
   );
 
   test(
-    'GIVEN GetTasksToDo '
+    'GIVEN GetTasksToDoRepository '
     'WHEN called '
     'THEN constructs query to firestore properly',
     () async {
@@ -52,14 +52,14 @@ void main() {
       when(firestoreCall).thenAnswer((_) => null as Future<QuerySnapshot<Map<String, dynamic>>>);
 
       try {
-        await GetTasksToDo(firestore: mockFirestore).call(userId: _properUserId);
+        await GetTasksToDoRepository(firestore: mockFirestore).call(userId: _properUserId);
       } catch (e) {
         verify(firestoreCall).called(1);
       }
     },
   );
 
-  group('GIVEN GetTasksToDo WHEN called', () {
+  group('GIVEN GetTasksToDoRepository WHEN called', () {
     test(
       'THEN returns only single users tasks',
       () async {
@@ -70,7 +70,7 @@ void main() {
         await collection.add(_buildTaskMap(userId: ''));
         await collection.add(_buildTaskMap(userId: _improperUserId));
 
-        final result = await GetTasksToDo(firestore: instance).call(
+        final result = await GetTasksToDoRepository(firestore: instance).call(
           userId: _properUserId,
         );
 
@@ -86,7 +86,7 @@ void main() {
         await collection.add(_buildTaskMap(userId: _properUserId, isDone: true));
         await collection.add(_buildTaskMap(userId: _properUserId, isDone: false));
 
-        final result = await GetTasksToDo(firestore: instance).call(
+        final result = await GetTasksToDoRepository(firestore: instance).call(
           userId: _properUserId,
         );
 
@@ -111,7 +111,7 @@ void main() {
           _buildTaskMap(dueAt: yesterdaysDateInMilliseconds),
         );
 
-        final result = await GetTasksToDo(firestore: instance).call(
+        final result = await GetTasksToDoRepository(firestore: instance).call(
           userId: _properUserId,
         );
 
@@ -124,7 +124,7 @@ void main() {
       () async {
         final instance = FakeFirebaseFirestore();
 
-        final result = await GetTasksToDo(firestore: instance).call(userId: '');
+        final result = await GetTasksToDoRepository(firestore: instance).call(userId: '');
 
         expect(result, equals([]));
       },
