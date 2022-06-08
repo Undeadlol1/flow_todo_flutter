@@ -5,7 +5,7 @@ class Task implements UserCreatedDocument {
   final String title;
   final String? note;
   final bool isDone;
-  final num? repetitionLevel;
+  final int? repetitionLevel;
   final List<String>? tags;
   final num dueAt;
   final num? doneAt;
