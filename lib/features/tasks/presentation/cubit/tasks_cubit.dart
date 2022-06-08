@@ -7,7 +7,7 @@ part 'tasks_state.dart';
 class TasksCubit extends Cubit<TasksState> {
   TasksCubit() : super(TasksInitial());
 
-  void update(List<Task> updatedTasks) {
-    emit(TasksUpdated(tasks: updatedTasks));
+  void update(List<Task> tasks) {
+    emit(TasksUpdated(tasks: tasks));
   }
 }
