@@ -1,4 +1,5 @@
 import '../../common/domain/user_created_document.dart';
+import 'task_history.dart';
 
 class Task implements UserCreatedDocument {
   final String id;
@@ -6,21 +7,21 @@ class Task implements UserCreatedDocument {
   String? note;
   bool isDone;
   int? repetitionLevel;
-  num dueAt;
-  num? doneAt;
+  int dueAt;
+  int? doneAt;
   final List<String>? tags;
   // final bool? isCurrent;
   // subtasks?: Subtask[];
-  // history?: TaskHistory[];
+  List<TaskHistory> history;
 
   @override
   final String userId;
 
   @override
-  final num createdAt;
+  final int createdAt;
 
   @override
-  num? updatedAt;
+  int? updatedAt;
 
   Task({
     required this.id,
@@ -29,10 +30,11 @@ class Task implements UserCreatedDocument {
     required this.isDone,
     required this.userId,
     required this.createdAt,
-    this.updatedAt,
+    required this.history,
     this.note,
     this.tags,
     this.doneAt,
+    this.updatedAt,
     this.repetitionLevel,
   });
 }

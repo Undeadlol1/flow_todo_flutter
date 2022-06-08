@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/tasks/domain/task.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/task_history.dart';
 
 class GetTasksToDoRepository {
   final FirebaseFirestore firestore;
@@ -16,8 +17,21 @@ class GetTasksToDoRepository {
 
     return tasks.docs.map((e) {
       final data = e.data();
+      final List<TaskHistory> taskActionsHistory = data['history'] == null
+          ? []
+          : List.from(data['history']).map((e) {
+              return TaskHistory(
+                userId: e['userId'],
+                taskId: e['taskId'],
+                comment: e['comment'],
+                createdAt: e['createdAt'],
+                actionType: e['actionType'],
+              );
+            }).toList();
+
       return Task(
         // TODO are all fields properly set?
+        history: taskActionsHistory,
         title: data['name'],
         dueAt: data['dueAt'],
         isDone: data['isDone'],
