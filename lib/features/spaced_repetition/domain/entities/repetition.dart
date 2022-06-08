@@ -1,6 +1,6 @@
 class Repetition {
   final int dueAt;
-  final num repetitionLevel;
+  final int repetitionLevel;
 
   Repetition({required this.dueAt, required this.repetitionLevel});
 }
