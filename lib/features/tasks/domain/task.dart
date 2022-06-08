@@ -2,22 +2,22 @@ import '../../common/domain/user_created_document.dart';
 
 class Task implements UserCreatedDocument {
   final String id;
-  final String title;
-  final String? note;
-  final bool isDone;
-  final int? repetitionLevel;
+  String title;
+  String? note;
+  bool isDone;
+  int? repetitionLevel;
+  num dueAt;
+  num? doneAt;
   final List<String>? tags;
-  final num dueAt;
-  final num? doneAt;
   // final bool? isCurrent;
   // subtasks?: Subtask[];
   // history?: TaskHistory[];
 
   @override
-  String userId;
+  final String userId;
 
   @override
-  num createdAt;
+  final num createdAt;
 
   @override
   num? updatedAt;

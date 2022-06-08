@@ -18,15 +18,7 @@ void main() {
     'THEN returns error',
     () async {
       final mockFirestore = _MockFirebaseFirestore();
-      when(
-        () => mockFirestore
-            .collection('tasks')
-            .where('userId', isEqualTo: _properUserId)
-            .where('isDone', isEqualTo: false)
-            .where('dueAt', isLessThanOrEqualTo: DateTime.now().millisecondsSinceEpoch)
-            .limit(100)
-            .get(),
-      ).thenThrow(Exception('Something went wrong'));
+      when(_typicalFirestoreCall(mockFirestore)).thenThrow(Exception('Something went wrong'));
 
       expect(
         () => GetTasksToDoRepository(firestore: mockFirestore).call(userId: ''),
@@ -41,20 +33,14 @@ void main() {
     'THEN constructs query to firestore properly',
     () async {
       final mockFirestore = _MockFirebaseFirestore();
-      void firestoreCall() => mockFirestore
-          .collection('tasks')
-          .where('userId', isEqualTo: _properUserId)
-          .where('isDone', isEqualTo: false)
-          .where('dueAt', isLessThanOrEqualTo: DateTime.now().millisecondsSinceEpoch)
-          .limit(100)
-          .get();
 
-      when(firestoreCall).thenAnswer((_) => null as Future<QuerySnapshot<Map<String, dynamic>>>);
+      when(_typicalFirestoreCall(mockFirestore))
+          .thenAnswer((_) => null as Future<QuerySnapshot<Map<String, dynamic>>>);
 
       try {
         await GetTasksToDoRepository(firestore: mockFirestore).call(userId: _properUserId);
       } catch (e) {
-        verify(firestoreCall).called(1);
+        verify(_typicalFirestoreCall(mockFirestore)).called(1);
       }
     },
   );
@@ -130,6 +116,19 @@ void main() {
       },
     );
   });
+}
+
+_typicalFirestoreCall(_MockFirebaseFirestore mockFirestore) {
+  return () {
+    const userId = _properUserId;
+    return mockFirestore
+        .collection('tasks')
+        .where('userId', isEqualTo: userId)
+        .where('isDone', isEqualTo: false)
+        .where('dueAt', isLessThanOrEqualTo: DateTime.now().millisecondsSinceEpoch)
+        .limit(100)
+        .get();
+  };
 }
 
 Map<String, Object> _buildTaskMap({

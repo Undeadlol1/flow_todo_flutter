@@ -1,5 +1,11 @@
 abstract class UserCreatedDocument {
-  late final num createdAt;
-  late final num? updatedAt;
-  late final String userId;
+  final num createdAt;
+  final num? updatedAt;
+  final String userId;
+
+  UserCreatedDocument({
+    required this.userId,
+    required this.createdAt,
+    this.updatedAt,
+  });
 }
