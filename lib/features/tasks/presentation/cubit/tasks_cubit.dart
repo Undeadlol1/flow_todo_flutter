@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 
-import '../../domain/task.dart';
+import '../../domain/entities/task.dart';
 
 part 'tasks_state.dart';
 

@@ -3,7 +3,7 @@ import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/service
 import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 
-import '../task.dart';
+import '../entities/task.dart';
 
 class MakeStepForwardOnTheTask {
   final TasksCubit tasksCubit;

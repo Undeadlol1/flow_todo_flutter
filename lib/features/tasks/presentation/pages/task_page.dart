@@ -2,7 +2,7 @@ import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/what_do_you_feel_about_the_task.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/task.dart';
+import '../../domain/entities/task.dart';
 
 class TaskPageArguments {
   final Task task;

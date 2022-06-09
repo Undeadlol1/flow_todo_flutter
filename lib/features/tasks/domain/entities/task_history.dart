@@ -5,10 +5,8 @@ class TaskHistory {
 
   final String? userId;
 
-  @override
   final int createdAt;
 
-  @override
   int? updatedAt;
 
   TaskHistory({

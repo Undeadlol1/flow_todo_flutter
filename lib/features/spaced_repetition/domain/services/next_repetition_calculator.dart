@@ -1,4 +1,4 @@
-import '../../../tasks/domain/task.dart';
+import '../../../tasks/domain/entities/task.dart';
 import '../entities/confidence.dart';
 import '../entities/repetition.dart';
 

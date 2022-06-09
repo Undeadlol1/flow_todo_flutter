@@ -1,4 +1,4 @@
-import '../task.dart';
+import '../entities/task.dart';
 
 class StaleTaskDetector {
   StaleTaskDetector();

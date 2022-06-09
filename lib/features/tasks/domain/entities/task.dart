@@ -1,4 +1,4 @@
-import '../../common/domain/user_created_document.dart';
+import '../../../common/domain/user_created_document.dart';
 import 'task_history.dart';
 
 class Task implements UserCreatedDocument {

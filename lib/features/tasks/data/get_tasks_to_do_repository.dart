@@ -1,6 +1,6 @@
-import 'package:flow_todo_flutter_2022/features/tasks/domain/task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/task_history.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history.dart';
 
 class GetTasksToDoRepository {
   final FirebaseFirestore firestore;

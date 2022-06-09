@@ -1,5 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
