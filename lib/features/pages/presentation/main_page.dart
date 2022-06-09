@@ -13,6 +13,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageLayoutAndDependencies(
+      isDrawerHidden: false,
       child: BlocListener<AuthentificationCubit, AuthentificationState>(
         listener: (context, authState) async {
           if (authState is Authenticated) {

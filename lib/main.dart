@@ -33,7 +33,8 @@ void main() async {
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
-      clientId: '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
+      clientId:
+          '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
 
@@ -71,21 +72,27 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => _tasksCubit),
-        BlocProvider(create: (context) => _authentificationCubit),
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => _tasksCubit),
+            BlocProvider(create: (context) => _authentificationCubit),
+          ],
+          child: MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData.dark(),
+            initialRoute: MainPage.pathName,
+            routes: {
+              MainPage.pathName: (contex) => const Scaffold(body: MainPage()),
+              TaskPage.pathName: (contex) => const TaskPage(),
+              WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
+            },
+          ),
+        ),
+        _buildExperinceIndicator(),
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData.dark(),
-        initialRoute: MainPage.pathName,
-        routes: {
-          MainPage.pathName: (contex) => const Scaffold(body: MainPage()),
-          TaskPage.pathName: (contex) => const TaskPage(),
-          WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
-        },
-      ),
     );
   }
 
@@ -103,5 +110,20 @@ class _MyAppState extends State<MyApp> {
         );
       }
     });
+  }
+
+  Widget _buildExperinceIndicator() {
+    return const Directionality(
+      textDirection: TextDirection.ltr,
+      child: Positioned(
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 0),
+          child: LinearProgressIndicator(
+            value: 0.7,
+            minHeight: 10,
+          ),
+        ),
+      ),
+    );
   }
 }

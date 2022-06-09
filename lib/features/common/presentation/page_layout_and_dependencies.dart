@@ -6,64 +6,57 @@ import 'package:flutterfire_ui/auth.dart';
 
 class PageLayoutAndDependencies extends StatelessWidget {
   final Widget child;
-  const PageLayoutAndDependencies({Key? key, required this.child}) : super(key: key);
+  bool isDrawerHidden;
+  PageLayoutAndDependencies({
+    Key? key,
+    required this.child,
+    this.isDrawerHidden = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthentificationCubit, AuthentificationState>(
       builder: (BuildContext context, authentication) {
         return SafeArea(
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Scaffold(
-                drawer: Drawer(
-                  child: Column(
-                    children: [
-                      if (authentication is Authenticated)
-                        const SignOutButton()
-                      else
-                        const SizedBox(
-                          height: 300,
-                          child: SignInScreen(),
-                        ),
-                    ],
+          child: Scaffold(
+            drawer: isDrawerHidden
+                ? null
+                : Drawer(
+                    child: Column(
+                      children: [
+                        if (authentication is Authenticated)
+                          const SignOutButton()
+                        else
+                          const SizedBox(
+                            height: 300,
+                            child: SignInScreen(),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-                appBar: AppBar(
-                  actions: [
-                    if (authentication is Authenticated && authentication.user.avatar != null)
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(authentication.user.avatar!),
-                      ),
-                    const SizedBox(width: 8)
-                  ],
-                ),
-                body: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(height: 10),
-                      child,
-                      const ListenerThatRunsFunctionsWithBuildContext(),
-                    ],
+            appBar: AppBar(
+              actions: [
+                if (authentication is Authenticated &&
+                    authentication.user.avatar != null)
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(authentication.user.avatar!),
                   ),
-                ),
+                const SizedBox(width: 8),
+              ],
+            ),
+            body: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 10),
+                  child,
+                  const ListenerThatRunsFunctionsWithBuildContext(),
+                ],
               ),
-              _buildExperinceIndicator()
-            ],
+            ),
           ),
         );
       },
-    );
-  }
-
-  Positioned _buildExperinceIndicator() {
-    return const Positioned(
-      child: LinearProgressIndicator(
-        value: 0.7,
-        minHeight: 10,
-      ),
     );
   }
 }
