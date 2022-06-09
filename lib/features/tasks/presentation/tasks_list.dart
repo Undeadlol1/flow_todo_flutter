@@ -13,7 +13,6 @@ class TasksList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TasksCubit, TasksState>(
       builder: (context, state) {
-        // state.tasks.removeRange(9, state.tasks.length);
         return Column(
           children: [
             ListView.builder(
