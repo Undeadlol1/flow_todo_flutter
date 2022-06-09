@@ -17,6 +17,7 @@ void main() {
       createdAt: createdAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
       updatedAt: updatedAt?.millisecondsSinceEpoch,
       history: [],
+      tags: [],
     );
   }
 

@@ -27,7 +27,9 @@ class TasksList extends StatelessWidget {
                 );
               },
             ),
-            const Pagination(),
+            Pagination(
+              onPageChange: (newPageNumber) {},
+            ),
           ],
         );
       },

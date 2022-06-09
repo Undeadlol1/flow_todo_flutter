@@ -17,6 +17,8 @@ class GetTasksToDoRepository {
 
     return tasks.docs.map((e) {
       final data = e.data();
+      final List<String> tags =
+          data['tags'] == null ? [] : List.from(data['tags']).map((e) => e.toString()).toList();
       final List<TaskHistory> taskActionsHistory = data['history'] == null
           ? []
           : List.from(data['history']).map((e) {
@@ -29,8 +31,9 @@ class GetTasksToDoRepository {
               );
             }).toList();
 
+      // TODO are all fields properly set?
       return Task(
-        // TODO are all fields properly set?
+        tags: tags,
         history: taskActionsHistory,
         title: data['name'],
         dueAt: data['dueAt'],

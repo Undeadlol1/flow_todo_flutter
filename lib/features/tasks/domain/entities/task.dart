@@ -9,7 +9,7 @@ class Task implements UserCreatedDocument {
   int? repetitionLevel;
   int dueAt;
   int? doneAt;
-  final List<String>? tags;
+  final List<String> tags;
   // final bool? isCurrent;
   // subtasks?: Subtask[];
   List<TaskHistory> history;
@@ -31,8 +31,8 @@ class Task implements UserCreatedDocument {
     required this.userId,
     required this.createdAt,
     required this.history,
+    required this.tags,
     this.note,
-    this.tags,
     this.doneAt,
     this.updatedAt,
     this.repetitionLevel,
