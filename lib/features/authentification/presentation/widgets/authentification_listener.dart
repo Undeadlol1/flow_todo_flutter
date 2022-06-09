@@ -24,6 +24,7 @@ class AuthentificationListener extends StatelessWidget {
             User(
               id: snapshot.data?.uid ?? '',
               email: snapshot.data?.email ?? '',
+              avatar: snapshot.data?.photoURL ?? '',
               displayName: snapshot.data?.displayName ?? '',
             ),
           );
