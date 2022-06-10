@@ -1,8 +1,10 @@
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_creation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
+import 'package:get_it/get_it.dart';
 
 class PageLayoutAndDependencies extends StatelessWidget {
   final Widget child;
@@ -19,7 +21,16 @@ class PageLayoutAndDependencies extends StatelessWidget {
       builder: (BuildContext context, authentication) {
         return SafeArea(
           child: Scaffold(
-            appBar: _AppBar(),
+            appBar: AppBar(
+              actions: [
+                if (authentication is Authenticated &&
+                    authentication.user.avatar != null)
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(authentication.user.avatar!),
+                  ),
+                const SizedBox(width: 8),
+              ],
+            ),
             drawer: isDrawerHidden != null && isDrawerHidden!
                 ? null
                 : const _Drawer(),
@@ -34,7 +45,7 @@ class PageLayoutAndDependencies extends StatelessWidget {
               ),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () => GetIt.I<GoToTaskCreation>()(),
               child: const Icon(Icons.add),
             ),
           ),
@@ -63,27 +74,6 @@ class _Drawer extends StatelessWidget {
                 ),
             ],
           ),
-        );
-      },
-    );
-  }
-}
-
-class _AppBar extends AppBar {
-  _AppBar({Key? key}) : super(key: key);
-
-  Widget build(BuildContext context) {
-    return BlocBuilder<AuthentificationCubit, AuthentificationState>(
-      builder: (BuildContext context, authentication) {
-        return AppBar(
-          actions: [
-            if (authentication is Authenticated &&
-                authentication.user.avatar != null)
-              CircleAvatar(
-                backgroundImage: NetworkImage(authentication.user.avatar!),
-              ),
-            const SizedBox(width: 8),
-          ],
         );
       },
     );

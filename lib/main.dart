@@ -7,6 +7,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do_repos
 import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/get_tasks_to_do.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_creation.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
@@ -52,6 +53,7 @@ _setUpDI() {
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
   injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
+  injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
   injector.registerSingleton(_tasksCubit);
 }
 
