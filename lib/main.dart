@@ -6,6 +6,7 @@ import 'package:flow_todo_flutter_2022/features/authentification/presentation/cu
 import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/create_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/get_tasks_to_do.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_creation.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
@@ -46,10 +47,15 @@ void main() async {
 
 _setUpDI() {
   final injector = GetIt.I;
+
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(FirebaseFirestore.instance);
   injector.registerSingleton(const GetTasksToDo());
   injector.registerSingleton(StaleTaskDetector());
+  injector.registerSingleton(CreateTask(
+    tasksCubit: injector.get(),
+    createTaskRepository: injector.get(),
+  ));
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
   injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
