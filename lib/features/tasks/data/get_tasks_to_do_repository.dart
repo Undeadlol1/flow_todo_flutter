@@ -1,6 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_entity.dart';
 
 class GetTasksToDoRepository {
   final FirebaseFirestore firestore;
@@ -21,10 +21,10 @@ class GetTasksToDoRepository {
       final List<String> tags = data['tags'] == null
           ? []
           : List.from(data['tags']).map((e) => e.toString()).toList();
-      final List<TaskHistory> taskActionsHistory = data['history'] == null
+      final List<TaskHistoryEntity> taskActionsHistory = data['history'] == null
           ? []
           : List.from(data['history']).map((e) {
-              return TaskHistory(
+              return TaskHistoryEntity(
                 userId: e['userId'],
                 taskId: e['taskId'],
                 comment: e['comment'],

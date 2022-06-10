@@ -1,5 +1,5 @@
 import '../../../common/domain/user_created_document.dart';
-import 'task_history.dart';
+import 'task_history_entity.dart';
 
 class TaskEntity implements UserCreatedDocument {
   final String id;
@@ -12,7 +12,7 @@ class TaskEntity implements UserCreatedDocument {
   final List<String> tags;
   // final bool? isCurrent;
   // subtasks?: Subtask[];
-  List<TaskHistory> history;
+  List<TaskHistoryEntity> history;
 
   @override
   final String userId;

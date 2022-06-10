@@ -1,4 +1,4 @@
-class TaskHistory {
+class TaskHistoryEntity {
   final String? taskId;
   final String? comment;
   final String actionType;
@@ -9,7 +9,7 @@ class TaskHistory {
 
   int? updatedAt;
 
-  TaskHistory({
+  TaskHistoryEntity({
     required this.createdAt,
     required this.actionType,
     this.taskId,
