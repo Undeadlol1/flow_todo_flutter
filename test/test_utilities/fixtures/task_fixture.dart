@@ -1,6 +1,6 @@
-import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_entity.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 
-final taskFixture = TaskEntity(
+final taskFixture = Task(
   id: 'id',
   tags: [],
   history: [],

@@ -8,15 +8,18 @@ part of 'task.dart';
 
 Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       id: json['id'] as String,
-      title: json['title'] as String,
+      title: json['name'] as String,
       dueAt: json['dueAt'] as int,
       isDone: json['isDone'] as bool,
       userId: json['userId'] as String,
       createdAt: json['createdAt'] as int,
-      history: (json['history'] as List<dynamic>)
-          .map((e) => TaskHistory.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+      history: (json['history'] as List<dynamic>?)
+              ?.map((e) => TaskHistory.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      tags:
+          (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+              [],
       note: json['note'] as String?,
       doneAt: json['doneAt'] as int?,
       updatedAt: json['updatedAt'] as int?,
@@ -26,7 +29,7 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
 Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
-      'title': instance.title,
+      'name': instance.title,
       'note': instance.note,
       'isDone': instance.isDone,
       'repetitionLevel': instance.repetitionLevel,
