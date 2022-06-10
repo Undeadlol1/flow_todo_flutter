@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -21,16 +19,12 @@ class Task implements TaskEntity {
   @override
   int? repetitionLevel;
   @override
-  // TODO json returns string
   int dueAt;
   @override
-  // TODO json returns string
-  // @JsonKey(fromJson: _transformStringDateToOptionalInt)
   int? doneAt;
   @override
   final int createdAt;
   @override
-  // @JsonKey(fromJson: _transformStringDateToOptionalInt)
   int? updatedAt;
   @override
   @JsonKey(defaultValue: [])
@@ -59,12 +53,4 @@ class Task implements TaskEntity {
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
 
   Map<String, dynamic> toJson() => _$TaskToJson(this);
-
-  static int? _transformStringDateToOptionalInt(String? jsonValue) {
-    return jsonValue == null ? null : num.parse(jsonValue).toInt();
-  }
-
-  static int _transformStringDateToInt(String jsonValue) {
-    return num.parse(jsonValue).toInt();
-  }
 }
