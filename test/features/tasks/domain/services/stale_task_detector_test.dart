@@ -1,5 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -7,14 +7,16 @@ void main() {
   final detector = StaleTaskDetector();
   final fiveDaysAgo = today.subtract(const Duration(days: 5));
 
-  Task buildtask({DateTime? createdAt, DateTime? dueAt, DateTime? updatedAt}) {
-    return Task(
+  TaskEntity buildtask(
+      {DateTime? createdAt, DateTime? dueAt, DateTime? updatedAt}) {
+    return TaskEntity(
       id: 'id',
       title: 'title',
       isDone: false,
       userId: 'userId',
       dueAt: dueAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
-      createdAt: createdAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
+      createdAt:
+          createdAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
       updatedAt: updatedAt?.millisecondsSinceEpoch,
       history: [],
       tags: [],

@@ -1,7 +1,7 @@
 import '../../../common/domain/user_created_document.dart';
 import 'task_history.dart';
 
-class Task implements UserCreatedDocument {
+class TaskEntity implements UserCreatedDocument {
   final String id;
   String title;
   String? note;
@@ -23,7 +23,7 @@ class Task implements UserCreatedDocument {
   @override
   int? updatedAt;
 
-  Task({
+  TaskEntity({
     required this.id,
     required this.title,
     required this.dueAt,

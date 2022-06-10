@@ -2,10 +2,10 @@ import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/what_do_you_feel_about_the_task.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/task.dart';
+import '../../domain/entities/task_entity.dart';
 
 class TaskPageArguments {
-  final Task task;
+  final TaskEntity task;
   TaskPageArguments({required this.task});
 }
 
@@ -15,7 +15,8 @@ class TaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as TaskPageArguments;
+    final args =
+        ModalRoute.of(context)!.settings.arguments as TaskPageArguments;
 
     return PageLayoutAndDependencies(
       child: Column(

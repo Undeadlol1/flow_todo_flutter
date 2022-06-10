@@ -3,10 +3,10 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_tas
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import '../domain/entities/task.dart';
+import '../domain/entities/task_entity.dart';
 
 class TasksListItem extends StatelessWidget {
-  final Task task;
+  final TaskEntity task;
   const TasksListItem({Key? key, required this.task}) : super(key: key);
 
   @override
@@ -18,7 +18,9 @@ class TasksListItem extends StatelessWidget {
       child: Row(
         children: [
           Flexible(
-            child: StaleTaskDetector().isTale(task) ? const Text('Stale') : Text(task.title),
+            child: StaleTaskDetector().isTale(task)
+                ? const Text('Stale')
+                : Text(task.title),
           ),
         ],
       ),

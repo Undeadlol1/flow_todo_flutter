@@ -1,15 +1,18 @@
-import '../entities/task.dart';
+import '../entities/task_entity.dart';
 
 class StaleTaskDetector {
   StaleTaskDetector();
 
   get now => DateTime.now();
 
-  bool isTale(Task task) {
-    final bool isTaskCreatedLongAgo = _differenceInDaysWithToday(task.createdAt) > 3;
-    final bool isTaskReadyButNotWorkedOn = _differenceInDaysWithToday(task.dueAt) > 3;
-    final bool hasTaskBeenUpdatedRecently =
-        task.updatedAt == null ? false : _differenceInDaysWithToday(task.updatedAt!) < 5;
+  bool isTale(TaskEntity task) {
+    final bool isTaskCreatedLongAgo =
+        _differenceInDaysWithToday(task.createdAt) > 3;
+    final bool isTaskReadyButNotWorkedOn =
+        _differenceInDaysWithToday(task.dueAt) > 3;
+    final bool hasTaskBeenUpdatedRecently = task.updatedAt == null
+        ? false
+        : _differenceInDaysWithToday(task.updatedAt!) < 5;
 
     if (hasTaskBeenUpdatedRecently) {
       return false;
