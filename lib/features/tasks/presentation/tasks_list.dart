@@ -15,6 +15,9 @@ class TasksList extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
+            Center(
+              child: Text('Length: ${state.tasks.length}'),
+            ),
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
