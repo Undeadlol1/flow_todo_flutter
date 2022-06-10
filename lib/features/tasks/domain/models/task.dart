@@ -1,9 +1,14 @@
-import '../entities/task_entity.dart';
-import '../entities/task_history_entity.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+import '../entities/task_entity.dart';
+
+part 'task.g.dart';
+
+@JsonSerializable()
 class Task implements TaskEntity {
   @override
-  final String id;
+  final String id, userId;
   @override
   String title;
   @override
@@ -17,16 +22,13 @@ class Task implements TaskEntity {
   @override
   int? doneAt;
   @override
-  final String userId;
-  @override
   final int createdAt;
   @override
   int? updatedAt;
   @override
   final List<String> tags;
-  // TODO
   @override
-  List<TaskHistoryEntity> history;
+  List<TaskHistory> history;
   // final bool? isCurrent;
   // subtasks?: Subtask[];
 
@@ -45,34 +47,7 @@ class Task implements TaskEntity {
     this.repetitionLevel,
   });
 
-  // TODO add  automatic mapping.
-  Map<String, Object?> toJson() {
-    return {
-      'id': 'id',
-      'title': title,
+  factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
 
-      'note': note,
-
-      'userId': userId,
-
-      'isDone': isDone.toString(),
-
-      'repetitionLevel': repetitionLevel.toString(),
-
-      'dueAt': dueAt.toString(),
-      'doneAt': doneAt.toString(),
-      'createdAt': createdAt.toString(),
-      'updatedAt': updatedAt.toString(),
-      'tags': tags.toString(),
-      //  TODO
-      'history': [].toString(),
-    };
-  }
-
-// TODO
-  // Task.fromJson(Map<String, Object?> json)
-  // : this(
-
-  //     title: json['title']! as String,
-  //   );
+  Map<String, dynamic> toJson() => _$TaskToJson(this);
 }

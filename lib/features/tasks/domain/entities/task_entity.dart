@@ -1,5 +1,6 @@
+import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
+
 import '../../../common/domain/user_created_document.dart';
-import 'task_history_entity.dart';
 
 class TaskEntity implements UserCreatedDocument {
   final String id;
@@ -12,7 +13,7 @@ class TaskEntity implements UserCreatedDocument {
   final List<String> tags;
   // final bool? isCurrent;
   // subtasks?: Subtask[];
-  List<TaskHistoryEntity> history;
+  List<TaskHistory> history;
 
   @override
   final String userId;
