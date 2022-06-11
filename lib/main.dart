@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/data/create_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
@@ -35,6 +36,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
       clientId:
@@ -50,12 +53,14 @@ void main() async {
 _setUpDI() {
   final injector = GetIt.I;
 
+  injector.registerSingleton(_tasksCubit);
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(UniqueIdGenerator());
   injector.registerSingleton(GetTodaysDate());
   injector.registerSingleton(FirebaseFirestore.instance);
   injector.registerSingleton(const GetTasksToDo());
   injector.registerSingleton(StaleTaskDetector());
+  injector.registerSingleton(CreateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(CreateTask(
     tasksCubit: injector.get(),
     getTodaysDate: injector.get(),
@@ -66,7 +71,6 @@ _setUpDI() {
   injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
   injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
-  injector.registerSingleton(_tasksCubit);
 }
 
 class MyApp extends StatefulWidget {
@@ -95,7 +99,7 @@ class _MyAppState extends State<MyApp> {
             BlocProvider(create: (context) => _authentificationCubit),
           ],
           child: MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Flow TODO',
             theme: ThemeData.dark(),
             initialRoute: MainPage.pathName,
             routes: {
