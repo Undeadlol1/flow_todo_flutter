@@ -3,6 +3,8 @@ import 'package:build_context_provider/build_context_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
+import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
@@ -49,11 +51,15 @@ _setUpDI() {
   final injector = GetIt.I;
 
   injector.registerSingleton(BuildContextProvider());
+  injector.registerSingleton(UniqueIdGenerator());
+  injector.registerSingleton(GetTodaysDate());
   injector.registerSingleton(FirebaseFirestore.instance);
   injector.registerSingleton(const GetTasksToDo());
   injector.registerSingleton(StaleTaskDetector());
   injector.registerSingleton(CreateTask(
     tasksCubit: injector.get(),
+    getTodaysDate: injector.get(),
+    uniqueIdGenerator: injector.get(),
     createTaskRepository: injector.get(),
   ));
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));

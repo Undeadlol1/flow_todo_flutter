@@ -1,21 +1,42 @@
+import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
+import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/create_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/create_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:uuid/uuid.dart';
+
+const _uniqueId = 'unique id 123';
+
+// TODO refactor
+final _dateToReturn = DateTime.now().subtract(const Duration(days: 10));
+
+class _FakecUniqueIdGenerator extends Fake implements UniqueIdGenerator {
+  @override
+  String call() => _uniqueId;
+}
+
+class _FakeGetTodaysDate extends Fake implements GetTodaysDate {
+  @override
+  DateTime call() => _dateToReturn;
+}
 
 class _MockCreateTaskRepository extends Mock implements CreateTaskRepository {}
 
 final _mockCreateTaskRepository = _MockCreateTaskRepository();
 
+final _FakecUniqueIdGenerator _fakecUniqueIdGenerator =
+    _FakecUniqueIdGenerator();
+
+final _tasksCubit = TasksCubit();
+
 void main() {
-  final tasksCubit = TasksCubit();
+  UniqueIdGenerator;
   const userId = '12313231';
   const taskTitle = 'A title';
   final taskToBeCreated = Task(
-    id: Uuid().v4(),
+    id: _uniqueId,
     createdAt: 0,
     dueAt: 0,
     history: [],
@@ -25,57 +46,36 @@ void main() {
     userId: userId,
   );
 
-  setUpAll(() {
+  setUp(() {
+    reset(_mockCreateTaskRepository);
     registerFallbackValue(taskToBeCreated);
+    when((() => _mockCreateTaskRepository(any()))).thenAnswer((_) async {});
   });
 
-  tearDownAll(tasksCubit.close);
+  tearDownAll(_tasksCubit.close);
 
   group('GIVEN CrateTask WHEN called THEN', () {
-    // test("sets id properly", () async {
-    //   final useCase = CreateTask(
-    //     tasksCubit: tasksCubit,
-    //     createTaskRepository: _mockCreateTaskRepository,
-    //   );
+    test(
+      'adds task to state',
+      () async {
+        final useCase = _buildUseCase();
 
-    //   await useCase(title: taskTitle, userId: userId);
+        await useCase(title: taskTitle, userId: userId);
 
-    //   expect(, matcher)
-    // });
+        expect(_tasksCubit.state.tasks, hasLength(1));
+      },
+    );
 
-    // test(
-    //   'adds task to state',
-    //   () async {
-    //     final useCase = CreateTask(
-    //       tasksCubit: tasksCubit,
-    //       createTaskRepository: _mockCreateTaskRepository,
-    //     );
-
-    //     await useCase(title: taskTitle, userId: userId);
-
-    //     expect(tasksCubit.state.tasks, hasLength(1));
-    //   },
-    // );
     test('calls task creation repository', () async {
-      when((() => _mockCreateTaskRepository(any()))).thenAnswer((_) async {});
-      final useCase = CreateTask(
-        tasksCubit: tasksCubit,
-        createTaskRepository: _mockCreateTaskRepository,
-      );
+      final useCase = _buildUseCase();
 
       await useCase(title: taskTitle, userId: userId);
 
       verify(() => _mockCreateTaskRepository(captureAny())).called(1);
     });
 
-    test('calls repository with proper arguments', () async {
-      when((() => _mockCreateTaskRepository(any()))).thenAnswer((_) async {});
-      final useCase = CreateTask(
-        tasksCubit: tasksCubit,
-        createTaskRepository: _mockCreateTaskRepository,
-      );
-
-      await useCase(title: taskTitle, userId: userId);
+    test('calls repository with proper task object', () async {
+      await _buildUseCase()(title: taskTitle, userId: userId);
 
       final capturedArguments =
           verify(() => _mockCreateTaskRepository(captureAny())).captured;
@@ -86,8 +86,31 @@ void main() {
         reason: 'No arguments captured',
       );
       expect(capturedTaskArgument, isA<Task>());
-      expect(capturedTaskArgument.isDone, isFalse);
+      expect(capturedTaskArgument.id, _uniqueId);
       expect(capturedTaskArgument.userId, userId);
+      expect(capturedTaskArgument.isDone, isFalse);
+      expect(capturedTaskArgument.title, taskTitle);
+    });
+
+    test('calls repository with proper dates in the task', () async {
+      final millisecondsSinceEpoch = _dateToReturn.millisecondsSinceEpoch;
+
+      await _buildUseCase()(title: taskTitle, userId: userId);
+
+      final taskArgument = verify(() => _mockCreateTaskRepository(captureAny()))
+          .captured
+          .first as Task;
+      expect(taskArgument.dueAt, millisecondsSinceEpoch);
+      expect(taskArgument.createdAt, millisecondsSinceEpoch);
     });
   });
+}
+
+CreateTask _buildUseCase() {
+  return CreateTask(
+    tasksCubit: _tasksCubit,
+    getTodaysDate: _FakeGetTodaysDate(),
+    uniqueIdGenerator: _fakecUniqueIdGenerator,
+    createTaskRepository: _mockCreateTaskRepository,
+  );
 }
