@@ -103,7 +103,7 @@ class _MyAppState extends State<MyApp> {
             theme: ThemeData.dark(),
             initialRoute: MainPage.pathName,
             routes: {
-              MainPage.pathName: (contex) => const Scaffold(body: MainPage()),
+              MainPage.pathName: (contex) => const MainPage(),
               TaskPage.pathName: (contex) => const TaskPage(),
               WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
             },

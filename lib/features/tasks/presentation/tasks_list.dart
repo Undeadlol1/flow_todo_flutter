@@ -1,4 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/pagination.dart';
+import 'package:get_it/get_it.dart';
 
 import '../domain/models/task.dart';
 import 'tasks_list_item.dart';
@@ -16,7 +17,7 @@ class TasksList extends StatefulWidget {
 
 class _TasksListState extends State<TasksList> {
   // TODO rename
-  List<Task> _localList = [];
+  List<Task> _localList = GetIt.I<TasksCubit>().state.tasks;
 
   final _animatedListKey = GlobalKey<AnimatedListState>();
 
@@ -54,6 +55,7 @@ class _TasksListState extends State<TasksList> {
             AnimatedList(
               shrinkWrap: true,
               key: _animatedListKey,
+              initialItemCount: state.tasks.length,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (_, index, animation) {
                 return SlideTransition(

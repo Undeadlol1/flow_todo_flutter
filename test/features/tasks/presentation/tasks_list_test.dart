@@ -5,11 +5,14 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_list_it
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../test_utilities/fixtures/task_fixture.dart';
 
 void main() {
   group('GIVEN TasksList', () {
+    setUpAll(() {});
+
     testWidgets(
       'WHEN there are no tasks '
       'THEN displays nothing',
@@ -60,6 +63,12 @@ extension on WidgetTester {
     required Widget child,
     required TasksCubit tasksCubit,
   }) {
+    if (GetIt.I.isRegistered<TasksCubit>()) {
+      tasksCubit.close();
+      GetIt.I.unregister<TasksCubit>();
+    }
+    GetIt.I.registerSingleton(tasksCubit);
+
     // ignore: unnecessary_this
     return this.pumpWidget(
       MaterialApp(
