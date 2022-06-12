@@ -1,5 +1,10 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import '../entities/profile_entity.dart';
 
+part 'profile.g.dart';
+
+@JsonSerializable()
 class Profile implements ProfileEntity {
   @override
   int? experience, points, updatedAt;
@@ -22,4 +27,9 @@ class Profile implements ProfileEntity {
     required this.createdAt,
     required this.areEcouragingMessagesDisabled,
   });
+
+  factory Profile.fromJson(Map<String, dynamic> json) =>
+      _$ProfileFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProfileToJson(this);
 }
