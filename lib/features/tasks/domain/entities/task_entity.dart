@@ -3,6 +3,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history
 import '../../../common/domain/user_created_document.dart';
 
 class TaskEntity implements UserCreatedDocument {
+  @override
   final String id;
   String title;
   String? note;
