@@ -7,7 +7,8 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 
-class _MockGetTasksToDoRepository extends Mock implements GetTasksToDoRepository {}
+class _MockGetTasksToDoRepository extends Mock
+    implements GetTasksToDoRepository {}
 
 void main() {
   const userId = '123';

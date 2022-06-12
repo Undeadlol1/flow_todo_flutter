@@ -1,17 +1,32 @@
 import 'package:flow_todo_flutter_2022/features/users/data/get_profile_repository.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/get_profile.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class _MockGetProfileRepository extends Mock implements GetProfileRepository {}
 
-void main() {
-  const userId = '123';
-  final mockGetProfileRepository = _MockGetProfileRepository();
+class _MockProfileCubit extends Mock implements ProfileCubit {}
 
+const _userId = '123';
+final _mockProfileCubit = _MockProfileCubit();
+final _mockGetProfileRepository = _MockGetProfileRepository();
+
+// TODO extract profile into fixture.
+final _profileFixture = Profile(
+  id: 'id',
+  userId: 'userId',
+  createdAt: 0,
+  areEcouragingMessagesDisabled: false,
+);
+
+void main() {
   setUp(() {
-    reset(mockGetProfileRepository);
+    when(() => _mockProfileCubit.setProfile(_profileFixture)).thenReturn(null);
+
+    reset(_mockProfileCubit);
+    reset(_mockGetProfileRepository);
   });
 
   group('GIVEN GetProfile use case', () {
@@ -22,13 +37,12 @@ void main() {
         bool hasCallThrown = false;
         const exceptionMessage = 'Something went wrong';
         final exception = Exception(exceptionMessage);
-        when(() => mockGetProfileRepository(userId: userId))
+        when(() => _mockGetProfileRepository(userId: _userId))
             .thenThrow(exception);
-        final useCase =
-            GetProfile(getProfileRepository: mockGetProfileRepository);
+        final useCase = _getUseCase();
 
         try {
-          await useCase(userId: userId);
+          await useCase(userId: _userId);
         } catch (error) {
           hasCallThrown = true;
 
@@ -41,19 +55,48 @@ void main() {
     );
 
     test('WHEN called THEN calls repository', () async {
-      when(() => mockGetProfileRepository(userId: userId))
-          // TODO extract profile into fixture.
-          .thenAnswer((_) async => Profile(
-                id: 'id',
-                userId: 'userId',
-                createdAt: 0,
-                areEcouragingMessagesDisabled: false,
-              ));
+      _mockProfileRepository();
 
-      await GetProfile(getProfileRepository: mockGetProfileRepository)
-          .call(userId: userId);
+      await _getUseCase().call(userId: _userId);
 
-      verify(() => mockGetProfileRepository(userId: userId)).called(1);
+      verify(() => _mockGetProfileRepository(userId: _userId)).called(1);
     });
+
+    test(
+      "WHEN repository returns profile THEN places profile into cubit",
+      () async {
+        _mockProfileRepository();
+
+        await _getUseCase().call(userId: _userId);
+
+        verify(
+          () => _mockProfileCubit.setProfile(_profileFixture),
+        ).called(1);
+      },
+    );
+
+    test(
+      "WHEN repository returns nothing THEN proper cubit method is called",
+      () async {
+        when(() => _mockGetProfileRepository(userId: _userId))
+            .thenAnswer((_) async => null);
+
+        await _getUseCase().call(userId: _userId);
+
+        verify(() => _mockProfileCubit.setProfileNotFound()).called(1);
+      },
+    );
   });
+}
+
+GetProfile _getUseCase() {
+  return GetProfile(
+    profileCubit: _mockProfileCubit,
+    getProfileRepository: _mockGetProfileRepository,
+  );
+}
+
+void _mockProfileRepository() {
+  when(() => _mockGetProfileRepository(userId: _userId))
+      .thenAnswer((_) async => _profileFixture);
 }
