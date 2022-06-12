@@ -75,7 +75,10 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
         _createTask(
           userId: authState.user.id,
           title: _form.value[_formControlName] as String,
-        );
+        ).then((_) {
+          _form.unfocus(touched: false);
+          _form.reset();
+        });
       } catch (e) {
         _form.controls[_formControlName]?.setErrors({
           ValidationMessage.any: false,
