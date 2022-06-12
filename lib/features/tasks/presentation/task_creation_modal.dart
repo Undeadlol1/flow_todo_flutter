@@ -2,6 +2,7 @@ import 'package:flow_todo_flutter_2022/features/authentification/presentation/cu
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/create_task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -51,26 +52,12 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
                     ReactiveTextField(
                       autofocus: true,
                       formControlName: _formControlName,
+                      validationMessages: _getValidationMessages,
                       decoration: const InputDecoration(
                         labelText: 'Enter your task',
                         border: UnderlineInputBorder(),
                       ),
-                      onSubmitted: () {
-                        if (_form.valid && authState is Authenticated) {
-                          try {
-                            _createTask(
-                              userId: authState.user.id,
-                              title: _form.value[_formControlName] as String,
-                            );
-                          } catch (e) {
-                            debugPrint('ERROR was THROEW');
-                            _form.controls[_formControlName]?.setErrors({
-                              ValidationMessage.any: false,
-                            });
-                          }
-                        }
-                      },
-                      validationMessages: _getValidationMessages,
+                      onSubmitted: () => _handleSubmit(authState: authState),
                     ),
                   ],
                 ),
@@ -80,6 +67,21 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
         );
       },
     );
+  }
+
+  void _handleSubmit({required AuthentificationState authState}) {
+    if (_form.valid && authState is Authenticated) {
+      try {
+        _createTask(
+          userId: authState.user.id,
+          title: _form.value[_formControlName] as String,
+        );
+      } catch (e) {
+        _form.controls[_formControlName]?.setErrors({
+          ValidationMessage.any: false,
+        });
+      }
+    }
   }
 
   Map<String, String> _getValidationMessages(_) {
