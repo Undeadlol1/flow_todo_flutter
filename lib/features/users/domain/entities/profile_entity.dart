@@ -1,6 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/common/domain/user_created_document.dart';
 
-class Profile implements UserCreatedDocument {
+class ProfileEntity implements UserCreatedDocument {
   @override
   final String id, userId;
 
@@ -16,7 +16,7 @@ class Profile implements UserCreatedDocument {
   //   dailyStreak: DailyStreak;
   final bool areEcouragingMessagesDisabled;
 
-  Profile({
+  ProfileEntity({
     required this.id,
     required this.userId,
     required this.createdAt,
