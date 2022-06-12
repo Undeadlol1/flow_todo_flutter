@@ -19,22 +19,23 @@ class PageLayoutAndDependencies extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthentificationCubit, AuthentificationState>(
       builder: (BuildContext context, authentication) {
-        return SafeArea(
-          child: Scaffold(
-            appBar: AppBar(
-              actions: [
-                if (authentication is Authenticated &&
-                    authentication.user.avatar != null)
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(authentication.user.avatar!),
-                  ),
-                const SizedBox(width: 8),
-              ],
-            ),
-            drawer: isDrawerHidden != null && isDrawerHidden!
-                ? null
-                : const _Drawer(),
-            body: SingleChildScrollView(
+        return Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+            actions: [
+              if (authentication is Authenticated &&
+                  authentication.user.avatar != null)
+                CircleAvatar(
+                  backgroundImage: NetworkImage(authentication.user.avatar!),
+                ),
+              const SizedBox(width: 8),
+            ],
+          ),
+          drawer: isDrawerHidden != null && isDrawerHidden!
+              ? null
+              : const _Drawer(),
+          body: SafeArea(
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -44,10 +45,10 @@ class PageLayoutAndDependencies extends StatelessWidget {
                 ],
               ),
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => GetIt.I<GoToTaskCreation>()(),
-              child: const Icon(Icons.add),
-            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => GetIt.I<GoToTaskCreation>()(),
+            child: const Icon(Icons.add),
           ),
         );
       },
@@ -63,16 +64,19 @@ class _Drawer extends StatelessWidget {
     return BlocBuilder<AuthentificationCubit, AuthentificationState>(
       builder: (BuildContext context, authentication) {
         return Drawer(
-          child: Column(
-            children: [
-              if (authentication is Authenticated)
-                const SignOutButton()
-              else
-                const SizedBox(
-                  height: 300,
-                  child: SignInScreen(),
-                ),
-            ],
+          child: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (authentication is Authenticated)
+                  const SignOutButton()
+                else
+                  const SizedBox(
+                    height: 300,
+                    child: SignInScreen(),
+                  ),
+              ],
+            ),
           ),
         );
       },

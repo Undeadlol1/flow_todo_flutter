@@ -15,6 +15,8 @@ class CreateTaskModal extends StatefulWidget {
 class _CreateTaskModalState extends State<CreateTaskModal> {
   static const _formControlName = 'title';
 
+  final _createTask = GetIt.I<CreateTask>();
+
   final _form = FormGroup(
     {
       _formControlName: FormControl<String>(
@@ -38,8 +40,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
     return BlocBuilder<AuthentificationCubit, AuthentificationState>(
       builder: (context, authState) {
         return Padding(
-          padding:
-              const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 20),
+          padding: _getPadding(),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -56,22 +57,15 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
                       ),
                       onSubmitted: () {
                         if (_form.valid && authState is Authenticated) {
-                          GetIt.I<CreateTask>()(
+                          _createTask(
                             userId: authState.user.id,
                             title: _form.value[_formControlName] as String,
                           );
                           _form.unfocus(touched: false);
                           _form.reset();
-                          // _form.focus(_formControlName);
-                          // _form.value = {_formControlName: null};
-                          // debugPrint('SUBMITTED: ${_form.value[_formControlName]}');
                         }
                       },
-                      validationMessages: (control) => {
-                        ValidationMessage.required: 'Should not be empty',
-                        ValidationMessage.minLength: 'Too short',
-                        ValidationMessage.maxLength: 'Too long',
-                      },
+                      validationMessages: _getValidationMessages,
                     ),
                   ],
                 ),
@@ -80,6 +74,24 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
           ),
         );
       },
+    );
+  }
+
+  Map<String, String> _getValidationMessages(_) {
+    return {
+      ValidationMessage.required: 'Should not be empty',
+      ValidationMessage.minLength: 'Too short',
+      ValidationMessage.maxLength: 'Too long',
+    };
+  }
+
+  EdgeInsets _getPadding() {
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    return EdgeInsets.only(
+      top: 10,
+      left: 15,
+      right: 15,
+      bottom: keyboardHeight + 20,
     );
   }
 }

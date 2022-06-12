@@ -12,17 +12,15 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageLayoutAndDependencies(
-        isDrawerHidden: false,
-        child: BlocListener<AuthentificationCubit, AuthentificationState>(
-          listener: (context, authState) async {
-            if (authState is Authenticated) {
-              GetIt.I<GetTasksToDo>()(userId: authState.user.id);
-            }
-          },
-          child: const TasksList(),
-        ),
+    return PageLayoutAndDependencies(
+      isDrawerHidden: false,
+      child: BlocListener<AuthentificationCubit, AuthentificationState>(
+        listener: (context, authState) async {
+          if (authState is Authenticated) {
+            GetIt.I<GetTasksToDo>()(userId: authState.user.id);
+          }
+        },
+        child: const TasksList(),
       ),
     );
   }
