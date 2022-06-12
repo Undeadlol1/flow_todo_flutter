@@ -16,39 +16,17 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
-  // TODO rename
-  List<Task> _localList = GetIt.I<TasksCubit>().state.tasks;
-
   final _animatedListKey = GlobalKey<AnimatedListState>();
+  List<Task> _localTasksList = GetIt.I<TasksCubit>().state.tasks;
+  final _offsetAnimationTween = Tween<Offset>(
+    begin: const Offset(0, 10),
+    end: const Offset(0.0, 0),
+  );
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TasksCubit, TasksState>(
-      listener: (_, tasksState) {
-        final animatedList = _animatedListKey.currentState;
-
-        for (final task in tasksState.tasks) {
-          if (!_localList.contains(task)) {
-            debugPrint('FALSE');
-            // TODO refactor
-            final indexOf = tasksState.tasks.indexOf(task);
-            _localList.insert(indexOf, task);
-            animatedList?.insertItem(indexOf);
-          }
-        }
-
-        for (final task in _localList) {
-          if (!tasksState.tasks.contains(task)) {
-            debugPrint('FALSE');
-            // TODO refactor
-            final indexOf = _localList.indexOf(task);
-            _localList.remove(task);
-            animatedList?.removeItem(indexOf, (_, __) => Container());
-          }
-
-          setState(() => _localList = _localList);
-        }
-      },
+      listener: _syncAnimatedListWithCubitsList,
       builder: (context, state) {
         return Column(
           children: [
@@ -59,15 +37,10 @@ class _TasksListState extends State<TasksList> {
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (_, index, animation) {
                 return SlideTransition(
-                  position: animation.drive(
-                    Tween<Offset>(
-                      begin: const Offset(0, 10),
-                      end: const Offset(0.0, 0),
-                    ),
-                  ),
+                  position: animation.drive(_offsetAnimationTween),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: TasksListItem(task: _localList[index]),
+                    child: TasksListItem(task: _localTasksList[index]),
                   ),
                 );
               },
@@ -82,5 +55,29 @@ class _TasksListState extends State<TasksList> {
         );
       },
     );
+  }
+
+  void _syncAnimatedListWithCubitsList(_, TasksState tasksState) {
+    final animatedList = _animatedListKey.currentState;
+
+    for (final task in tasksState.tasks) {
+      if (!_localTasksList.contains(task)) {
+        final taskIndex = tasksState.tasks.indexOf(task);
+
+        _localTasksList.insert(taskIndex, task);
+        animatedList?.insertItem(taskIndex);
+      }
+    }
+
+    for (final task in _localTasksList) {
+      if (!tasksState.tasks.contains(task)) {
+        final taskIndex = _localTasksList.indexOf(task);
+
+        _localTasksList.remove(task);
+        animatedList?.removeItem(taskIndex, (_, __) => Container());
+      }
+
+      setState(() => _localTasksList = _localTasksList);
+    }
   }
 }

@@ -11,8 +11,6 @@ import '../../../test_utilities/fixtures/task_fixture.dart';
 
 void main() {
   group('GIVEN TasksList', () {
-    setUpAll(() {});
-
     testWidgets(
       'WHEN there are no tasks '
       'THEN displays nothing',
