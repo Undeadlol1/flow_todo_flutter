@@ -30,7 +30,6 @@ void main() {
       'THEN constructs query to firestore properly',
       () async {
         final mockFirestore = _MockFirebaseFirestore();
-
         when(_typicalFirestoreCall(mockFirestore)).thenAnswer(
             (_) => null as Future<QuerySnapshot<Map<String, dynamic>>>);
 
