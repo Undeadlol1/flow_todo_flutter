@@ -7,11 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 
 class _MockCreateTask extends Mock implements CreateTask {}
 
 const _userId = '12332randomid';
+const taskName = 'A random task name';
 final _mockCreateTask = _MockCreateTask();
 final _fakeAuthenticatedCubit = AuthentificationCubit()
   ..setUser(
@@ -28,27 +28,49 @@ void main() {
       'WHEN text input is submitted '
       'THEN calls use case',
       (tester) async {
-        const taskName = 'A random task name';
-        when(() => _mockCreateTask(title: taskName, userId: _userId))
-            .thenAnswer((_) async {});
+        when(_typicalUseCaseCall).thenAnswer((_) async {});
 
-        await tester.pumpWidget(
-          BlocProvider<AuthentificationCubit>(
-            create: (context) => _fakeAuthenticatedCubit,
-            child: const MaterialApp(
-              home: Scaffold(
-                body: SingleChildScrollView(child: CreateTaskModal()),
-              ),
-            ),
-          ),
-        );
-        await tester.enterText(find.byType(TextField), taskName);
-        await tester.testTextInput.receiveAction(TextInputAction.done);
-        await tester.pump();
+        await _pumpWidget(tester);
+        await _submitSomeText(tester);
 
-        verify(() => _mockCreateTask(title: taskName, userId: _userId))
-            .called(1);
+        verify(_typicalUseCaseCall).called(1);
+      },
+    );
+
+    testWidgets(
+      'WHEN use case throws error '
+      'THEN error is displayed',
+      (tester) async {
+        when(_typicalUseCaseCall).thenThrow(Exception('Any error string'));
+
+        await _pumpWidget(tester);
+        await _submitSomeText(tester);
+
+        const errorMessage = 'Something went wrong';
+        expect(find.text(errorMessage), findsOneWidget);
       },
     );
   });
+}
+
+Future<void> _pumpWidget(WidgetTester tester) {
+  return tester.pumpWidget(
+    BlocProvider<AuthentificationCubit>(
+      create: (context) => _fakeAuthenticatedCubit,
+      child: const MaterialApp(
+        home: Scaffold(
+          body: SingleChildScrollView(child: CreateTaskModal()),
+        ),
+      ),
+    ),
+  );
+}
+
+Future<void> _typicalUseCaseCall() =>
+    _mockCreateTask(title: taskName, userId: _userId);
+
+Future<void> _submitSomeText(WidgetTester tester) async {
+  await tester.enterText(find.byType(TextField), taskName);
+  await tester.testTextInput.receiveAction(TextInputAction.done);
+  await tester.pumpAndSettle();
 }

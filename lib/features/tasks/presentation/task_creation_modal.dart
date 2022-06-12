@@ -57,12 +57,17 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
                       ),
                       onSubmitted: () {
                         if (_form.valid && authState is Authenticated) {
-                          _createTask(
-                            userId: authState.user.id,
-                            title: _form.value[_formControlName] as String,
-                          );
-                          _form.unfocus(touched: false);
-                          _form.reset();
+                          try {
+                            _createTask(
+                              userId: authState.user.id,
+                              title: _form.value[_formControlName] as String,
+                            );
+                          } catch (e) {
+                            debugPrint('ERROR was THROEW');
+                            _form.controls[_formControlName]?.setErrors({
+                              ValidationMessage.any: false,
+                            });
+                          }
                         }
                       },
                       validationMessages: _getValidationMessages,
@@ -79,6 +84,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
 
   Map<String, String> _getValidationMessages(_) {
     return {
+      ValidationMessage.any: 'Something went wrong',
       ValidationMessage.required: 'Should not be empty',
       ValidationMessage.minLength: 'Too short',
       ValidationMessage.maxLength: 'Too long',
