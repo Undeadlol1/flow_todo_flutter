@@ -6,9 +6,36 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_list.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 
 void main() {
+  final tasksCuibit = TasksCubit();
+  final authCubit = AuthentificationCubit();
+
+  Future<void> _pumpWidget(WidgetTester tester) async {
+    await tester.pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => tasksCuibit,
+          ),
+          BlocProvider(create: (context) => authCubit)
+        ],
+        child: const MaterialApp(
+          home: MainPage(),
+        ),
+      ),
+    );
+  }
+
   group('GIVEN MainPage', () {
+    setUpAll(() {
+      GetIt.I.registerSingleton(authCubit);
+      GetIt.I.registerSingleton(tasksCuibit);
+    });
+
+    tearDownAll(GetIt.I.reset);
+
     testWidgets(
       "SHOULD have PageLayoutAndDependencies",
       (WidgetTester tester) async {
@@ -27,22 +54,4 @@ void main() {
       },
     );
   });
-}
-
-Future<void> _pumpWidget(WidgetTester tester) async {
-  await tester.pumpWidget(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => TasksCubit(),
-        ),
-        BlocProvider(
-          create: (context) => AuthentificationCubit(),
-        )
-      ],
-      child: const MaterialApp(
-        home: MainPage(),
-      ),
-    ),
-  );
 }
