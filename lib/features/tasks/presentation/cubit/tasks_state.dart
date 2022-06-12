@@ -1,14 +1,14 @@
 part of 'tasks_cubit.dart';
 
 abstract class TasksState {
-  final List<TaskEntity> tasks = [];
+  final List<Task> tasks = [];
 }
 
 class TasksInitial extends TasksState {}
 
 class TasksUpdated implements TasksState {
   @override
-  List<TaskEntity> tasks = [];
+  List<Task> tasks = [];
 
   TasksUpdated({required this.tasks});
 }
