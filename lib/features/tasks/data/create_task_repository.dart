@@ -6,14 +6,7 @@ class CreateTaskRepository {
   const CreateTaskRepository({required this.firestore});
 
   Future<void> call(Task task) async {
-    await firestore.collection('tasks').doc(task.id).set(
-      {
-        'id': task.id,
-        // 'note': updatedTask.note,
-        // 'name': updatedTask.title,
-        // 'updatedAt': updatedTask.updatedAt,
-        // 'repetitionLevel': updatedTask.repetitionLevel,
-      },
-    );
+    // TODO test
+    await firestore.collection('tasks').doc(task.id).set(task.toJson());
   }
 }

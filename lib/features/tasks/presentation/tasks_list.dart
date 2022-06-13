@@ -1,12 +1,10 @@
-import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/pagination.dart';
-import 'package:get_it/get_it.dart';
-
-import '../domain/models/task.dart';
-import 'tasks_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../common/presentation/widgets/pagination.dart';
+import '../domain/models/task.dart';
 import 'cubit/tasks_cubit.dart';
+import 'tasks_list_item.dart';
 
 class TasksList extends StatefulWidget {
   const TasksList({Key? key}) : super(key: key);
@@ -16,24 +14,39 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
+  List<Task> _localTasksList = [];
   final _animatedListKey = GlobalKey<AnimatedListState>();
-  List<Task> _localTasksList = GetIt.I<TasksCubit>().state.tasks;
   final _offsetAnimationTween = Tween<Offset>(
     begin: const Offset(0, 10),
     end: const Offset(0.0, 0),
   );
 
   @override
+  void initState() {
+    Future.microtask(() {
+      setState(() {
+        _localTasksList = BlocProvider.of<TasksCubit>(
+          context,
+          listen: false,
+        ).state.tasks;
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<TasksCubit, TasksState>(
       listener: _syncAnimatedListWithCubitsList,
       builder: (context, state) {
+        debugPrint('state.tasks.length: ${state.tasks.length}');
+        debugPrint('_localTasksList.length: ${_localTasksList.length}');
         return Column(
           children: [
             AnimatedList(
               shrinkWrap: true,
               key: _animatedListKey,
-              initialItemCount: state.tasks.length,
+              initialItemCount: _localTasksList.length,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (_, index, animation) {
                 return SlideTransition(

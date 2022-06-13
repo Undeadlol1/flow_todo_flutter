@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  function isAuthenticated() {
+    return request.auth != null && request.auth.uid != null;
+  }
+  match /databases/{database}/documents {
+    match /tasks/{id} {
+      allow read, update, delete, write: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      allow create: if isAuthenticated();
+    }
+    match /taskLogs/{id} {
+      allow read, update, delete: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      allow create: if isAuthenticated();
+    }
+    match /profiles/{userId} {
+      allow read, update, delete: if isAuthenticated() && request.auth.uid == userId;
+      allow create: if isAuthenticated();
+    }
+    match /rewards/{reward} {
+      allow read, update, delete: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      allow create: if isAuthenticated();
+    }
+  }
+}

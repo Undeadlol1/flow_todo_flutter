@@ -12,12 +12,14 @@ class GetProfile {
   Future<void> call({required String userId}) async {
     profileCubit.setLoading();
 
-    final profile = await getProfileRepository(userId: userId);
-
-    if (profile != null) {
-      profileCubit.setProfile(profile);
-    } else {
-      profileCubit.setProfileNotFound();
-    }
+    return getProfileRepository(userId: userId).then(
+      (profile) {
+        if (profile == null) {
+          profileCubit.setProfileNotFound();
+        } else {
+          profileCubit.setProfile(profile);
+        }
+      },
+    );
   }
 }
