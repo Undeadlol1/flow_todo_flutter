@@ -27,11 +27,11 @@ void main() {
     );
 
     group('WHEN there tasks tasks', () {
-      final cubit = TasksCubit()..update([taskFixture, taskFixture]);
-
       testWidgets(
         'THEN displays exact number of TasksListItem',
         (tester) async {
+          final cubit = TasksCubit()..update([taskFixture, taskFixture]);
+
           await tester.pumpWithDependencies(
             tasksCubit: cubit,
             child: const TasksList(),
@@ -44,6 +44,8 @@ void main() {
       testWidgets(
         "THEN displays pagination",
         (WidgetTester tester) async {
+          final cubit = TasksCubit()..update([taskFixture, taskFixture]);
+
           await tester.pumpWithDependencies(
             tasksCubit: cubit,
             child: const TasksList(),
@@ -67,8 +69,7 @@ extension on WidgetTester {
     }
     GetIt.I.registerSingleton(tasksCubit);
 
-    // ignore: unnecessary_this
-    return this.pumpWidget(
+    return pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: SingleChildScrollView(

@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../common/presentation/widgets/pagination.dart';
 import '../domain/models/task.dart';
@@ -14,7 +16,8 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
-  List<Task> _localTasksList = [];
+  List<Task> _localTasksList = GetIt.I<TasksCubit>().state.tasks;
+
   final _animatedListKey = GlobalKey<AnimatedListState>();
   final _offsetAnimationTween = Tween<Offset>(
     begin: const Offset(0, 10),
@@ -23,14 +26,7 @@ class _TasksListState extends State<TasksList> {
 
   @override
   void initState() {
-    Future.microtask(() {
-      setState(() {
-        _localTasksList = BlocProvider.of<TasksCubit>(
-          context,
-          listen: false,
-        ).state.tasks;
-      });
-    });
+    Future.microtask(_ensureTasksAreTakenFromCubitWhenWidgetLoaded);
     super.initState();
   }
 
@@ -90,5 +86,12 @@ class _TasksListState extends State<TasksList> {
 
       setState(() => _localTasksList = _localTasksList);
     }
+  }
+
+  FutureOr<void> _ensureTasksAreTakenFromCubitWhenWidgetLoaded() {
+    setState(() {
+      _localTasksList =
+          BlocProvider.of<TasksCubit>(context, listen: false).state.tasks;
+    });
   }
 }
