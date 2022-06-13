@@ -36,7 +36,7 @@ class CreateTask {
     );
 
     if (profileState is ProfileLoaded) {
-      addPointsToUser(profile: profileState.profile, pointsToAdd: 10);
+      addPointsToUser(10);
     }
     tasksCubit.state.tasks.add(taskToCreate);
     tasksCubit.update(tasksCubit.state.tasks);

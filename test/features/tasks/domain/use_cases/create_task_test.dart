@@ -74,10 +74,7 @@ void main() {
       'adds points to user',
       () async {
         _profileCubit.setProfile(profileFixture);
-        callToAddPointsMock() => _mockAddPointsToUser(
-              pointsToAdd: 10,
-              profile: profileFixture,
-            );
+        callToAddPointsMock() => _mockAddPointsToUser(10);
         when(() => callToAddPointsMock()).thenAnswer((_) async {});
 
         await _buildUseCase()(title: taskTitle, userId: userId);

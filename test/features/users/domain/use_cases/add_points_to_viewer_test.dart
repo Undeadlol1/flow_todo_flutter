@@ -5,28 +5,19 @@ import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../../test_utilities/fixtures/profile_fixture.dart';
+
 class _MockUpdateProfileRepository extends Mock
     implements UpdateProfileRepository {}
 
 class _MockProfileCubit extends Mock implements ProfileCubit {}
 
-const _userId = '123';
 final _mockProfileCubit = _MockProfileCubit();
 final _mockUpdateProfileRepository = _MockUpdateProfileRepository();
 
-// TODO extract profile into fixture.
-final _profileFixture = Profile(
-  id: 'id',
-  userId: 'userId',
-  createdAt: 0,
-  // TODO make points 0 by default.
-  points: 10,
-  areEcouragingMessagesDisabled: false,
-);
-
 void main() {
   setUp(() {
-    registerFallbackValue(_profileFixture);
+    registerFallbackValue(profileFixture);
 
     reset(_mockProfileCubit);
     reset(_mockUpdateProfileRepository);
@@ -42,9 +33,10 @@ void main() {
         const exceptionMessage = 'Something went wrong';
         final exception = Exception(exceptionMessage);
         when(() => _mockUpdateProfileRepository(any())).thenThrow(exception);
+        _mockLoadedProfile();
 
         try {
-          await useCase(profile: _profileFixture, pointsToAdd: 10);
+          await useCase(10);
         } catch (error) {
           hasCallThrown = true;
 
@@ -57,9 +49,10 @@ void main() {
     );
 
     test('WHEN called THEN calls repository', () async {
+      _mockLoadedProfile();
       _mockProfileRepository();
 
-      await _getUseCase()(profile: _profileFixture, pointsToAdd: 10);
+      await _getUseCase()(10);
 
       final verification = verify(_typicalRepositoryCall);
       verification.called(1);
@@ -68,31 +61,46 @@ void main() {
     });
 
     test(
-      "WHEN called THEN updates profile cubit",
+      'WHEN profile state is not loaded '
+      'THEN returns error',
       () async {
+        bool hasCallThrown = false;
+        final useCase = _getUseCase();
+        const exceptionMessage = 'Profile not loaded';
+        final exception = Exception(exceptionMessage);
         _mockProfileRepository();
+        when(() => _mockProfileCubit.state).thenReturn(ProfileLoading());
 
-        await _getUseCase()(profile: _profileFixture, pointsToAdd: 10);
+        try {
+          await useCase(10);
+        } catch (error) {
+          hasCallThrown = true;
 
-        verify(
-          () => _mockProfileCubit
-              .setProfile(_profileFixture.copyWith(points: 20)),
-        ).called(1);
+          expect(error, isA<Exception>());
+          expect(error.toString(), 'Exception: $exceptionMessage');
+        } finally {
+          expect(hasCallThrown, isTrue);
+        }
       },
     );
 
-    // test(
-    //   "WHEN repository returns nothing THEN proper cubit method is called",
-    //   () async {
-    //     when(() => _mockUpdateProfileRepository(userId: _userId))
-    //         .thenAnswer((_) async => null);
+    test("WHEN called THEN updates profile cubit", () async {
+      _mockLoadedProfile();
+      _mockProfileRepository();
 
-    //     await _getUseCase().call(userId: _userId);
+      await _getUseCase()(10);
 
-    //     verify(() => _mockProfileCubit.setProfileNotFound()).called(1);
-    //   },
-    // );
+      verify(
+        () => _mockProfileCubit.setProfile(profileFixture.copyWith(points: 20)),
+      ).called(1);
+    });
   });
+}
+
+void _mockLoadedProfile() {
+  when(() => _mockProfileCubit.state).thenReturn(ProfileLoaded(
+    profile: profileFixture.copyWith(points: 10),
+  ));
 }
 
 AddPointsToViewer _getUseCase() {

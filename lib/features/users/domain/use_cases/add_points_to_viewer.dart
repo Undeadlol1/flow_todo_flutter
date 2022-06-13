@@ -10,15 +10,19 @@ class AddPointsToViewer {
     required this.updateProfileRepository,
   });
 
-  Future<void> call({
-    required Profile profile,
-    required int pointsToAdd,
-  }) async {
-    final updatedProfile =
-        profile.copyWith(points: profile.points + pointsToAdd);
+  Future<void> call(int pointsToAdd) async {
+    final profileState = profileCubit.state;
 
-    profileCubit.setProfile(updatedProfile);
+    if (profileState is ProfileLoaded) {
+      final currentProfile = profileState.profile;
+      final updatedProfile =
+          currentProfile.copyWith(points: currentProfile.points + pointsToAdd);
 
-    await updateProfileRepository(updatedProfile);
+      profileCubit.setProfile(updatedProfile);
+
+      await updateProfileRepository(updatedProfile);
+    } else {
+      throw Exception('Profile not loaded');
+    }
   }
 }
