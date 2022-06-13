@@ -4,20 +4,20 @@ service cloud.firestore {
     return request.auth != null && request.auth.uid != null;
   }
   match /databases/{database}/documents {
-    match /tasks/{id} {
+    match /tasks/{id}/{document=**} {
       allow read, update, delete, write: if isAuthenticated() && request.auth.uid == resource.data.userId;
       allow create: if isAuthenticated();
     }
-    match /taskLogs/{id} {
-      allow read, update, delete: if isAuthenticated() && request.auth.uid == resource.data.userId;
+    match /taskLogs/{id}/{document=**} {
+      allow read, update, delete, write: if isAuthenticated() && request.auth.uid == resource.data.userId;
       allow create: if isAuthenticated();
     }
-    match /profiles/{userId} {
-      allow read, update, delete: if isAuthenticated() && request.auth.uid == userId;
+    match /profiles/{userId}/{document=**} {
+      allow read, update, delete, write: if isAuthenticated() && request.auth.uid == userId;
       allow create: if isAuthenticated();
     }
-    match /rewards/{reward} {
-      allow read, update, delete: if isAuthenticated() && request.auth.uid == resource.data.userId;
+    match /rewards/{reward}/{document=**} {
+      allow read, update, delete, write: if isAuthenticated() && request.auth.uid == resource.data.userId;
       allow create: if isAuthenticated();
     }
   }
