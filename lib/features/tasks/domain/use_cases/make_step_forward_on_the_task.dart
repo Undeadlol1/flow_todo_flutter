@@ -1,9 +1,8 @@
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
-
-import '../entities/task_entity.dart';
 
 class MakeStepForwardOnTheTask {
   final TasksCubit tasksCubit;
@@ -16,7 +15,7 @@ class MakeStepForwardOnTheTask {
   });
 
   Future<void> call({
-    required TaskEntity task,
+    required Task task,
     required Confidence howBigWasTheStep,
   }) async {
     final nextRepetition = nextRepetitionCalculator(
