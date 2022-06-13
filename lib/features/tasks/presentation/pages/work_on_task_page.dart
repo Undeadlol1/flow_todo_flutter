@@ -7,8 +7,8 @@ class WorkOnTaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageLayoutAndDependencies(
-      child: Column(),
+    return const PageLayoutAndDependencies(
+      child: SizedBox(height: 20),
     );
   }
 }

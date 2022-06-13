@@ -39,8 +39,6 @@ class _TasksListState extends State<TasksList> {
     return BlocConsumer<TasksCubit, TasksState>(
       listener: _syncAnimatedListWithCubitsList,
       builder: (context, state) {
-        debugPrint('state.tasks.length: ${state.tasks.length}');
-        debugPrint('_localTasksList.length: ${_localTasksList.length}');
         return Column(
           children: [
             AnimatedList(

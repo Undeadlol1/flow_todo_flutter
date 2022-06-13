@@ -1,35 +1,21 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 
-import '../entities/profile_entity.dart';
-
+part 'profile.freezed.dart';
 part 'profile.g.dart';
 
-@JsonSerializable()
-class Profile implements ProfileEntity {
-  @override
-  int? experience, points, updatedAt;
+@freezed
+class Profile with _$Profile {
+  const factory Profile({
+    int? updatedAt,
+    int? experience,
+    required int points,
+    required String id,
+    required String userId,
+    required int createdAt,
+    required bool areEcouragingMessagesDisabled,
+  }) = _Profile;
 
-  @override
-  bool areEcouragingMessagesDisabled;
-
-  @override
-  final int createdAt;
-
-  @override
-  final String id, userId;
-
-  Profile({
-    this.points,
-    this.updatedAt,
-    this.experience,
-    required this.id,
-    required this.userId,
-    required this.createdAt,
-    required this.areEcouragingMessagesDisabled,
-  });
-
-  factory Profile.fromJson(Map<String, dynamic> json) =>
+  factory Profile.fromJson(Map<String, Object?> json) =>
       _$ProfileFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ProfileToJson(this);
 }

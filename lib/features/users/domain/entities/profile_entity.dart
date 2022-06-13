@@ -9,8 +9,8 @@ class ProfileEntity implements UserCreatedDocument {
 
   @override
   int? updatedAt;
-
-  int? points, experience;
+  final int points;
+  int? experience;
 
   // TODO
   //   dailyStreak: DailyStreak;
@@ -21,7 +21,7 @@ class ProfileEntity implements UserCreatedDocument {
     required this.userId,
     required this.createdAt,
     required this.areEcouragingMessagesDisabled,
-    this.points,
+    required this.points,
     this.updatedAt,
     this.experience,
   });

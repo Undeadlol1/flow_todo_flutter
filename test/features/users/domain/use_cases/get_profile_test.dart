@@ -1,9 +1,10 @@
 import 'package:flow_todo_flutter_2022/features/users/data/get_profile_repository.dart';
-import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/get_profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
+import '../../../../test_utilities/fixtures/profile_fixture.dart';
 
 class _MockGetProfileRepository extends Mock implements GetProfileRepository {}
 
@@ -13,17 +14,9 @@ const _userId = '123';
 final _mockProfileCubit = _MockProfileCubit();
 final _mockGetProfileRepository = _MockGetProfileRepository();
 
-// TODO extract profile into fixture.
-final _profileFixture = Profile(
-  id: 'id',
-  userId: 'userId',
-  createdAt: 0,
-  areEcouragingMessagesDisabled: false,
-);
-
 void main() {
   setUp(() {
-    when(() => _mockProfileCubit.setProfile(_profileFixture)).thenReturn(null);
+    when(() => _mockProfileCubit.setProfile(profileFixture)).thenReturn(null);
 
     reset(_mockProfileCubit);
     reset(_mockGetProfileRepository);
@@ -70,7 +63,7 @@ void main() {
         await _getUseCase().call(userId: _userId);
 
         verify(
-          () => _mockProfileCubit.setProfile(_profileFixture),
+          () => _mockProfileCubit.setProfile(profileFixture),
         ).called(1);
       },
     );
@@ -98,5 +91,5 @@ GetProfile _getUseCase() {
 
 void _mockProfileRepository() {
   when(() => _mockGetProfileRepository(userId: _userId))
-      .thenAnswer((_) async => _profileFixture);
+      .thenAnswer((_) async => profileFixture);
 }

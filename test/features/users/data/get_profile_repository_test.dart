@@ -5,6 +5,8 @@ import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../test_utilities/fixtures/profile_fixture.dart';
+
 class _MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
 const _userId = 'proper userId';
@@ -58,15 +60,10 @@ void main() {
     test(
       'WHEN called THEN returns proper document',
       () async {
-        final profileToReturn = Profile(
-          id: _userId,
-          createdAt: 0,
-          userId: _userId,
-          areEcouragingMessagesDisabled: false,
-        );
         final instance = FakeFirebaseFirestore();
         final collection = instance.collection('profiles');
-        await collection.doc(_userId).set(profileToReturn.toJson());
+        await collection.doc(_userId).set(
+            profileFixture.copyWith(id: _userId, userId: _userId).toJson());
 
         final result = await GetProfileRepository(firestore: instance).call(
           userId: _userId,

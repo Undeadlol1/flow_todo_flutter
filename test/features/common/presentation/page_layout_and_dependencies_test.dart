@@ -1,6 +1,7 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_creation.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -56,8 +57,15 @@ void main() {
 Future<void> _pumpWidget(
     {required WidgetTester tester, bool isDrawerHidden = false}) async {
   await tester.pumpWidget(
-    BlocProvider(
-      create: (_) => AuthentificationCubit(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => AuthentificationCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ProfileCubit(),
+        ),
+      ],
       child: MaterialApp(
         home: PageLayoutAndDependencies(
           isDrawerHidden: isDrawerHidden,

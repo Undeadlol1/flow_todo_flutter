@@ -6,10 +6,10 @@ part of 'profile.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
-      points: json['points'] as int?,
+_$_Profile _$$_ProfileFromJson(Map<String, dynamic> json) => _$_Profile(
       updatedAt: json['updatedAt'] as int?,
       experience: json['experience'] as int?,
+      points: json['points'] as int,
       id: json['id'] as String,
       userId: json['userId'] as String,
       createdAt: json['createdAt'] as int,
@@ -17,12 +17,13 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
           json['areEcouragingMessagesDisabled'] as bool,
     );
 
-Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
+Map<String, dynamic> _$$_ProfileToJson(_$_Profile instance) =>
+    <String, dynamic>{
+      'updatedAt': instance.updatedAt,
       'experience': instance.experience,
       'points': instance.points,
-      'updatedAt': instance.updatedAt,
-      'areEcouragingMessagesDisabled': instance.areEcouragingMessagesDisabled,
-      'createdAt': instance.createdAt,
       'id': instance.id,
       'userId': instance.userId,
+      'createdAt': instance.createdAt,
+      'areEcouragingMessagesDisabled': instance.areEcouragingMessagesDisabled,
     };

@@ -3,6 +3,7 @@ import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_
 import 'package:flow_todo_flutter_2022/features/pages/presentation/main_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_list.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,7 +20,8 @@ void main() {
           BlocProvider(
             create: (context) => tasksCuibit,
           ),
-          BlocProvider(create: (context) => authCubit)
+          BlocProvider(create: (context) => authCubit),
+          BlocProvider(create: (context) => ProfileCubit()),
         ],
         child: const MaterialApp(
           home: MainPage(),
