@@ -1,17 +1,23 @@
-import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
-import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import '../../../common/domain/use_cases/go_to_main_page.dart';
+import '../../../spaced_repetition/domain/entities/confidence.dart';
+import '../../../spaced_repetition/domain/services/next_repetition_calculator.dart';
+import '../../../users/domain/use_cases/add_points_to_viewer.dart';
+import '../../data/update_task_repository.dart';
+import '../../presentation/cubit/tasks_cubit.dart';
+import '../models/task.dart';
 
 class MakeStepForwardOnTheTask {
   final TasksCubit tasksCubit;
+  final GoToMainPage goToMainPage;
+  final AddPointsToViewer addPointsToViewer;
   final UpdateTaskRepository updateTaskRepository;
   final NextRepetitionCalculator nextRepetitionCalculator;
   const MakeStepForwardOnTheTask({
+    required this.tasksCubit,
+    required this.goToMainPage,
+    required this.addPointsToViewer,
     required this.updateTaskRepository,
     required this.nextRepetitionCalculator,
-    required this.tasksCubit,
   });
 
   Future<void> call({
@@ -26,10 +32,12 @@ class MakeStepForwardOnTheTask {
     task.dueAt = nextRepetition.dueAt;
     task.repetitionLevel = nextRepetition.repetitionLevel;
 
-    await updateTaskRepository.call(task);
-
     tasksCubit.state.tasks.removeWhere((i) => i.id == task.id);
     tasksCubit.update(tasksCubit.state.tasks);
+
+    await goToMainPage();
+    await addPointsToViewer(howBigWasTheStep == Confidence.good ? 30 : 20);
+    await updateTaskRepository.call(task);
   }
 }
 

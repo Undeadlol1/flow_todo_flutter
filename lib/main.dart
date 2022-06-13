@@ -14,6 +14,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/create_ta
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/get_tasks_to_do.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_creation.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/users/data/get_profile_repository.dart';
@@ -77,6 +78,15 @@ _setUpDI() {
     AddPointsToViewer(
       profileCubit: injector.get(),
       updateProfileRepository: injector.get(),
+    ),
+  );
+  injector.registerSingleton(
+    MakeStepForwardOnTheTask(
+      tasksCubit: injector.get(),
+      goToMainPage: injector.get(),
+      addPointsToViewer: injector.get(),
+      updateTaskRepository: injector.get(),
+      nextRepetitionCalculator: injector.get(),
     ),
   );
   injector.registerSingleton(const GetTasksToDo());
