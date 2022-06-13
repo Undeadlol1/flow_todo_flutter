@@ -1,13 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flow_todo_flutter_2022/features/users/data/update_profile_repository.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
-import 'package:flutter/material.dart';
 
-class AddPointsToUser {
+class AddPointsToViewer {
   final ProfileCubit profileCubit;
   final UpdateProfileRepository updateProfileRepository;
-  const AddPointsToUser({
+  const AddPointsToViewer({
     required this.profileCubit,
     required this.updateProfileRepository,
   });

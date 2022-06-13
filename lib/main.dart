@@ -17,7 +17,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_pa
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/users/data/get_profile_repository.dart';
 import 'package:flow_todo_flutter_2022/features/users/data/update_profile_repository.dart';
-import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_user.dart';
+import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/get_profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +72,7 @@ _setUpDI() {
   injector
       .registerSingleton(UpdateProfileRepository(firestore: injector.get()));
   injector.registerSingleton(
-    AddPointsToUser(
+    AddPointsToViewer(
       profileCubit: injector.get(),
       updateProfileRepository: injector.get(),
     ),

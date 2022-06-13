@@ -4,7 +4,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/data/create_task_repositor
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/create_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_user.dart';
+import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -36,7 +36,7 @@ final _FakecUniqueIdGenerator _fakecUniqueIdGenerator =
 
 final _tasksCubit = TasksCubit();
 
-class _MockAddPointsToUser extends Mock implements AddPointsToUser {}
+class _MockAddPointsToUser extends Mock implements AddPointsToViewer {}
 
 final _mockAddPointsToUser = _MockAddPointsToUser();
 

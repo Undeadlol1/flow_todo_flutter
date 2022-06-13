@@ -3,14 +3,14 @@ import 'package:flow_todo_flutter_2022/features/common/services/unique_id_genera
 import 'package:flow_todo_flutter_2022/features/tasks/data/create_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_user.dart';
+import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 
 class CreateTask {
   final TasksCubit tasksCubit;
   final ProfileCubit profileCubit;
   final GetTodaysDate getTodaysDate;
-  final AddPointsToUser addPointsToUser;
+  final AddPointsToViewer addPointsToUser;
   final UniqueIdGenerator uniqueIdGenerator;
   final CreateTaskRepository createTaskRepository;
   CreateTask({

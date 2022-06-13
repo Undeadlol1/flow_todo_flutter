@@ -1,6 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/users/data/update_profile_repository.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
-import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_user.dart';
+import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -32,7 +32,7 @@ void main() {
     reset(_mockUpdateProfileRepository);
   });
 
-  group('GIVEN AddPointsToUser use case', () {
+  group('GIVEN AddPointsToViewer use case', () {
     test(
       'WHEN repository throws an error '
       'THEN returns error',
@@ -95,8 +95,8 @@ void main() {
   });
 }
 
-AddPointsToUser _getUseCase() {
-  return AddPointsToUser(
+AddPointsToViewer _getUseCase() {
+  return AddPointsToViewer(
     profileCubit: _mockProfileCubit,
     updateProfileRepository: _mockUpdateProfileRepository,
   );
