@@ -4,8 +4,13 @@ import 'package:flow_todo_flutter_2022/features/tasks/data/create_task_repositor
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/create_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_user.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
+import '../../../../test_utilities/fixtures/profile_fixture.dart';
+import '../../../../test_utilities/fixtures/task_fixture.dart';
 
 const _uniqueId = 'unique id 123';
 
@@ -31,28 +36,27 @@ final _FakecUniqueIdGenerator _fakecUniqueIdGenerator =
 
 final _tasksCubit = TasksCubit();
 
+class _MockAddPointsToUser extends Mock implements AddPointsToUser {}
+
+final _mockAddPointsToUser = _MockAddPointsToUser();
+
+final _profileCubit = ProfileCubit();
+
 void main() {
   UniqueIdGenerator;
   const userId = '12313231';
   const taskTitle = 'A title';
-  final taskToBeCreated = Task(
-    id: _uniqueId,
-    createdAt: 0,
-    dueAt: 0,
-    history: [],
-    isDone: false,
-    tags: [],
-    title: taskTitle,
-    userId: userId,
-  );
 
   setUp(() {
     reset(_mockCreateTaskRepository);
-    registerFallbackValue(taskToBeCreated);
+    registerFallbackValue(taskFixture);
     when((() => _mockCreateTaskRepository(any()))).thenAnswer((_) async {});
   });
 
-  tearDownAll(_tasksCubit.close);
+  tearDownAll(() {
+    _tasksCubit.close();
+    _profileCubit.close();
+  });
 
   group('GIVEN CrateTask WHEN called THEN', () {
     test(
@@ -63,6 +67,22 @@ void main() {
         await useCase(title: taskTitle, userId: userId);
 
         expect(_tasksCubit.state.tasks, hasLength(1));
+      },
+    );
+
+    test(
+      'adds points to user',
+      () async {
+        _profileCubit.setProfile(profileFixture);
+        callToAddPointsMock() => _mockAddPointsToUser(
+              pointsToAdd: 10,
+              profile: profileFixture,
+            );
+        when(() => callToAddPointsMock()).thenAnswer((_) async {});
+
+        await _buildUseCase()(title: taskTitle, userId: userId);
+
+        verify(callToAddPointsMock).called(1);
       },
     );
 
@@ -109,7 +129,9 @@ void main() {
 CreateTask _buildUseCase() {
   return CreateTask(
     tasksCubit: _tasksCubit,
+    profileCubit: _profileCubit,
     getTodaysDate: _FakeGetTodaysDate(),
+    addPointsToUser: _mockAddPointsToUser,
     uniqueIdGenerator: _fakecUniqueIdGenerator,
     createTaskRepository: _mockCreateTaskRepository,
   );
