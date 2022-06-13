@@ -61,14 +61,14 @@ _setUpDI() {
 
   injector.registerSingleton(_tasksCubit);
   injector.registerSingleton(_profileCubit);
+  injector.registerSingleton(FirebaseFirestore.instance);
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(UniqueIdGenerator());
   injector.registerSingleton(GetTodaysDate());
-  injector.registerSingleton(FirebaseFirestore);
   injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
   injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
-  injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
   injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
+  injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
   injector
       .registerSingleton(UpdateProfileRepository(firestore: injector.get()));
   injector.registerSingleton(
