@@ -15,6 +15,11 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_tas
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
+import 'package:flow_todo_flutter_2022/features/users/data/get_profile_repository.dart';
+import 'package:flow_todo_flutter_2022/features/users/data/update_profile_repository.dart';
+import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_user.dart';
+import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/get_profile.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
@@ -27,6 +32,7 @@ import 'firebase_options.dart';
 import 'features/pages/presentation/main_page.dart';
 
 final _tasksCubit = TasksCubit();
+final _profileCubit = ProfileCubit();
 final _authentificationCubit = AuthentificationCubit();
 
 void main() async {
@@ -36,7 +42,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+  // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
@@ -54,23 +60,39 @@ _setUpDI() {
   final injector = GetIt.I;
 
   injector.registerSingleton(_tasksCubit);
+  injector.registerSingleton(_profileCubit);
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(UniqueIdGenerator());
   injector.registerSingleton(GetTodaysDate());
-  injector.registerSingleton(FirebaseFirestore.instance);
+  injector.registerSingleton(FirebaseFirestore);
+  injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
+  injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
+  injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
+  injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
+  injector
+      .registerSingleton(UpdateProfileRepository(firestore: injector.get()));
+  injector.registerSingleton(
+    AddPointsToUser(
+      profileCubit: injector.get(),
+      updateProfileRepository: injector.get(),
+    ),
+  );
   injector.registerSingleton(const GetTasksToDo());
   injector.registerSingleton(StaleTaskDetector());
   injector.registerSingleton(CreateTaskRepository(firestore: injector.get()));
+  injector.registerSingleton(GetProfileRepository(firestore: injector.get()));
+  injector.registerSingleton(GetProfile(
+    profileCubit: injector.get(),
+    getProfileRepository: injector.get(),
+  ));
   injector.registerSingleton(CreateTask(
     tasksCubit: injector.get(),
+    profileCubit: injector.get(),
     getTodaysDate: injector.get(),
+    addPointsToUser: injector.get(),
     uniqueIdGenerator: injector.get(),
     createTaskRepository: injector.get(),
   ));
-  injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
-  injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
-  injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
-  injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
 }
 
 class MyApp extends StatefulWidget {
@@ -96,6 +118,7 @@ class _MyAppState extends State<MyApp> {
         MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => _tasksCubit),
+            BlocProvider(create: (context) => _profileCubit),
             BlocProvider(create: (context) => _authentificationCubit),
           ],
           child: MaterialApp(
