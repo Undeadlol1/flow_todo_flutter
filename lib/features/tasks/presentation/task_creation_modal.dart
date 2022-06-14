@@ -15,6 +15,8 @@ class CreateTaskModal extends StatefulWidget {
 class _CreateTaskModalState extends State<CreateTaskModal> {
   static const _formControlName = 'title';
 
+  String? _formError;
+
   final _createTask = GetIt.I<CreateTask>();
 
   final _form = FormGroup(
@@ -52,9 +54,10 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
                       autofocus: true,
                       formControlName: _formControlName,
                       validationMessages: _getValidationMessages,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Enter your task',
-                        border: UnderlineInputBorder(),
+                        border: const UnderlineInputBorder(),
+                        errorText: _formError,
                       ),
                       onSubmitted: () => _handleSubmit(authState: authState),
                     ),
@@ -68,20 +71,24 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
     );
   }
 
-  void _handleSubmit({required AuthentificationState authState}) {
+  void _handleSubmit({required AuthentificationState authState}) async {
     if (_form.valid && authState is Authenticated) {
+      final titleInput = _form.control(_formControlName);
+      String? inputText = titleInput.value as String;
+
+      titleInput.unfocus(touched: false);
+      titleInput.value = null;
+      setState(() => _formError = null);
+
       try {
-        _createTask(
+        await _createTask(
+          title: inputText,
           userId: authState.user.id,
-          title: _form.value[_formControlName] as String,
-        ).then((_) {
-          _form.unfocus(touched: false);
-          _form.reset();
-        });
+        );
       } catch (e) {
-        _form.controls[_formControlName]?.setErrors({
-          ValidationMessage.any: false,
-        });
+        titleInput.focus();
+        titleInput.value = inputText;
+        setState(() => _formError = e.toString());
       }
     }
   }

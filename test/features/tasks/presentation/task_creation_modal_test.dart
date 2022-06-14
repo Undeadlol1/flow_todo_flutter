@@ -41,13 +41,13 @@ void main() {
       'WHEN use case throws error '
       'THEN error is displayed',
       (tester) async {
-        when(_typicalUseCaseCall).thenThrow(Exception('Any error string'));
+        final exception = Exception('Any error string');
+        when(_typicalUseCaseCall).thenThrow(exception);
 
         await _pumpWidget(tester);
         await _submitSomeText(tester);
 
-        const errorMessage = 'Something went wrong';
-        expect(find.text(errorMessage), findsOneWidget);
+        expect(find.text(exception.toString()), findsOneWidget);
       },
     );
   });
@@ -66,8 +66,7 @@ Future<void> _pumpWidget(WidgetTester tester) {
   );
 }
 
-Future<void> _typicalUseCaseCall() =>
-    _mockCreateTask(title: taskName, userId: _userId);
+Future<void> _typicalUseCaseCall() => _mockCreateTask(title: taskName, userId: _userId);
 
 Future<void> _submitSomeText(WidgetTester tester) async {
   await tester.enterText(find.byType(TextField), taskName);
