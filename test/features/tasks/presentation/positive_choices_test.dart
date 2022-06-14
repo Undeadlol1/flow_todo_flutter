@@ -44,8 +44,8 @@ void main() {
       'WHEN "done" is tapped '
       'THEN calls use case properly',
       _verifyUseCaseCallOnTap(
-        isTaskDone: true,
         buttonText: 'Done',
+        shouldTaskBeMarkedAsDone: true,
         confidenceToVerify: Confidence.good,
       ),
     );
@@ -60,18 +60,22 @@ _useCaseCall({required Confidence confidence, bool? isTaskDone}) =>
         );
 
 _verifyUseCaseCallOnTap({
-  bool isTaskDone = false,
+  bool shouldTaskBeMarkedAsDone = false,
   required String buttonText,
   required Confidence confidenceToVerify,
 }) {
   return (WidgetTester tester) async {
-    when(_useCaseCall(confidence: confidenceToVerify, isTaskDone: isTaskDone))
+    when(_useCaseCall(
+            confidence: confidenceToVerify,
+            isTaskDone: shouldTaskBeMarkedAsDone))
         .thenAnswer((_) async {});
 
     await tester.pumpWithDependencies();
     await tester.tap(find.text(buttonText));
 
-    verify(_useCaseCall(confidence: confidenceToVerify, isTaskDone: isTaskDone))
+    verify(_useCaseCall(
+            confidence: confidenceToVerify,
+            isTaskDone: shouldTaskBeMarkedAsDone))
         .called(1);
   };
 }
