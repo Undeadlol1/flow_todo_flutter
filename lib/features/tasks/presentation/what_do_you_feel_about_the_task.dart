@@ -1,4 +1,6 @@
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/positive_choices.dart';
 import 'package:flutter/material.dart';
 
 class WhatDoYouFeelAboutTheTask extends StatelessWidget {
@@ -14,7 +16,10 @@ class WhatDoYouFeelAboutTheTask extends StatelessWidget {
           onPressed: () => showModalBottomSheet(
             context: context,
             builder: (_) {
-              return const _ModalBody();
+              final args = ModalRoute.of(context)!.settings.arguments
+                  as TaskPageArguments;
+              debugPrint('args: ${args}');
+              return PositiveChoices(task: args.task);
             },
           ),
         ),
@@ -25,48 +30,6 @@ class WhatDoYouFeelAboutTheTask extends StatelessWidget {
           icon: const Icon(Icons.thumb_down),
         ),
       ],
-    );
-  }
-}
-
-class _ModalBody extends StatelessWidget {
-  const _ModalBody({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        ListTile(
-          leading: const Icon(Icons.favorite),
-          title: _buildText('Made step forward'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.emoji_emotions),
-          title: _buildText('Advanced a lot'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.check),
-          title: _buildText('Done'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        const SizedBox(height: 10),
-      ],
-    );
-  }
-
-  Widget _buildText(String text) {
-    return Text(
-      text,
-      textAlign: TextAlign.center,
     );
   }
 }

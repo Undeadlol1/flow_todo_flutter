@@ -2,7 +2,6 @@ import 'package:flow_todo_flutter_2022/features/authentification/presentation/cu
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/create_task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
