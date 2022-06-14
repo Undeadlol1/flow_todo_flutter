@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../common/presentation/widgets/pagination.dart';
@@ -34,7 +35,10 @@ class _TasksListState extends State<TasksList> {
   Widget build(BuildContext context) {
     return BlocConsumer<TasksCubit, TasksState>(
       listener: _syncAnimatedListWithCubitsList,
-      builder: (context, state) {
+      builder: (context, tasksState) {
+        if (tasksState is TasksLoading) {
+          return const _LoadingIndicator();
+        }
         return Column(
           children: [
             AnimatedList(
@@ -51,9 +55,6 @@ class _TasksListState extends State<TasksList> {
                   ),
                 );
               },
-            ),
-            Center(
-              child: Text('Length: ${state.tasks.length}'),
             ),
             Pagination(
               onPageChange: (newPageNumber) {},
@@ -90,8 +91,24 @@ class _TasksListState extends State<TasksList> {
 
   FutureOr<void> _ensureTasksAreTakenFromCubitWhenWidgetLoaded() {
     setState(() {
-      _localTasksList =
-          BlocProvider.of<TasksCubit>(context, listen: false).state.tasks;
+      _localTasksList = BlocProvider.of<TasksCubit>(context, listen: false).state.tasks;
     });
+  }
+}
+
+class _LoadingIndicator extends StatelessWidget {
+  const _LoadingIndicator({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: SizedBox(
+        height: 550,
+        child: LoadingIndicator(
+          size: 50,
+          borderWidth: 1,
+        ),
+      ),
+    );
   }
 }

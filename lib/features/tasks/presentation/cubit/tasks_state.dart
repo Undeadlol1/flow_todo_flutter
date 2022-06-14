@@ -4,7 +4,7 @@ abstract class TasksState {
   final List<Task> tasks = [];
 }
 
-class TasksInitial extends TasksState {}
+class TasksLoading extends TasksState {}
 
 class TasksUpdated implements TasksState {
   @override

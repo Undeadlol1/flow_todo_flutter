@@ -11,7 +11,7 @@ void main() {
       'THEN contains empty tasks list',
       build: () => TasksCubit(),
       verify: (cubit) {
-        expect(cubit.state, isA<TasksInitial>());
+        expect(cubit.state, isA<TasksLoading>());
         expect(cubit.state.tasks, equals([]));
       },
     );
