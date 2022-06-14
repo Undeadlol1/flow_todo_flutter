@@ -25,45 +25,29 @@ void main() {
     testWidgets(
       'WHEN "step fordward" is tapped '
       'THEN calls use case properly',
-      (WidgetTester tester) async {
-        when(_useCaseCall(confidence: Confidence.normal))
-            .thenAnswer((_) async {});
-
-        await tester.pumpWithDependencies();
-        await tester.tap(find.text('Made step forward'));
-
-        verify(_useCaseCall(confidence: Confidence.normal)).called(1);
-      },
+      _verifyUseCaseCallOnTap(
+        buttonText: 'Made step forward',
+        confidenceToVerify: Confidence.normal,
+      ),
     );
 
     testWidgets(
       'WHEN "advanced a lot" is tapped '
       'THEN calls use case properly',
-      (WidgetTester tester) async {
-        when(_useCaseCall(confidence: Confidence.good))
-            .thenAnswer((_) async {});
-
-        await tester.pumpWithDependencies();
-        await tester.tap(find.text('Advanced a lot'));
-
-        verify(_useCaseCall(confidence: Confidence.good)).called(1);
-      },
+      _verifyUseCaseCallOnTap(
+        buttonText: 'Advanced a lot',
+        confidenceToVerify: Confidence.good,
+      ),
     );
 
     testWidgets(
       'WHEN "done" is tapped '
       'THEN calls use case properly',
-      (WidgetTester tester) async {
-        when(_useCaseCall(confidence: Confidence.good, isTaskDone: true))
-            .thenAnswer((_) async {});
-
-        var buttonText = 'Done';
-        await tester.pumpWithDependencies();
-        await tester.tap(find.text(buttonText));
-
-        verify(_useCaseCall(confidence: Confidence.good, isTaskDone: true))
-            .called(1);
-      },
+      _verifyUseCaseCallOnTap(
+        isTaskDone: true,
+        buttonText: 'Done',
+        confidenceToVerify: Confidence.good,
+      ),
     );
   });
 }
@@ -75,10 +59,26 @@ _useCaseCall({required Confidence confidence, bool? isTaskDone}) =>
           isTaskDone: isTaskDone ?? false,
         );
 
+_verifyUseCaseCallOnTap({
+  bool isTaskDone = false,
+  required String buttonText,
+  required Confidence confidenceToVerify,
+}) {
+  return (WidgetTester tester) async {
+    when(_useCaseCall(confidence: confidenceToVerify, isTaskDone: isTaskDone))
+        .thenAnswer((_) async {});
+
+    await tester.pumpWithDependencies();
+    await tester.tap(find.text(buttonText));
+
+    verify(_useCaseCall(confidence: confidenceToVerify, isTaskDone: isTaskDone))
+        .called(1);
+  };
+}
+
 extension on WidgetTester {
   Future<void> pumpWithDependencies() {
     return pumpWidget(
-      // TODO do i need material app?
       MaterialApp(
         home: Scaffold(
           body: SingleChildScrollView(
