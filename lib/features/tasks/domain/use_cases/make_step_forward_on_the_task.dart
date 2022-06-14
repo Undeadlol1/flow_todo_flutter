@@ -25,6 +25,8 @@ class MakeStepForwardOnTheTask {
     required Confidence howBigWasTheStep,
     bool isTaskDone = false,
   }) async {
+    final pointsToAdd =
+        _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
     final nextRepetition = nextRepetitionCalculator(
       task: task,
       confidence: howBigWasTheStep,
@@ -38,8 +40,17 @@ class MakeStepForwardOnTheTask {
     tasksCubit.update(tasksCubit.state.tasks);
 
     await goToMainPage();
-    await addPointsToViewer(howBigWasTheStep == Confidence.good ? 30 : 20);
+    await addPointsToViewer(pointsToAdd);
     await updateTaskRepository.call(task);
+  }
+
+  int _calculateAmountOfPointsToAdd(
+      bool isTaskDone, Confidence howBigWasTheStep) {
+    return isTaskDone
+        ? 50
+        : howBigWasTheStep == Confidence.good
+            ? 30
+            : 20;
   }
 }
 

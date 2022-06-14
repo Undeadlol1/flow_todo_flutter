@@ -28,6 +28,8 @@ final _mockUpdateTaskRepository = _MockUpdateTaskRepository();
 final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
 
 void main() {
+  setUp(() => reset(_mockAddPointsToViewer));
+
   tearDownAll(_tasksCubit.close);
 
   group('GIVEN MakeStepForwardOnTheTask', () {
@@ -51,22 +53,57 @@ void main() {
         await _verifyUpdateTaskRepositoryArgument(isTaskMarkedAsDone: true);
       },
     );
+
+    testWidgets(
+      'WHEN task is set as done '
+      'THEN then rewards 50 points',
+      (tester) async {
+        _mockTypicalCalls(amountOfPointsToVerify: 50);
+
+        await _getUseCase()(
+          task: taskFixture,
+          howBigWasTheStep: Confidence.good,
+          isTaskDone: true,
+        );
+
+        verify(() => _mockAddPointsToViewer(50)).called(1);
+      },
+    );
+
+    testWidgets(
+      'WHEN confidence is normal '
+      'THEN then rewards 20 points',
+      (tester) async {
+        _mockTypicalCalls(amountOfPointsToVerify: 20);
+        final useCase = _getUseCase();
+
+        await useCase(task: taskFixture, howBigWasTheStep: Confidence.normal);
+
+        verify(() => _mockAddPointsToViewer(20)).called(1);
+      },
+    );
+
+    testWidgets(
+      'WHEN confidence is good '
+      'THEN then rewards 30 points',
+      (tester) async {
+        _mockTypicalCalls(amountOfPointsToVerify: 30);
+        final useCase = _getUseCase();
+
+        await useCase(task: taskFixture, howBigWasTheStep: Confidence.good);
+
+        verify(() => _mockAddPointsToViewer(30)).called(1);
+      },
+    );
   });
 }
 
-Future<void> _verifyUpdateTaskRepositoryArgument(
-    {required bool isTaskMarkedAsDone}) async {
-  when(() => _mockGoToMainPage()).thenAnswer((invocation) async {});
-  when(() => _mockAddPointsToViewer(any())).thenAnswer((invocation) async {});
-  when(
-    () => _mockUpdateTaskRepository(any()),
-  ).thenAnswer((_) async {});
-  when(() => _mockNextRepetitionCalculator(
-          task: taskFixture, confidence: any(named: 'confidence')))
-      .thenReturn(Repetition(dueAt: 0, repetitionLevel: 1));
+Future<void> _verifyUpdateTaskRepositoryArgument({
+  required bool isTaskMarkedAsDone,
+}) async {
+  _mockTypicalCalls(amountOfPointsToVerify: isTaskMarkedAsDone ? 50 : 30);
 
-  final useCase = _getUseCase();
-  await useCase(
+  await _getUseCase()(
     task: taskFixture,
     isTaskDone: isTaskMarkedAsDone,
     howBigWasTheStep: Confidence.good,
@@ -77,6 +114,19 @@ Future<void> _verifyUpdateTaskRepositoryArgument(
         .isDone,
     isTaskMarkedAsDone,
   );
+}
+
+void _mockTypicalCalls({required int amountOfPointsToVerify}) {
+  when(() => _mockGoToMainPage()).thenAnswer((invocation) async {});
+  when(() => _mockUpdateTaskRepository(any())).thenAnswer((_) async {});
+  when(() => _mockAddPointsToViewer(amountOfPointsToVerify))
+      .thenAnswer((invocation) async {});
+  when(
+    () => _mockNextRepetitionCalculator(
+      task: taskFixture,
+      confidence: any(named: 'confidence'),
+    ),
+  ).thenReturn(Repetition(dueAt: 0, repetitionLevel: 1));
 }
 
 MakeStepForwardOnTheTask _getUseCase() {
