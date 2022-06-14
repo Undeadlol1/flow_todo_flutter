@@ -38,7 +38,11 @@ class PositiveChoices extends StatelessWidget {
           leading: const Icon(Icons.check),
           title: _buildText('Done'),
           onTap: () {
-            Navigator.pop(context);
+            makeStepForward(
+              task: task,
+              isTaskDone: true,
+              howBigWasTheStep: Confidence.good,
+            );
           },
         ),
         const SizedBox(height: 10),

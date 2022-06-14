@@ -49,13 +49,30 @@ void main() {
         verify(_useCaseCall(confidence: Confidence.good)).called(1);
       },
     );
+
+    testWidgets(
+      'WHEN "done" is tapped '
+      'THEN calls use case properly',
+      (WidgetTester tester) async {
+        when(_useCaseCall(confidence: Confidence.good, isTaskDone: true))
+            .thenAnswer((_) async {});
+
+        var buttonText = 'Done';
+        await tester.pumpWithDependencies();
+        await tester.tap(find.text(buttonText));
+
+        verify(_useCaseCall(confidence: Confidence.good, isTaskDone: true))
+            .called(1);
+      },
+    );
   });
 }
 
-_useCaseCall({required Confidence confidence}) =>
+_useCaseCall({required Confidence confidence, bool? isTaskDone}) =>
     () => _mockMakeStepForwardOnATask(
           task: taskFixture,
           howBigWasTheStep: confidence,
+          isTaskDone: isTaskDone ?? false,
         );
 
 extension on WidgetTester {
