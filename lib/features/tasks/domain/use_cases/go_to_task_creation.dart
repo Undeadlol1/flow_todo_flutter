@@ -13,7 +13,6 @@ class GoToTaskCreation {
       showModalBottomSheet(
         context: context,
         barrierColor: Colors.transparent,
-        backgroundColor: Colors.transparent,
         builder: (_) => const CreateTaskModal(),
       );
     });

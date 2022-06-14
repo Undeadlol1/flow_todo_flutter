@@ -49,8 +49,7 @@ void main() async {
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
-      clientId:
-          '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
+      clientId: '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
 
@@ -74,8 +73,7 @@ _setUpDI() {
   injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
   injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
-  injector
-      .registerSingleton(UpdateProfileRepository(firestore: injector.get()));
+  injector.registerSingleton(UpdateProfileRepository(firestore: injector.get()));
   injector.registerSingleton(
     AddPointsToViewer(
       profileCubit: injector.get(),
@@ -117,6 +115,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _theme = ThemeData.from(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue));
+  final _darkTheme = ThemeData(
+    scaffoldBackgroundColor: Colors.black,
+    colorScheme: const ColorScheme.dark(primary: Colors.blue),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.black,
+    ),
+  );
+
   @override
   void initState() {
     super.initState();
@@ -137,7 +144,8 @@ class _MyAppState extends State<MyApp> {
           ],
           child: MaterialApp(
             title: 'Flow TODO',
-            theme: ThemeData.dark(),
+            theme: _theme,
+            darkTheme: _darkTheme,
             initialRoute: MainPage.pathName,
             routes: {
               MainPage.pathName: (contex) => const MainPage(),
