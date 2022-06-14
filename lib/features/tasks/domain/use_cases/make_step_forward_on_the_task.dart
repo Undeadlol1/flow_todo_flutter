@@ -23,12 +23,14 @@ class MakeStepForwardOnTheTask {
   Future<void> call({
     required Task task,
     required Confidence howBigWasTheStep,
+    bool isTaskDone = false,
   }) async {
     final nextRepetition = nextRepetitionCalculator(
       task: task,
       confidence: howBigWasTheStep,
     );
 
+    task.isDone = isTaskDone;
     task.dueAt = nextRepetition.dueAt;
     task.repetitionLevel = nextRepetition.repetitionLevel;
 
