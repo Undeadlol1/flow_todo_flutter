@@ -5,7 +5,7 @@ import '../entities/task_entity.dart';
 
 part 'task.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Task implements TaskEntity {
   @override
   final String id, userId;
@@ -29,8 +29,8 @@ class Task implements TaskEntity {
   @override
   @JsonKey(defaultValue: [])
   final List<String> tags;
-  @JsonKey(defaultValue: [])
   @override
+  @JsonKey(defaultValue: [])
   List<TaskHistory> history;
   // final bool? isCurrent;
   // subtasks?: Subtask[];

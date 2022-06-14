@@ -5,19 +5,19 @@ service cloud.firestore {
   }
   match /databases/{database}/documents {
     match /tasks/{id}/{document=**} {
-      allow read, update, delete, write: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      allow read, write: if isAuthenticated() && request.auth.uid == resource.data.userId;
       allow create: if isAuthenticated();
     }
     match /taskLogs/{id}/{document=**} {
-      allow read, update, delete, write: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      allow read, write: if isAuthenticated() && request.auth.uid == resource.data.userId;
       allow create: if isAuthenticated();
     }
     match /profiles/{userId}/{document=**} {
-      allow read, update, delete, write: if isAuthenticated() && request.auth.uid == userId;
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
       allow create: if isAuthenticated();
     }
     match /rewards/{reward}/{document=**} {
-      allow read, update, delete, write: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      allow read, write: if isAuthenticated() && request.auth.uid == resource.data.userId;
       allow create: if isAuthenticated();
     }
   }

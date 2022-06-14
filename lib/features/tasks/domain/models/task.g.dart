@@ -38,5 +38,5 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
       'tags': instance.tags,
-      'history': instance.history,
+      'history': instance.history.map((e) => e.toJson()).toList(),
     };

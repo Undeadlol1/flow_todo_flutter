@@ -18,7 +18,6 @@ class WhatDoYouFeelAboutTheTask extends StatelessWidget {
             builder: (_) {
               final args = ModalRoute.of(context)!.settings.arguments
                   as TaskPageArguments;
-              debugPrint('args: ${args}');
               return PositiveChoices(task: args.task);
             },
           ),

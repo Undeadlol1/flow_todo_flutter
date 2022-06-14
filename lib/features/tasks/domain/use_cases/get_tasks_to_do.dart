@@ -8,7 +8,6 @@ class GetTasksToDo {
     final tasksCubit = GetIt.I<TasksCubit>();
 
     final tasks = await GetIt.I<GetTasksToDoRepository>().call(userId: userId);
-    tasks.shuffle();
-    tasksCubit.update(tasks);
+    tasksCubit.update(tasks.reversed.toList());
   }
 }
