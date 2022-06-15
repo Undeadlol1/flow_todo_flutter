@@ -32,12 +32,12 @@ class MakeStepForwardOnTheTask {
       confidence: howBigWasTheStep,
     );
 
+    tasksCubit.state.tasks.remove(task);
+    tasksCubit.update(tasksCubit.state.tasks);
+
     task.isDone = isTaskDone;
     task.dueAt = nextRepetition.dueAt;
     task.repetitionLevel = nextRepetition.repetitionLevel;
-
-    tasksCubit.state.tasks.removeWhere((i) => i.id == task.id);
-    tasksCubit.update(tasksCubit.state.tasks);
 
     await goToMainPage();
     await addPointsToViewer(pointsToAdd);
