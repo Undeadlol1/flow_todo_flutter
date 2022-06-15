@@ -6,8 +6,10 @@ class GetTasksToDo {
   const GetTasksToDo();
   Future<void> call({required String userId}) async {
     final tasksCubit = GetIt.I<TasksCubit>();
+    final getTasks = GetIt.I<GetTasksToDoRepository>();
 
-    final tasks = await GetIt.I<GetTasksToDoRepository>().call(userId: userId);
+    final tasks = await getTasks(userId: userId);
+    tasks.shuffle();
     tasksCubit.update(tasks.reversed.toList());
   }
 }
