@@ -12,10 +12,12 @@ import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_le
 import 'package:flow_todo_flutter_2022/features/leveling/presentation/widgets/experience_progress_bar.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/create_task_repository.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/data/delete_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/create_task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/delete_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/get_tasks_to_do.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_creation.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
@@ -49,7 +51,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+  // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
@@ -80,7 +82,9 @@ _setUpDI() {
   injector.registerSingleton(GoToMainPage(contextProvider: injector.get()));
   injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
   injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
+  injector.registerSingleton(CreateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
+  injector.registerSingleton(DeleteTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
   injector
       .registerSingleton(UpdateProfileRepository(firestore: injector.get()));
@@ -101,7 +105,6 @@ _setUpDI() {
   );
   injector.registerSingleton(const GetTasksToDo());
   injector.registerSingleton(StaleTaskDetector());
-  injector.registerSingleton(CreateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GetProfileRepository(firestore: injector.get()));
   injector.registerSingleton(GetProfile(
     profileCubit: injector.get(),
@@ -114,6 +117,12 @@ _setUpDI() {
     addPointsToUser: injector.get(),
     uniqueIdGenerator: injector.get(),
     createTaskRepository: injector.get(),
+  ));
+  injector.registerSingleton(DeleteTask(
+    tasksCubit: injector.get(),
+    goToMainPage: injector.get(),
+    addPointsToUser: injector.get(),
+    deleteTaskRepository: injector.get(),
   ));
 }
 
