@@ -134,8 +134,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _theme =
-      ThemeData.from(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue));
+  final _theme = ThemeData.from(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.blue,
+      primary: Colors.blue,
+      secondary: Colors.lightBlue,
+    ),
+  );
   final _darkTheme = ThemeData(
     scaffoldBackgroundColor: Colors.black,
     colorScheme: const ColorScheme.dark(primary: Colors.blue),
@@ -143,28 +148,12 @@ class _MyAppState extends State<MyApp> {
       backgroundColor: Colors.black,
     ),
   );
-  double precentage = 0.0;
-
-  late Timer timer;
 
   @override
   void initState() {
     super.initState();
 
-    timer = Timer.periodic(const Duration(seconds: 4), (timer) {
-      setState(() {
-        precentage = Random().nextDouble() * 1.0;
-      });
-    });
-
     Future.microtask(_syncFirebaseAuthWithAuthenticationCubit);
-  }
-
-  @override
-  void dispose() {
-    timer.cancel();
-
-    super.dispose();
   }
 
   @override

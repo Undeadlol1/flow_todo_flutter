@@ -24,6 +24,7 @@ class PageLayoutAndDependencies extends StatelessWidget {
       builder: (BuildContext context, authentication) {
         return Scaffold(
           resizeToAvoidBottomInset: true,
+          drawer: isDrawerHidden == true ? null : const _Drawer(),
           appBar: AppBar(
             actions: [
               _buildPoints(),
@@ -31,16 +32,17 @@ class PageLayoutAndDependencies extends StatelessWidget {
               const SizedBox(width: 8),
             ],
           ),
-          drawer: _Drawer(isHidden: isDrawerHidden),
           body: SafeArea(
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 10),
-                  child,
-                  const ListenerThatRunsFunctionsWithBuildContext(),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    child,
+                    const ListenerThatRunsFunctionsWithBuildContext(),
+                  ],
+                ),
               ),
             ),
           ),
@@ -70,15 +72,10 @@ class PageLayoutAndDependencies extends StatelessWidget {
 }
 
 class _Drawer extends StatelessWidget {
-  final bool? isHidden;
-  const _Drawer({Key? key, this.isHidden}) : super(key: key);
+  const _Drawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (isHidden == null || isHidden == true) {
-      return const SizedBox();
-    }
-
     return BlocBuilder<AuthentificationCubit, AuthentificationState>(
       builder: (BuildContext context, authentication) {
         return Drawer(

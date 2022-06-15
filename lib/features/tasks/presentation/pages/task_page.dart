@@ -23,13 +23,13 @@ class TaskPage extends StatelessWidget {
     return PageLayoutAndDependencies(
       child: Column(
         children: [
-          Text(task.title),
+          SelectableText(task.title),
           const SizedBox(height: 20),
           const WhatDoYouFeelAboutTheTask(),
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () => GetIt.I<DeleteTask>()(task),
-          )
+          ),
         ],
       ),
     );
