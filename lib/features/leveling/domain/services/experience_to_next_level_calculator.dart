@@ -1,7 +1,7 @@
 import 'dart:math';
 
-class PointsToNextLevelCalculator {
-  const PointsToNextLevelCalculator();
+class ExperienceToNextLevelCalculator {
+  const ExperienceToNextLevelCalculator();
 
   int call(int level) {
     const baseXP = 30;

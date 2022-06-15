@@ -1,7 +1,7 @@
-import 'package:flow_todo_flutter_2022/features/leveling/domain/services/points_to_next_level_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/experience_to_next_level_calculator.dart';
 
 class UserLevelCalculator {
-  final PointsToNextLevelCalculator pointsToNextLevelCalculator;
+  final ExperienceToNextLevelCalculator pointsToNextLevelCalculator;
 
   const UserLevelCalculator({required this.pointsToNextLevelCalculator});
 
