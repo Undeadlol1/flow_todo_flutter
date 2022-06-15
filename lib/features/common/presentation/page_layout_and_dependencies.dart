@@ -1,11 +1,13 @@
 import 'package:build_context_provider/build_context_provider.dart';
-import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_creation.dart';
-import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
+
+import '../../authentification/presentation/cubit/authentification_cubit.dart';
+import '../../tasks/domain/use_cases/go_to_task_creation.dart';
+import '../../users/presentation/cubit/profile_cubit.dart';
+import '../../users/presentation/widgets/avatar.dart';
 
 class PageLayoutAndDependencies extends StatelessWidget {
   final Widget child;
@@ -25,17 +27,11 @@ class PageLayoutAndDependencies extends StatelessWidget {
           appBar: AppBar(
             actions: [
               _buildPoints(),
-              if (authentication is Authenticated &&
-                  authentication.user.avatar != null)
-                CircleAvatar(
-                  backgroundImage: NetworkImage(authentication.user.avatar!),
-                ),
+              Avatar(),
               const SizedBox(width: 8),
             ],
           ),
-          drawer: isDrawerHidden != null && isDrawerHidden!
-              ? null
-              : const _Drawer(),
+          drawer: _Drawer(isHidden: isDrawerHidden),
           body: SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -63,6 +59,7 @@ class PageLayoutAndDependencies extends StatelessWidget {
         if (profileState is ProfileLoaded) {
           return Container(
             padding: const EdgeInsets.all(20),
+            // child: Text('Points: ${profileState.profile.points.toString()}'),
             child: Text('Points: ${profileState.profile.points.toString()}'),
           );
         }
@@ -73,10 +70,15 @@ class PageLayoutAndDependencies extends StatelessWidget {
 }
 
 class _Drawer extends StatelessWidget {
-  const _Drawer({Key? key}) : super(key: key);
+  final bool? isHidden;
+  const _Drawer({Key? key, this.isHidden}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (isHidden == null || isHidden == true) {
+      return const SizedBox();
+    }
+
     return BlocBuilder<AuthentificationCubit, AuthentificationState>(
       builder: (BuildContext context, authentication) {
         return Drawer(

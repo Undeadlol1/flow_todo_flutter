@@ -133,20 +133,3 @@ _typicalFirestoreCall(_MockFirebaseFirestore mockFirestore) {
         .get();
   };
 }
-
-Map<String, Object> _buildTaskMap({
-  String userId = _properUserId,
-  bool isDone = false,
-  num? dueAt,
-}) {
-  final taskConvertedToMap = {
-    'isDone': isDone,
-    'userId': userId,
-    'id': taskFixture.id,
-    'name': taskFixture.title,
-    'createdAt': taskFixture.createdAt,
-    'dueAt': dueAt ?? DateTime.now().millisecondsSinceEpoch,
-  };
-
-  return taskConvertedToMap;
-}

@@ -203,6 +203,7 @@ class _MyAppState extends State<MyApp> {
         _authentificationCubit.setUser(
           User(
             id: event.uid,
+            avatar: event.photoURL,
             email: event.email ?? '',
             displayName: event.displayName ?? '',
           ),

@@ -67,7 +67,6 @@ void main() {
         bool hasCallThrown = false;
         final useCase = _getUseCase();
         const exceptionMessage = 'Profile not loaded';
-        final exception = Exception(exceptionMessage);
         _mockProfileRepository();
         when(() => _mockProfileCubit.state).thenReturn(ProfileLoading());
 
