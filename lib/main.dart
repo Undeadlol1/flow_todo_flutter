@@ -7,6 +7,7 @@ import 'package:flow_todo_flutter_2022/features/authentification/presentation/cu
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/points_to_next_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/presentation/widgets/experience_progress_bar.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/create_task_repository.dart';
@@ -47,7 +48,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+  FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
@@ -70,6 +71,7 @@ _setUpDI() {
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(UniqueIdGenerator());
   injector.registerSingleton(GetTodaysDate());
+  injector.registerSingleton(const PointsToNextLevelCalculator());
   injector.registerSingleton(NextRepetitionCalculator());
   injector.registerSingleton(GoToMainPage(contextProvider: injector.get()));
   injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
