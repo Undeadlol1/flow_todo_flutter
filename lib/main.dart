@@ -175,7 +175,7 @@ class _MyAppState extends State<MyApp> {
             },
           ),
         ),
-        const ExperienceProgressBar(),
+        const ExperienceProgressBar(percentage: 0.5),
       ],
     );
   }
