@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
@@ -6,6 +7,7 @@ import 'package:flow_todo_flutter_2022/features/authentification/presentation/cu
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/presentation/widgets/experience_progress_bar.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/create_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do_repository.dart';
@@ -49,7 +51,8 @@ void main() async {
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
-      clientId: '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
+      clientId:
+          '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
 
@@ -73,7 +76,8 @@ _setUpDI() {
   injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
   injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
-  injector.registerSingleton(UpdateProfileRepository(firestore: injector.get()));
+  injector
+      .registerSingleton(UpdateProfileRepository(firestore: injector.get()));
   injector.registerSingleton(
     AddPointsToViewer(
       profileCubit: injector.get(),
@@ -115,7 +119,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _theme = ThemeData.from(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue));
+  final _theme =
+      ThemeData.from(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue));
   final _darkTheme = ThemeData(
     scaffoldBackgroundColor: Colors.black,
     colorScheme: const ColorScheme.dark(primary: Colors.blue),
@@ -123,12 +128,28 @@ class _MyAppState extends State<MyApp> {
       backgroundColor: Colors.black,
     ),
   );
+  double precentage = 0.0;
+
+  late Timer timer;
 
   @override
   void initState() {
     super.initState();
 
+    timer = Timer.periodic(const Duration(seconds: 4), (timer) {
+      setState(() {
+        precentage = Random().nextDouble() * 1.0;
+      });
+    });
+
     Future.microtask(_syncFirebaseAuthWithAuthenticationCubit);
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+
+    super.dispose();
   }
 
   @override
@@ -154,7 +175,7 @@ class _MyAppState extends State<MyApp> {
             },
           ),
         ),
-        _buildExperinceIndicator(),
+        const ExperienceProgressBar(),
       ],
     );
   }
@@ -173,20 +194,5 @@ class _MyAppState extends State<MyApp> {
         );
       }
     });
-  }
-
-  Widget _buildExperinceIndicator() {
-    return const Directionality(
-      textDirection: TextDirection.ltr,
-      child: Positioned(
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 0),
-          child: LinearProgressIndicator(
-            value: 0.7,
-            minHeight: 10,
-          ),
-        ),
-      ),
-    );
   }
 }
