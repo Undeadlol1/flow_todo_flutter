@@ -29,6 +29,7 @@ import 'package:flow_todo_flutter_2022/features/users/data/update_profile_reposi
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/get_profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
@@ -184,6 +185,7 @@ class _MyAppState extends State<MyApp> {
             routes: {
               MainPage.pathName: (contex) => const MainPage(),
               TaskPage.pathName: (contex) => const TaskPage(),
+              ProfilePage.pathName: (contex) => const ProfilePage(),
               WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
             },
           ),
@@ -194,8 +196,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   FutureOr<void> _syncFirebaseAuthWithAuthenticationCubit() {
-    firebase_auth.FirebaseAuth.instance.authStateChanges().listen((event) {
+    firebase_auth.FirebaseAuth.instance.userChanges().listen((event) {
       if (event == null) {
+        _tasksCubit.update([]);
+        _profileCubit.setProfileNotFound();
         _authentificationCubit.setNotAuthenticated();
       } else {
         _authentificationCubit.setUser(
