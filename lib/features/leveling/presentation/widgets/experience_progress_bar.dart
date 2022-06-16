@@ -1,4 +1,4 @@
-import 'package:flow_todo_flutter_2022/features/leveling/domain/services/experience_to_next_level_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/experience_to_reach_a_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +8,7 @@ import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 class ExperienceProgressBar extends StatelessWidget {
   final _userLevelCalculator = GetIt.I<UserLevelCalculator>();
-  final _experienceToNextLevelCalculator =
-      GetIt.I<ExperienceToNextLevelCalculator>();
+  final ExperienceToReachALevelCalculator _experienceToReachALevelCalculator = GetIt.I.get();
   ExperienceProgressBar({Key? key}) : super(key: key);
 
   @override
@@ -17,23 +16,21 @@ class ExperienceProgressBar extends StatelessWidget {
     // return const SizedBox();
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
-        final currentExperince = state.profile?.experience ?? 0;
-        final level = _userLevelCalculator(currentExperince);
-        final experienceToNextLevel =
-            _experienceToNextLevelCalculator(level + 1);
-        final experienceToCurrentLevel =
-            _experienceToNextLevelCalculator(level);
+        double percentage = 0.0;
 
-        final differenceBetweenLevels =
-            experienceToNextLevel - experienceToCurrentLevel;
-        final userProgressInPoints =
-            currentExperince - experienceToCurrentLevel;
-        final progressPercent =
-            (userProgressInPoints * 100) / differenceBetweenLevels;
-        final percentage = double.parse('0.${progressPercent.floor().toInt()}');
+        if (state is ProfileLoaded) {
+          final currentExperince = state.profile?.experience ?? 0;
+          final level = _userLevelCalculator(currentExperince);
+          final experienceToNextLevel = _experienceToReachALevelCalculator(level + 1);
+          final experienceToCurrentLevel = _experienceToReachALevelCalculator(level);
+          debugPrint('experienceToNextLevel: ${experienceToNextLevel}');
+          debugPrint('experienceToCurrentLevel: ${experienceToCurrentLevel}');
 
-        // debugPrint('progressPercent: ${progressPercent}');
-        // debugPrint('Animation percentage in double: ${percentage}');
+          final differenceBetweenLevels = experienceToNextLevel - experienceToCurrentLevel;
+          final userProgressInPoints = currentExperince - experienceToCurrentLevel;
+          final progressPercent = (userProgressInPoints * 100) / differenceBetweenLevels;
+          percentage = double.parse('0.${progressPercent.floor().toInt()}');
+        }
 
         return Directionality(
           textDirection: TextDirection.ltr,

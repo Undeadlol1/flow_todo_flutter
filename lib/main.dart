@@ -6,7 +6,7 @@ import 'package:flow_todo_flutter_2022/features/authentification/presentation/cu
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
-import 'package:flow_todo_flutter_2022/features/leveling/domain/services/experience_to_next_level_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/entities/default_leveling_config.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/presentation/widgets/experience_progress_bar.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
@@ -55,8 +55,7 @@ void main() async {
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
-      clientId:
-          '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
+      clientId: '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
 
@@ -74,14 +73,13 @@ _setUpDI() {
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(UniqueIdGenerator());
   injector.registerSingleton(GetTodaysDate());
-  injector.registerSingleton(const ExperienceToNextLevelCalculator());
   injector.registerSingleton(
     ExperienceToReachALevelCalculator(
-      experienceToNextLevelCalculator: injector.get(),
+      levelingConfig: DefaultLevelingConfig(),
     ),
   );
   injector.registerSingleton(UserLevelCalculator(
-    expToNextLevelCalculator: injector.get(),
+    experienceToReachALevelCalculator: injector.get(),
   ));
   injector.registerSingleton(NextRepetitionCalculator());
   injector.registerSingleton(GoToMainPage(contextProvider: injector.get()));
@@ -91,8 +89,7 @@ _setUpDI() {
   injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(DeleteTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
-  injector
-      .registerSingleton(UpdateProfileRepository(firestore: injector.get()));
+  injector.registerSingleton(UpdateProfileRepository(firestore: injector.get()));
   injector.registerSingleton(
     AddPointsToViewer(
       profileCubit: injector.get(),
