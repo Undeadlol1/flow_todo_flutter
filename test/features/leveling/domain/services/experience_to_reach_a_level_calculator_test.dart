@@ -18,5 +18,20 @@ void main() {
         expect(result, 100);
       },
     );
+
+    test(
+      'WHEN config doesn\'t have exact number for a requested level '
+      'THEN method returns that number',
+      () {
+        final config = LevelingConfig(
+          experienceToLevelMapper: {5: 100},
+          fallbackExperienceToLevelCalculator: (level) => level * 1000,
+        );
+
+        final result = ExperienceToReachALevelCalculator(levelingConfig: config)(10);
+
+        expect(result, 10 * 1000);
+      },
+    );
   });
 }

@@ -1,5 +1,3 @@
-import 'package:flow_todo_flutter_2022/features/leveling/domain/services/experience_to_next_level_calculator.dart';
-
 import '../entities/leveling_config.dart';
 
 class ExperienceToReachALevelCalculator {
@@ -11,16 +9,8 @@ class ExperienceToReachALevelCalculator {
       // TODO try this:
       // levelingConfig.experienceToLevelMapper.putIfAbsent(key, () => null)
       return levelingConfig.experienceToLevelMapper[desiredLevel]!;
+    } else {
+      return levelingConfig.fallbackExperienceToLevelCalculator(desiredLevel);
     }
-    return 0;
-    // int level = 0;
-    // int expCalculated = 0;
-
-    // while (level <= desiredLevel) {
-    //   expCalculated += experienceToNextLevelCalculator(level);
-    //   level++;
-    // }
-
-    // return expCalculated - experienceToNextLevelCalculator(level - 1);
   }
 }
