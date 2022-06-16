@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/pages/presentation/main_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_list.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+
+import '../../../test_utilities/fakes/fake_user_level_calculator.dart';
 
 void main() {
   final tasksCuibit = TasksCubit();
@@ -34,6 +37,7 @@ void main() {
     setUpAll(() {
       GetIt.I.registerSingleton(authCubit);
       GetIt.I.registerSingleton(tasksCuibit);
+      GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
     });
 
     tearDownAll(GetIt.I.reset);

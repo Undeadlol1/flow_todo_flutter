@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_creation.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +9,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../test_utilities/fakes/fake_user_level_calculator.dart';
+
 class _MockGoToTaskCreation extends Mock implements GoToTaskCreation {}
 
 final _mockGoToTaskCreation = _MockGoToTaskCreation();
 
 void main() {
+  setUpAll(() {
+    GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
+  });
+
   group('GIVEN PageLayoutAndDependencies', () {
     testWidgets(
       'SHOULD display navigation bar',
@@ -54,8 +61,7 @@ void main() {
   });
 }
 
-Future<void> _pumpWidget(
-    {required WidgetTester tester, bool isDrawerHidden = false}) async {
+Future<void> _pumpWidget({required WidgetTester tester, bool isDrawerHidden = false}) async {
   await tester.pumpWidget(
     MultiBlocProvider(
       providers: [
