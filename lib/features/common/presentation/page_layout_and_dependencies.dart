@@ -1,8 +1,10 @@
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
 import '../../tasks/domain/use_cases/go_to_task_creation.dart';
@@ -20,38 +22,45 @@ class PageLayoutAndDependencies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthentificationCubit, AuthentificationState>(
-      builder: (BuildContext context, authentication) {
-        return Scaffold(
-          resizeToAvoidBottomInset: true,
-          drawer: isDrawerHidden == true ? null : const _Drawer(),
-          appBar: AppBar(
-            actions: [
-              _buildPoints(),
-              Avatar(),
-              const SizedBox(width: 8),
-            ],
-          ),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    child,
-                    const ListenerThatRunsFunctionsWithBuildContext(),
-                  ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
+      ),
+      child: BlocBuilder<AuthentificationCubit, AuthentificationState>(
+        builder: (BuildContext context, authentication) {
+          return Scaffold(
+            resizeToAvoidBottomInset: true,
+            drawer: isDrawerHidden == true ? null : const _Drawer(),
+            appBar: AppBar(
+              actions: [
+                _buildPoints(),
+                Avatar(),
+                const SizedBox(width: 8),
+              ],
+            ),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      child,
+                      const ListenerThatRunsFunctionsWithBuildContext(),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => GetIt.I<GoToTaskCreation>()(),
-            child: const Icon(Icons.add),
-          ),
-        );
-      },
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => GetIt.I<GoToTaskCreation>()(),
+              child: const Icon(Icons.add),
+            ),
+            bottomNavigationBar: const _BottomNavigation(),
+          );
+        },
+      ),
     );
   }
 
@@ -67,6 +76,41 @@ class PageLayoutAndDependencies extends StatelessWidget {
         }
         return Container();
       },
+    );
+  }
+}
+
+class _BottomNavigation extends StatelessWidget {
+  const _BottomNavigation({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox();
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 30),
+      child: WaterDropNavBar(
+        waterDropColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        onItemSelected: (index) {
+          // setState(() {
+          //   selectedIndex = index;
+          // });
+          // pageController.animateToPage(selectedIndex,
+          //     duration: const Duration(milliseconds: 400),
+          //     curve: Curves.easeOutQuad);
+        },
+        // selectedIndex: selectedIndex,
+        selectedIndex: 1,
+        barItems: [
+          BarItem(
+            filledIcon: Icons.bookmark_rounded,
+            outlinedIcon: Icons.bookmark_border_rounded,
+          ),
+          BarItem(filledIcon: Icons.favorite_rounded, outlinedIcon: Icons.favorite_border_rounded),
+        ],
+      ),
     );
   }
 }
