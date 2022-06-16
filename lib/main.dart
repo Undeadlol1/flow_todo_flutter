@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
@@ -35,6 +34,7 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'features/authentification/domain/entities/user.dart';
+import 'features/leveling/domain/services/experience_to_reach_a_level_calculator.dart';
 import 'features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'firebase_options.dart';
 
@@ -75,8 +75,13 @@ _setUpDI() {
   injector.registerSingleton(UniqueIdGenerator());
   injector.registerSingleton(GetTodaysDate());
   injector.registerSingleton(const ExperienceToNextLevelCalculator());
+  injector.registerSingleton(
+    ExperienceToReachALevelCalculator(
+      experienceToNextLevelCalculator: injector.get(),
+    ),
+  );
   injector.registerSingleton(UserLevelCalculator(
-    pointsToNextLevelCalculator: injector.get(),
+    expToNextLevelCalculator: injector.get(),
   ));
   injector.registerSingleton(NextRepetitionCalculator());
   injector.registerSingleton(GoToMainPage(contextProvider: injector.get()));
@@ -158,16 +163,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => _tasksCubit),
-            BlocProvider(create: (context) => _profileCubit),
-            BlocProvider(create: (context) => _authentificationCubit),
-          ],
-          child: MaterialApp(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => _tasksCubit),
+        BlocProvider(create: (context) => _profileCubit),
+        BlocProvider(create: (context) => _authentificationCubit),
+      ],
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          MaterialApp(
             title: 'Flow TODO',
             theme: _theme,
             darkTheme: _darkTheme,
@@ -178,9 +183,9 @@ class _MyAppState extends State<MyApp> {
               WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
             },
           ),
-        ),
-        const ExperienceProgressBar(percentage: 0.5),
-      ],
+          ExperienceProgressBar(),
+        ],
+      ),
     );
   }
 

@@ -20,7 +20,8 @@ class Avatar extends StatelessWidget {
                 profileState is ProfileLoaded) {
               return Chip(
                 label: Text(
-                  _levelCalculator(profileState.profile.points).toString(),
+                  _levelCalculator(profileState.profile?.points ?? 0)
+                      .toString(),
                 ),
                 avatar: CircleAvatar(
                   foregroundImage: authentication.user.avatar == null

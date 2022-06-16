@@ -62,7 +62,7 @@ class PageLayoutAndDependencies extends StatelessWidget {
           return Container(
             padding: const EdgeInsets.all(20),
             // child: Text('Points: ${profileState.profile.points.toString()}'),
-            child: Text('Points: ${profileState.profile.points.toString()}'),
+            child: Text('Points: ${profileState.profile?.points.toString()}'),
           );
         }
         return Container();

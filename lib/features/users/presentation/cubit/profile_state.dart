@@ -1,13 +1,16 @@
 part of 'profile_cubit.dart';
 
 @immutable
-abstract class ProfileState {}
+abstract class ProfileState {
+  final Profile? profile;
+
+  const ProfileState({this.profile});
+}
 
 class ProfileLoading extends ProfileState {}
 
 class ProfileNotFound extends ProfileState {}
 
 class ProfileLoaded extends ProfileState {
-  final Profile profile;
-  ProfileLoaded({required this.profile});
+  const ProfileLoaded({required profile}) : super(profile: profile);
 }

@@ -14,10 +14,12 @@ class AddPointsToViewer {
 
     if (profileState is ProfileLoaded) {
       final currentProfile = profileState.profile;
-      final updatedProfile =
-          currentProfile.copyWith(points: currentProfile.points + pointsToAdd);
+      final updatedProfile = currentProfile?.copyWith(
+        points: currentProfile.points + pointsToAdd,
+        experience: (currentProfile.experience ?? 0) + pointsToAdd,
+      );
 
-      profileCubit.setProfile(updatedProfile);
+      profileCubit.setProfile(updatedProfile!);
 
       await updateProfileRepository(updatedProfile);
     } else {
