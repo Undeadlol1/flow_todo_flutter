@@ -7,6 +7,7 @@ import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_ma
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/entities/default_leveling_config.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/presentation/widgets/experience_progress_bar.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
@@ -81,6 +82,12 @@ _setUpDI() {
   injector.registerSingleton(UserLevelCalculator(
     experienceToReachALevelCalculator: injector.get(),
   ));
+  injector.registerSingleton(
+    LevelProgressPercentageCalculator(
+      userLevelCalculator: injector.get(),
+      experienceToReachALevelCalculator: injector.get(),
+    ),
+  );
   injector.registerSingleton(NextRepetitionCalculator());
   injector.registerSingleton(GoToMainPage(contextProvider: injector.get()));
   injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
