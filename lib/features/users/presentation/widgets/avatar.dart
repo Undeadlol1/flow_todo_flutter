@@ -16,12 +16,10 @@ class Avatar extends StatelessWidget {
       builder: (context, profileState) {
         return BlocBuilder<AuthentificationCubit, AuthentificationState>(
           builder: (BuildContext context, authentication) {
-            if (authentication is Authenticated &&
-                profileState is ProfileLoaded) {
+            if (authentication is Authenticated && profileState is ProfileLoaded) {
               return Chip(
                 label: Text(
-                  _levelCalculator(profileState.profile?.points ?? 0)
-                      .toString(),
+                  _levelCalculator(profileState.profile?.points ?? 0).value.toString(),
                 ),
                 avatar: CircleAvatar(
                   foregroundImage: authentication.user.avatar == null

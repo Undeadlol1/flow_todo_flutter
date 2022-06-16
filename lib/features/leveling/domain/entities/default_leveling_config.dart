@@ -14,7 +14,7 @@ class DefaultLevelingConfig implements LevelingConfig {
   int Function(int level) get fallbackExperienceToLevelCalculator {
     return (level) {
       const baseXP = 30;
-      const exponent = 1.1;
+      const exponent = 1;
       return (baseXP * pow(level, exponent)).toInt();
     };
   }

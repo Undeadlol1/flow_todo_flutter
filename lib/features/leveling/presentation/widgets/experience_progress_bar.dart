@@ -20,10 +20,12 @@ class ExperienceProgressBar extends StatelessWidget {
         if (state is! ProfileLoaded) {
           return const SizedBox();
         } else {
-          final experience = state.profile?.experience ?? 0;
-          final progressPercent = _progressPercentageCalculator(experience);
+          final experience = (state.profile?.experience ?? 0) + 400;
+          final progressPercent = _progressPercentageCalculator(experience).floor();
+          widgetProgress = double.parse('${progressPercent / 100}');
+
           log('progressPercent: ${progressPercent.toString()}');
-          widgetProgress = double.parse('0.${progressPercent.floor().toInt()}');
+          log('widgetProgress: ${widgetProgress.toString()}');
 
           return Directionality(
             textDirection: TextDirection.ltr,
@@ -42,7 +44,7 @@ class ExperienceProgressBar extends StatelessWidget {
                       borderWidth: 0.0,
                       borderColor: Colors.grey,
                       direction: Axis.horizontal,
-                      center: Text("${(widgetProgress * 100).floor().toInt()}%"),
+                      center: Text("$progressPercent%"),
                     );
                   },
                 ),

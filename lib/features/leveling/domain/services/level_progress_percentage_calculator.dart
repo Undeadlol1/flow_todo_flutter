@@ -1,9 +1,11 @@
-import 'experience_to_reach_a_level_calculator.dart';
+import 'dart:developer';
+
+import 'experience_to_reach_next_level_calculator.dart';
 import 'user_level_calculator.dart';
 
 class LevelProgressPercentageCalculator {
   final UserLevelCalculator userLevelCalculator;
-  final ExperienceToReachALevelCalculator experienceToReachALevelCalculator;
+  final ExperienceToReachNextLevelCalculator experienceToReachALevelCalculator;
   const LevelProgressPercentageCalculator({
     required this.userLevelCalculator,
     required this.experienceToReachALevelCalculator,
@@ -11,12 +13,20 @@ class LevelProgressPercentageCalculator {
 
   double call(int experience) {
     final level = userLevelCalculator(experience);
-    final experienceToNextLevel = experienceToReachALevelCalculator(level + 1);
-    final experienceToCurrentLevel = experienceToReachALevelCalculator(level);
+    log('level.value: ${level.value.toString()}');
+    log('exp: ${experience.toString()}');
+    log('level.totalExperienceToNextLevel: ${level.totalExperienceToNextLevel.toString()}');
 
-    final differenceBetweenLevels = experienceToNextLevel - experienceToCurrentLevel;
-    final userProgressInPoints = experience - experienceToCurrentLevel;
-    final progressPercent = (userProgressInPoints * 100) / differenceBetweenLevels;
+    final experienceToCurrentLevel = experienceToReachALevelCalculator(level.value);
+    final userProgressInExpNumbers = experience - level.totalExperienceForCurrentLevel;
+
+    final differenceBetweenLevels =
+        level.totalExperienceToNextLevel - level.totalExperienceForCurrentLevel;
+    log('experienceToCurrentLevel: ${experienceToCurrentLevel.toString()}');
+    log('differenceBetweenLevels: ${differenceBetweenLevels.toString()}');
+    log('userProgressInPoints: ${userProgressInExpNumbers.toString()}');
+
+    final progressPercent = (userProgressInExpNumbers * 100) / differenceBetweenLevels;
 
     return progressPercent;
   }

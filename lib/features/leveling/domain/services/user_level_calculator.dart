@@ -1,22 +1,30 @@
-import 'dart:developer';
-
-import 'package:flow_todo_flutter_2022/features/leveling/domain/services/experience_to_reach_a_level_calculator.dart';
+import '../entities/user_level.dart';
+import 'experience_to_reach_next_level_calculator.dart';
 
 class UserLevelCalculator {
-  final ExperienceToReachALevelCalculator experienceToReachALevelCalculator;
+  final ExperienceToReachNextLevelCalculator experienceToReachALevelCalculator;
 
   const UserLevelCalculator({required this.experienceToReachALevelCalculator});
 
-  int call(int userExperience) {
-    log('userExperience: ${userExperience}');
-    int pointsCalcuated = 0;
+  UserLevel call(int userExperience) {
     int functionCalledCount = 0;
-    while (pointsCalcuated <= userExperience) {
-      pointsCalcuated += experienceToReachALevelCalculator(functionCalledCount);
-      log('pointsCalculated: ${pointsCalcuated.toString()}');
-      log('functionCalledCount: ${functionCalledCount}');
+    int totalExpToNextLevel = 0;
+    int totalExpForCurrentLevel = 0;
+
+    while (totalExpToNextLevel <= userExperience) {
+      if (functionCalledCount == 0) {
+        totalExpForCurrentLevel;
+      }
+      // TODO what if user level is only 0 or 1?
+      totalExpForCurrentLevel += experienceToReachALevelCalculator(functionCalledCount - 1);
+      totalExpToNextLevel += experienceToReachALevelCalculator(functionCalledCount);
       functionCalledCount++;
     }
-    return functionCalledCount - 1;
+
+    return UserLevel(
+      value: functionCalledCount - 1,
+      totalExperienceToNextLevel: totalExpToNextLevel,
+      totalExperienceForCurrentLevel: totalExpForCurrentLevel,
+    );
   }
 }

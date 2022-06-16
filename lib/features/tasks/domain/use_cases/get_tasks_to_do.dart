@@ -5,7 +5,6 @@ import 'package:get_it/get_it.dart';
 class GetTasksToDo {
   const GetTasksToDo();
   Future<void> call({required String userId}) async {
-    return Future.value(null);
     final tasksCubit = GetIt.I<TasksCubit>();
     final getTasks = GetIt.I<GetTasksToDoRepository>();
 

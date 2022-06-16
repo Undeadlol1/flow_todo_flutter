@@ -35,7 +35,7 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'features/authentification/domain/entities/user.dart';
-import 'features/leveling/domain/services/experience_to_reach_a_level_calculator.dart';
+import 'features/leveling/domain/services/experience_to_reach_next_level_calculator.dart';
 import 'features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'firebase_options.dart';
 
@@ -75,7 +75,7 @@ _setUpDI() {
   injector.registerSingleton(UniqueIdGenerator());
   injector.registerSingleton(GetTodaysDate());
   injector.registerSingleton(
-    ExperienceToReachALevelCalculator(
+    ExperienceToReachNextLevelCalculator(
       levelingConfig: DefaultLevelingConfig(),
     ),
   );

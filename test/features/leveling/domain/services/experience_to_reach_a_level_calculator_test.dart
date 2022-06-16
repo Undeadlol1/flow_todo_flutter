@@ -1,5 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/leveling/domain/entities/leveling_config.dart';
-import 'package:flow_todo_flutter_2022/features/leveling/domain/services/experience_to_reach_a_level_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/experience_to_reach_next_level_calculator.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -13,7 +13,7 @@ void main() {
           fallbackExperienceToLevelCalculator: (level) => level * 100000,
         );
 
-        final result = ExperienceToReachALevelCalculator(levelingConfig: config)(5);
+        final result = ExperienceToReachNextLevelCalculator(levelingConfig: config)(5);
 
         expect(result, 100);
       },
@@ -28,7 +28,7 @@ void main() {
           fallbackExperienceToLevelCalculator: (level) => level * 1000,
         );
 
-        final result = ExperienceToReachALevelCalculator(levelingConfig: config)(10);
+        final result = ExperienceToReachNextLevelCalculator(levelingConfig: config)(10);
 
         expect(result, 10 * 1000);
       },
