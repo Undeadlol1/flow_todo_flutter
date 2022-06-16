@@ -19,7 +19,7 @@ class Avatar extends StatelessWidget {
           return Chip(
             avatar: const _Image(),
             label: Text(
-              _levelCalculator(profileState.profile?.points ?? 0).toString(),
+              _levelCalculator(profileState.profile?.points ?? 0).value.toString(),
             ),
           );
         }

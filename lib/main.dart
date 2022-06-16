@@ -6,7 +6,8 @@ import 'package:flow_todo_flutter_2022/features/authentification/presentation/cu
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
-import 'package:flow_todo_flutter_2022/features/leveling/domain/services/experience_to_next_level_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/entities/default_leveling_config.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/presentation/widgets/experience_progress_bar.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
@@ -34,7 +35,7 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'features/authentification/domain/entities/user.dart';
-import 'features/leveling/domain/services/experience_to_reach_a_level_calculator.dart';
+import 'features/leveling/domain/services/experience_to_reach_next_level_calculator.dart';
 import 'features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'firebase_options.dart';
 
@@ -55,8 +56,7 @@ void main() async {
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
-      clientId:
-          '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
+      clientId: '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
 
@@ -74,15 +74,20 @@ _setUpDI() {
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(UniqueIdGenerator());
   injector.registerSingleton(GetTodaysDate());
-  injector.registerSingleton(const ExperienceToNextLevelCalculator());
   injector.registerSingleton(
-    ExperienceToReachALevelCalculator(
-      experienceToNextLevelCalculator: injector.get(),
+    ExperienceToReachNextLevelCalculator(
+      levelingConfig: DefaultLevelingConfig(),
     ),
   );
   injector.registerSingleton(UserLevelCalculator(
-    expToNextLevelCalculator: injector.get(),
+    experienceToReachALevelCalculator: injector.get(),
   ));
+  injector.registerSingleton(
+    LevelProgressPercentageCalculator(
+      userLevelCalculator: injector.get(),
+      experienceToReachALevelCalculator: injector.get(),
+    ),
+  );
   injector.registerSingleton(NextRepetitionCalculator());
   injector.registerSingleton(GoToMainPage(contextProvider: injector.get()));
   injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
@@ -91,8 +96,7 @@ _setUpDI() {
   injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(DeleteTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
-  injector
-      .registerSingleton(UpdateProfileRepository(firestore: injector.get()));
+  injector.registerSingleton(UpdateProfileRepository(firestore: injector.get()));
   injector.registerSingleton(
     AddPointsToViewer(
       profileCubit: injector.get(),
