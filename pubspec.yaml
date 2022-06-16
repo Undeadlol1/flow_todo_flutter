@@ -50,6 +50,7 @@ dependencies:
   reactive_forms: ^13.0.0
   freezed_annotation: ^2.0.3
   liquid_progress_indicator: ^0.4.0
+  extended_image: ^6.2.1
 
 dev_dependencies:
   flutter_test:

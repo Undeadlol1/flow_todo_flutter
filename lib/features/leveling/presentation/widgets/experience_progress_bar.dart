@@ -8,8 +8,7 @@ import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 class ExperienceProgressBar extends StatelessWidget {
   final _userLevelCalculator = GetIt.I<UserLevelCalculator>();
-  final _experienceToNextLevelCalculator =
-      GetIt.I<ExperienceToNextLevelCalculator>();
+  final _experienceToNextLevelCalculator = GetIt.I<ExperienceToNextLevelCalculator>();
   ExperienceProgressBar({Key? key}) : super(key: key);
 
   @override
@@ -19,18 +18,14 @@ class ExperienceProgressBar extends StatelessWidget {
       builder: (context, state) {
         final currentExperince = state.profile?.experience ?? 0;
         final level = _userLevelCalculator(currentExperince);
-        final experienceToNextLevel =
-            _experienceToNextLevelCalculator(level + 1);
-        final experienceToCurrentLevel =
-            _experienceToNextLevelCalculator(level);
+        final experienceToNextLevel = _experienceToNextLevelCalculator(level + 1);
+        final experienceToCurrentLevel = _experienceToNextLevelCalculator(level);
 
-        final differenceBetweenLevels =
-            experienceToNextLevel - experienceToCurrentLevel;
-        final userProgressInPoints =
-            currentExperince - experienceToCurrentLevel;
-        final progressPercent =
-            (userProgressInPoints * 100) / differenceBetweenLevels;
-        final percentage = double.parse('0.${progressPercent.floor().toInt()}');
+        final differenceBetweenLevels = experienceToNextLevel - experienceToCurrentLevel;
+        final userProgressInPoints = currentExperince - experienceToCurrentLevel;
+        final progressPercent = (userProgressInPoints * 100) / differenceBetweenLevels;
+        // final percentage = double.parse('0.${progressPercent.floor().toInt()}');
+        final percentage = 0.5;
 
         // debugPrint('progressPercent: ${progressPercent}');
         // debugPrint('Animation percentage in double: ${percentage}');
