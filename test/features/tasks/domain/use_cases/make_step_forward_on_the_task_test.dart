@@ -10,6 +10,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_d
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 
@@ -111,6 +112,22 @@ void main() {
         expect(_tasksDoneTodayCubit.state.tasks, hasLength(1));
       },
     );
+
+    test(
+      'WHEN called '
+      'THEN removes task from state',
+      () async {
+        _tasksCubit.update([taskFixture, taskFixture2]);
+        _mockTypicalCalls(amountOfPointsToVerify: 30);
+
+        await _getUseCase()(
+          task: taskFixture,
+          howBigWasTheStep: Confidence.good,
+        );
+
+        expect(_tasksCubit.state.tasks, hasLength(1));
+      },
+    );
   });
 }
 
@@ -171,3 +188,14 @@ MakeStepForwardOnTheTask _getUseCase() {
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );
 }
+
+final taskFixture2 = Task(
+  dueAt: 0,
+  tags: [],
+  history: [],
+  createdAt: 0,
+  isDone: false,
+  title: 'title',
+  userId: '123131',
+  id: const Uuid().v4(),
+);
