@@ -10,16 +10,16 @@ class DailyStreakEntity implements UserCreatedDocument {
   @override
   int? updatedAt;
 
-  int? startsAt;
+  int startsAt;
 
-  int? perDay;
+  int perDay;
 
   DailyStreakEntity({
     required this.id,
     required this.userId,
+    required this.perDay,
+    required this.startsAt,
     required this.createdAt,
-    this.perDay,
-    this.startsAt,
     this.updatedAt,
   });
 }

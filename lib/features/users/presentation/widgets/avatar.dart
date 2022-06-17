@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';

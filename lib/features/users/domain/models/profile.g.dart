@@ -13,6 +13,8 @@ _$_Profile _$$_ProfileFromJson(Map<String, dynamic> json) => _$_Profile(
       id: json['id'] as String,
       userId: json['userId'] as String,
       createdAt: json['createdAt'] as int,
+      dailyStreak:
+          DailyStreak.fromJson(json['dailyStreak'] as Map<String, dynamic>),
       areEcouragingMessagesDisabled:
           json['areEcouragingMessagesDisabled'] as bool,
     );
@@ -25,5 +27,6 @@ Map<String, dynamic> _$$_ProfileToJson(_$_Profile instance) =>
       'id': instance.id,
       'userId': instance.userId,
       'createdAt': instance.createdAt,
+      'dailyStreak': instance.dailyStreak.toJson(),
       'areEcouragingMessagesDisabled': instance.areEcouragingMessagesDisabled,
     };

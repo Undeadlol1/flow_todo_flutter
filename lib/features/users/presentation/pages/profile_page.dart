@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
 
-import '../../../authentification/presentation/cubit/authentification_cubit.dart';
 import '../../../common/presentation/page_layout_and_dependencies.dart';
 
 class ProfilePage extends StatelessWidget {

@@ -3,6 +3,13 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_done_to
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../test_utilities/fixtures/task_fixture.dart';
+
+class _MockTasksDoneTodayCubit extends Mock implements TasksDoneTodayCubit {}
+
+final _MockTasksDoneTodayCubit _mockTasksDoneTodayCubit = _MockTasksDoneTodayCubit();
 
 void main() {
   group('GIVEN TasksDoneToday', () {
@@ -10,20 +17,24 @@ void main() {
       testWidgets(
         'THEN displays how many tasks are done today',
         (tester) async {
+          _mockCubitResponse(TasksDoneTodayState.loaded([taskFixture, taskFixture]));
+
           await tester.pumpWithDependencies(const TasksDoneToday());
 
-          expect(find.text('Wins today: 0'), findsOneWidget);
+          expect(find.textContaining('Wins today: 2'), findsOneWidget);
         },
       );
 
-      // testWidgets(
-      //   'THEN displays progress indicator',
-      //   (tester) async {
-      //     await tester.pumpWithDependencies(const TasksDoneToday());
+      testWidgets(
+        'THEN displays progress indicator',
+        (tester) async {
+          _mockCubitResponse(TasksDoneTodayState.loaded([]));
 
-      //     expect(find.byType(LinearProgressIndicator), findsOneWidget);
-      //   },
-      // );
+          await tester.pumpWithDependencies(const TasksDoneToday());
+
+          expect(find.byType(LinearProgressIndicator), findsOneWidget);
+        },
+      );
 
       // testWidgets(
       //   'THEN displays daily streak',
@@ -37,11 +48,17 @@ void main() {
   });
 }
 
+void _mockCubitResponse(TasksDoneTodayState state) {
+  when(() => _mockTasksDoneTodayCubit.close()).thenAnswer((_) async {});
+  when(() => _mockTasksDoneTodayCubit.state).thenAnswer((_) => state);
+  when(() => _mockTasksDoneTodayCubit.stream).thenAnswer((_) => Stream.value(state));
+}
+
 extension _PumpWithScaffold on WidgetTester {
   Future<void> pumpWithDependencies(Widget child) {
     return pumpWidget(
-      BlocProvider(
-        create: (context) => TasksDoneTodayCubit(),
+      BlocProvider<TasksDoneTodayCubit>(
+        create: (context) => _mockTasksDoneTodayCubit,
         child: Directionality(
           textDirection: TextDirection.ltr,
           child: child,

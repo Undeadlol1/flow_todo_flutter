@@ -1,5 +1,4 @@
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_done_today.dart';
 
 import '../../../common/domain/use_cases/go_to_main_page.dart';
 import '../../../spaced_repetition/domain/entities/confidence.dart';
@@ -30,8 +29,7 @@ class MakeStepForwardOnTheTask {
     required Confidence howBigWasTheStep,
     bool isTaskDone = false,
   }) async {
-    final pointsToAdd =
-        _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
+    final pointsToAdd = _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
     final nextRepetition = nextRepetitionCalculator(
       task: task,
       confidence: howBigWasTheStep,
@@ -51,8 +49,7 @@ class MakeStepForwardOnTheTask {
     await updateTaskRepository.call(task);
   }
 
-  int _calculateAmountOfPointsToAdd(
-      bool isTaskDone, Confidence howBigWasTheStep) {
+  int _calculateAmountOfPointsToAdd(bool isTaskDone, Confidence howBigWasTheStep) {
     return isTaskDone
         ? 50
         : howBigWasTheStep == Confidence.good
