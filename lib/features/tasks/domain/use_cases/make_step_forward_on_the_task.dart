@@ -1,3 +1,6 @@
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_done_today.dart';
+
 import '../../../common/domain/use_cases/go_to_main_page.dart';
 import '../../../spaced_repetition/domain/entities/confidence.dart';
 import '../../../spaced_repetition/domain/services/next_repetition_calculator.dart';
@@ -10,12 +13,14 @@ class MakeStepForwardOnTheTask {
   final TasksCubit tasksCubit;
   final GoToMainPage goToMainPage;
   final AddPointsToViewer addPointsToViewer;
+  final TasksDoneTodayCubit tasksDoneTodayCubit;
   final UpdateTaskRepository updateTaskRepository;
   final NextRepetitionCalculator nextRepetitionCalculator;
   const MakeStepForwardOnTheTask({
     required this.tasksCubit,
     required this.goToMainPage,
     required this.addPointsToViewer,
+    required this.tasksDoneTodayCubit,
     required this.updateTaskRepository,
     required this.nextRepetitionCalculator,
   });
@@ -38,6 +43,8 @@ class MakeStepForwardOnTheTask {
     task.isDone = isTaskDone;
     task.dueAt = nextRepetition.dueAt;
     task.repetitionLevel = nextRepetition.repetitionLevel;
+
+    tasksDoneTodayCubit.update([task, ...tasksDoneTodayCubit.state.tasks]);
 
     await goToMainPage();
     await addPointsToViewer(pointsToAdd);

@@ -6,6 +6,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repositor
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -23,6 +24,7 @@ class _MockNextRepetitionCalculator extends Mock
 
 final _tasksCubit = TasksCubit();
 final _mockGoToMainPage = _MockGoToMainPage();
+final _tasksDoneTodayCubit = TasksDoneTodayCubit();
 final _mockAddPointsToViewer = _MockAddPointsToViewer();
 final _mockUpdateTaskRepository = _MockUpdateTaskRepository();
 final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
@@ -30,34 +32,39 @@ final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
 void main() {
   setUp(() => reset(_mockAddPointsToViewer));
 
-  tearDownAll(_tasksCubit.close);
+  tearDownAll(() {
+    _tasksCubit.close();
+    _tasksDoneTodayCubit.close();
+  });
 
   group('GIVEN MakeStepForwardOnTheTask', () {
+    setUp(() => _tasksDoneTodayCubit.update([]));
+
     setUpAll(() {
       registerFallbackValue(taskFixture);
       registerFallbackValue(Confidence.normal);
     });
 
-    testWidgets(
+    test(
       'WHEN isDone argument is false '
       'THEN task is not set as done',
-      (tester) async {
+      () async {
         await _verifyUpdateTaskRepositoryArgument(isTaskMarkedAsDone: false);
       },
     );
 
-    testWidgets(
+    test(
       'WHEN isDone argument is true '
       'THEN task is set as done',
-      (tester) async {
+      () async {
         await _verifyUpdateTaskRepositoryArgument(isTaskMarkedAsDone: true);
       },
     );
 
-    testWidgets(
+    test(
       'WHEN task is set as done '
       'THEN then rewards 50 points',
-      (tester) async {
+      () async {
         _mockTypicalCalls(amountOfPointsToVerify: 50);
 
         await _getUseCase()(
@@ -70,10 +77,10 @@ void main() {
       },
     );
 
-    testWidgets(
+    test(
       'WHEN confidence is normal '
       'THEN then rewards 20 points',
-      (tester) async {
+      () async {
         _mockTypicalCalls(amountOfPointsToVerify: 20);
         final useCase = _getUseCase();
 
@@ -83,16 +90,31 @@ void main() {
       },
     );
 
-    testWidgets(
+    test(
       'WHEN confidence is good '
       'THEN then rewards 30 points',
-      (tester) async {
+      () async {
         _mockTypicalCalls(amountOfPointsToVerify: 30);
         final useCase = _getUseCase();
 
         await useCase(task: taskFixture, howBigWasTheStep: Confidence.good);
 
         verify(() => _mockAddPointsToViewer(30)).called(1);
+      },
+    );
+
+    test(
+      'WHEN called '
+      'THEN puts the task into tasks done today cubit',
+      () async {
+        _mockTypicalCalls(amountOfPointsToVerify: 30);
+
+        await _getUseCase()(
+          task: taskFixture,
+          howBigWasTheStep: Confidence.good,
+        );
+
+        expect(_tasksDoneTodayCubit.state.tasks, hasLength(1));
       },
     );
   });
@@ -134,6 +156,7 @@ MakeStepForwardOnTheTask _getUseCase() {
     tasksCubit: _tasksCubit,
     goToMainPage: _mockGoToMainPage,
     addPointsToViewer: _mockAddPointsToViewer,
+    tasksDoneTodayCubit: _tasksDoneTodayCubit,
     updateTaskRepository: _mockUpdateTaskRepository,
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );

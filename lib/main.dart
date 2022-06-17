@@ -22,6 +22,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/get_tasks
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_creation.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/users/data/get_profile_repository.dart';
@@ -45,6 +46,7 @@ import 'features/pages/presentation/main_page.dart';
 final _tasksCubit = TasksCubit();
 final _profileCubit = ProfileCubit();
 final _authentificationCubit = AuthentificationCubit();
+final TasksDoneTodayCubit _tasksDoneTodayCubit = TasksDoneTodayCubit();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,7 +59,8 @@ void main() async {
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
-      clientId: '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
+      clientId:
+          '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
 
@@ -71,6 +74,7 @@ _setUpDI() {
 
   injector.registerSingleton(_tasksCubit);
   injector.registerSingleton(_profileCubit);
+  injector.registerSingleton(_tasksDoneTodayCubit);
   injector.registerSingleton(FirebaseFirestore.instance);
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(UniqueIdGenerator());
@@ -97,7 +101,8 @@ _setUpDI() {
   injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(DeleteTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
-  injector.registerSingleton(UpdateProfileRepository(firestore: injector.get()));
+  injector
+      .registerSingleton(UpdateProfileRepository(firestore: injector.get()));
   injector.registerSingleton(
     AddPointsToViewer(
       profileCubit: injector.get(),
@@ -109,6 +114,7 @@ _setUpDI() {
       tasksCubit: injector.get(),
       goToMainPage: injector.get(),
       addPointsToViewer: injector.get(),
+      tasksDoneTodayCubit: injector.get(),
       updateTaskRepository: injector.get(),
       nextRepetitionCalculator: injector.get(),
     ),
@@ -172,6 +178,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider(create: (context) => _tasksCubit),
         BlocProvider(create: (context) => _profileCubit),
+        BlocProvider(create: (context) => _tasksDoneTodayCubit),
         BlocProvider(create: (context) => _authentificationCubit),
       ],
       child: Stack(
