@@ -9,10 +9,34 @@ class TasksDoneToday extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TasksDoneTodayCubit, TasksDoneTodayState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            Text('Wins today: ${state.tasks.length.toString()}'),
-          ],
+        const requiredTasksPerDay = 3;
+        final tasksDoneAmount = state.tasks.length;
+        final isStreakAchievedToday = tasksDoneAmount >= requiredTasksPerDay;
+        final progressValue = isStreakAchievedToday ? 1.0 : tasksDoneAmount / requiredTasksPerDay;
+
+        return Card(
+          elevation: 10,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 16,
+              horizontal: 8.0,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Wins today: ${isStreakAchievedToday ? '' : tasksDoneAmount.toString()}'),
+                    if (isStreakAchievedToday) const Icon(Icons.check),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                LinearProgressIndicator(
+                  value: progressValue <= 0 ? 0.01 : progressValue,
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
