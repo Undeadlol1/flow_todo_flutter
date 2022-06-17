@@ -51,10 +51,11 @@ void main() {
       () async {
         final instance = FakeFirebaseFirestore();
         final collection = instance.collection('tasks');
-        await collection.add(_buildTaskMap(userId: _properUserId));
-        await collection.add(_buildTaskMap(userId: _properUserId));
-        await collection.add(_buildTaskMap(userId: ''));
-        await collection.add(_buildTaskMap(userId: _improperUserId));
+        await collection
+            .add(_buildTaskMap(userId: _properUserId))
+            .then((_) => collection.add(_buildTaskMap(userId: _properUserId)))
+            .then((_) => collection.add(_buildTaskMap(userId: '')))
+            .then((_) => collection.add(_buildTaskMap(userId: _improperUserId)));
 
         final result = await GetTasksToDoRepository(firestore: instance).call(
           userId: _properUserId,
@@ -69,8 +70,9 @@ void main() {
       () async {
         final instance = FakeFirebaseFirestore();
         final collection = instance.collection('tasks');
-        await collection.add(_buildTaskMap(userId: _properUserId, isDone: true));
-        await collection.add(_buildTaskMap(userId: _properUserId, isDone: false));
+        await collection
+            .add(_buildTaskMap(userId: _properUserId, isDone: true))
+            .then((_) => collection.add(_buildTaskMap(userId: _properUserId, isDone: false)));
 
         final result = await GetTasksToDoRepository(firestore: instance).call(
           userId: _properUserId,
@@ -90,12 +92,9 @@ void main() {
         final yesterdaysDateInMilliseconds =
             DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch;
 
-        await collection.add(
-          _buildTaskMap(dueAt: tommorowsDateInMilliseconds),
-        );
-        await collection.add(
-          _buildTaskMap(dueAt: yesterdaysDateInMilliseconds),
-        );
+        await collection
+            .add(_buildTaskMap(dueAt: tommorowsDateInMilliseconds))
+            .then((_) => collection.add(_buildTaskMap(dueAt: yesterdaysDateInMilliseconds)));
 
         final result = await GetTasksToDoRepository(firestore: instance).call(
           userId: _properUserId,
