@@ -59,8 +59,7 @@ void main() async {
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
-      clientId:
-          '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
+      clientId: '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
 
@@ -101,8 +100,7 @@ _setUpDI() {
   injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(DeleteTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
-  injector
-      .registerSingleton(UpdateProfileRepository(firestore: injector.get()));
+  injector.registerSingleton(UpdateProfileRepository(firestore: injector.get()));
   injector.registerSingleton(
     AddPointsToViewer(
       profileCubit: injector.get(),
@@ -196,7 +194,7 @@ class _MyAppState extends State<MyApp> {
               WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
             },
           ),
-          ExperienceProgressBar(),
+          const ExperienceProgressBar(),
         ],
       ),
     );
