@@ -3,6 +3,8 @@ import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/pages/presentation/main_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_done_today.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
@@ -20,11 +22,10 @@ void main() {
     await tester.pumpWidget(
       MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (context) => tasksCuibit,
-          ),
           BlocProvider(create: (context) => authCubit),
+          BlocProvider(create: (context) => tasksCuibit),
           BlocProvider(create: (context) => ProfileCubit()),
+          BlocProvider(create: (context) => TasksDoneTodayCubit()),
         ],
         child: const MaterialApp(
           home: MainPage(),
@@ -57,6 +58,15 @@ void main() {
         await _pumpWidget(tester);
 
         expect(find.byType(TasksList), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      "SHOULD display TasksList",
+      (WidgetTester tester) async {
+        await _pumpWidget(tester);
+
+        expect(find.byType(TasksDoneToday), findsOneWidget);
       },
     );
   });

@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_done_today.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -19,11 +20,16 @@ class MainPage extends StatelessWidget {
       child: BlocListener<AuthentificationCubit, AuthentificationState>(
         listener: (context, authState) async {
           if (authState is Authenticated) {
-            GetIt.I<GetTasksToDo>()(userId: authState.user.id);
             GetIt.I<GetProfile>()(userId: authState.user.id);
+            GetIt.I<GetTasksToDo>()(userId: authState.user.id);
           }
         },
-        child: const TasksList(),
+        child: Column(
+          children: const [
+            TasksDoneToday(),
+            TasksList(),
+          ],
+        ),
       ),
     );
   }
