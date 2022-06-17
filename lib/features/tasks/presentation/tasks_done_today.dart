@@ -26,7 +26,9 @@ class TasksDoneToday extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Wins today: ${isStreakAchievedToday ? '' : tasksDoneAmount.toString()}'),
+                    Text(
+                      'Wins today: ${isStreakAchievedToday ? '' : tasksDoneAmount.toString()}/$requiredTasksPerDay',
+                    ),
                     if (isStreakAchievedToday) const Icon(Icons.check),
                   ],
                 ),
