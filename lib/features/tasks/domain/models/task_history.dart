@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,9 +9,8 @@ class TaskHistory implements TaskHistoryEntity {
   @override
   int? updatedAt;
 
-// TODO
   @override
-  final String actionType;
+  final TaskHistoryActionType actionType;
 
   @override
   String? comment;
@@ -33,8 +33,7 @@ class TaskHistory implements TaskHistoryEntity {
     this.updatedAt,
   });
 
-  factory TaskHistory.fromJson(Map<String, dynamic> json) =>
-      _$TaskHistoryFromJson(json);
+  factory TaskHistory.fromJson(Map<String, dynamic> json) => _$TaskHistoryFromJson(json);
 
   Map<String, dynamic> toJson() => _$TaskHistoryToJson(this);
 }

@@ -1,7 +1,9 @@
+import 'task_history_action_type.dart';
+
 class TaskHistoryEntity {
   final String? taskId;
   final String? comment;
-  final String actionType;
+  final TaskHistoryActionType actionType;
 
   final String? userId;
 
@@ -16,13 +18,4 @@ class TaskHistoryEntity {
     this.userId,
     this.comment,
   });
-  // TODO
-  // actionType:
-  //   | 'postpone'
-  //   | 'updateName'
-  //   | 'doneSubtask'
-  //   | 'updateSubtask'
-  //   | 'stepForward'
-  //   | 'leapForward'
-  //   | 'setDone';
 }

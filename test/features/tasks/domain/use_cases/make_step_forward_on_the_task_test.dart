@@ -10,9 +10,9 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_d
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/fixtures/task_fixture_2.dart';
 
 class _MockGoToMainPage extends Mock implements GoToMainPage {}
 
@@ -188,14 +188,3 @@ MakeStepForwardOnTheTask _getUseCase() {
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );
 }
-
-final taskFixture2 = Task(
-  dueAt: 0,
-  tags: [],
-  history: [],
-  createdAt: 0,
-  isDone: false,
-  title: 'title',
-  userId: '123131',
-  id: const Uuid().v4(),
-);

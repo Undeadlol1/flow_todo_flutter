@@ -35,8 +35,7 @@ class MakeStepForwardOnTheTask {
       confidence: howBigWasTheStep,
     );
 
-    tasksCubit.state.tasks.remove(task);
-    tasksCubit.update(tasksCubit.state.tasks);
+    tasksCubit.removeTask(task);
 
     task.isDone = isTaskDone;
     task.dueAt = nextRepetition.dueAt;

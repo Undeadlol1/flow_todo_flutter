@@ -9,4 +9,9 @@ class TasksCubit extends Cubit<TasksState> {
   void update(List<Task> tasks) {
     emit(TasksUpdated(tasks: tasks));
   }
+
+  void removeTask(Task task) {
+    state.tasks.remove(task);
+    update(state.tasks);
+  }
 }
