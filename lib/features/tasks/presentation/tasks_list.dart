@@ -16,7 +16,7 @@ class TasksList extends StatefulWidget {
   State<TasksList> createState() => _TasksListState();
 }
 
-class _TasksListState extends State<TasksList> {
+class _TasksListState extends State<TasksList> with TickerProviderStateMixin {
   List<Task> _localTasksList = GetIt.I<TasksCubit>().state.tasks;
 
   final _animatedListKey = GlobalKey<AnimatedListState>();

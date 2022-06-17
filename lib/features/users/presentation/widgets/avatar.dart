@@ -17,6 +17,8 @@ class Avatar extends StatelessWidget {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, profileState) {
         if (profileState is ProfileLoaded) {
+          final level = _levelCalculator(profileState.profile?.points ?? 0).value.toString();
+
           return InkWell(
             onTap: () {
               Navigator.of(context).pushNamed(ProfilePage.pathName);
@@ -24,9 +26,7 @@ class Avatar extends StatelessWidget {
             child: Chip(
               visualDensity: VisualDensity.compact,
               avatar: const _Image(),
-              label: Text(
-                _levelCalculator(profileState.profile?.points ?? 0).value.toString(),
-              ),
+              label: Text(level),
             ),
           );
         }

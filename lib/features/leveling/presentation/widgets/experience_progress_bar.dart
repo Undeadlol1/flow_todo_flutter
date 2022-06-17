@@ -5,9 +5,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
-class ExperienceProgressBar extends StatelessWidget {
+class ExperienceProgressBar extends StatefulWidget {
+  const ExperienceProgressBar({Key? key}) : super(key: key);
+
+  @override
+  State<ExperienceProgressBar> createState() => _ExperienceProgressBarState();
+}
+
+class _ExperienceProgressBarState extends State<ExperienceProgressBar>
+    with TickerProviderStateMixin {
   final LevelProgressPercentageCalculator _progressPercentageCalculator = GetIt.I();
-  ExperienceProgressBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
