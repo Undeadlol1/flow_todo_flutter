@@ -1,5 +1,5 @@
 enum TaskHistoryActionType {
-  setDone,
+  doneTask,
   postpone,
   stepForward,
   leapForward,

@@ -1,3 +1,5 @@
+import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 
 import '../../../common/domain/use_cases/go_to_main_page.dart';
@@ -40,6 +42,17 @@ class MakeStepForwardOnTheTask {
     task.isDone = isTaskDone;
     task.dueAt = nextRepetition.dueAt;
     task.repetitionLevel = nextRepetition.repetitionLevel;
+    task.history.add(
+      // TODO date argument is not tested.
+      TaskHistory(
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        actionType: isTaskDone
+            ? TaskHistoryActionType.doneTask
+            : howBigWasTheStep == Confidence.good
+                ? TaskHistoryActionType.leapForward
+                : TaskHistoryActionType.stepForward,
+      ),
+    );
 
     tasksDoneTodayCubit.update([task, ...tasksDoneTodayCubit.state.tasks]);
 

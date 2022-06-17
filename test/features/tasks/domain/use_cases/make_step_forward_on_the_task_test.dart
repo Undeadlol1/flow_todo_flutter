@@ -3,6 +3,7 @@ import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entitie
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/repetition.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
@@ -31,6 +32,7 @@ final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
 
 void main() {
   setUp(() {
+    taskFixture.history = [];
     reset(_mockAddPointsToViewer);
     _tasksDoneTodayCubit.update([]);
   });
@@ -50,7 +52,7 @@ void main() {
       'WHEN isDone argument is false '
       'THEN task is not set as done via repository',
       () async {
-        return _verifyUpdateTaskRepositoryArgument(isTaskMarkedAsDone: false);
+        return _verifyAndReturnUpdateTaskRepositoryArgument(isTaskMarkedAsDone: false);
       },
     );
 
@@ -58,7 +60,48 @@ void main() {
       'WHEN isDone argument is true '
       'THEN task is set as done via repository',
       () async {
-        return _verifyUpdateTaskRepositoryArgument(isTaskMarkedAsDone: true);
+        final taskPassedToRepository =
+            await _verifyAndReturnUpdateTaskRepositoryArgument(isTaskMarkedAsDone: true);
+        _verifyThatProperHistoryWasAddedToTask(
+          task: taskPassedToRepository,
+          actionType: TaskHistoryActionType.doneTask,
+        );
+      },
+    );
+
+    test(
+      'WHEN confidence is normal '
+      'THEN adds task history with proper action type to task via repository',
+      () async {
+        _mockTypicalCalls(amountOfPointsToVerify: 20);
+
+        final taskPassedToRepository = await _verifyAndReturnUpdateTaskRepositoryArgument(
+          isTaskMarkedAsDone: false,
+          confidence: Confidence.normal,
+        );
+
+        _verifyThatProperHistoryWasAddedToTask(
+          task: taskPassedToRepository,
+          actionType: TaskHistoryActionType.stepForward,
+        );
+      },
+    );
+
+    test(
+      'WHEN confidence is good '
+      'THEN adds task history with proper action type to task via repository',
+      () async {
+        _mockTypicalCalls(amountOfPointsToVerify: 30);
+
+        final taskPassedToRepository = await _verifyAndReturnUpdateTaskRepositoryArgument(
+          isTaskMarkedAsDone: false,
+          confidence: Confidence.good,
+        );
+
+        _verifyThatProperHistoryWasAddedToTask(
+          task: taskPassedToRepository,
+          actionType: TaskHistoryActionType.leapForward,
+        );
       },
     );
 
@@ -88,14 +131,6 @@ void main() {
         amountOfPointsToVerify: 30,
         confidence: Confidence.good,
       ),
-    );
-
-    test(
-      'WHEN called '
-      'THEN removes task from state',
-      () async {
-        return _verifyUpdateTaskRepositoryArgument(isTaskMarkedAsDone: true);
-      },
     );
 
     test(
@@ -131,6 +166,14 @@ void main() {
   });
 }
 
+void _verifyThatProperHistoryWasAddedToTask({
+  required Task task,
+  required TaskHistoryActionType actionType,
+}) {
+  expect(task.history, hasLength(1));
+  expect(task.history.first.actionType, actionType);
+}
+
 Future<void> Function() _verifyPointsRewarded({
   required int amountOfPointsToVerify,
   bool isTaskDone = false,
@@ -149,21 +192,22 @@ Future<void> Function() _verifyPointsRewarded({
   };
 }
 
-Future<void> _verifyUpdateTaskRepositoryArgument({
-  required bool isTaskMarkedAsDone,
-}) async {
+Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument(
+    {required bool isTaskMarkedAsDone, Confidence confidence = Confidence.good}) async {
   _mockTypicalCalls(amountOfPointsToVerify: isTaskMarkedAsDone ? 50 : 30);
 
   await _getUseCase()(
     task: taskFixture,
     isTaskDone: isTaskMarkedAsDone,
-    howBigWasTheStep: Confidence.good,
+    howBigWasTheStep: confidence,
   );
 
-  expect(
-    (verify(() => _mockUpdateTaskRepository(captureAny())).captured[0] as Task).isDone,
-    isTaskMarkedAsDone,
-  );
+  final repositoryTaskArgument =
+      (verify(() => _mockUpdateTaskRepository(captureAny())).captured[0] as Task);
+  expect(repositoryTaskArgument.isDone, isTaskMarkedAsDone);
+  expect(repositoryTaskArgument.history, hasLength(1));
+
+  return repositoryTaskArgument;
 }
 
 void _mockTypicalCalls({required int amountOfPointsToVerify}) {

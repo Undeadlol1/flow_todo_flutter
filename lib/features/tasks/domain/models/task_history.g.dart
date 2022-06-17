@@ -27,7 +27,7 @@ Map<String, dynamic> _$TaskHistoryToJson(TaskHistory instance) =>
     };
 
 const _$TaskHistoryActionTypeEnumMap = {
-  TaskHistoryActionType.setDone: 'setDone',
+  TaskHistoryActionType.doneTask: 'doneTask',
   TaskHistoryActionType.postpone: 'postpone',
   TaskHistoryActionType.stepForward: 'stepForward',
   TaskHistoryActionType.leapForward: 'leapForward',
