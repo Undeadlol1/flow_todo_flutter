@@ -69,9 +69,10 @@ class PageLayoutAndDependencies extends StatelessWidget {
       builder: (context, profileState) {
         if (profileState is ProfileLoaded) {
           return Container(
-            padding: const EdgeInsets.all(20),
-            // child: Text('Points: ${profileState.profile.points.toString()}'),
-            child: Text('Points: ${profileState.profile?.points.toString()}'),
+            padding: const EdgeInsets.only(right: 7),
+            child: Chip(
+              label: Text('Points: ${profileState.profile?.points.toString()}'),
+            ),
           );
         }
         return Container();
@@ -108,7 +109,9 @@ class _BottomNavigation extends StatelessWidget {
             filledIcon: Icons.bookmark_rounded,
             outlinedIcon: Icons.bookmark_border_rounded,
           ),
-          BarItem(filledIcon: Icons.favorite_rounded, outlinedIcon: Icons.favorite_border_rounded),
+          BarItem(
+              filledIcon: Icons.favorite_rounded,
+              outlinedIcon: Icons.favorite_border_rounded),
         ],
       ),
     );
