@@ -17,7 +17,8 @@ class TaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final task = (ModalRoute.of(context)!.settings.arguments as TaskPageArguments).task;
+    final task =
+        (ModalRoute.of(context)!.settings.arguments as TaskPageArguments).task;
 
     return PageLayoutAndDependencies(
       child: Column(

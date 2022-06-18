@@ -91,7 +91,8 @@ class _TasksListState extends State<TasksList> with TickerProviderStateMixin {
 
   FutureOr<void> _ensureTasksAreTakenFromCubitWhenWidgetLoaded() {
     setState(() {
-      _localTasksList = BlocProvider.of<TasksCubit>(context, listen: false).state.tasks;
+      _localTasksList =
+          BlocProvider.of<TasksCubit>(context, listen: false).state.tasks;
     });
   }
 }
