@@ -19,7 +19,8 @@ void main() {
       'WHEN error was thrown by firestore THEN returns error',
       () async {
         final mockFirestore = _MockFirebaseFirestore();
-        when(_typicalFirestoreCall(mockFirestore)).thenThrow(Exception('Something went wrong'));
+        when(_typicalFirestoreCall(mockFirestore))
+            .thenThrow(Exception('Something went wrong'));
 
         expect(
           () => GetProfileRepository(firestore: mockFirestore).call(userId: ''),
@@ -33,11 +34,13 @@ void main() {
       'THEN constructs query to firestore properly',
       () async {
         final mockFirestore = _MockFirebaseFirestore();
-        when(_typicalFirestoreCall(mockFirestore))
-            .thenAnswer((_) => null as Future<QuerySnapshot<Map<String, dynamic>>>);
+        when(_typicalFirestoreCall(mockFirestore)).thenAnswer(
+          (_) => null as Future<QuerySnapshot<Map<String, dynamic>>>,
+        );
 
         try {
-          await GetProfileRepository(firestore: mockFirestore).call(userId: _userId);
+          await GetProfileRepository(firestore: mockFirestore)
+              .call(userId: _userId);
         } catch (e) {
           verify(_typicalFirestoreCall(mockFirestore)).called(1);
         }
@@ -50,7 +53,8 @@ void main() {
       () async {
         final instance = FakeFirebaseFirestore();
 
-        final result = await GetProfileRepository(firestore: instance).call(userId: _userId);
+        final result = await GetProfileRepository(firestore: instance)
+            .call(userId: _userId);
 
         expect(result, isNull);
       },
@@ -61,15 +65,15 @@ void main() {
       () async {
         final instance = FakeFirebaseFirestore();
         final collection = instance.collection('profiles');
-        await collection
-            .doc(_userId)
-            .set(profileFixture.copyWith(id: _userId, userId: _userId).toJson());
+        await collection.doc(_userId).set(
+              profileFixture.copyWith(id: _userId, userId: _userId).toJson(),
+            );
 
         final result = await GetProfileRepository(firestore: instance).call(
           userId: _userId,
         );
 
-        log('RESULT: ${result}');
+        log('RESULT: $result');
         log('RESULT: ${result?.dailyStreak}');
 
         expect(result, isA<Profile>());

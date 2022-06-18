@@ -83,19 +83,21 @@ void _stubTasksDoneTodayState(TasksDoneTodayState state) {
 
 extension _PumpWithScaffold on WidgetTester {
   Future<void> pumpWithDependencies(Widget child) {
-    return pumpWidget(MultiBlocProvider(
-      providers: [
-        BlocProvider<ProfileCubit>(
-          create: (context) => _mockProfileCubit,
+    return pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<ProfileCubit>(
+            create: (context) => _mockProfileCubit,
+          ),
+          BlocProvider<TasksDoneTodayCubit>(
+            create: (context) => _mockTasksDoneTodayCubit,
+          ),
+        ],
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: child,
         ),
-        BlocProvider<TasksDoneTodayCubit>(
-          create: (context) => _mockTasksDoneTodayCubit,
-        ),
-      ],
-      child: Directionality(
-        textDirection: TextDirection.ltr,
-        child: child,
       ),
-    ));
+    );
   }
 }

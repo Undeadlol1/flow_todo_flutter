@@ -7,7 +7,11 @@ void main() {
   final detector = StaleTaskDetector();
   final fiveDaysAgo = today.subtract(const Duration(days: 5));
 
-  TaskEntity buildtask({DateTime? createdAt, DateTime? dueAt, DateTime? updatedAt}) {
+  TaskEntity buildtask({
+    DateTime? createdAt,
+    DateTime? dueAt,
+    DateTime? updatedAt,
+  }) {
     return TaskEntity(
       id: 'id',
       tags: [],
@@ -18,7 +22,8 @@ void main() {
       userId: 'userId',
       updatedAt: updatedAt?.millisecondsSinceEpoch,
       dueAt: dueAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
-      createdAt: createdAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
+      createdAt:
+          createdAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
     );
   }
 
@@ -47,11 +52,13 @@ void main() {
       'THEN returns false',
       () {
         expect(
-          detector.isTale(buildtask(
-            updatedAt: today,
-            dueAt: fiveDaysAgo,
-            createdAt: fiveDaysAgo,
-          )),
+          detector.isTale(
+            buildtask(
+              updatedAt: today,
+              dueAt: fiveDaysAgo,
+              createdAt: fiveDaysAgo,
+            ),
+          ),
           isFalse,
         );
       },

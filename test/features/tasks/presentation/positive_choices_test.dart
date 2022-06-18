@@ -17,7 +17,8 @@ void main() {
   group('GIVEN PositiveChoices', () {
     setUpAll(() {
       GetIt.I.registerSingleton<MakeStepForwardOnTheTask>(
-          _mockMakeStepForwardOnATask);
+        _mockMakeStepForwardOnATask,
+      );
     });
 
     tearDownAll(GetIt.I.reset);
@@ -65,18 +66,22 @@ _verifyUseCaseCallOnTap({
   required Confidence confidenceToVerify,
 }) {
   return (WidgetTester tester) async {
-    when(_useCaseCall(
-            confidence: confidenceToVerify,
-            isTaskDone: shouldTaskBeMarkedAsDone))
-        .thenAnswer((_) async {});
+    when(
+      _useCaseCall(
+        confidence: confidenceToVerify,
+        isTaskDone: shouldTaskBeMarkedAsDone,
+      ),
+    ).thenAnswer((_) async {});
 
     await tester.pumpWithDependencies();
     await tester.tap(find.text(buttonText));
 
-    verify(_useCaseCall(
-            confidence: confidenceToVerify,
-            isTaskDone: shouldTaskBeMarkedAsDone))
-        .called(1);
+    verify(
+      _useCaseCall(
+        confidence: confidenceToVerify,
+        isTaskDone: shouldTaskBeMarkedAsDone,
+      ),
+    ).called(1);
   };
 }
 

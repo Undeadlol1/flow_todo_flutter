@@ -21,7 +21,8 @@ class _MockAddPointsToViewer extends Mock implements AddPointsToViewer {}
 
 class _MockUpdateTaskRepository extends Mock implements UpdateTaskRepository {}
 
-class _MockNextRepetitionCalculator extends Mock implements NextRepetitionCalculator {}
+class _MockNextRepetitionCalculator extends Mock
+    implements NextRepetitionCalculator {}
 
 final _tasksCubit = TasksCubit();
 final _mockGoToMainPage = _MockGoToMainPage();
@@ -52,7 +53,9 @@ void main() {
       'WHEN isDone argument is false '
       'THEN task is not set as done via repository',
       () async {
-        return _verifyAndReturnUpdateTaskRepositoryArgument(isTaskMarkedAsDone: false);
+        return _verifyAndReturnUpdateTaskRepositoryArgument(
+          isTaskMarkedAsDone: false,
+        );
       },
     );
 
@@ -61,7 +64,9 @@ void main() {
       'THEN task is set as done via repository',
       () async {
         final taskPassedToRepository =
-            await _verifyAndReturnUpdateTaskRepositoryArgument(isTaskMarkedAsDone: true);
+            await _verifyAndReturnUpdateTaskRepositoryArgument(
+          isTaskMarkedAsDone: true,
+        );
         _verifyThatProperHistoryWasAddedToTask(
           task: taskPassedToRepository,
           actionType: TaskHistoryActionType.doneTask,
@@ -75,7 +80,8 @@ void main() {
       () async {
         _mockTypicalCalls(amountOfPointsToVerify: 20);
 
-        final taskPassedToRepository = await _verifyAndReturnUpdateTaskRepositoryArgument(
+        final taskPassedToRepository =
+            await _verifyAndReturnUpdateTaskRepositoryArgument(
           isTaskMarkedAsDone: false,
           confidence: Confidence.normal,
         );
@@ -93,7 +99,8 @@ void main() {
       () async {
         _mockTypicalCalls(amountOfPointsToVerify: 30);
 
-        final taskPassedToRepository = await _verifyAndReturnUpdateTaskRepositoryArgument(
+        final taskPassedToRepository =
+            await _verifyAndReturnUpdateTaskRepositoryArgument(
           isTaskMarkedAsDone: false,
           confidence: Confidence.good,
         );
@@ -192,8 +199,10 @@ Future<void> Function() _verifyPointsRewarded({
   };
 }
 
-Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument(
-    {required bool isTaskMarkedAsDone, Confidence confidence = Confidence.good}) async {
+Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument({
+  required bool isTaskMarkedAsDone,
+  Confidence confidence = Confidence.good,
+}) async {
   _mockTypicalCalls(amountOfPointsToVerify: isTaskMarkedAsDone ? 50 : 30);
 
   await _getUseCase()(
@@ -203,7 +212,8 @@ Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument(
   );
 
   final repositoryTaskArgument =
-      (verify(() => _mockUpdateTaskRepository(captureAny())).captured[0] as Task);
+      (verify(() => _mockUpdateTaskRepository(captureAny())).captured[0]
+          as Task);
   expect(repositoryTaskArgument.isDone, isTaskMarkedAsDone);
   expect(repositoryTaskArgument.history, hasLength(1));
 
@@ -213,7 +223,8 @@ Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument(
 void _mockTypicalCalls({required int amountOfPointsToVerify}) {
   when(() => _mockGoToMainPage()).thenAnswer((invocation) async {});
   when(() => _mockUpdateTaskRepository(any())).thenAnswer((_) async {});
-  when(() => _mockAddPointsToViewer(amountOfPointsToVerify)).thenAnswer((invocation) async {});
+  when(() => _mockAddPointsToViewer(amountOfPointsToVerify))
+      .thenAnswer((invocation) async {});
   when(
     () => _mockNextRepetitionCalculator(
       task: taskFixture,

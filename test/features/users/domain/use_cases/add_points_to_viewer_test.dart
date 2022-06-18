@@ -90,19 +90,23 @@ void main() {
       await _getUseCase()(10);
 
       verify(
-        () => _mockProfileCubit.setProfile(profileFixture.copyWith(
-          points: 20,
-          experience: 20,
-        )),
+        () => _mockProfileCubit.setProfile(
+          profileFixture.copyWith(
+            points: 20,
+            experience: 20,
+          ),
+        ),
       ).called(1);
     });
   });
 }
 
 void _mockLoadedProfile() {
-  when(() => _mockProfileCubit.state).thenReturn(ProfileLoaded(
-    profile: profileFixture.copyWith(points: 10, experience: 10),
-  ));
+  when(() => _mockProfileCubit.state).thenReturn(
+    ProfileLoaded(
+      profile: profileFixture.copyWith(points: 10, experience: 10),
+    ),
+  );
 }
 
 AddPointsToViewer _getUseCase() {

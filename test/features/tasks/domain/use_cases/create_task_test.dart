@@ -12,10 +12,9 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 
-const _uniqueId = 'unique id 123';
+class _MockAddPointsToUser extends Mock implements AddPointsToViewer {}
 
-// TODO refactor
-final _dateToReturn = DateTime.now().subtract(const Duration(days: 10));
+class _MockCreateTaskRepository extends Mock implements CreateTaskRepository {}
 
 class _FakecUniqueIdGenerator extends Fake implements UniqueIdGenerator {
   @override
@@ -27,20 +26,13 @@ class _FakeGetTodaysDate extends Fake implements GetTodaysDate {
   DateTime call() => _dateToReturn;
 }
 
-class _MockCreateTaskRepository extends Mock implements CreateTaskRepository {}
-
-final _mockCreateTaskRepository = _MockCreateTaskRepository();
-
-final _FakecUniqueIdGenerator _fakecUniqueIdGenerator =
-    _FakecUniqueIdGenerator();
-
+const _uniqueId = 'unique id 123';
 final _tasksCubit = TasksCubit();
-
-class _MockAddPointsToUser extends Mock implements AddPointsToViewer {}
-
-final _mockAddPointsToUser = _MockAddPointsToUser();
-
 final _profileCubit = ProfileCubit();
+final _mockAddPointsToUser = _MockAddPointsToUser();
+final _fakecUniqueIdGenerator = _FakecUniqueIdGenerator();
+final _mockCreateTaskRepository = _MockCreateTaskRepository();
+final _dateToReturn = DateTime.now().subtract(const Duration(days: 10));
 
 void main() {
   UniqueIdGenerator;
@@ -94,19 +86,14 @@ void main() {
     test('calls repository with proper task object', () async {
       await _buildUseCase()(title: taskTitle, userId: userId);
 
-      final capturedArguments =
-          verify(() => _mockCreateTaskRepository(captureAny())).captured;
-      final capturedTaskArgument = capturedArguments.first as Task;
-      expect(
-        capturedArguments.isNotEmpty,
-        isTrue,
-        reason: 'No arguments captured',
-      );
-      expect(capturedTaskArgument, isA<Task>());
-      expect(capturedTaskArgument.id, _uniqueId);
-      expect(capturedTaskArgument.userId, userId);
-      expect(capturedTaskArgument.isDone, isFalse);
-      expect(capturedTaskArgument.title, taskTitle);
+      final capturedTask = verify(() => _mockCreateTaskRepository(captureAny()))
+          .captured
+          .first as Task;
+      expect(capturedTask, isA<Task>());
+      expect(capturedTask.id, _uniqueId);
+      expect(capturedTask.userId, userId);
+      expect(capturedTask.isDone, isFalse);
+      expect(capturedTask.title, taskTitle);
     });
 
     test('calls repository with proper dates in the task', () async {

@@ -127,8 +127,10 @@ _typicalFirestoreCall(_MockFirebaseFirestore mockFirestore) {
         .collection('tasks')
         .where('userId', isEqualTo: userId)
         .where('isDone', isEqualTo: false)
-        .where('dueAt',
-            isLessThanOrEqualTo: DateTime.now().millisecondsSinceEpoch)
+        .where(
+          'dueAt',
+          isLessThanOrEqualTo: DateTime.now().millisecondsSinceEpoch,
+        )
         .limit(100)
         .get();
   };
