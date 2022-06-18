@@ -89,6 +89,7 @@ class _BottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SizedBox();
+    // ignore: dead_code
     return Padding(
       padding: const EdgeInsets.only(bottom: 30),
       child: WaterDropNavBar(
@@ -109,9 +110,7 @@ class _BottomNavigation extends StatelessWidget {
             filledIcon: Icons.bookmark_rounded,
             outlinedIcon: Icons.bookmark_border_rounded,
           ),
-          BarItem(
-              filledIcon: Icons.favorite_rounded,
-              outlinedIcon: Icons.favorite_border_rounded),
+          BarItem(filledIcon: Icons.favorite_rounded, outlinedIcon: Icons.favorite_border_rounded),
         ],
       ),
     );

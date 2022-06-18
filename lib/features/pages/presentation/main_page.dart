@@ -1,4 +1,3 @@
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_done_today.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -6,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
 import '../../common/presentation/page_layout_and_dependencies.dart';
 import '../../tasks/domain/use_cases/get_tasks_to_do.dart';
+import '../../tasks/presentation/tasks_done_today.dart';
 import '../../tasks/presentation/tasks_list.dart';
 import '../../users/domain/use_cases/get_profile.dart';
 
