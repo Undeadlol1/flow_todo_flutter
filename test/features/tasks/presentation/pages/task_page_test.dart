@@ -35,7 +35,14 @@ void main() {
     );
 
     testWidgets(
-      "SHOULD diplay task decisions",
+      'SHOULD display task note',
+      _pumpAndRunCallback(
+        () => expect(find.text(taskFixture.note), findsOneWidget),
+      ),
+    );
+
+    testWidgets(
+      "SHOULD display task decisions",
       _pumpAndRunCallback(() {
         expect(find.byType(WhatDoYouFeelAboutTheTask), findsOneWidget);
       }),

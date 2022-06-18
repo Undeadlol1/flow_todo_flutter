@@ -7,6 +7,7 @@ final taskFixture2 = Task(
   history: [],
   createdAt: 0,
   isDone: false,
+  note: 'a note',
   title: 'title 2',
   userId: 'userId 2',
   id: const Uuid().v4(),

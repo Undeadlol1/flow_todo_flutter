@@ -13,7 +13,8 @@ class Task implements TaskEntity {
   @override
   String title;
   @override
-  String? note;
+  @JsonKey(defaultValue: '')
+  String note;
   @override
   bool isDone;
   @override
@@ -37,14 +38,14 @@ class Task implements TaskEntity {
 
   Task({
     required this.id,
+    required this.tags,
+    required this.note,
     required this.title,
     required this.dueAt,
     required this.isDone,
     required this.userId,
-    required this.createdAt,
     required this.history,
-    required this.tags,
-    this.note,
+    required this.createdAt,
     this.doneAt,
     this.updatedAt,
     this.repetitionLevel,

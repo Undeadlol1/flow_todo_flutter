@@ -7,19 +7,18 @@ void main() {
   final detector = StaleTaskDetector();
   final fiveDaysAgo = today.subtract(const Duration(days: 5));
 
-  TaskEntity buildtask(
-      {DateTime? createdAt, DateTime? dueAt, DateTime? updatedAt}) {
+  TaskEntity buildtask({DateTime? createdAt, DateTime? dueAt, DateTime? updatedAt}) {
     return TaskEntity(
       id: 'id',
-      title: 'title',
-      isDone: false,
-      userId: 'userId',
-      dueAt: dueAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
-      createdAt:
-          createdAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
-      updatedAt: updatedAt?.millisecondsSinceEpoch,
-      history: [],
       tags: [],
+      note: '',
+      history: [],
+      isDone: false,
+      title: 'title',
+      userId: 'userId',
+      updatedAt: updatedAt?.millisecondsSinceEpoch,
+      dueAt: dueAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
+      createdAt: createdAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
     );
   }
 

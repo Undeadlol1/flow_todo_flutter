@@ -6,7 +6,7 @@ class TaskEntity implements UserCreatedDocument {
   @override
   final String id;
   String title;
-  String? note;
+  String note;
   bool isDone;
   int? repetitionLevel;
   int dueAt;
@@ -27,14 +27,14 @@ class TaskEntity implements UserCreatedDocument {
 
   TaskEntity({
     required this.id,
+    required this.tags,
+    required this.note,
     required this.title,
     required this.dueAt,
     required this.isDone,
     required this.userId,
-    required this.createdAt,
     required this.history,
-    required this.tags,
-    this.note,
+    required this.createdAt,
     this.doneAt,
     this.updatedAt,
     this.repetitionLevel,

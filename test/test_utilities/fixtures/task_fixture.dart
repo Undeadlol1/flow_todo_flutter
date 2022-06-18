@@ -7,6 +7,7 @@ final taskFixture = Task(
   isDone: false,
   title: 'title',
   userId: 'userId',
+  note: 'a task note',
   dueAt: DateTime.now().millisecondsSinceEpoch,
   createdAt: DateTime.now().millisecondsSinceEpoch,
 );

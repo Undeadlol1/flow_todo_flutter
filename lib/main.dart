@@ -1,7 +1,9 @@
 import 'dart:async';
+
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
@@ -35,13 +37,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'features/authentification/domain/entities/user.dart';
 import 'features/leveling/domain/services/experience_to_reach_next_level_calculator.dart';
+import 'features/pages/presentation/main_page.dart';
 import 'features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'firebase_options.dart';
-
-import 'features/pages/presentation/main_page.dart';
 
 final _tasksCubit = TasksCubit();
 final _profileCubit = ProfileCubit();
@@ -83,9 +84,11 @@ _setUpDI() {
       levelingConfig: DefaultLevelingConfig(),
     ),
   );
-  injector.registerSingleton(UserLevelCalculator(
-    experienceToReachALevelCalculator: injector.get(),
-  ));
+  injector.registerSingleton(
+    UserLevelCalculator(
+      experienceToReachALevelCalculator: injector.get(),
+    ),
+  );
   injector.registerSingleton(
     LevelProgressPercentageCalculator(
       userLevelCalculator: injector.get(),
@@ -120,24 +123,30 @@ _setUpDI() {
   injector.registerSingleton(const GetTasksToDo());
   injector.registerSingleton(StaleTaskDetector());
   injector.registerSingleton(GetProfileRepository(firestore: injector.get()));
-  injector.registerSingleton(GetProfile(
-    profileCubit: injector.get(),
-    getProfileRepository: injector.get(),
-  ));
-  injector.registerSingleton(CreateTask(
-    tasksCubit: injector.get(),
-    profileCubit: injector.get(),
-    getTodaysDate: injector.get(),
-    addPointsToUser: injector.get(),
-    uniqueIdGenerator: injector.get(),
-    createTaskRepository: injector.get(),
-  ));
-  injector.registerSingleton(DeleteTask(
-    tasksCubit: injector.get(),
-    goToMainPage: injector.get(),
-    addPointsToUser: injector.get(),
-    deleteTaskRepository: injector.get(),
-  ));
+  injector.registerSingleton(
+    GetProfile(
+      profileCubit: injector.get(),
+      getProfileRepository: injector.get(),
+    ),
+  );
+  injector.registerSingleton(
+    CreateTask(
+      tasksCubit: injector.get(),
+      profileCubit: injector.get(),
+      getTodaysDate: injector.get(),
+      addPointsToUser: injector.get(),
+      uniqueIdGenerator: injector.get(),
+      createTaskRepository: injector.get(),
+    ),
+  );
+  injector.registerSingleton(
+    DeleteTask(
+      tasksCubit: injector.get(),
+      goToMainPage: injector.get(),
+      addPointsToUser: injector.get(),
+      deleteTaskRepository: injector.get(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {

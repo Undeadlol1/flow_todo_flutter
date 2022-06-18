@@ -25,11 +25,12 @@ class CreateTask {
   Future<void> call({required String title, required String userId}) async {
     final profileState = profileCubit.state;
     final taskToCreate = Task(
+      tags: [],
+      note: '',
+      history: [],
       title: title,
       isDone: false,
       userId: userId,
-      history: [],
-      tags: [],
       id: uniqueIdGenerator(),
       dueAt: getTodaysDate().millisecondsSinceEpoch,
       createdAt: getTodaysDate().millisecondsSinceEpoch,

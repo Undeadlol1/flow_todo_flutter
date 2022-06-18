@@ -8,19 +8,19 @@ part of 'task.dart';
 
 Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       id: json['id'] as String,
+      tags:
+          (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+              [],
+      note: json['note'] as String? ?? '',
       title: json['name'] as String,
       dueAt: json['dueAt'] as int,
       isDone: json['isDone'] as bool,
       userId: json['userId'] as String,
-      createdAt: json['createdAt'] as int,
       history: (json['history'] as List<dynamic>?)
               ?.map((e) => TaskHistory.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      tags:
-          (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
-              [],
-      note: json['note'] as String?,
+      createdAt: json['createdAt'] as int,
       doneAt: json['doneAt'] as int?,
       updatedAt: json['updatedAt'] as int?,
       repetitionLevel: json['repetitionLevel'] as int?,
