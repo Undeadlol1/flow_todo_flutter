@@ -16,7 +16,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
   }
 
-  void setProfileNotFound() {
+  void setProfileNotFoundOrUnloaded() {
     emit(ProfileNotFound());
   }
 }

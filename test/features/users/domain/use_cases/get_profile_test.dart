@@ -76,7 +76,8 @@ void main() {
 
         await _getUseCase().call(userId: _userId);
 
-        verify(() => _mockProfileCubit.setProfileNotFound()).called(1);
+        verify(() => _mockProfileCubit.setProfileNotFoundOrUnloaded())
+            .called(1);
       },
     );
   });

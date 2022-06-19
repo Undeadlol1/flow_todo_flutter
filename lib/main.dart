@@ -4,6 +4,7 @@ import 'package:build_context_provider/build_context_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/logout.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
@@ -60,7 +61,8 @@ void main() async {
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
-      clientId: '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
+      clientId:
+          '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
 
@@ -76,6 +78,7 @@ _setUpDI() {
   injector.registerSingleton(_profileCubit);
   injector.registerSingleton(_tasksDoneTodayCubit);
   injector.registerSingleton(FirebaseFirestore.instance);
+  injector.registerSingleton(firebase_auth.FirebaseAuth.instance);
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(UniqueIdGenerator());
   injector.registerSingleton(GetTodaysDate());
@@ -103,7 +106,8 @@ _setUpDI() {
   injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(DeleteTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
-  injector.registerSingleton(UpdateProfileRepository(firestore: injector.get()));
+  injector
+      .registerSingleton(UpdateProfileRepository(firestore: injector.get()));
   injector.registerSingleton(
     AddPointsToViewer(
       profileCubit: injector.get(),
@@ -118,6 +122,14 @@ _setUpDI() {
       tasksDoneTodayCubit: injector.get(),
       updateTaskRepository: injector.get(),
       nextRepetitionCalculator: injector.get(),
+    ),
+  );
+  injector.registerSingleton(
+    Logout(
+      tasksCubit: injector.get(),
+      profileCubit: injector.get(),
+      firebaseAuth: injector.get(),
+      authentificationCubit: injector.get(),
     ),
   );
   injector.registerSingleton(const GetTasksToDo());
@@ -213,7 +225,7 @@ class _MyAppState extends State<MyApp> {
     firebase_auth.FirebaseAuth.instance.userChanges().listen((event) {
       if (event == null) {
         _tasksCubit.update([]);
-        _profileCubit.setProfileNotFound();
+        _profileCubit.setProfileNotFoundOrUnloaded();
         _authentificationCubit.setNotAuthenticated();
       } else {
         _authentificationCubit.setUser(

@@ -15,7 +15,7 @@ class GetProfile {
     return getProfileRepository(userId: userId).then(
       (profile) {
         if (profile == null) {
-          profileCubit.setProfileNotFound();
+          profileCubit.setProfileNotFoundOrUnloaded();
         } else {
           profileCubit.setProfile(profile);
         }
