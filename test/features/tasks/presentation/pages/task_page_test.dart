@@ -3,6 +3,7 @@ import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/what_do_you_feel_about_the_task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_note.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,6 +47,18 @@ void main() {
       _pumpAndRunCallback(() {
         expect(find.byType(WhatDoYouFeelAboutTheTask), findsOneWidget);
       }),
+    );
+
+    testWidgets(
+      'SHOULD display task note',
+      _pumpAndRunCallback(
+        () => expect(
+          find.byWidgetPredicate(
+            (widget) => widget is UpsertNote && widget.note == taskFixture.note,
+          ),
+          findsOneWidget,
+        ),
+      ),
     );
   });
 }

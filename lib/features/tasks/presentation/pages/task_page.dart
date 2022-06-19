@@ -5,6 +5,7 @@ import '../../../common/presentation/page_layout_and_dependencies.dart';
 import '../../domain/models/task.dart';
 import '../../domain/use_cases/delete_task.dart';
 import '../what_do_you_feel_about_the_task.dart';
+import '../widgets/upsert_note.dart';
 
 class TaskPageArguments {
   final Task task;
@@ -23,16 +24,23 @@ class TaskPage extends StatelessWidget {
     return PageLayoutAndDependencies(
       child: Column(
         children: [
-          SelectableText(task.title),
           const SizedBox(height: 20),
-          const WhatDoYouFeelAboutTheTask(),
+          SelectableText(task.title),
           if (task.note.isNotEmpty)
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(task.note),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Card(
+                elevation: 10,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: UpsertNote(
+                    note: task.note,
+                  ),
+                ),
               ),
             ),
+          const SizedBox(height: 20),
+          const WhatDoYouFeelAboutTheTask(),
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () => GetIt.I<DeleteTask>()(task),
