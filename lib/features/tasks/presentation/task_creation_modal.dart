@@ -17,8 +17,6 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
 
   String? _formError;
 
-  final _createTask = GetIt.I<CreateTask>();
-
   final _form = FormGroup(
     {
       _formControlName: FormControl<String>(
@@ -81,7 +79,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
       setState(() => _formError = null);
 
       try {
-        await _createTask(
+        await GetIt.I<CreateTask>()(
           title: inputText,
           userId: authState.user.id,
         );

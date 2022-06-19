@@ -25,8 +25,7 @@ void main() {
 
   group('GIVEN CreateTaskModal', () {
     testWidgets(
-      'WHEN text input is submitted '
-      'THEN calls use case',
+      'WHEN text input is submitted THEN calls use case',
       (tester) async {
         when(_typicalUseCaseCall).thenAnswer((_) async {});
 
@@ -38,8 +37,7 @@ void main() {
     );
 
     testWidgets(
-      'WHEN use case throws error '
-      'THEN error is displayed',
+      'WHEN use case throws error THEN error is displayed',
       (tester) async {
         final exception = Exception('Any error string');
         when(_typicalUseCaseCall).thenThrow(exception);
@@ -66,7 +64,8 @@ Future<void> _pumpWidget(WidgetTester tester) {
   );
 }
 
-Future<void> _typicalUseCaseCall() => _mockCreateTask(title: taskName, userId: _userId);
+Future<void> _typicalUseCaseCall() =>
+    _mockCreateTask(title: taskName, userId: _userId);
 
 Future<void> _submitSomeText(WidgetTester tester) async {
   await tester.enterText(find.byType(TextField), taskName);
