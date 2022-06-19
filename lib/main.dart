@@ -170,6 +170,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late final StreamSubscription authStream;
+
   final _theme = ThemeData.from(
     colorScheme: ColorScheme.fromSeed(
       seedColor: Colors.blue,
@@ -188,8 +190,15 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    authStream = firebase_auth.FirebaseAuth.instance
+        .userChanges()
+        .listen(_syncFirebaseAuthWithAuthenticationCubit);
+  }
 
-    Future.microtask(_syncFirebaseAuthWithAuthenticationCubit);
+  @override
+  void dispose() async {
+    await authStream.cancel();
+    super.dispose();
   }
 
   @override
@@ -222,22 +231,20 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  FutureOr<void> _syncFirebaseAuthWithAuthenticationCubit() {
-    firebase_auth.FirebaseAuth.instance.userChanges().listen((event) {
-      if (event == null) {
-        _tasksCubit.update([]);
-        _profileCubit.setProfileNotFoundOrUnloaded();
-        _authentificationCubit.setNotAuthenticated();
-      } else {
-        _authentificationCubit.setUser(
-          User(
-            id: event.uid,
-            avatar: event.photoURL,
-            email: event.email ?? '',
-            displayName: event.displayName ?? '',
-          ),
-        );
-      }
-    });
+  void _syncFirebaseAuthWithAuthenticationCubit(firebase_auth.User? user) {
+    if (user == null) {
+      _tasksCubit.update([]);
+      _profileCubit.setProfileNotFoundOrUnloaded();
+      _authentificationCubit.setNotAuthenticated();
+    } else {
+      _authentificationCubit.setUser(
+        User(
+          id: user.uid,
+          avatar: user.photoURL,
+          email: user.email ?? '',
+          displayName: user.displayName ?? '',
+        ),
+      );
+    }
   }
 }
