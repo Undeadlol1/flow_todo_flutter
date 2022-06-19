@@ -31,7 +31,8 @@ class MakeStepForwardOnTheTask {
     required Confidence howBigWasTheStep,
     bool isTaskDone = false,
   }) async {
-    final pointsToAdd = _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
+    final pointsToAdd =
+        _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
     final nextRepetition = nextRepetitionCalculator(
       task: task,
       confidence: howBigWasTheStep,
@@ -39,29 +40,36 @@ class MakeStepForwardOnTheTask {
 
     tasksCubit.removeTask(task);
 
-    task.isDone = isTaskDone;
-    task.dueAt = nextRepetition.dueAt;
-    task.repetitionLevel = nextRepetition.repetitionLevel;
-    task.history.add(
-      // TODO date argument is not tested.
-      TaskHistory(
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        actionType: isTaskDone
-            ? TaskHistoryActionType.doneTask
-            : howBigWasTheStep == Confidence.good
-                ? TaskHistoryActionType.leapForward
-                : TaskHistoryActionType.stepForward,
-      ),
+    final updatedTask = task.copyWith(
+      isDone: isTaskDone,
+      dueAt: nextRepetition.dueAt,
+      repetitionLevel: nextRepetition.repetitionLevel,
+      history: [
+        ...task.history,
+        // TODO date argument is not tested.
+        TaskHistory(
+          createdAt: DateTime.now().millisecondsSinceEpoch,
+          actionType: isTaskDone
+              ? TaskHistoryActionType.doneTask
+              : howBigWasTheStep == Confidence.good
+                  ? TaskHistoryActionType.leapForward
+                  : TaskHistoryActionType.stepForward,
+        ),
+      ],
     );
 
-    tasksDoneTodayCubit.update([task, ...tasksDoneTodayCubit.state.tasks]);
+    tasksDoneTodayCubit
+        .update([updatedTask, ...tasksDoneTodayCubit.state.tasks]);
 
     await goToMainPage();
     await addPointsToViewer(pointsToAdd);
-    await updateTaskRepository.call(task);
+    await updateTaskRepository.call(updatedTask);
   }
 
-  int _calculateAmountOfPointsToAdd(bool isTaskDone, Confidence howBigWasTheStep) {
+  int _calculateAmountOfPointsToAdd(
+    bool isTaskDone,
+    Confidence howBigWasTheStep,
+  ) {
     return isTaskDone
         ? 50
         : howBigWasTheStep == Confidence.good

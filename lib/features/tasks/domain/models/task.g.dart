@@ -6,37 +6,37 @@ part of 'task.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Task _$TaskFromJson(Map<String, dynamic> json) => Task(
+_$_Task _$$_TaskFromJson(Map<String, dynamic> json) => _$_Task(
       id: json['id'] as String,
-      tags:
-          (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
-              [],
       note: json['note'] as String? ?? '',
       title: json['name'] as String,
       dueAt: json['dueAt'] as int,
       isDone: json['isDone'] as bool,
       userId: json['userId'] as String,
+      createdAt: json['createdAt'] as int,
+      tags:
+          (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+              [],
       history: (json['history'] as List<dynamic>?)
               ?.map((e) => TaskHistory.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      createdAt: json['createdAt'] as int,
       doneAt: json['doneAt'] as int?,
       updatedAt: json['updatedAt'] as int?,
       repetitionLevel: json['repetitionLevel'] as int?,
     );
 
-Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
+Map<String, dynamic> _$$_TaskToJson(_$_Task instance) => <String, dynamic>{
       'id': instance.id,
-      'userId': instance.userId,
-      'name': instance.title,
       'note': instance.note,
-      'isDone': instance.isDone,
-      'repetitionLevel': instance.repetitionLevel,
+      'name': instance.title,
       'dueAt': instance.dueAt,
-      'doneAt': instance.doneAt,
+      'isDone': instance.isDone,
+      'userId': instance.userId,
       'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
       'tags': instance.tags,
       'history': instance.history.map((e) => e.toJson()).toList(),
+      'doneAt': instance.doneAt,
+      'updatedAt': instance.updatedAt,
+      'repetitionLevel': instance.repetitionLevel,
     };

@@ -6,7 +6,8 @@ part of 'task_history.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TaskHistory _$TaskHistoryFromJson(Map<String, dynamic> json) => TaskHistory(
+_$_TaskHistory _$$_TaskHistoryFromJson(Map<String, dynamic> json) =>
+    _$_TaskHistory(
       actionType:
           $enumDecode(_$TaskHistoryActionTypeEnumMap, json['actionType']),
       createdAt: json['createdAt'] as int,
@@ -16,14 +17,14 @@ TaskHistory _$TaskHistoryFromJson(Map<String, dynamic> json) => TaskHistory(
       updatedAt: json['updatedAt'] as int?,
     );
 
-Map<String, dynamic> _$TaskHistoryToJson(TaskHistory instance) =>
+Map<String, dynamic> _$$_TaskHistoryToJson(_$_TaskHistory instance) =>
     <String, dynamic>{
-      'updatedAt': instance.updatedAt,
       'actionType': _$TaskHistoryActionTypeEnumMap[instance.actionType],
-      'comment': instance.comment,
       'createdAt': instance.createdAt,
       'taskId': instance.taskId,
       'userId': instance.userId,
+      'comment': instance.comment,
+      'updatedAt': instance.updatedAt,
     };
 
 const _$TaskHistoryActionTypeEnumMap = {

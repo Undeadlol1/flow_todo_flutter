@@ -1,57 +1,32 @@
-import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
-import 'package:json_annotation/json_annotation.dart';
+// https://stackoverflow.com/a/71516177
+// ignore_for_file: invalid_annotation_target
+
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../entities/task_entity.dart';
+import 'task_history.dart';
 
+part 'task.freezed.dart';
 part 'task.g.dart';
 
-@JsonSerializable(explicitToJson: true)
-class Task implements TaskEntity {
-  @override
-  final String id, userId;
-  @JsonKey(name: 'name')
-  @override
-  String title;
-  @override
-  @JsonKey(defaultValue: '')
-  String note;
-  @override
-  bool isDone;
-  @override
-  int? repetitionLevel;
-  @override
-  int dueAt;
-  @override
-  int? doneAt;
-  @override
-  final int createdAt;
-  @override
-  int? updatedAt;
-  @override
-  @JsonKey(defaultValue: [])
-  final List<String> tags;
-  @override
-  @JsonKey(defaultValue: [])
-  List<TaskHistory> history;
-  // final bool? isCurrent;
-  // subtasks?: Subtask[];
+@freezed
+@Implements<TaskEntity>()
+class Task with _$Task {
+  @JsonSerializable(explicitToJson: true)
+  const factory Task({
+    required String id,
+    required int dueAt,
+    required bool isDone,
+    required String userId,
+    required int createdAt,
+    @JsonKey(name: 'name') required String title,
+    @JsonKey(defaultValue: '') required String note,
+    @JsonKey(defaultValue: []) required List<String> tags,
+    @JsonKey(defaultValue: []) required List<TaskHistory> history,
+    int? doneAt,
+    int? updatedAt,
+    int? repetitionLevel,
+  }) = _Task;
 
-  Task({
-    required this.id,
-    required this.tags,
-    required this.note,
-    required this.title,
-    required this.dueAt,
-    required this.isDone,
-    required this.userId,
-    required this.history,
-    required this.createdAt,
-    this.doneAt,
-    this.updatedAt,
-    this.repetitionLevel,
-  });
-
-  factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
-
-  Map<String, dynamic> toJson() => _$TaskToJson(this);
+  factory Task.fromJson(Map<String, Object?> json) => _$TaskFromJson(json);
 }

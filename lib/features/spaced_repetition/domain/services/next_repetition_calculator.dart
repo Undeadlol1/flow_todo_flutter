@@ -1,4 +1,4 @@
-import '../../../tasks/domain/entities/task_entity.dart';
+import '../../../tasks/domain/models/task.dart';
 import '../entities/confidence.dart';
 import '../entities/repetition.dart';
 
@@ -8,7 +8,7 @@ class NextRepetitionCalculator {
   get _now => DateTime.now();
 
   Repetition call({
-    required TaskEntity task,
+    required Task task,
     Confidence confidence = Confidence.normal,
   }) {
     final List<DateTime> levels = [

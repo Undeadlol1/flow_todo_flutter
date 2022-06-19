@@ -1,11 +1,11 @@
-import '../entities/task_entity.dart';
+import '../models/task.dart';
 
 class StaleTaskDetector {
   StaleTaskDetector();
 
   get now => DateTime.now();
 
-  bool isTale(TaskEntity task) {
+  bool isTale(Task task) {
     final bool isTaskCreatedLongAgo =
         _differenceInDaysWithToday(task.createdAt) > 3;
     final bool isTaskReadyButNotWorkedOn =

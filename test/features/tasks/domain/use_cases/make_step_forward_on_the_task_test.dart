@@ -33,7 +33,7 @@ final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
 
 void main() {
   setUp(() {
-    taskFixture.history = [];
+    // taskFixture.history = [];
     reset(_mockAddPointsToViewer);
     _tasksDoneTodayCubit.update([]);
   });
