@@ -32,9 +32,10 @@ class TasksDoneToday extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Wins today: ${isStreakAchievedToday ? '' : tasksDoneAmount.toString()}/$requiredTasksPerDay',
+                          'Wins today: ${isStreakAchievedToday ? '' : '${tasksDoneAmount.toString()} / $requiredTasksPerDay'}',
                         ),
-                        if (isStreakAchievedToday) const Icon(Icons.check),
+                        if (isStreakAchievedToday)
+                          const Icon(Icons.check, size: 16),
                       ],
                     ),
                     const SizedBox(height: 20),
