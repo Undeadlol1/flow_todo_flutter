@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/user.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
@@ -16,7 +17,7 @@ import '../../../test_utilities/fakes/fake_user_level_calculator.dart';
 
 void main() {
   final tasksCuibit = TasksCubit();
-  final authCubit = AuthentificationCubit();
+  var authCubit = AuthentificationCubit();
 
   Future<void> _pumpWidget(WidgetTester tester) async {
     await tester.pumpWidget(
@@ -35,6 +36,10 @@ void main() {
   }
 
   group('GIVEN MainPage', () {
+    setUp(() {
+      authCubit = AuthentificationCubit();
+    });
+
     setUpAll(() {
       GetIt.I.registerSingleton(authCubit);
       GetIt.I.registerSingleton(tasksCuibit);
@@ -62,11 +67,28 @@ void main() {
     );
 
     testWidgets(
-      "SHOULD display TasksList",
+      "WHEN user is logged in "
+      "THEN displays TasksDoneToday",
       (WidgetTester tester) async {
+        authCubit.setUser(
+          User(id: 'id', email: 'email', displayName: 'displayName'),
+        );
+
         await _pumpWidget(tester);
 
         expect(find.byType(TasksDoneToday), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      "WHEN user is not logged in "
+      "THEN does not display TasksDoneToday",
+      (WidgetTester tester) async {
+        authCubit.setNotAuthenticated();
+
+        await _pumpWidget(tester);
+
+        expect(find.byType(TasksDoneToday), findsNothing);
       },
     );
   });

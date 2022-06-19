@@ -214,8 +214,8 @@ class _MyAppState extends State<MyApp> {
         alignment: Alignment.bottomCenter,
         children: [
           MaterialApp(
-            title: 'Flow TODO',
             theme: _theme,
+            title: 'Flow TODO',
             darkTheme: _darkTheme,
             initialRoute: MainPage.pathName,
             routes: {

@@ -17,19 +17,21 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageLayoutAndDependencies(
       isDrawerHidden: false,
-      child: BlocListener<AuthentificationCubit, AuthentificationState>(
+      child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
         listener: (context, authState) async {
           if (authState is Authenticated) {
             GetIt.I<GetProfile>()(userId: authState.user.id);
             GetIt.I<GetTasksToDo>()(userId: authState.user.id);
           }
         },
-        child: Column(
-          children: const [
-            TasksDoneToday(),
-            TasksList(),
-          ],
-        ),
+        builder: (context, authState) {
+          return Column(
+            children: [
+              if (authState is Authenticated) const TasksDoneToday(),
+              const TasksList(),
+            ],
+          );
+        },
       ),
     );
   }
