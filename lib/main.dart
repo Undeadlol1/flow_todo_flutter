@@ -47,8 +47,8 @@ import 'firebase_options.dart';
 
 final _tasksCubit = TasksCubit();
 final _profileCubit = ProfileCubit();
+final _tasksDoneTodayCubit = TasksDoneTodayCubit();
 final _authentificationCubit = AuthentificationCubit();
-final TasksDoneTodayCubit _tasksDoneTodayCubit = TasksDoneTodayCubit();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,6 +77,7 @@ _setUpDI() {
   injector.registerSingleton(_tasksCubit);
   injector.registerSingleton(_profileCubit);
   injector.registerSingleton(_tasksDoneTodayCubit);
+  injector.registerSingleton(_authentificationCubit);
   injector.registerSingleton(FirebaseFirestore.instance);
   injector.registerSingleton(firebase_auth.FirebaseAuth.instance);
   injector.registerSingleton(BuildContextProvider());

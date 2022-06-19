@@ -13,19 +13,19 @@ class TasksDoneToday extends StatelessWidget {
       builder: (context, profileState) {
         return BlocBuilder<TasksDoneTodayCubit, TasksDoneTodayState>(
           builder: (context, tasksDoneState) {
-            final int requiredTasksPerDay = profileState.profile?.dailyStreak.perDay ?? 1;
+            final int requiredTasksPerDay =
+                profileState.profile?.dailyStreak.perDay ?? 1;
             final tasksDoneAmount = tasksDoneState.tasks.length;
-            final isStreakAchievedToday = tasksDoneAmount >= requiredTasksPerDay;
-            final progressValue =
-                isStreakAchievedToday ? 1.0 : tasksDoneAmount / requiredTasksPerDay;
+            final isStreakAchievedToday =
+                tasksDoneAmount >= requiredTasksPerDay;
+            final progressValue = isStreakAchievedToday
+                ? 1.0
+                : tasksDoneAmount / requiredTasksPerDay;
 
             return Card(
               elevation: 10,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 8.0,
-                ),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
                     Row(
@@ -41,6 +41,8 @@ class TasksDoneToday extends StatelessWidget {
                     LinearProgressIndicator(
                       value: progressValue <= 0 ? 0.01 : progressValue,
                     ),
+                    const SizedBox(height: 20),
+                    const Text('Won days in a row: 0')
                   ],
                 ),
               ),

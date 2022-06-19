@@ -53,9 +53,12 @@ class PageLayoutAndDependencies extends StatelessWidget {
                 ),
               ),
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => GetIt.I<GoToTaskCreation>()(),
-              child: const Icon(Icons.add),
+            floatingActionButton: Container(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: FloatingActionButton(
+                onPressed: () => GetIt.I<GoToTaskCreation>()(),
+                child: const Icon(Icons.add),
+              ),
             ),
             bottomNavigationBar: const _BottomNavigation(),
           );
@@ -110,7 +113,10 @@ class _BottomNavigation extends StatelessWidget {
             filledIcon: Icons.bookmark_rounded,
             outlinedIcon: Icons.bookmark_border_rounded,
           ),
-          BarItem(filledIcon: Icons.favorite_rounded, outlinedIcon: Icons.favorite_border_rounded),
+          BarItem(
+            filledIcon: Icons.favorite_rounded,
+            outlinedIcon: Icons.favorite_border_rounded,
+          ),
         ],
       ),
     );
