@@ -19,42 +19,40 @@ void main() {
     reset(_firebaseAuth);
     reset(_authentificationCubit);
 
-    when((() => _firebaseAuth.signOut())).thenAnswer((_) async {});
+    when(() => _firebaseAuth.signOut()).thenAnswer((_) async {});
   });
 
   group('GIVEN Logout WHEN called THEN', () {
-    testWidgets('removes tasks from tasks cubit', (tester) async {
-      when(() => _tasksCubit.update([])).thenReturn(null);
+    test(
+      'removes tasks from tasks cubit',
+      _verifyMockCall(() => _tasksCubit.update([])),
+    );
 
-      await _buildUseCase()();
+    test(
+      'clears profile cubit',
+      _verifyMockCall(() => _profileCubit.setProfileNotFoundOrUnloaded()),
+    );
 
-      verify(() => _tasksCubit.update([])).called(1);
-    });
+    test(
+      'clears auth cubit',
+      _verifyMockCall(
+        () => _authentificationCubit.setNotAuthenticated(),
+      ),
+    );
 
-    testWidgets('clears profile cubit', (tester) async {
-      when(() => _profileCubit.setProfileNotFoundOrUnloaded()).thenReturn(null);
-
-      await _buildUseCase()();
-
-      verify(() => _profileCubit.setProfileNotFoundOrUnloaded()).called(1);
-    });
-
-    testWidgets('clears auth cubit', (tester) async {
-      when(() => _authentificationCubit.setNotAuthenticated()).thenReturn(null);
-
-      await _buildUseCase()();
-
-      verify(() => _authentificationCubit.setNotAuthenticated()).called(1);
-    });
-
-    testWidgets('calls firebase signout method', (tester) async {
-      when((() => _firebaseAuth.signOut())).thenAnswer((_) async {});
-
-      await _buildUseCase()();
-
-      verify(() => _firebaseAuth.signOut()).called(1);
-    });
+    test(
+      'calls firebase signout method',
+      _verifyMockCall(() => _firebaseAuth.signOut()),
+    );
   });
+}
+
+Future<void> Function() _verifyMockCall(dynamic Function() funcitonToVerify) {
+  return () {
+    when(funcitonToVerify).thenAnswer((_) async {});
+
+    return _buildUseCase()().then((_) => verify(funcitonToVerify).called(1));
+  };
 }
 
 Logout _buildUseCase() {

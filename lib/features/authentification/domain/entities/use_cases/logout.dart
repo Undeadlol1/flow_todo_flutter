@@ -17,10 +17,9 @@ class Logout {
   });
 
   Future<void> call() async {
-    await firebaseAuth.signOut();
-
     tasksCubit.update([]);
     profileCubit.setProfileNotFoundOrUnloaded();
     authentificationCubit.setNotAuthenticated();
+    await firebaseAuth.signOut();
   }
 }
