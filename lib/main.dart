@@ -25,6 +25,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/get_tasks
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_creation.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/update_task_note.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
@@ -123,6 +124,12 @@ _setUpDI() {
       tasksDoneTodayCubit: injector.get(),
       updateTaskRepository: injector.get(),
       nextRepetitionCalculator: injector.get(),
+    ),
+  );
+  injector.registerSingleton(
+    UpdateTaskNote(
+      tasksCubit: injector.get(),
+      updateTaskRepository: injector.get(),
     ),
   );
   injector.registerSingleton(
