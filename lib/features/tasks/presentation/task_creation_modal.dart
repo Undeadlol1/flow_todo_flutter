@@ -71,11 +71,11 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
 
   void _handleSubmit({required AuthentificationState authState}) async {
     if (_form.valid && authState is Authenticated) {
-      final titleInput = _form.control(_formControlName);
-      String? inputText = titleInput.value as String;
+      final titleFormControl = _form.control(_formControlName);
+      String? inputText = titleFormControl.value as String;
 
-      titleInput.unfocus(touched: false);
-      titleInput.value = null;
+      titleFormControl.unfocus(touched: false);
+      titleFormControl.value = null;
       setState(() => _formError = null);
 
       try {
@@ -84,8 +84,8 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
           userId: authState.user.id,
         );
       } catch (e) {
-        titleInput.focus();
-        titleInput.value = inputText;
+        titleFormControl.focus();
+        titleFormControl.value = inputText;
         setState(() => _formError = e.toString());
       }
     }
@@ -93,10 +93,10 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
 
   Map<String, String> _getValidationMessages(_) {
     return {
+      ValidationMessage.maxLength: 'Too long',
+      ValidationMessage.minLength: 'Too short',
       ValidationMessage.any: 'Something went wrong',
       ValidationMessage.required: 'Should not be empty',
-      ValidationMessage.minLength: 'Too short',
-      ValidationMessage.maxLength: 'Too long',
     };
   }
 
