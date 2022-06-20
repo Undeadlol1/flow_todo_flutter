@@ -69,7 +69,6 @@ class MakeStepForwardOnTheTask {
       await addPointsToViewer(pointsToAdd);
       await updateTaskRepository.call(updatedTask);
     } catch (error) {
-      // TODO
       snackbarService.displaySnackbar(text: error.toString());
     }
   }

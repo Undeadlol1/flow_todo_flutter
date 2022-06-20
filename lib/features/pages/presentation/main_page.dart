@@ -16,6 +16,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageLayoutAndDependencies(
+      isFABHidden: false,
       isDrawerHidden: false,
       child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
         listener: (context, authState) async {

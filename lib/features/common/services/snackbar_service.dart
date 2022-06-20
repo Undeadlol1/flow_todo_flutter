@@ -11,6 +11,8 @@ class SnackbarService {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(text),
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.only(bottom: 20),
           ),
         );
       },

@@ -45,6 +45,16 @@ void main() {
     );
 
     testWidgets(
+      "WHEN special argument "
+      'THEN hides FAB',
+      (WidgetTester tester) async {
+        await _pumpWidget(tester: tester, isFABHidden: true);
+
+        expect(find.byType(FloatingActionButton), findsNothing);
+      },
+    );
+
+    testWidgets(
       "WHEN FAB is tapped "
       'THEN calls a use case',
       (WidgetTester tester) async {
@@ -61,7 +71,11 @@ void main() {
   });
 }
 
-Future<void> _pumpWidget({required WidgetTester tester, bool isDrawerHidden = false}) async {
+Future<void> _pumpWidget({
+  required WidgetTester tester,
+  bool isDrawerHidden = false,
+  bool isFABHidden = false,
+}) async {
   await tester.pumpWidget(
     MultiBlocProvider(
       providers: [
@@ -74,6 +88,7 @@ Future<void> _pumpWidget({required WidgetTester tester, bool isDrawerHidden = fa
       ],
       child: MaterialApp(
         home: PageLayoutAndDependencies(
+          isFABHidden: isFABHidden,
           isDrawerHidden: isDrawerHidden,
           child: Container(),
         ),

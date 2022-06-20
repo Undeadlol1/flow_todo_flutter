@@ -13,10 +13,12 @@ import '../../users/presentation/widgets/avatar.dart';
 
 class PageLayoutAndDependencies extends StatelessWidget {
   final Widget child;
+  final bool? isFABHidden;
   final bool? isDrawerHidden;
   const PageLayoutAndDependencies({
     Key? key,
     required this.child,
+    this.isFABHidden = true,
     this.isDrawerHidden = true,
   }) : super(key: key);
 
@@ -53,13 +55,15 @@ class PageLayoutAndDependencies extends StatelessWidget {
                 ),
               ),
             ),
-            floatingActionButton: Container(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: FloatingActionButton(
-                onPressed: () => GetIt.I<GoToTaskCreation>()(),
-                child: const Icon(Icons.add),
-              ),
-            ),
+            floatingActionButton: isFABHidden == true
+                ? null
+                : Container(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: FloatingActionButton(
+                      onPressed: () => GetIt.I<GoToTaskCreation>()(),
+                      child: const Icon(Icons.add),
+                    ),
+                  ),
             bottomNavigationBar: const _BottomNavigation(),
           );
         },
