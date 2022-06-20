@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
@@ -13,6 +14,7 @@ import '../models/task.dart';
 class MakeStepForwardOnTheTask {
   final TasksCubit tasksCubit;
   final GoToMainPage goToMainPage;
+  final SnackbarService snackbarService;
   final AddPointsToViewer addPointsToViewer;
   final TasksDoneTodayCubit tasksDoneTodayCubit;
   final UpdateTaskRepository updateTaskRepository;
@@ -20,6 +22,7 @@ class MakeStepForwardOnTheTask {
   const MakeStepForwardOnTheTask({
     required this.tasksCubit,
     required this.goToMainPage,
+    required this.snackbarService,
     required this.addPointsToViewer,
     required this.tasksDoneTodayCubit,
     required this.updateTaskRepository,
@@ -61,9 +64,14 @@ class MakeStepForwardOnTheTask {
     tasksDoneTodayCubit
         .update([updatedTask, ...tasksDoneTodayCubit.state.tasks]);
 
-    await goToMainPage();
-    await addPointsToViewer(pointsToAdd);
-    await updateTaskRepository.call(updatedTask);
+    try {
+      await goToMainPage();
+      await addPointsToViewer(pointsToAdd);
+      await updateTaskRepository.call(updatedTask);
+    } catch (error) {
+      // TODO
+      snackbarService.displaySnackbar(text: error.toString());
+    }
   }
 
   int _calculateAmountOfPointsToAdd(
