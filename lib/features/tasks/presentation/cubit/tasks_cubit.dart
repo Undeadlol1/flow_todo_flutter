@@ -6,12 +6,12 @@ part 'tasks_state.dart';
 class TasksCubit extends Cubit<TasksState> {
   TasksCubit() : super(TasksLoading());
 
-  void update(List<Task> tasks) {
+  void updateList(List<Task> tasks) {
     emit(TasksUpdated(tasks: tasks));
   }
 
   void removeTask(Task task) {
     state.tasks.remove(task);
-    update(state.tasks);
+    updateList(state.tasks);
   }
 }

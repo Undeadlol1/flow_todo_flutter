@@ -21,7 +21,7 @@ void main() {
       'WHEN is updated'
       'THEN contains updated tasks list',
       build: () => TasksCubit(),
-      act: (cubit) => cubit.update([taskFixture, taskFixture]),
+      act: (cubit) => cubit.updateList([taskFixture, taskFixture]),
       verify: (cubit) {
         expect(cubit.state, isA<TasksUpdated>());
         expect(cubit.state.tasks, equals([taskFixture, taskFixture]));
@@ -31,7 +31,7 @@ void main() {
     blocTest<TasksCubit, TasksState>(
       'WHEN removeTask method is called'
       'THEN removes the task from the state',
-      build: () => TasksCubit()..update([taskFixture2, taskFixture]),
+      build: () => TasksCubit()..updateList([taskFixture2, taskFixture]),
       act: (cubit) => cubit.removeTask(taskFixture2),
       verify: (cubit) {
         expect(cubit.state, isA<TasksUpdated>());

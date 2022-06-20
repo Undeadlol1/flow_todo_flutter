@@ -40,7 +40,7 @@ class CreateTask {
       addPointsToUser(10);
     }
     tasksCubit.state.tasks.add(taskToCreate);
-    tasksCubit.update(tasksCubit.state.tasks);
+    tasksCubit.updateList(tasksCubit.state.tasks);
 
     return createTaskRepository(taskToCreate);
   }

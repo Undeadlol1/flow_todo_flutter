@@ -184,7 +184,7 @@ void main() {
       'WHEN called '
       'THEN removes task from state',
       () async {
-        _tasksCubit.update([taskFixture, taskFixture2]);
+        _tasksCubit.updateList([taskFixture, taskFixture2]);
         _mockTypicalCalls(amountOfPointsToVerify: 30);
 
         await _getUseCase()(

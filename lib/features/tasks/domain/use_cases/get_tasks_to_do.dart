@@ -10,6 +10,6 @@ class GetTasksToDo {
 
     final tasks = await getTasks(userId: userId);
     tasks.shuffle();
-    tasksCubit.update(tasks.reversed.toList());
+    tasksCubit.updateList(tasks.reversed.toList());
   }
 }

@@ -20,7 +20,7 @@ class DeleteTask {
     goToMainPage();
 
     tasksCubit.state.tasks.remove(task);
-    tasksCubit.update(tasksCubit.state.tasks);
+    tasksCubit.updateList(tasksCubit.state.tasks);
 
     deleteTaskRepository(task);
 

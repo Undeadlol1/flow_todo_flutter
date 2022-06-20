@@ -15,7 +15,7 @@ void main() {
       'WHEN there are no tasks '
       'THEN displays nothing',
       (tester) async {
-        final cubit = TasksCubit()..update([]);
+        final cubit = TasksCubit()..updateList([]);
 
         await tester.pumpWithDependencies(
           tasksCubit: cubit,
@@ -30,7 +30,7 @@ void main() {
       testWidgets(
         'THEN displays exact number of TasksListItem',
         (tester) async {
-          final cubit = TasksCubit()..update([taskFixture, taskFixture]);
+          final cubit = TasksCubit()..updateList([taskFixture, taskFixture]);
 
           await tester.pumpWithDependencies(
             tasksCubit: cubit,
@@ -44,7 +44,7 @@ void main() {
       testWidgets(
         "THEN displays pagination",
         (WidgetTester tester) async {
-          final cubit = TasksCubit()..update([taskFixture, taskFixture]);
+          final cubit = TasksCubit()..updateList([taskFixture, taskFixture]);
 
           await tester.pumpWithDependencies(
             tasksCubit: cubit,

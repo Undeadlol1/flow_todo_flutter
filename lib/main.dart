@@ -248,7 +248,7 @@ class _MyAppState extends State<MyApp> {
 
   void _syncFirebaseAuthWithAuthenticationCubit(firebase_auth.User? user) {
     if (user == null) {
-      _tasksCubit.update([]);
+      _tasksCubit.updateList([]);
       _profileCubit.setProfileNotFoundOrUnloaded();
       _authentificationCubit.setNotAuthenticated();
     } else {
