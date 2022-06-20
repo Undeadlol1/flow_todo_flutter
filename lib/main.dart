@@ -127,6 +127,7 @@ _setupDI() {
     MakeStepForwardOnTheTask(
       tasksCubit: injector.get(),
       goToMainPage: injector.get(),
+      snackbarService: injector.get(),
       addPointsToViewer: injector.get(),
       tasksDoneTodayCubit: injector.get(),
       updateTaskRepository: injector.get(),
