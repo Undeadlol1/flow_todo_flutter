@@ -70,6 +70,8 @@ class MakeStepForwardOnTheTask {
       await updateTaskRepository.call(updatedTask);
     } catch (error) {
       snackbarService.displaySnackbar(text: error.toString());
+
+      tasksCubit.undo();
     }
   }
 

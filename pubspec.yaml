@@ -51,6 +51,7 @@ dependencies:
   liquid_progress_indicator: ^0.4.0
   extended_image: ^6.2.1
   water_drop_nav_bar: ^2.2.0+3
+  replay_bloc: ^0.2.1
 
 dev_dependencies:
   flutter_test:
