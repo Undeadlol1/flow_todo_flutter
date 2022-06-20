@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../test_utilities/fixtures/profile_fixture.dart';
-import '../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/fixtures/profile_fixture.dart';
+import '../../../../test_utilities/fixtures/task_fixture.dart';
 
 class _MockProfileCubit extends Mock implements ProfileCubit {}
 

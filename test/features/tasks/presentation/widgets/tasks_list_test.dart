@@ -7,7 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/fixtures/task_fixture.dart';
+
 
 void main() {
   group('GIVEN TasksList', () {

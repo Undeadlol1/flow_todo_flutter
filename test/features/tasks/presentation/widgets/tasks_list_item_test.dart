@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/fixtures/task_fixture.dart';
 
 class _MockGoToTaskpage extends Mock implements GoToTaskPage {}
 
