@@ -35,10 +35,14 @@ import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_point
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/get_profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/pages/profile_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'features/authentification/domain/entities/user.dart';
 import 'features/leveling/domain/services/experience_to_reach_next_level_calculator.dart';
@@ -54,6 +58,58 @@ final _authentificationCubit = AuthentificationCubit();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await _setupFirebase();
+
+  setupDI();
+
+  final storageDirectory = kIsWeb
+      ? HydratedStorage.webStorageDirectory
+      : await getTemporaryDirectory();
+
+  await Hive.initFlutter();
+  await Hive.openBox('ProfileCubit');
+  // Hive.box('ProfileCubit').add(null);
+
+  final storage = await HydratedStorage.build(
+    storageDirectory: storageDirectory,
+  );
+  HydratedBlocOverrides.runZoned(
+    () => runApp(
+      const MyApp(),
+    ),
+    storage: storage,
+  );
+
+  // final storage = await HydratedStorage.build(
+  //   storageDirectory: storageDirectory,
+  // );
+
+  //   HydratedBlocOverrides.runZoned(
+  //   () => runApp(MyApp(
+  //   )),
+  //   storage: storage,
+  // );
+
+  // HydratedBlocOverrides.runZoned(
+  //   () => runApp(const MyApp()),
+  //   storage: await createStorage(),
+  // );
+  // HydratedBlocOverrides.runZoned(
+  //   () => runApp(const MyApp()),
+  //   storage: storage,
+  // );
+}
+
+createStorage() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  return HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getTemporaryDirectory(),
+  );
+}
+
+Future<void> _setupFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -66,13 +122,9 @@ void main() async {
           '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
-
-  _setUpDI();
-
-  runApp(const MyApp());
 }
 
-_setUpDI() {
+setupDI() {
   final injector = GetIt.I;
 
   injector.registerSingleton(_tasksCubit);

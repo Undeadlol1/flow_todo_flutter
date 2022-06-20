@@ -51,6 +51,10 @@ dependencies:
   liquid_progress_indicator: ^0.4.0
   extended_image: ^6.2.1
   water_drop_nav_bar: ^2.2.0+3
+  hydrated_bloc: ^8.1.0
+  path_provider: ^2.0.11
+  hive: ^2.2.2
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:
