@@ -84,8 +84,8 @@ _setupDI() {
   injector.registerSingleton(_profileCubit);
   injector.registerSingleton(_tasksDoneTodayCubit);
   injector.registerSingleton(_authentificationCubit);
-  injector.registerSingleton(FirebaseFirestore.instance);
-  injector.registerSingleton(firebase_auth.FirebaseAuth.instance);
+  injector.registerFactory(() => FirebaseFirestore.instance);
+  injector.registerFactory(() => firebase_auth.FirebaseAuth.instance);
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(UniqueIdGenerator());
   injector.registerSingleton(GetTodaysDate());
@@ -205,7 +205,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    authStream = firebase_auth.FirebaseAuth.instance
+    authStream = GetIt.I<firebase_auth.FirebaseAuth>()
         .userChanges()
         .listen(_syncFirebaseAuthWithAuthenticationCubit);
   }
