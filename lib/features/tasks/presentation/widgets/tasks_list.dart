@@ -56,9 +56,10 @@ class _TasksListState extends State<TasksList> with TickerProviderStateMixin {
                 );
               },
             ),
-            Pagination(
-              onPageChange: (newPageNumber) {},
-            ),
+            if (tasksState.tasks.isNotEmpty)
+              Pagination(
+                onPageChange: (newPageNumber) {},
+              ),
           ],
         );
       },
