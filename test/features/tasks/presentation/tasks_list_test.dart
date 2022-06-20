@@ -1,7 +1,7 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/pagination.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_list.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_list_item.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';

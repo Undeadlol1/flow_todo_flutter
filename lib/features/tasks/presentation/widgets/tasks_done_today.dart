@@ -2,7 +2,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_d
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../users/presentation/cubit/profile_cubit.dart';
+import '../../../users/presentation/cubit/profile_cubit.dart';
 
 class TasksDoneToday extends StatelessWidget {
   const TasksDoneToday({Key? key}) : super(key: key);

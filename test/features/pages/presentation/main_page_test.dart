@@ -5,8 +5,8 @@ import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_le
 import 'package:flow_todo_flutter_2022/features/pages/presentation/main_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_done_today.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/tasks_list.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_done_today.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

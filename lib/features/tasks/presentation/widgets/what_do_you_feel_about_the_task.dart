@@ -1,6 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/positive_choices.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/positive_choices.dart';
 import 'package:flutter/material.dart';
 
 class WhatDoYouFeelAboutTheTask extends StatelessWidget {

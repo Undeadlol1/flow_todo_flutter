@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import '../../../common/presentation/page_layout_and_dependencies.dart';
 import '../../domain/models/task.dart';
 import '../../domain/use_cases/delete_task.dart';
-import '../what_do_you_feel_about_the_task.dart';
+import '../widgets/what_do_you_feel_about_the_task.dart';
 import '../widgets/upsert_note.dart';
 
 class TaskPageArguments {

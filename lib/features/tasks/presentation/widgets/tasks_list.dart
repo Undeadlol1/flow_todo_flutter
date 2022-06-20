@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../common/presentation/widgets/pagination.dart';
-import '../domain/models/task.dart';
-import 'cubit/tasks_cubit.dart';
+import '../../../common/presentation/widgets/pagination.dart';
+import '../../domain/models/task.dart';
+import '../cubit/tasks_cubit.dart';
 import 'tasks_list_item.dart';
 
 class TasksList extends StatefulWidget {
