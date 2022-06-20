@@ -112,7 +112,8 @@ _setupDI() {
   injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
   injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
   injector.registerSingleton(CreateTaskRepository(firestore: injector.get()));
-  injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
+  injector
+      .registerFactory(() => UpdateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(DeleteTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
   injector
@@ -123,8 +124,8 @@ _setupDI() {
       updateProfileRepository: injector.get(),
     ),
   );
-  injector.registerSingleton(
-    MakeStepForwardOnTheTask(
+  injector.registerFactory(
+    () => MakeStepForwardOnTheTask(
       tasksCubit: injector.get(),
       goToMainPage: injector.get(),
       snackbarService: injector.get(),
