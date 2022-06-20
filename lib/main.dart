@@ -54,6 +54,14 @@ final _authentificationCubit = AuthentificationCubit();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await _setupFirebase();
+
+  _setupDI();
+
+  runApp(const MyApp());
+}
+
+Future<void> _setupFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -66,13 +74,9 @@ void main() async {
           '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
-
-  _setUpDI();
-
-  runApp(const MyApp());
 }
 
-_setUpDI() {
+_setupDI() {
   final injector = GetIt.I;
 
   injector.registerSingleton(_tasksCubit);
