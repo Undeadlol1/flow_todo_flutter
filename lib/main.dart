@@ -8,6 +8,7 @@ import 'package:flow_todo_flutter_2022/features/authentification/domain/entities
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
+import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/entities/default_leveling_config.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
@@ -88,6 +89,8 @@ _setupDI() {
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(UniqueIdGenerator());
   injector.registerSingleton(GetTodaysDate());
+  injector
+      .registerSingleton(SnackbarService(buildContextProvider: injector.get()));
   injector.registerSingleton(
     ExperienceToReachNextLevelCalculator(
       levelingConfig: DefaultLevelingConfig(),

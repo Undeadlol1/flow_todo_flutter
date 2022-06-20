@@ -53,5 +53,4 @@ dart_code_metrics:
     - newline-before-return
     - prefer-trailing-comma
     - no-boolean-literal-compare
-    - prefer-conditional-expressions:
-      break-on: 2
+    - prefer-conditional-expressions
