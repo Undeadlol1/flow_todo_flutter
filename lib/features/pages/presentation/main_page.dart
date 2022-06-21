@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -5,8 +6,8 @@ import 'package:get_it/get_it.dart';
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
 import '../../common/presentation/page_layout_and_dependencies.dart';
 import '../../tasks/domain/use_cases/get_tasks_to_do.dart';
-import '../../tasks/presentation/tasks_done_today.dart';
-import '../../tasks/presentation/tasks_list.dart';
+import '../../tasks/presentation/widgets/tasks_done_today.dart';
+import '../../tasks/presentation/widgets/tasks_list.dart';
 import '../../users/domain/use_cases/get_profile.dart';
 
 class MainPage extends StatelessWidget {
@@ -16,6 +17,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageLayoutAndDependencies(
+      isFABHidden: false,
       isDrawerHidden: false,
       child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
         listener: (context, authState) async {
@@ -28,6 +30,13 @@ class MainPage extends StatelessWidget {
           return Column(
             children: [
               if (authState is Authenticated) const TasksDoneToday(),
+              if (authState is NotAuthenticated)
+                const SizedBox(
+                  height: 500,
+                  child: Center(
+                    child: GoogleSignInButton(),
+                  ),
+                ),
               const TasksList(),
             ],
           );

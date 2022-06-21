@@ -5,9 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/logout.dart';
+import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/sign_in_with_google.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
+import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/entities/default_leveling_config.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
@@ -60,7 +62,7 @@ void main() async {
 
   await _setupFirebase();
 
-  setupDI();
+  _setupDI();
 
   final storageDirectory = kIsWeb
       ? HydratedStorage.webStorageDirectory
@@ -124,18 +126,20 @@ Future<void> _setupFirebase() async {
   ]);
 }
 
-setupDI() {
+_setupDI() {
   final injector = GetIt.I;
 
   injector.registerSingleton(_tasksCubit);
   injector.registerSingleton(_profileCubit);
   injector.registerSingleton(_tasksDoneTodayCubit);
   injector.registerSingleton(_authentificationCubit);
-  injector.registerSingleton(FirebaseFirestore.instance);
-  injector.registerSingleton(firebase_auth.FirebaseAuth.instance);
+  injector.registerFactory(() => FirebaseFirestore.instance);
+  injector.registerFactory(() => firebase_auth.FirebaseAuth.instance);
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(UniqueIdGenerator());
   injector.registerSingleton(GetTodaysDate());
+  injector
+      .registerSingleton(SnackbarService(buildContextProvider: injector.get()));
   injector.registerSingleton(
     ExperienceToReachNextLevelCalculator(
       levelingConfig: DefaultLevelingConfig(),
@@ -157,7 +161,8 @@ setupDI() {
   injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
   injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
   injector.registerSingleton(CreateTaskRepository(firestore: injector.get()));
-  injector.registerSingleton(UpdateTaskRepository(firestore: injector.get()));
+  injector
+      .registerFactory(() => UpdateTaskRepository(firestore: injector.get()));
   injector.registerSingleton(DeleteTaskRepository(firestore: injector.get()));
   injector.registerSingleton(GetTasksToDoRepository(firestore: injector.get()));
   injector
@@ -168,10 +173,11 @@ setupDI() {
       updateProfileRepository: injector.get(),
     ),
   );
-  injector.registerSingleton(
-    MakeStepForwardOnTheTask(
+  injector.registerFactory(
+    () => MakeStepForwardOnTheTask(
       tasksCubit: injector.get(),
       goToMainPage: injector.get(),
+      snackbarService: injector.get(),
       addPointsToViewer: injector.get(),
       tasksDoneTodayCubit: injector.get(),
       updateTaskRepository: injector.get(),
@@ -184,6 +190,7 @@ setupDI() {
       updateTaskRepository: injector.get(),
     ),
   );
+  injector.registerSingleton(SignInWithGoogle(firebaseAuth: injector.get()));
   injector.registerSingleton(
     Logout(
       tasksCubit: injector.get(),
@@ -249,7 +256,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    authStream = firebase_auth.FirebaseAuth.instance
+    authStream = GetIt.I<firebase_auth.FirebaseAuth>()
         .userChanges()
         .listen(_syncFirebaseAuthWithAuthenticationCubit);
   }
@@ -292,7 +299,7 @@ class _MyAppState extends State<MyApp> {
 
   void _syncFirebaseAuthWithAuthenticationCubit(firebase_auth.User? user) {
     if (user == null) {
-      _tasksCubit.update([]);
+      _tasksCubit.updateList([]);
       _profileCubit.setProfileNotFoundOrUnloaded();
       _authentificationCubit.setNotAuthenticated();
     } else {

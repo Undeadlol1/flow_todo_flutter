@@ -26,6 +26,6 @@ class UpdateTaskNote {
     final cubitTasks = tasksCubit.state.tasks;
     final taskIndex = cubitTasks.indexWhere((i) => i.id == currentTask.id);
     cubitTasks[taskIndex] = updatedTask;
-    tasksCubit.update(cubitTasks);
+    tasksCubit.updateList(cubitTasks);
   }
 }

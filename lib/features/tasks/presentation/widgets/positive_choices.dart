@@ -6,11 +6,11 @@ import 'package:get_it/get_it.dart';
 
 class PositiveChoices extends StatelessWidget {
   final Task task;
-  const PositiveChoices({Key? key, required this.task}) : super(key: key);
+  final _makeStepForward = GetIt.I<MakeStepForwardOnTheTask>();
+  PositiveChoices({Key? key, required this.task}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final makeStepForward = GetIt.I<MakeStepForwardOnTheTask>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -18,7 +18,7 @@ class PositiveChoices extends StatelessWidget {
           leading: const Icon(Icons.favorite),
           title: _buildText('Made step forward'),
           onTap: () {
-            makeStepForward(
+            _makeStepForward(
               task: task,
               howBigWasTheStep: Confidence.normal,
             );
@@ -28,7 +28,7 @@ class PositiveChoices extends StatelessWidget {
           leading: const Icon(Icons.emoji_emotions),
           title: _buildText('Advanced a lot'),
           onTap: () {
-            makeStepForward(
+            _makeStepForward(
               task: task,
               howBigWasTheStep: Confidence.good,
             );
@@ -38,7 +38,7 @@ class PositiveChoices extends StatelessWidget {
           leading: const Icon(Icons.check),
           title: _buildText('Done'),
           onTap: () {
-            makeStepForward(
+            _makeStepForward(
               task: task,
               isTaskDone: true,
               howBigWasTheStep: Confidence.good,

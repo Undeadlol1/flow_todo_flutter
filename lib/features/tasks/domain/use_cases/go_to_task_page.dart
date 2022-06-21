@@ -12,7 +12,7 @@ class GoToTaskPage {
     contextProvider.call((BuildContext cx) {
       Navigator.pushNamed(
         cx,
-        '/task',
+        TaskPage.pathName,
         arguments: TaskPageArguments(task: task),
       );
     });

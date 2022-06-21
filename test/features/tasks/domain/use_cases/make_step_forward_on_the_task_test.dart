@@ -14,6 +14,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture_2.dart';
+import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
 
 class _MockGoToMainPage extends Mock implements GoToMainPage {}
 
@@ -27,13 +28,13 @@ class _MockNextRepetitionCalculator extends Mock
 final _tasksCubit = TasksCubit();
 final _mockGoToMainPage = _MockGoToMainPage();
 final _tasksDoneTodayCubit = TasksDoneTodayCubit();
+final _mockSnackbarService = MockSnackbarService();
 final _mockAddPointsToViewer = _MockAddPointsToViewer();
 final _mockUpdateTaskRepository = _MockUpdateTaskRepository();
 final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
 
 void main() {
   setUp(() {
-    // taskFixture.history = [];
     reset(_mockAddPointsToViewer);
     _tasksDoneTodayCubit.update([]);
   });
@@ -49,6 +50,30 @@ void main() {
   });
 
   group('GIVEN MakeStepForwardOnTheTask', () {
+    test(
+      'WHEN soemthing throws an error '
+      'THEN snackbar is displayed',
+      () async {
+        const errorText = 'Something went wrong 123';
+        void snackBarServiceCall() {
+          _mockSnackbarService.displaySnackbar(text: 'Exception: $errorText');
+        }
+
+        _mockTypicalCalls(amountOfPointsToVerify: 20);
+        when(snackBarServiceCall).thenAnswer((_) async {});
+        when(() => _mockUpdateTaskRepository(any()))
+            .thenThrow(Exception(errorText));
+
+        await _getUseCase()(
+          task: taskFixture,
+          isTaskDone: false,
+          howBigWasTheStep: Confidence.normal,
+        );
+
+        verify(snackBarServiceCall).called(1);
+      },
+    );
+
     test(
       'WHEN isDone argument is false '
       'THEN task is not set as done via repository',
@@ -159,7 +184,7 @@ void main() {
       'WHEN called '
       'THEN removes task from state',
       () async {
-        _tasksCubit.update([taskFixture, taskFixture2]);
+        _tasksCubit.updateList([taskFixture, taskFixture2]);
         _mockTypicalCalls(amountOfPointsToVerify: 30);
 
         await _getUseCase()(
@@ -221,10 +246,10 @@ Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument({
 }
 
 void _mockTypicalCalls({required int amountOfPointsToVerify}) {
-  when(() => _mockGoToMainPage()).thenAnswer((invocation) async {});
+  when(() => _mockGoToMainPage()).thenAnswer((_) async {});
   when(() => _mockUpdateTaskRepository(any())).thenAnswer((_) async {});
   when(() => _mockAddPointsToViewer(amountOfPointsToVerify))
-      .thenAnswer((invocation) async {});
+      .thenAnswer((_) async {});
   when(
     () => _mockNextRepetitionCalculator(
       task: taskFixture,
@@ -237,6 +262,7 @@ MakeStepForwardOnTheTask _getUseCase() {
   return MakeStepForwardOnTheTask(
     tasksCubit: _tasksCubit,
     goToMainPage: _mockGoToMainPage,
+    snackbarService: _mockSnackbarService,
     addPointsToViewer: _mockAddPointsToViewer,
     tasksDoneTodayCubit: _tasksDoneTodayCubit,
     updateTaskRepository: _mockUpdateTaskRepository,

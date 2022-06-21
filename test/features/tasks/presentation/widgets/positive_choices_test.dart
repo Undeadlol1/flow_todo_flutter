@@ -1,12 +1,12 @@
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/positive_choices.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/positive_choices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/fixtures/task_fixture.dart';
 
 class _MockMakeStepForwardOnATask extends Mock
     implements MakeStepForwardOnTheTask {}

@@ -2,7 +2,7 @@ import 'package:flow_todo_flutter_2022/features/authentification/presentation/cu
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/what_do_you_feel_about_the_task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/what_do_you_feel_about_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_note.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';

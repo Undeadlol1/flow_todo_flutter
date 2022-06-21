@@ -25,7 +25,7 @@ void main() {
   group('GIVEN Logout WHEN called THEN', () {
     test(
       'removes tasks from tasks cubit',
-      _verifyMockCall(() => _tasksCubit.update([])),
+      _verifyMockCall(() => _tasksCubit.updateList([])),
     );
 
     test(

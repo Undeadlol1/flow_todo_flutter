@@ -30,6 +30,8 @@ linter:
 # https://dart.dev/guides/language/analysis-options
 
 analyzer:
+  errors:
+    invalid_annotation_target: ignore
   exclude:
     - lib/**.g.dart
 
@@ -53,5 +55,4 @@ dart_code_metrics:
     - newline-before-return
     - prefer-trailing-comma
     - no-boolean-literal-compare
-    - prefer-conditional-expressions:
-      break-on: 2
+    - prefer-conditional-expressions

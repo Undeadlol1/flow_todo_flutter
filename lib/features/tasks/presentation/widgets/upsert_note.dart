@@ -5,7 +5,9 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 class UpsertNote extends StatefulWidget {
   final String? note;
-  const UpsertNote({Key? key, this.note}) : super(key: key);
+  final bool autoFocus;
+  const UpsertNote({Key? key, this.note, this.autoFocus = false})
+      : super(key: key);
 
   @override
   State<UpsertNote> createState() => _UpsertNoteState();
@@ -57,6 +59,7 @@ class _UpsertNoteState extends State<UpsertNote> {
                     ReactiveTextField(
                       minLines: 3,
                       maxLines: 10,
+                      autofocus: widget.autoFocus,
                       formControlName: _formControlName,
                       validationMessages: _getValidationMessages,
                       decoration: InputDecoration(

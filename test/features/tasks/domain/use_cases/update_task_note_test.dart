@@ -16,7 +16,7 @@ void main() {
   final updatedtask = taskFixture.copyWith(note: updatedNoteText);
 
   typicallRepositoryCall() => mockUpdateTaskRepository(updatedtask);
-  typicallCubitCall() => tasksCubit.update(
+  typicallCubitCall() => tasksCubit.updateList(
         [taskFixture.copyWith(note: updatedNoteText), taskFixture2],
       );
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 
@@ -9,6 +11,6 @@ class UpdateTaskRepository {
     return firestore
         .collection('tasks')
         .doc(updatedTask.id)
-        .update(updatedTask.toJson());
+        .set(updatedTask.toJson());
   }
 }

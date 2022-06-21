@@ -17,7 +17,7 @@ class Logout {
   });
 
   Future<void> call() async {
-    tasksCubit.update([]);
+    tasksCubit.updateList([]);
     profileCubit.setProfileNotFoundOrUnloaded();
     authentificationCubit.setNotAuthenticated();
     await firebaseAuth.signOut();
