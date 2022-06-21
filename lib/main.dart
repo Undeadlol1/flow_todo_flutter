@@ -190,11 +190,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late final StreamSubscription authStream;
 
-  final _theme = ThemeData.from(
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.blue,
-      primary: Colors.blue,
-      secondary: Colors.lightBlue,
+  final _lightTheme = ThemeData.from(
+    colorScheme: ColorScheme.fromSwatch(
+      accentColor: Colors.grey,
+      primarySwatch: Colors.blueGrey,
     ),
   );
   final _darkTheme = ThemeData(
@@ -232,7 +231,7 @@ class _MyAppState extends State<MyApp> {
         alignment: Alignment.bottomCenter,
         children: [
           MaterialApp(
-            theme: _theme,
+            theme: _lightTheme,
             title: 'Flow TODO',
             darkTheme: _darkTheme,
             initialRoute: MainPage.pathName,
@@ -243,7 +242,13 @@ class _MyAppState extends State<MyApp> {
               WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
             },
           ),
-          const ExperienceProgressBar(),
+          ExperienceProgressBar(
+            themeData: MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+                        .platformBrightness ==
+                    Brightness.light
+                ? _lightTheme
+                : _darkTheme,
+          ),
         ],
       ),
     );
