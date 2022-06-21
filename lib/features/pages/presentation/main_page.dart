@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -29,6 +30,13 @@ class MainPage extends StatelessWidget {
           return Column(
             children: [
               if (authState is Authenticated) const TasksDoneToday(),
+              if (authState is NotAuthenticated)
+                const SizedBox(
+                  height: 500,
+                  child: Center(
+                    child: GoogleSignInButton(),
+                  ),
+                ),
               const TasksList(),
             ],
           );

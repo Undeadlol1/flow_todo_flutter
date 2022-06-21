@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/user.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/pages/presentation/main_page.dart';
@@ -89,6 +90,18 @@ void main() {
         await _pumpWidget(tester);
 
         expect(find.byType(TasksDoneToday), findsNothing);
+      },
+    );
+
+    testWidgets(
+      "WHEN user is not logged in "
+      "THEN does not display TasksDoneToday",
+      (WidgetTester tester) async {
+        authCubit.setNotAuthenticated();
+
+        await _pumpWidget(tester);
+
+        expect(find.byType(GoogleSignInButton), findsOneWidget);
       },
     );
   });

@@ -1,12 +1,12 @@
 import 'package:build_context_provider/build_context_provider.dart';
+import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterfire_ui/auth.dart';
+import 'package:flutterfire_ui/auth.dart' show SignOutButton;
 import 'package:get_it/get_it.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
-import '../../authentification/domain/entities/use_cases/sign_in_with_google.dart';
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
 import '../../tasks/domain/use_cases/go_to_task_creation.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
@@ -143,10 +143,7 @@ class _Drawer extends StatelessWidget {
                 if (authentication is Authenticated)
                   const SignOutButton()
                 else
-                  ElevatedButton(
-                    child: const Text('Sign in with Google'),
-                    onPressed: () => GetIt.I<SignInWithGoogle>()(),
-                  ),
+                  const GoogleSignInButton(),
               ],
             ),
           ),
