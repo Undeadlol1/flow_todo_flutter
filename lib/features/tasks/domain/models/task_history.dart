@@ -8,9 +8,6 @@ part 'task_history.g.dart';
 @freezed
 @Implements<TaskHistoryEntity>()
 class TaskHistory with _$TaskHistory {
-  // https://stackoverflow.com/a/71516177
-  // ignore: invalid_annotation_target
-  @JsonSerializable(explicitToJson: true)
   const factory TaskHistory({
     required TaskHistoryActionType actionType,
     required int createdAt,

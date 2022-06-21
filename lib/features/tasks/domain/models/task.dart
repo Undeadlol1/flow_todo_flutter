@@ -1,6 +1,3 @@
-// https://stackoverflow.com/a/71516177
-// ignore_for_file: invalid_annotation_target
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../entities/task_entity.dart';

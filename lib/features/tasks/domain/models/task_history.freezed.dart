@@ -158,8 +158,7 @@ class __$$_TaskHistoryCopyWithImpl<$Res> extends _$TaskHistoryCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class _$_TaskHistory implements _TaskHistory {
   const _$_TaskHistory(
       {required this.actionType,

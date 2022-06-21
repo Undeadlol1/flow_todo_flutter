@@ -8,12 +8,12 @@ part of 'task.dart';
 
 _$_Task _$$_TaskFromJson(Map<String, dynamic> json) => _$_Task(
       id: json['id'] as String,
-      note: json['note'] as String? ?? '',
-      title: json['name'] as String,
       dueAt: json['dueAt'] as int,
       isDone: json['isDone'] as bool,
       userId: json['userId'] as String,
       createdAt: json['createdAt'] as int,
+      title: json['name'] as String,
+      note: json['note'] as String? ?? '',
       tags:
           (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
               [],
@@ -28,12 +28,12 @@ _$_Task _$$_TaskFromJson(Map<String, dynamic> json) => _$_Task(
 
 Map<String, dynamic> _$$_TaskToJson(_$_Task instance) => <String, dynamic>{
       'id': instance.id,
-      'note': instance.note,
-      'name': instance.title,
       'dueAt': instance.dueAt,
       'isDone': instance.isDone,
       'userId': instance.userId,
       'createdAt': instance.createdAt,
+      'name': instance.title,
+      'note': instance.note,
       'tags': instance.tags,
       'history': instance.history.map((e) => e.toJson()).toList(),
       'doneAt': instance.doneAt,
