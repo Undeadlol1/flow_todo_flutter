@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/logout.dart';
+import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/sign_in_with_google.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
@@ -141,6 +142,7 @@ _setupDI() {
       updateTaskRepository: injector.get(),
     ),
   );
+  injector.registerSingleton(SignInWithGoogle(firebaseAuth: injector.get()));
   injector.registerSingleton(
     Logout(
       tasksCubit: injector.get(),

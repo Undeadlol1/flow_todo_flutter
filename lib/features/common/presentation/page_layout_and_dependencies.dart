@@ -6,6 +6,7 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
+import '../../authentification/domain/entities/use_cases/sign_in_with_google.dart';
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
 import '../../tasks/domain/use_cases/go_to_task_creation.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
@@ -142,9 +143,9 @@ class _Drawer extends StatelessWidget {
                 if (authentication is Authenticated)
                   const SignOutButton()
                 else
-                  const SizedBox(
-                    height: 300,
-                    child: SignInScreen(),
+                  ElevatedButton(
+                    child: const Text('Sign in with Google'),
+                    onPressed: () => GetIt.I<SignInWithGoogle>()(),
                   ),
               ],
             ),
