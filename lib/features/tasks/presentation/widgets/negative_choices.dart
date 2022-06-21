@@ -1,6 +1,9 @@
-import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../domain/models/task.dart';
+import '../../domain/use_cases/delete_task.dart';
+import '../pages/task_page.dart';
 
 class NegativeChoices extends StatelessWidget {
   final Task task;
@@ -11,6 +14,11 @@ class NegativeChoices extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        ListTile(
+          leading: const Icon(Icons.delete),
+          title: _buildText('Reject the task'),
+          onTap: () => GetIt.I<DeleteTask>()(task),
+        ),
         ListTile(
           leading: const Icon(Icons.note_add),
           title: _buildText('Add a note'),
