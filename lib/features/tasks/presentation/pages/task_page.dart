@@ -34,8 +34,9 @@ class TaskPage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: UpsertNote(
-                    autoFocus: args.isNoteEditingVisible,
+                    task: task,
                     note: task.note,
+                    autoFocus: args.isNoteEditingVisible,
                   ),
                 ),
               ),

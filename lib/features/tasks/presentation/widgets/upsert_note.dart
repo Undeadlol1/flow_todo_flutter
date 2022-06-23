@@ -1,13 +1,24 @@
+import 'dart:developer';
+
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+import '../../domain/use_cases/update_task_note.dart';
+
 class UpsertNote extends StatefulWidget {
+  final Task task;
   final String? note;
   final bool autoFocus;
-  const UpsertNote({Key? key, this.note, this.autoFocus = false})
-      : super(key: key);
+  const UpsertNote({
+    Key? key,
+    required this.task,
+    this.note,
+    this.autoFocus = false,
+  }) : super(key: key);
 
   @override
   State<UpsertNote> createState() => _UpsertNoteState();
@@ -19,6 +30,8 @@ class _UpsertNoteState extends State<UpsertNote> {
   String? _formError;
 
   late final FormGroup _form;
+
+  final _padding = const EdgeInsets.symmetric(horizontal: 15);
 
   @override
   void initState() {
@@ -48,7 +61,7 @@ class _UpsertNoteState extends State<UpsertNote> {
     return BlocBuilder<AuthentificationCubit, AuthentificationState>(
       builder: (context, authState) {
         return Padding(
-          padding: _getPadding(),
+          padding: _padding,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -67,7 +80,23 @@ class _UpsertNoteState extends State<UpsertNote> {
                         errorText: _formError,
                         border: const UnderlineInputBorder(),
                       ),
-                      onSubmitted: () => _handleSubmit(authState: authState),
+                    ),
+                    const SizedBox(height: 20),
+                    Builder(
+                      builder: (context) {
+                        final form = ReactiveForm.of(context);
+                        return ElevatedButton(
+                          onPressed: form?.valid ?? false
+                              ? () {
+                                  log('form $form');
+                                  _handleSubmit(
+                                    authState: authState,
+                                  );
+                                }
+                              : null,
+                          child: const Text('Save'),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -79,23 +108,23 @@ class _UpsertNoteState extends State<UpsertNote> {
     );
   }
 
-  void _handleSubmit({required AuthentificationState authState}) async {
+  void _handleSubmit({
+    required AuthentificationState authState,
+  }) async {
     if (_form.valid && authState is Authenticated) {
-      final titleFormControl = _form.control(_formControlName);
-      String? inputText = titleFormControl.value as String;
+      final noteFormControl = _form.control(_formControlName);
+      String? inputText = noteFormControl.value as String;
 
-      titleFormControl.unfocus(touched: false);
-      titleFormControl.value = null;
       setState(() => _formError = null);
 
       try {
-        // await GetIt.I<CreateTask>()(
-        //   title: inputText,
-        //   userId: authState.user.id,
-        // );
+        await GetIt.I<UpdateTaskNote>()(
+          note: inputText,
+          task: widget.task,
+        );
       } catch (e) {
-        titleFormControl.focus();
-        titleFormControl.value = inputText;
+        noteFormControl.focus();
+        noteFormControl.value = inputText;
         setState(() => _formError = e.toString());
       }
     }
@@ -108,15 +137,5 @@ class _UpsertNoteState extends State<UpsertNote> {
       ValidationMessage.any: 'Something went wrong',
       ValidationMessage.required: 'Should not be empty',
     };
-  }
-
-  EdgeInsets _getPadding() {
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-    return EdgeInsets.only(
-      top: 10,
-      left: 15,
-      right: 15,
-      bottom: keyboardHeight + 20,
-    );
   }
 }
