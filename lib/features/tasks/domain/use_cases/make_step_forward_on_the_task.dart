@@ -34,6 +34,7 @@ class MakeStepForwardOnTheTask {
     required Confidence howBigWasTheStep,
     bool isTaskDone = false,
   }) async {
+    final today = DateTime.now().millisecondsSinceEpoch;
     final pointsToAdd =
         _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
     final nextRepetition = nextRepetitionCalculator(
@@ -46,12 +47,14 @@ class MakeStepForwardOnTheTask {
     final updatedTask = task.copyWith(
       isDone: isTaskDone,
       dueAt: nextRepetition.dueAt,
+      // TODO not tested
+      updatedAt: today,
       repetitionLevel: nextRepetition.repetitionLevel,
       history: [
         ...task.history,
         // TODO date argument is not tested.
         TaskHistory(
-          createdAt: DateTime.now().millisecondsSinceEpoch,
+          createdAt: today,
           actionType: isTaskDone
               ? TaskHistoryActionType.doneTask
               : howBigWasTheStep == Confidence.good
