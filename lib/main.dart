@@ -188,7 +188,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late final StreamSubscription authStream;
+  late final StreamSubscription firebaseAuthStream;
 
   final _lightTheme = ThemeData.from(
     colorScheme: ColorScheme.fromSwatch(
@@ -207,14 +207,14 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    authStream = GetIt.I<firebase_auth.FirebaseAuth>()
+    firebaseAuthStream = GetIt.I<firebase_auth.FirebaseAuth>()
         .userChanges()
         .listen(_syncFirebaseAuthWithAuthenticationCubit);
   }
 
   @override
   void dispose() async {
-    await authStream.cancel();
+    await firebaseAuthStream.cancel();
     super.dispose();
   }
 
