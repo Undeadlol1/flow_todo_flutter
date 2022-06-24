@@ -35,9 +35,7 @@ void main() {
 
     test(
       'clears auth cubit',
-      _verifyMockCall(
-        () => _authentificationCubit.setNotAuthenticated(),
-      ),
+      _verifyMockCall(() => _authentificationCubit.setNotAuthenticated()),
     );
 
     test(

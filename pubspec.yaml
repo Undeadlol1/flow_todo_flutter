@@ -53,6 +53,7 @@ dependencies:
   water_drop_nav_bar: ^2.2.0+3
   replay_bloc: ^0.2.1
   flex_color_scheme: ^5.0.1
+  fps_widget: ^1.0.1+1
 
 dev_dependencies:
   flutter_test:

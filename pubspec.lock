@@ -462,6 +462,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.6+1"
+  fps_widget:
+    dependency: "direct main"
+    description:
+      name: fps_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1+1"
   freezed:
     dependency: "direct dev"
     description:
