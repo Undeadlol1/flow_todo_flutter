@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../domain/models/profile.dart';
 
 part 'profile_state.dart';
 
+@singleton
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileLoading());
 
