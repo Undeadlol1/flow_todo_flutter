@@ -13,15 +13,16 @@ import '../features/authentification/presentation/cubit/authentification_cubit.d
     as _i3;
 import '../features/common/services/get_todays_date.dart' as _i9;
 import '../features/common/services/snackbar_service.dart' as _i11;
+import '../features/common/services/unique_id_generator.dart' as _i15;
 import '../features/tasks/data/create_task_repository.dart' as _i4;
 import '../features/tasks/data/delete_task_repository.dart' as _i6;
 import '../features/tasks/data/get_tasks_to_do_repository.dart' as _i8;
-import '../features/tasks/data/update_task_repository.dart' as _i16;
+import '../features/tasks/data/update_task_repository.dart' as _i17;
 import '../features/tasks/presentation/cubit/tasks_cubit.dart' as _i13;
 import '../features/tasks/presentation/cubit/tasks_done_today_cubit.dart'
     as _i14;
 import '../features/users/data/get_profile_repository.dart' as _i7;
-import '../features/users/data/update_profile_repository.dart' as _i15;
+import '../features/users/data/update_profile_repository.dart' as _i16;
 import '../features/users/presentation/cubit/profile_cubit.dart'
     as _i10; // ignore_for_file: unnecessary_lambdas
 
@@ -45,9 +46,10 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       buildContextProvider: get<_i12.BuildContextProvider>()));
   gh.singleton<_i13.TasksCubit>(_i13.TasksCubit());
   gh.singleton<_i14.TasksDoneTodayCubit>(_i14.TasksDoneTodayCubit());
-  gh.factory<_i15.UpdateProfileRepository>(() =>
-      _i15.UpdateProfileRepository(firestore: get<_i5.FirebaseFirestore>()));
-  gh.factory<_i16.UpdateTaskRepository>(
-      () => _i16.UpdateTaskRepository(firestore: get<_i5.FirebaseFirestore>()));
+  gh.singleton<_i15.UniqueIdGenerator>(_i15.UniqueIdGenerator());
+  gh.factory<_i16.UpdateProfileRepository>(() =>
+      _i16.UpdateProfileRepository(firestore: get<_i5.FirebaseFirestore>()));
+  gh.factory<_i17.UpdateTaskRepository>(
+      () => _i17.UpdateTaskRepository(firestore: get<_i5.FirebaseFirestore>()));
   return get;
 }
