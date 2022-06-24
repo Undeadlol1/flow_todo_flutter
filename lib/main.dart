@@ -41,6 +41,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 import 'features/authentification/domain/entities/user.dart';
 import 'features/leveling/domain/services/experience_to_reach_next_level_calculator.dart';
@@ -190,20 +191,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late final StreamSubscription firebaseAuthStream;
 
-  final _lightTheme = ThemeData.from(
-    colorScheme: ColorScheme.fromSwatch(
-      accentColor: Colors.grey,
-      primarySwatch: Colors.blueGrey,
-    ),
-  );
-  final _darkTheme = ThemeData(
-    scaffoldBackgroundColor: Colors.black,
-    colorScheme: const ColorScheme.dark(primary: Colors.blue),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.black,
-    ),
-  );
-
   @override
   void initState() {
     super.initState();
@@ -220,6 +207,40 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final lightTheme = FlexThemeData.light(
+      scheme: FlexScheme.blue,
+      surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+      blendLevel: 20,
+      appBarStyle: FlexAppBarStyle.background,
+      appBarOpacity: 0.95,
+      appBarElevation: 1.5,
+      subThemesData: const FlexSubThemesData(
+        blendOnLevel: 20,
+        blendOnColors: false,
+        navigationBarIndicatorOpacity: 1.00,
+      ),
+      visualDensity: FlexColorScheme.comfortablePlatformDensity,
+      useMaterial3: true,
+      // To use the playground font, add GoogleFonts package and uncomment
+      // fontFamily: GoogleFonts.notoSans().fontFamily,
+    );
+
+    final darkTheme = FlexThemeData.dark(
+      scheme: FlexScheme.blue,
+      surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+      blendLevel: 15,
+      appBarStyle: FlexAppBarStyle.background,
+      appBarOpacity: 0.90,
+      subThemesData: const FlexSubThemesData(
+        blendOnLevel: 30,
+        navigationBarIndicatorOpacity: 1.00,
+      ),
+      visualDensity: FlexColorScheme.comfortablePlatformDensity,
+      useMaterial3: true,
+      // To use the playground font, add GoogleFonts package and uncomment
+      // fontFamily: GoogleFonts.notoSans().fontFamily,
+    );
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => _tasksCubit),
@@ -231,9 +252,9 @@ class _MyAppState extends State<MyApp> {
         alignment: Alignment.bottomCenter,
         children: [
           MaterialApp(
-            theme: _lightTheme,
+            theme: lightTheme,
             title: 'Flow TODO',
-            darkTheme: _darkTheme,
+            darkTheme: darkTheme,
             initialRoute: MainPage.pathName,
             routes: {
               MainPage.pathName: (contex) => const MainPage(),
@@ -246,8 +267,8 @@ class _MyAppState extends State<MyApp> {
             themeData: MediaQueryData.fromWindow(WidgetsBinding.instance.window)
                         .platformBrightness ==
                     Brightness.light
-                ? _lightTheme
-                : _darkTheme,
+                ? lightTheme
+                : darkTheme,
           ),
         ],
       ),
