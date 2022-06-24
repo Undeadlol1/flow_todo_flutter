@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart' show SignOutButton;
 import 'package:get_it/get_it.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
+import 'package:countup/countup.dart';
 
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
 import '../../tasks/domain/use_cases/go_to_task_creation.dart';
@@ -37,7 +38,7 @@ class PageLayoutAndDependencies extends StatelessWidget {
             drawer: isDrawerHidden == true ? null : const _Drawer(),
             appBar: AppBar(
               actions: [
-                _buildPoints(),
+                const _Points(),
                 Avatar(),
                 const SizedBox(width: 8),
               ],
@@ -71,20 +72,49 @@ class PageLayoutAndDependencies extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildPoints() {
-    return BlocBuilder<ProfileCubit, ProfileState>(
-      builder: (context, profileState) {
-        if (profileState is ProfileLoaded) {
-          return Container(
-            padding: const EdgeInsets.only(right: 7),
-            child: Chip(
-              label: Text('Points: ${profileState.profile?.points.toString()}'),
-            ),
-          );
-        }
-        return Container();
+class _Points extends StatefulWidget {
+  const _Points({Key? key}) : super(key: key);
+
+  @override
+  State<_Points> createState() => _PointsState();
+}
+
+class _PointsState extends State<_Points> {
+  double _animateNumbersFrom = 0.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<ProfileCubit, ProfileState>(
+      listener: (_, __) {},
+      listenWhen: (current, next) {
+        final currentPoints = current.profile?.points.toDouble() ?? 0;
+        _animateNumbersFrom = currentPoints;
+        return true;
       },
+      child: BlocBuilder<ProfileCubit, ProfileState>(
+        builder: (context, profileState) {
+          if (profileState is ProfileLoaded) {
+            return Container(
+              padding: const EdgeInsets.only(right: 7),
+              child: Chip(
+                label: Row(
+                  children: [
+                    const Text('Points: '),
+                    Countup(
+                      begin: _animateNumbersFrom,
+                      end: profileState.profile?.points.toDouble() ?? 0,
+                      duration: const Duration(seconds: 3),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+          return Container();
+        },
+      ),
     );
   }
 }
