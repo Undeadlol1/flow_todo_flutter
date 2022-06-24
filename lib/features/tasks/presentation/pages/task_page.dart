@@ -43,6 +43,25 @@ class TaskPage extends StatelessWidget {
             ),
           const SizedBox(height: 20),
           const WhatDoYouFeelAboutTheTask(),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Additional info for developer:'),
+                  const SizedBox(height: 10),
+                  Text('isDone: ${task.isDone}'),
+                  Text(
+                    'dueAt: ${DateTime.fromMillisecondsSinceEpoch(task.dueAt)}',
+                  ),
+                  SelectableText('id: ${task.id}'),
+                  SelectableText('userId: ${task.userId}'),
+                  SelectableText('repetitionLevel: ${task.repetitionLevel}'),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
