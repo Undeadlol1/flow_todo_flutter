@@ -1,4 +1,3 @@
-import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/user.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
@@ -15,9 +14,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../test_utilities/fakes/fake_user_level_calculator.dart';
+import '../../../test_utilities/fixtures/profile_fixture.dart';
 
 void main() {
   final tasksCuibit = TasksCubit();
+  var profileCubit = ProfileCubit();
   var authCubit = AuthentificationCubit();
 
   Future<void> _pumpWidget(WidgetTester tester) async {
@@ -26,7 +27,7 @@ void main() {
         providers: [
           BlocProvider(create: (context) => authCubit),
           BlocProvider(create: (context) => tasksCuibit),
-          BlocProvider(create: (context) => ProfileCubit()),
+          BlocProvider(create: (context) => profileCubit),
           BlocProvider(create: (context) => TasksDoneTodayCubit()),
         ],
         child: const MaterialApp(
@@ -38,6 +39,7 @@ void main() {
 
   group('GIVEN MainPage', () {
     setUp(() {
+      profileCubit = ProfileCubit();
       authCubit = AuthentificationCubit();
     });
 
@@ -71,9 +73,7 @@ void main() {
       "WHEN user is logged in "
       "THEN displays TasksDoneToday",
       (WidgetTester tester) async {
-        authCubit.setUser(
-          User(id: 'id', email: 'email', displayName: 'displayName'),
-        );
+        profileCubit.setProfile(profileFixture);
 
         await _pumpWidget(tester);
 
@@ -85,7 +85,7 @@ void main() {
       "WHEN user is not logged in "
       "THEN does not display TasksDoneToday",
       (WidgetTester tester) async {
-        authCubit.setNotAuthenticated();
+        profileCubit.setProfileNotFoundOrUnloaded();
 
         await _pumpWidget(tester);
 
@@ -95,7 +95,7 @@ void main() {
 
     testWidgets(
       "WHEN user is not logged in "
-      "THEN does not display TasksDoneToday",
+      "THEN displays google sign in button",
       (WidgetTester tester) async {
         authCubit.setNotAuthenticated();
 
