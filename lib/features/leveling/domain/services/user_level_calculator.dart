@@ -16,8 +16,10 @@ class UserLevelCalculator {
         totalExpForCurrentLevel;
       }
       // TODO what if user level is only 0 or 1?
-      totalExpForCurrentLevel += experienceToReachALevelCalculator(functionCalledCount - 1);
-      totalExpToNextLevel += experienceToReachALevelCalculator(functionCalledCount);
+      totalExpForCurrentLevel +=
+          experienceToReachALevelCalculator(functionCalledCount - 1);
+      totalExpToNextLevel +=
+          experienceToReachALevelCalculator(functionCalledCount);
       functionCalledCount++;
     }
 

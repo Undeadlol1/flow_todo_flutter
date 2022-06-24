@@ -17,7 +17,7 @@ class Avatar extends StatelessWidget {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, profileState) {
         if (profileState is ProfileLoaded) {
-          final level = _levelCalculator(profileState.profile?.points ?? 0)
+          final level = _levelCalculator(profileState.profile?.experience ?? 0)
               .value
               .toString();
 
