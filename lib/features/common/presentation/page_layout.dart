@@ -14,13 +14,15 @@ import '../../users/presentation/widgets/avatar.dart';
 
 class PageLayout extends StatelessWidget {
   final Widget child;
-  final bool? isFABHidden;
-  final bool? isDrawerHidden;
+  final bool isFABHidden;
+  final bool isDrawerHidden;
+  final bool areNumberAnimationsSuspended;
   const PageLayout({
     Key? key,
     required this.child,
     this.isFABHidden = true,
     this.isDrawerHidden = true,
+    this.areNumberAnimationsSuspended = true,
   }) : super(key: key);
 
   @override
@@ -37,8 +39,12 @@ class PageLayout extends StatelessWidget {
             drawer: isDrawerHidden == true ? null : const _Drawer(),
             appBar: AppBar(
               actions: [
-                const _Points(),
-                Avatar(),
+                _Points(
+                  areNumberAnimationsSuspended: areNumberAnimationsSuspended,
+                ),
+                Avatar(
+                  areNumberAnimationsSuspended: areNumberAnimationsSuspended,
+                ),
                 const SizedBox(width: 8),
               ],
             ),
@@ -72,45 +78,33 @@ class PageLayout extends StatelessWidget {
   }
 }
 
-class _Points extends StatefulWidget {
-  const _Points({Key? key}) : super(key: key);
-
-  @override
-  State<_Points> createState() => _PointsState();
-}
-
-class _PointsState extends State<_Points> {
-  double _animateNumbersFrom = 0.0;
+class _Points extends StatelessWidget {
+  final bool areNumberAnimationsSuspended;
+  const _Points({Key? key, required this.areNumberAnimationsSuspended})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ProfileCubit, ProfileState>(
-      listener: (_, __) {},
-      listenWhen: (current, next) {
-        final currentPoints = current.profile?.points.toDouble() ?? 0;
-        _animateNumbersFrom = currentPoints;
-        return true;
-      },
-      child: BlocBuilder<ProfileCubit, ProfileState>(
-        builder: (context, profileState) {
-          if (profileState is ProfileLoaded) {
-            return Container(
-              padding: const EdgeInsets.only(right: 7),
-              child: Chip(
-                label: Row(
-                  children: [
-                    const Text('Points: '),
-                    AnimatedNumbers(
-                      number: profileState.profile?.points ?? 0,
-                    ),
-                  ],
-                ),
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (context, profileState) {
+        if (profileState is ProfileLoaded) {
+          return Container(
+            padding: const EdgeInsets.only(right: 7),
+            child: Chip(
+              label: Row(
+                children: [
+                  const Text('Points: '),
+                  AnimatedNumbers(
+                    number: profileState.profile?.points ?? 0,
+                    areNumberAnimationsSuspended: areNumberAnimationsSuspended,
+                  ),
+                ],
               ),
-            );
-          }
-          return Container();
-        },
-      ),
+            ),
+          );
+        }
+        return Container();
+      },
     );
   }
 }

@@ -22,6 +22,7 @@ class TaskPage extends StatelessWidget {
     final task = args.task;
 
     return PageLayout(
+      areNumberAnimationsSuspended: true,
       child: Column(
         children: [
           const SizedBox(height: 20),

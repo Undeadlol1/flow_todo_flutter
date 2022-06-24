@@ -10,8 +10,10 @@ import '../cubit/profile_cubit.dart';
 import '../pages/profile_page.dart';
 
 class Avatar extends StatelessWidget {
+  final bool areNumberAnimationsSuspended;
   final _levelCalculator = GetIt.I<UserLevelCalculator>();
-  Avatar({Key? key}) : super(key: key);
+  Avatar({Key? key, this.areNumberAnimationsSuspended = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +30,12 @@ class Avatar extends StatelessWidget {
             child: Chip(
               visualDensity: VisualDensity.compact,
               avatar: const _Image(),
-              label: AnimatedNumbers(
-                number: level,
-                duration: const Duration(seconds: 1),
-              ),
+              label: areNumberAnimationsSuspended
+                  ? Text(level.toString())
+                  : AnimatedNumbers(
+                      number: level,
+                      duration: const Duration(seconds: 1),
+                    ),
             ),
           );
         }
