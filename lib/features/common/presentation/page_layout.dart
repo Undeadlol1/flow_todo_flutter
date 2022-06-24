@@ -1,11 +1,11 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart' show SignOutButton;
 import 'package:get_it/get_it.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
-import 'package:countup/countup.dart';
 
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
 import '../../tasks/domain/use_cases/go_to_task_creation.dart';
@@ -100,10 +100,8 @@ class _PointsState extends State<_Points> {
                 label: Row(
                   children: [
                     const Text('Points: '),
-                    Countup(
-                      begin: _animateNumbersFrom,
-                      end: profileState.profile?.points.toDouble() ?? 0,
-                      duration: const Duration(seconds: 3),
+                    AnimatedNumbers(
+                      number: profileState.profile?.points ?? 0,
                     ),
                   ],
                 ),

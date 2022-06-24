@@ -56,6 +56,7 @@ dependencies:
   fps_widget: ^1.0.1+1
   injectable: ^1.5.3
   countup: ^0.1.4
+  flutter_hooks: ^0.18.5+1
 
 dev_dependencies:
   flutter_test:
