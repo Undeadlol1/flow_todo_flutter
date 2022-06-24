@@ -52,12 +52,12 @@ class TaskPage extends StatelessWidget {
                   const Text('Additional info for developer:'),
                   const SizedBox(height: 10),
                   Text('isDone: ${task.isDone}'),
+                  SelectableText('repetitionLevel: ${task.repetitionLevel}'),
                   Text(
                     'dueAt: ${DateTime.fromMillisecondsSinceEpoch(task.dueAt)}',
                   ),
                   SelectableText('id: ${task.id}'),
                   SelectableText('userId: ${task.userId}'),
-                  SelectableText('repetitionLevel: ${task.repetitionLevel}'),
                 ],
               ),
             ),
