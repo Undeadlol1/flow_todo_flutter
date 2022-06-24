@@ -12,6 +12,7 @@ import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_point
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../../test_utilities/fakes/fake_get_todays_date.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture_2.dart';
 import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
@@ -27,6 +28,7 @@ class _MockNextRepetitionCalculator extends Mock
 
 final _tasksCubit = TasksCubit();
 final _mockGoToMainPage = _MockGoToMainPage();
+final _fakeGetTodaysDate = FakeGetTodaysDate();
 final _tasksDoneTodayCubit = TasksDoneTodayCubit();
 final _mockSnackbarService = MockSnackbarService();
 final _mockAddPointsToViewer = _MockAddPointsToViewer();
@@ -236,10 +238,15 @@ Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument({
     howBigWasTheStep: confidence,
   );
 
+  final dateToVerify = _fakeGetTodaysDate.returnedValue.millisecondsSinceEpoch;
   final repositoryTaskArgument =
       (verify(() => _mockUpdateTaskRepository(captureAny())).captured[0]
           as Task);
   expect(repositoryTaskArgument.isDone, isTaskMarkedAsDone);
+  expect(repositoryTaskArgument.updatedAt, dateToVerify);
+  if (isTaskMarkedAsDone) {
+    expect(repositoryTaskArgument.doneAt, dateToVerify);
+  }
   expect(repositoryTaskArgument.history, hasLength(1));
 
   return repositoryTaskArgument;
@@ -262,6 +269,7 @@ MakeStepForwardOnTheTask _getUseCase() {
   return MakeStepForwardOnTheTask(
     tasksCubit: _tasksCubit,
     goToMainPage: _mockGoToMainPage,
+    getTodaysDate: _fakeGetTodaysDate,
     snackbarService: _mockSnackbarService,
     addPointsToViewer: _mockAddPointsToViewer,
     tasksDoneTodayCubit: _tasksDoneTodayCubit,

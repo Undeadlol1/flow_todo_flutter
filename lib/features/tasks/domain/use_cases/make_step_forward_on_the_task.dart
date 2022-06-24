@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
@@ -14,6 +15,7 @@ import '../models/task.dart';
 class MakeStepForwardOnTheTask {
   final TasksCubit tasksCubit;
   final GoToMainPage goToMainPage;
+  final GetTodaysDate getTodaysDate;
   final SnackbarService snackbarService;
   final AddPointsToViewer addPointsToViewer;
   final TasksDoneTodayCubit tasksDoneTodayCubit;
@@ -22,6 +24,7 @@ class MakeStepForwardOnTheTask {
   const MakeStepForwardOnTheTask({
     required this.tasksCubit,
     required this.goToMainPage,
+    required this.getTodaysDate,
     required this.snackbarService,
     required this.addPointsToViewer,
     required this.tasksDoneTodayCubit,
@@ -34,7 +37,7 @@ class MakeStepForwardOnTheTask {
     required Confidence howBigWasTheStep,
     bool isTaskDone = false,
   }) async {
-    final today = DateTime.now().millisecondsSinceEpoch;
+    final today = getTodaysDate().millisecondsSinceEpoch;
     final pointsToAdd =
         _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
     final nextRepetition = nextRepetitionCalculator(
@@ -46,13 +49,12 @@ class MakeStepForwardOnTheTask {
 
     final updatedTask = task.copyWith(
       isDone: isTaskDone,
-      dueAt: nextRepetition.dueAt,
-      // TODO not tested
+      doneAt: today,
       updatedAt: today,
+      dueAt: nextRepetition.dueAt,
       repetitionLevel: nextRepetition.repetitionLevel,
       history: [
         ...task.history,
-        // TODO date argument is not tested.
         TaskHistory(
           createdAt: today,
           actionType: isTaskDone
