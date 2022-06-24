@@ -16,7 +16,7 @@ class TasksList extends StatefulWidget {
 
 class _TasksListState extends State<TasksList> {
   int _currentPage = 0;
-  final int _tasksPerPage = 7;
+  final int _tasksPerPage = 9;
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +32,10 @@ class _TasksListState extends State<TasksList> {
           children: [
             ListView.builder(
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
               itemCount: tasksToDisplay.length,
+              physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TasksListItem(task: tasksToDisplay[index]),
-                );
+                return TasksListItem(task: tasksToDisplay[index]);
               },
             ),
             if (tasksState.tasks.isNotEmpty)
