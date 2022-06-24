@@ -1,5 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
@@ -21,7 +21,7 @@ void main() {
       (WidgetTester tester) async {
         await _pumpWidget(tester);
 
-        expect(find.byType(PageLayoutAndDependencies), findsOneWidget);
+        expect(find.byType(PageLayout), findsOneWidget);
       },
     );
   });

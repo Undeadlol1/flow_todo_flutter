@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
-import '../../common/presentation/page_layout_and_dependencies.dart';
+import '../../common/presentation/page_layout.dart';
 import '../../tasks/domain/use_cases/get_tasks_to_do.dart';
 import '../../tasks/presentation/widgets/tasks_done_today.dart';
 import '../../tasks/presentation/widgets/tasks_list.dart';
@@ -17,7 +17,7 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageLayoutAndDependencies(
+    return PageLayout(
       isFABHidden: false,
       isDrawerHidden: false,
       child: BlocConsumer<AuthentificationCubit, AuthentificationState>(

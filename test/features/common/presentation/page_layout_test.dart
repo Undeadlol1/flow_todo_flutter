@@ -1,5 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_creation.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
@@ -20,7 +20,7 @@ void main() {
     GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
   });
 
-  group('GIVEN PageLayoutAndDependencies', () {
+  group('GIVEN PageLayout', () {
     testWidgets(
       'SHOULD display navigation bar',
       (tester) async {
@@ -87,7 +87,7 @@ Future<void> _pumpWidget({
         ),
       ],
       child: MaterialApp(
-        home: PageLayoutAndDependencies(
+        home: PageLayout(
           isFABHidden: isFABHidden,
           isDrawerHidden: isDrawerHidden,
           child: Container(),

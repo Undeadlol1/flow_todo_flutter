@@ -1,4 +1,3 @@
-import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,11 +12,11 @@ import '../../tasks/domain/use_cases/go_to_task_creation.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
 import '../../users/presentation/widgets/avatar.dart';
 
-class PageLayoutAndDependencies extends StatelessWidget {
+class PageLayout extends StatelessWidget {
   final Widget child;
   final bool? isFABHidden;
   final bool? isDrawerHidden;
-  const PageLayoutAndDependencies({
+  const PageLayout({
     Key? key,
     required this.child,
     this.isFABHidden = true,
@@ -51,7 +50,6 @@ class PageLayoutAndDependencies extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       child,
-                      const ListenerThatRunsFunctionsWithBuildContext(),
                     ],
                   ),
                 ),
