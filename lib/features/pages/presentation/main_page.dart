@@ -9,6 +9,7 @@ import '../../tasks/domain/use_cases/get_tasks_to_do.dart';
 import '../../tasks/presentation/widgets/tasks_done_today.dart';
 import '../../tasks/presentation/widgets/tasks_list.dart';
 import '../../users/domain/use_cases/get_profile.dart';
+import '../../users/presentation/cubit/profile_cubit.dart';
 
 class MainPage extends StatelessWidget {
   static const pathName = '/main';
@@ -27,18 +28,22 @@ class MainPage extends StatelessWidget {
           }
         },
         builder: (context, authState) {
-          return Column(
-            children: [
-              if (authState is Authenticated) const TasksDoneToday(),
-              if (authState is NotAuthenticated)
-                const SizedBox(
-                  height: 500,
-                  child: Center(
-                    child: GoogleSignInButton(),
-                  ),
-                ),
-              const TasksList(),
-            ],
+          return BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, profileState) {
+              return Column(
+                children: [
+                  if (profileState is ProfileLoaded) const TasksDoneToday(),
+                  const TasksList(),
+                  if (authState is NotAuthenticated)
+                    const SizedBox(
+                      height: 500,
+                      child: Center(
+                        child: GoogleSignInButton(),
+                      ),
+                    ),
+                ],
+              );
+            },
           );
         },
       ),
