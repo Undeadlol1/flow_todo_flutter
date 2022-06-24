@@ -30,6 +30,7 @@ import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_point
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/get_profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/pages/profile_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
@@ -225,6 +226,7 @@ class _MyAppState extends State<MyApp> {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: FPSWidget(
+        show: kDebugMode,
         alignment: Alignment.bottomLeft,
         child: MultiBlocProvider(
           providers: [
