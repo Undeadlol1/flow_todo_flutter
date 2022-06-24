@@ -1,4 +1,5 @@
 import 'package:extended_image/extended_image.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -17,9 +18,8 @@ class Avatar extends StatelessWidget {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, profileState) {
         if (profileState is ProfileLoaded) {
-          final level = _levelCalculator(profileState.profile?.experience ?? 0)
-              .value
-              .toString();
+          final level =
+              _levelCalculator(profileState.profile?.experience ?? 0).value;
 
           return InkWell(
             onTap: () {
@@ -28,7 +28,10 @@ class Avatar extends StatelessWidget {
             child: Chip(
               visualDensity: VisualDensity.compact,
               avatar: const _Image(),
-              label: Text(level),
+              label: AnimatedNumbers(
+                number: level,
+                duration: const Duration(seconds: 1),
+              ),
             ),
           );
         }
