@@ -3,7 +3,9 @@ import 'package:flow_todo_flutter_2022/features/tasks/data/delete_task_repositor
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
+import 'package:injectable/injectable.dart';
 
+@singleton
 class DeleteTask {
   final TasksCubit tasksCubit;
   final GoToMainPage goToMainPage;

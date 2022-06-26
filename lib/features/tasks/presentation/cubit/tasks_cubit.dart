@@ -1,8 +1,10 @@
+import 'package:injectable/injectable.dart';
 import 'package:replay_bloc/replay_bloc.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 
 part 'tasks_state.dart';
 
+@singleton
 class TasksCubit extends Cubit<TasksState> with ReplayCubitMixin {
   TasksCubit() : super(TasksLoading());
 

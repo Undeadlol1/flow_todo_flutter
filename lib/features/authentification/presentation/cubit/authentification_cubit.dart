@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../domain/entities/user.dart';
 
 part 'authentification_state.dart';
 
+@singleton
 class AuthentificationCubit extends Cubit<AuthentificationState> {
   AuthentificationCubit() : super(AuthentificationLoading());
 

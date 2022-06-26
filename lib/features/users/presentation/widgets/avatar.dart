@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flutter/material.dart';
@@ -10,16 +12,19 @@ import '../../../leveling/domain/services/user_level_calculator.dart';
 import '../cubit/profile_cubit.dart';
 import '../pages/profile_page.dart';
 
-const radius = 25.0;
+const radius = 35.0;
 
 class Avatar extends StatelessWidget {
+  final bool areNumberAnimationsSuspended;
   final _levelCalculator = GetIt.I<UserLevelCalculator>();
-  Avatar({Key? key}) : super(key: key);
+  Avatar({Key? key, this.areNumberAnimationsSuspended = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: radius + 20,
+      width: radius + 60,
+      height: radius + 60,
       child: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, profileState) {
           if (profileState is ProfileLoaded) {
@@ -30,9 +35,9 @@ class Avatar extends StatelessWidget {
             return Stack(
               children: [
                 InkWell(
+                  child: Center(child: _Image()),
                   onTap: () =>
                       Navigator.of(context).pushNamed(ProfilePage.pathName),
-                  child: _Image(),
                 ),
                 Positioned(
                   right: 0,
@@ -58,6 +63,7 @@ class Avatar extends StatelessWidget {
 
 class _Image extends StatelessWidget {
   _Image({Key? key}) : super(key: key);
+  final _lineWidth = 8.0;
   final LevelProgressPercentageCalculator _progressPercentageCalculator =
       GetIt.I();
 
@@ -75,10 +81,11 @@ class _Image extends StatelessWidget {
             final progressPercent =
                 _progressPercentageCalculator(experience).floor();
             final widgetProgress = double.parse('${progressPercent / 100}');
+            log('widgetProgress: ${widgetProgress.toString()}');
 
             return CircularPercentIndicator(
-              radius: radius,
-              lineWidth: 5.0,
+              radius: radius + _lineWidth,
+              lineWidth: _lineWidth,
               percent: widgetProgress,
               progressColor: Theme.of(context).colorScheme.primary,
               center: CircleAvatar(

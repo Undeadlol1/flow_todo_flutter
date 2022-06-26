@@ -1,5 +1,5 @@
-import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,15 +12,17 @@ import '../../tasks/domain/use_cases/go_to_task_creation.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
 import '../../users/presentation/widgets/avatar.dart';
 
-class PageLayoutAndDependencies extends StatelessWidget {
+class PageLayout extends StatelessWidget {
   final Widget child;
-  final bool? isFABHidden;
-  final bool? isDrawerHidden;
-  const PageLayoutAndDependencies({
+  final bool isFABHidden;
+  final bool isDrawerHidden;
+  final bool areNumberAnimationsSuspended;
+  const PageLayout({
     Key? key,
     required this.child,
     this.isFABHidden = true,
     this.isDrawerHidden = true,
+    this.areNumberAnimationsSuspended = true,
   }) : super(key: key);
 
   @override
@@ -37,8 +39,12 @@ class PageLayoutAndDependencies extends StatelessWidget {
             drawer: isDrawerHidden == true ? null : const _Drawer(),
             appBar: AppBar(
               actions: [
-                _buildPoints(),
-                Avatar(),
+                _Points(
+                  areNumberAnimationsSuspended: areNumberAnimationsSuspended,
+                ),
+                Avatar(
+                  areNumberAnimationsSuspended: areNumberAnimationsSuspended,
+                ),
                 const SizedBox(width: 8),
               ],
             ),
@@ -50,7 +56,6 @@ class PageLayoutAndDependencies extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       child,
-                      const ListenerThatRunsFunctionsWithBuildContext(),
                     ],
                   ),
                 ),
@@ -71,15 +76,30 @@ class PageLayoutAndDependencies extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildPoints() {
+class _Points extends StatelessWidget {
+  final bool areNumberAnimationsSuspended;
+  const _Points({Key? key, required this.areNumberAnimationsSuspended})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, profileState) {
         if (profileState is ProfileLoaded) {
           return Container(
             padding: const EdgeInsets.only(right: 7),
             child: Chip(
-              label: Text('Points: ${profileState.profile?.points.toString()}'),
+              label: Row(
+                children: [
+                  const Text('Points: '),
+                  AnimatedNumbers(
+                    number: profileState.profile?.points ?? 0,
+                    areNumberAnimationsSuspended: areNumberAnimationsSuspended,
+                  ),
+                ],
+              ),
             ),
           );
         }
@@ -143,7 +163,7 @@ class _Drawer extends StatelessWidget {
                 if (authentication is Authenticated)
                   const SignOutButton()
                 else
-                  const GoogleSignInButton(),
+                  GoogleSignInButton(),
               ],
             ),
           ),

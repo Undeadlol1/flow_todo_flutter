@@ -5,11 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
-import '../../common/presentation/page_layout_and_dependencies.dart';
+import '../../common/presentation/page_layout.dart';
 import '../../tasks/domain/use_cases/get_tasks_to_do.dart';
 import '../../tasks/presentation/widgets/tasks_done_today.dart';
 import '../../tasks/presentation/widgets/tasks_list.dart';
 import '../../users/domain/use_cases/get_profile.dart';
+import '../../users/presentation/cubit/profile_cubit.dart';
 
 class MainPage extends StatelessWidget {
   static const pathName = '/main';
@@ -17,9 +18,10 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageLayoutAndDependencies(
+    return PageLayout(
       isFABHidden: false,
       isDrawerHidden: false,
+      areNumberAnimationsSuspended: false,
       child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
         listener: (context, authState) async {
           if (authState is Authenticated) {
@@ -28,19 +30,23 @@ class MainPage extends StatelessWidget {
           }
         },
         builder: (context, authState) {
-          return Column(
-            children: [
-              if (authState is Authenticated) Avatar(),
-              if (authState is Authenticated) const TasksDoneToday(),
-              if (authState is NotAuthenticated)
-                const SizedBox(
-                  height: 500,
-                  child: Center(
-                    child: GoogleSignInButton(),
-                  ),
-                ),
-              const TasksList(),
-            ],
+          return BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, profileState) {
+              return Column(
+                children: [
+                  if (authState is Authenticated) Avatar(),
+                  if (profileState is ProfileLoaded) const TasksDoneToday(),
+                  const TasksList(),
+                  if (authState is NotAuthenticated)
+                    SizedBox(
+                      height: 500,
+                      child: Center(
+                        child: GoogleSignInButton(),
+                      ),
+                    ),
+                ],
+              );
+            },
           );
         },
       ),

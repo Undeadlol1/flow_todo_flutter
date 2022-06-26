@@ -5,7 +5,9 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
+import 'package:injectable/injectable.dart';
 
+@singleton
 class CreateTask {
   final TasksCubit tasksCubit;
   final ProfileCubit profileCubit;
@@ -28,9 +30,10 @@ class CreateTask {
       tags: [],
       note: '',
       history: [],
-      title: title,
       isDone: false,
       userId: userId,
+      // NOTE .trim is not tested.
+      title: title.trim(),
       id: uniqueIdGenerator(),
       dueAt: getTodaysDate().millisecondsSinceEpoch,
       createdAt: getTodaysDate().millisecondsSinceEpoch,

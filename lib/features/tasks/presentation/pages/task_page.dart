@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../common/presentation/page_layout_and_dependencies.dart';
+import '../../../common/presentation/page_layout.dart';
 import '../../domain/models/task.dart';
 import '../widgets/what_do_you_feel_about_the_task.dart';
 import '../widgets/upsert_note.dart';
@@ -21,7 +21,8 @@ class TaskPage extends StatelessWidget {
         (ModalRoute.of(context)!.settings.arguments as TaskPageArguments);
     final task = args.task;
 
-    return PageLayoutAndDependencies(
+    return PageLayout(
+      areNumberAnimationsSuspended: true,
       child: Column(
         children: [
           const SizedBox(height: 20),
