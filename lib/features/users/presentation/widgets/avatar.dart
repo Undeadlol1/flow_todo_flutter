@@ -97,7 +97,7 @@ class _Image extends StatelessWidget {
               progressColor: Theme.of(context).colorScheme.primary,
               center: CircleAvatar(
                 radius: radius,
-                foregroundImage: authState.user.avatar == null
+                backgroundImage: authState.user.avatar == null
                     ? null
                     : ExtendedNetworkImageProvider(
                         authState.user.avatar!,
@@ -105,6 +105,7 @@ class _Image extends StatelessWidget {
                         cache: true,
                         cacheMaxAge: const Duration(days: 4),
                       ),
+                child: CircularProgressIndicator(value: widgetProgress),
               ),
             );
           },

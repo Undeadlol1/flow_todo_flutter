@@ -2,7 +2,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../domain/use_cases/go_to_task_page.dart';
+import '../../../users/presentation/cubit/profile_cubit.dart';
 
 class TasksListItem extends StatelessWidget {
   final Task task;
@@ -12,7 +12,15 @@ class TasksListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        GetIt.instance<GoToTaskPage>()(task: task);
+        final cubit = GetIt.I<ProfileCubit>();
+        final profile = cubit.state.profile;
+        cubit.setProfile(
+          profile!.copyWith(
+            points: profile.points + 50,
+            experience: profile.experience! + 50,
+          ),
+        );
+        // GetIt.instance<GoToTaskPage>()(task: task);
       },
       child: Row(
         children: [
