@@ -1,10 +1,8 @@
-import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/repetition.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
@@ -15,14 +13,12 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../test_utilities/fakes/fake_get_todays_date.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture_2.dart';
+import '../../../../test_utilities/mocks/mock_go_to_main_page.dart';
+import '../../../../test_utilities/mocks/mock_go_to_task_page.dart';
 import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
 import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_done_today_cubit.dart';
 import '../../../../test_utilities/mocks/mock_update_task_repository.dart';
-
-class _MockGoToMainPage extends Mock implements GoToMainPage {}
-
-class _MockGoToTaskPage extends Mock implements GoToTaskPage {}
 
 class _MockAddPointsToViewer extends Mock implements AddPointsToViewer {}
 
@@ -31,8 +27,8 @@ class _MockNextRepetitionCalculator extends Mock
 
 final _tasksCubit = TasksCubit();
 final _mockTasksCubit = MockTasksCubit();
-final _mockGoToMainPage = _MockGoToMainPage();
-final _mockGoToTaskPage = _MockGoToTaskPage();
+final _mockGoToMainPage = MockGoToMainPage();
+final _mockGoToTaskPage = MockGoToTaskPage();
 final _fakeGetTodaysDate = FakeGetTodaysDate();
 final _tasksDoneTodayCubit = TasksDoneTodayCubit();
 final _mockSnackbarService = MockSnackbarService();
