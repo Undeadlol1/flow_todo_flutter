@@ -9,6 +9,6 @@ class UpdateTaskRepository {
     return firestore
         .collection('tasks')
         .doc(updatedTask.id)
-        .set(updatedTask.toJson(), SetOptions(merge: true));
+        .update(updatedTask.toJson());
   }
 }

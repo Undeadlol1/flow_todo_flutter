@@ -1,7 +1,7 @@
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 
 final taskFixture = Task(
-  id: 'id',
+  id: 'task fixture id 123',
   tags: [],
   history: [],
   isDone: false,
