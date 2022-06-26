@@ -12,57 +12,64 @@ import '../../../leveling/domain/services/user_level_calculator.dart';
 import '../cubit/profile_cubit.dart';
 import '../pages/profile_page.dart';
 
-const radius = 35.0;
-
 class Avatar extends StatelessWidget {
+  final double radius;
   final bool areNumberAnimationsSuspended;
-  final _levelCalculator = GetIt.I<UserLevelCalculator>();
-  Avatar({Key? key, this.areNumberAnimationsSuspended = true})
-      : super(key: key);
+  const Avatar({
+    Key? key,
+    this.areNumberAnimationsSuspended = true,
+    required this.radius,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: radius + 60,
-      height: radius + 60,
-      child: BlocBuilder<ProfileCubit, ProfileState>(
-        builder: (context, profileState) {
-          if (profileState is ProfileLoaded) {
-            final level = _levelCalculator(profileState.profile?.points ?? 0)
-                .value
-                .toString();
+    return Stack(
+      children: [
+        InkWell(
+          child: Center(
+            child: _Image(radius: radius),
+          ),
+          onTap: () => Navigator.of(context).pushNamed(ProfilePage.pathName),
+        ),
+        Positioned(
+          child: Center(child: _LevelBadge()),
+        ),
+      ],
+    );
+  }
+}
 
-            return Stack(
-              children: [
-                InkWell(
-                  child: Center(child: _Image()),
-                  onTap: () =>
-                      Navigator.of(context).pushNamed(ProfilePage.pathName),
-                ),
-                Positioned(
-                  right: 0,
-                  top: -5,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    padding: const EdgeInsets.all(2),
-                    child: Text(level),
-                  ),
-                ),
-              ],
-            );
-          }
-          return const SizedBox();
-        },
-      ),
+class _LevelBadge extends StatelessWidget {
+  _LevelBadge({Key? key}) : super(key: key);
+  final _levelCalculator = GetIt.I<UserLevelCalculator>();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (context, profileState) {
+        if (profileState is ProfileLoaded) {
+          final level = _levelCalculator(profileState.profile?.points ?? 0)
+              .value
+              .toString();
+
+          return Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              shape: BoxShape.circle,
+            ),
+            padding: const EdgeInsets.all(2),
+            child: Text(level),
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }
 
 class _Image extends StatelessWidget {
-  _Image({Key? key}) : super(key: key);
+  _Image({Key? key, required this.radius}) : super(key: key);
+  final double radius;
   final _lineWidth = 8.0;
   final LevelProgressPercentageCalculator _progressPercentageCalculator =
       GetIt.I();
@@ -84,9 +91,9 @@ class _Image extends StatelessWidget {
             log('widgetProgress: ${widgetProgress.toString()}');
 
             return CircularPercentIndicator(
-              radius: radius + _lineWidth,
               lineWidth: _lineWidth,
               percent: widgetProgress,
+              radius: radius + _lineWidth,
               progressColor: Theme.of(context).colorScheme.primary,
               center: CircleAvatar(
                 radius: radius,
