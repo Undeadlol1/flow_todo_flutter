@@ -36,7 +36,7 @@ class MainPage extends StatelessWidget {
                   if (profileState is ProfileLoaded) const TasksDoneToday(),
                   const TasksList(),
                   if (authState is NotAuthenticated)
-                    const SizedBox(
+                    SizedBox(
                       height: 500,
                       child: Center(
                         child: GoogleSignInButton(),

@@ -163,7 +163,7 @@ class _Drawer extends StatelessWidget {
                 if (authentication is Authenticated)
                   const SignOutButton()
                 else
-                  const GoogleSignInButton(),
+                  GoogleSignInButton(),
               ],
             ),
           ),
