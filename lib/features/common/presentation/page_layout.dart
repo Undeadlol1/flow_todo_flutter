@@ -43,7 +43,7 @@ class PageLayout extends StatelessWidget {
                   areNumberAnimationsSuspended: areNumberAnimationsSuspended,
                 ),
                 Avatar(
-                  radius: 10,
+                  radius: 15,
                   areNumberAnimationsSuspended: areNumberAnimationsSuspended,
                 ),
                 const SizedBox(width: 8),

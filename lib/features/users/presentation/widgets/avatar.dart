@@ -4,6 +4,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -23,24 +24,32 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        InkWell(
-          child: Center(
-            child: _Image(radius: radius),
+    return ConstrainedBox(
+      constraints: BoxConstraints.tightFor(width: radius * 2),
+      child: Stack(
+        children: [
+          InkWell(
+            child: Center(
+              child: _Image(radius: radius),
+            ),
+            onTap: () => Navigator.of(context).pushNamed(ProfilePage.pathName),
           ),
-          onTap: () => Navigator.of(context).pushNamed(ProfilePage.pathName),
-        ),
-        Positioned(
-          child: Center(child: _LevelBadge()),
-        ),
-      ],
+          Positioned(
+            top: 0,
+            right: 5,
+            child: Center(
+              child: _LevelBadge(radius: radius),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
 class _LevelBadge extends StatelessWidget {
-  _LevelBadge({Key? key}) : super(key: key);
+  final double radius;
+  _LevelBadge({Key? key, required this.radius}) : super(key: key);
   final _levelCalculator = GetIt.I<UserLevelCalculator>();
 
   @override
@@ -54,11 +63,15 @@ class _LevelBadge extends StatelessWidget {
 
           return Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.secondaryContainer,
               shape: BoxShape.circle,
             ),
-            padding: const EdgeInsets.all(2),
-            child: Text(level),
+            padding: const EdgeInsets.all(4),
+            child: Text(
+              level,
+              style:
+                  TextStyle(fontSize: radius >= 50 ? radius / 5 : radius / 1.5),
+            ),
           );
         }
         return const SizedBox();
@@ -67,15 +80,19 @@ class _LevelBadge extends StatelessWidget {
   }
 }
 
-class _Image extends StatelessWidget {
+class _Image extends HookWidget {
   _Image({Key? key, required this.radius}) : super(key: key);
   final double radius;
-  final _lineWidth = 8.0;
   final LevelProgressPercentageCalculator _progressPercentageCalculator =
       GetIt.I();
 
   @override
   Widget build(BuildContext context) {
+    final controller = useAnimationController(
+      duration: const Duration(seconds: 1),
+    );
+
+    final animation = useAnimation(controller);
     return BlocBuilder<AuthentificationCubit, AuthentificationState>(
       builder: (context, authState) {
         return BlocBuilder<ProfileCubit, ProfileState>(
@@ -89,11 +106,12 @@ class _Image extends StatelessWidget {
                 _progressPercentageCalculator(experience).floor();
             final widgetProgress = double.parse('${progressPercent / 100}');
             log('widgetProgress: ${widgetProgress.toString()}');
+            final lineWidth = radius / 10;
 
             return CircularPercentIndicator(
-              lineWidth: _lineWidth,
+              lineWidth: lineWidth,
               percent: widgetProgress,
-              radius: radius + _lineWidth,
+              radius: radius + lineWidth,
               progressColor: Theme.of(context).colorScheme.primary,
               center: CircleAvatar(
                 radius: radius,
@@ -105,7 +123,7 @@ class _Image extends StatelessWidget {
                         cache: true,
                         cacheMaxAge: const Duration(days: 4),
                       ),
-                child: CircularProgressIndicator(value: widgetProgress),
+                // child: CircularProgressIndicator(value: widgetProgress),
               ),
             );
           },
