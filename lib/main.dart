@@ -30,9 +30,9 @@ void main() async {
 
   await _setupFirebase();
 
-  configureAutomaticDI();
-
   configureManualDI();
+
+  configureAutomaticDI();
 
   runApp(const MyApp());
 }

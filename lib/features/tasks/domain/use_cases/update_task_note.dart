@@ -1,8 +1,10 @@
 import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:injectable/injectable.dart';
 
 import '../models/task.dart';
 
+@singleton
 class UpdateTaskNote {
   final TasksCubit tasksCubit;
   final UpdateTaskRepository updateTaskRepository;
