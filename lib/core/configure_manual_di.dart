@@ -17,9 +17,7 @@ import '../features/tasks/domain/use_cases/delete_task.dart';
 import '../features/tasks/domain/use_cases/get_tasks_to_do.dart';
 import '../features/tasks/domain/use_cases/go_to_task_creation.dart';
 import '../features/tasks/domain/use_cases/go_to_task_page.dart';
-import '../features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import '../features/tasks/domain/use_cases/update_task_note.dart';
-import '../features/users/domain/use_cases/add_points_to_viewer.dart';
 import '../features/users/domain/use_cases/get_profile.dart';
 
 void configureManualDI() {
@@ -48,24 +46,6 @@ void configureManualDI() {
   injector.registerSingleton(GoToMainPage(contextProvider: injector.get()));
   injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
   injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
-  injector.registerSingleton(
-    AddPointsToViewer(
-      profileCubit: injector.get(),
-      updateProfileRepository: injector.get(),
-    ),
-  );
-  injector.registerFactory(
-    () => MakeStepForwardOnTheTask(
-      tasksCubit: injector.get(),
-      goToMainPage: injector.get(),
-      getTodaysDate: injector.get(),
-      snackbarService: injector.get(),
-      addPointsToViewer: injector.get(),
-      tasksDoneTodayCubit: injector.get(),
-      updateTaskRepository: injector.get(),
-      nextRepetitionCalculator: injector.get(),
-    ),
-  );
   injector.registerSingleton(
     UpdateTaskNote(
       tasksCubit: injector.get(),

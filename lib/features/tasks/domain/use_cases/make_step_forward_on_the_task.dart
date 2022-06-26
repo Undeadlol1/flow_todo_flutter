@@ -4,6 +4,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_histo
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../common/domain/use_cases/go_to_main_page.dart';
 import '../../../spaced_repetition/domain/entities/confidence.dart';
@@ -13,6 +14,7 @@ import '../../data/update_task_repository.dart';
 import '../../presentation/cubit/tasks_cubit.dart';
 import '../models/task.dart';
 
+@singleton
 class MakeStepForwardOnTheTask {
   final TasksCubit tasksCubit;
   final GoToMainPage goToMainPage;

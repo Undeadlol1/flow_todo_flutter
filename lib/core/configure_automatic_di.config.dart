@@ -11,18 +11,25 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import '../features/authentification/presentation/cubit/authentification_cubit.dart'
     as _i3;
+import '../features/common/domain/use_cases/go_to_main_page.dart' as _i20;
 import '../features/common/services/get_todays_date.dart' as _i9;
 import '../features/common/services/snackbar_service.dart' as _i11;
 import '../features/common/services/unique_id_generator.dart' as _i15;
+import '../features/spaced_repetition/domain/services/next_repetition_calculator.dart'
+    as _i22;
 import '../features/tasks/data/create_task_repository.dart' as _i4;
 import '../features/tasks/data/delete_task_repository.dart' as _i6;
 import '../features/tasks/data/get_tasks_to_do_repository.dart' as _i8;
 import '../features/tasks/data/update_task_repository.dart' as _i17;
+import '../features/tasks/domain/use_cases/go_to_task_page.dart' as _i21;
+import '../features/tasks/domain/use_cases/make_step_forward_on_the_task.dart'
+    as _i19;
 import '../features/tasks/presentation/cubit/tasks_cubit.dart' as _i13;
 import '../features/tasks/presentation/cubit/tasks_done_today_cubit.dart'
     as _i14;
 import '../features/users/data/get_profile_repository.dart' as _i7;
 import '../features/users/data/update_profile_repository.dart' as _i16;
+import '../features/users/domain/use_cases/add_points_to_viewer.dart' as _i18;
 import '../features/users/presentation/cubit/profile_cubit.dart'
     as _i10; // ignore_for_file: unnecessary_lambdas
 
@@ -51,5 +58,18 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       _i16.UpdateProfileRepository(firestore: get<_i5.FirebaseFirestore>()));
   gh.factory<_i17.UpdateTaskRepository>(
       () => _i17.UpdateTaskRepository(firestore: get<_i5.FirebaseFirestore>()));
+  gh.singleton<_i18.AddPointsToViewer>(_i18.AddPointsToViewer(
+      profileCubit: get<_i10.ProfileCubit>(),
+      updateProfileRepository: get<_i16.UpdateProfileRepository>()));
+  gh.singleton<_i19.MakeStepForwardOnTheTask>(_i19.MakeStepForwardOnTheTask(
+      tasksCubit: get<_i13.TasksCubit>(),
+      goToMainPage: get<_i20.GoToMainPage>(),
+      goToTaskPage: get<_i21.GoToTaskPage>(),
+      getTodaysDate: get<_i9.GetTodaysDate>(),
+      snackbarService: get<_i11.SnackbarService>(),
+      addPointsToViewer: get<_i18.AddPointsToViewer>(),
+      tasksDoneTodayCubit: get<_i14.TasksDoneTodayCubit>(),
+      updateTaskRepository: get<_i17.UpdateTaskRepository>(),
+      nextRepetitionCalculator: get<_i22.NextRepetitionCalculator>()));
   return get;
 }
