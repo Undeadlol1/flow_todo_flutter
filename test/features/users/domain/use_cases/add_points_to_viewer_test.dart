@@ -48,6 +48,27 @@ void main() {
       },
     );
 
+    test(
+      'WHEN repository throws an error '
+      'THEN reverts state change',
+      () async {
+        bool hasCallThrown = false;
+        final useCase = _getUseCase();
+        final exception = Exception('Something went wrong');
+        when(() => _mockUpdateProfileRepository(any())).thenThrow(exception);
+        _mockLoadedProfile();
+
+        try {
+          await useCase(10);
+        } catch (error) {
+          hasCallThrown = true;
+        } finally {
+          expect(hasCallThrown, isTrue);
+          verify(() => _mockProfileCubit.undo()).called(1);
+        }
+      },
+    );
+
     test('WHEN called THEN calls repository', () async {
       _mockLoadedProfile();
       _mockProfileRepository();

@@ -12,18 +12,23 @@ class AddPointsToViewer {
   Future<void> call(int pointsToAdd) async {
     final profileState = profileCubit.state;
 
-    if (profileState is ProfileLoaded) {
-      final currentProfile = profileState.profile;
-      final updatedProfile = currentProfile?.copyWith(
-        points: currentProfile.points + pointsToAdd,
-        experience: (currentProfile.experience ?? 0) + pointsToAdd,
-      );
+    try {
+      if (profileState is ProfileLoaded) {
+        final currentProfile = profileState.profile;
+        final updatedProfile = currentProfile?.copyWith(
+          points: currentProfile.points + pointsToAdd,
+          experience: (currentProfile.experience ?? 0) + pointsToAdd,
+        );
 
-      profileCubit.setProfile(updatedProfile!);
+        profileCubit.setProfile(updatedProfile!);
 
-      await updateProfileRepository(updatedProfile);
-    } else {
-      throw Exception('Profile not loaded');
+        await updateProfileRepository(updatedProfile);
+      } else {
+        throw Exception('Profile not loaded');
+      }
+    } catch (e) {
+      profileCubit.undo();
+      rethrow;
     }
   }
 }

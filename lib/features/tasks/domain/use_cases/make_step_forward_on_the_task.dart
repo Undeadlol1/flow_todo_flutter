@@ -2,6 +2,7 @@ import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 
 import '../../../common/domain/use_cases/go_to_main_page.dart';
@@ -15,6 +16,7 @@ import '../models/task.dart';
 class MakeStepForwardOnTheTask {
   final TasksCubit tasksCubit;
   final GoToMainPage goToMainPage;
+  final GoToTaskPage goToTaskPage;
   final GetTodaysDate getTodaysDate;
   final SnackbarService snackbarService;
   final AddPointsToViewer addPointsToViewer;
@@ -24,6 +26,7 @@ class MakeStepForwardOnTheTask {
   const MakeStepForwardOnTheTask({
     required this.tasksCubit,
     required this.goToMainPage,
+    required this.goToTaskPage,
     required this.getTodaysDate,
     required this.snackbarService,
     required this.addPointsToViewer,
@@ -37,17 +40,40 @@ class MakeStepForwardOnTheTask {
     required Confidence howBigWasTheStep,
     bool isTaskDone = false,
   }) async {
-    final today = getTodaysDate().millisecondsSinceEpoch;
     final pointsToAdd =
         _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
+    final updatedTask = _getUpdatedTask(task, isTaskDone, howBigWasTheStep);
+
+    tasksCubit.removeTask(task);
+    tasksDoneTodayCubit
+        .update([updatedTask, ...tasksDoneTodayCubit.state.tasks]);
+
+    try {
+      await goToMainPage();
+      await addPointsToViewer(pointsToAdd);
+      await updateTaskRepository.call(updatedTask);
+    } catch (error) {
+      snackbarService.displaySnackbar(text: error.toString());
+
+      tasksCubit.undo();
+      tasksDoneTodayCubit.undo();
+
+      return goToTaskPage.call(task: task);
+    }
+  }
+
+  Task _getUpdatedTask(
+    Task task,
+    bool isTaskDone,
+    Confidence howBigWasTheStep,
+  ) {
+    final today = getTodaysDate().millisecondsSinceEpoch;
     final nextRepetition = nextRepetitionCalculator(
       task: task,
       confidence: howBigWasTheStep,
     );
 
-    tasksCubit.removeTask(task);
-
-    final updatedTask = task.copyWith(
+    return task.copyWith(
       isDone: isTaskDone,
       doneAt: today,
       updatedAt: today,
@@ -65,19 +91,6 @@ class MakeStepForwardOnTheTask {
         ),
       ],
     );
-
-    tasksDoneTodayCubit
-        .update([updatedTask, ...tasksDoneTodayCubit.state.tasks]);
-
-    try {
-      await goToMainPage();
-      await addPointsToViewer(pointsToAdd);
-      await updateTaskRepository.call(updatedTask);
-    } catch (error) {
-      snackbarService.displaySnackbar(text: error.toString());
-
-      tasksCubit.undo();
-    }
   }
 
   int _calculateAmountOfPointsToAdd(
