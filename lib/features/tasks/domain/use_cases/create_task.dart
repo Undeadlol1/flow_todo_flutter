@@ -30,9 +30,10 @@ class CreateTask {
       tags: [],
       note: '',
       history: [],
-      title: title,
       isDone: false,
       userId: userId,
+      // NOTE .trim is not tested.
+      title: title.trim(),
       id: uniqueIdGenerator(),
       dueAt: getTodaysDate().millisecondsSinceEpoch,
       createdAt: getTodaysDate().millisecondsSinceEpoch,
