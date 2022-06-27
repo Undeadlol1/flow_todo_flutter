@@ -35,7 +35,7 @@ class TasksDoneToday extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text('Wins today: '),
+                            const Text('Tasks done today: '),
                             Visibility(
                               visible: !isStreakAchievedToday,
                               child: Row(
@@ -51,18 +51,22 @@ class TasksDoneToday extends StatelessWidget {
                         )
                       ],
                     ),
-                    const SizedBox(height: 20),
-                    LinearProgressIndicator(
-                      value: progressValue <= 0 ? 0.01 : progressValue,
+                    Visibility(
+                      visible: !isStreakAchievedToday,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: LinearProgressIndicator(
+                          value: progressValue <= 0 ? 0.01 : progressValue,
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text('Won days in a row: '),
-                        AnimatedNumbers(number: 0),
-                      ],
-                    )
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: const [
+                    //     Text('Won days in a row: '),
+                    //     AnimatedNumbers(number: 0),
+                    //   ],
+                    // )
                   ],
                 ),
               ),
