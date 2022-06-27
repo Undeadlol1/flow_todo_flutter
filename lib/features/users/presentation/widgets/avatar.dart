@@ -35,8 +35,10 @@ class Avatar extends StatelessWidget {
             onTap: () => Navigator.of(context).pushNamed(ProfilePage.pathName),
           ),
           Positioned(
-            top: 0,
-            right: 5,
+            bottom: 0,
+            width: radius,
+            right: radius / 2,
+            height: radius / 2,
             child: Center(
               child: _LevelBadge(radius: radius),
             ),

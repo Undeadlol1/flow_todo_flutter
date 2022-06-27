@@ -35,13 +35,20 @@ class MainPage extends StatelessWidget {
             builder: (context, profileState) {
               return Column(
                 children: [
-                  if (authState is Authenticated)
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      child: const Avatar(radius: 75),
-                    ),
-                  if (profileState is ProfileLoaded) const TasksDoneToday(),
-                  const TasksList(),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (authState is Authenticated)
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          child: const Avatar(radius: 75),
+                        ),
+                      if (profileState is ProfileLoaded) const TasksDoneToday(),
+                    ],
+                  ),
+                  const Expanded(
+                    child: TasksList(),
+                  ),
                   if (authState is NotAuthenticated)
                     SizedBox(
                       height: 500,

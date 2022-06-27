@@ -50,16 +50,9 @@ class PageLayout extends StatelessWidget {
                     ],
                   ),
             body: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      child,
-                    ],
-                  ),
-                ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: child,
               ),
             ),
             floatingActionButton: isFABHidden == true

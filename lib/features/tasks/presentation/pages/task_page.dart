@@ -25,6 +25,7 @@ class TaskPage extends StatelessWidget {
       isAppBarHidden: false,
       areNumberAnimationsSuspended: true,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 20),
           SelectableText(task.title),

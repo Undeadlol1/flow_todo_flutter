@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
 
-import '../../../common/presentation/widgets/pagination.dart';
 import '../cubit/tasks_cubit.dart';
 import 'tasks_list_item.dart';
 
@@ -15,8 +14,8 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
-  int _currentPage = 0;
-  final int _tasksPerPage = 9;
+  final int _currentPage = 0;
+  final int _tasksPerPage = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -28,24 +27,19 @@ class _TasksListState extends State<TasksList> {
           return const _LoadingIndicator();
         }
 
-        return Column(
-          children: [
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: tasksToDisplay.length,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) {
-                return TasksListItem(task: tasksToDisplay[index]);
-              },
-            ),
-            if (tasksState.tasks.isNotEmpty)
-              Pagination(
-                onPageChange: (newPageNumber) {
-                  setState(() => _currentPage = newPageNumber);
-                },
-              ),
-          ],
+        return ListView.builder(
+          itemCount: tasksState.tasks.length,
+          itemBuilder: (BuildContext context, int index) {
+            return TasksListItem(task: tasksState.tasks[index]);
+          },
         );
+        // if (tasksState.tasks.isNotEmpty)
+        //   Pagination(
+        //     onPageChange: (newPageNumber) {
+        //       setState(() => _currentPage = newPageNumber);
+        //     },
+        //   ),
+        // );
       },
     );
   }
