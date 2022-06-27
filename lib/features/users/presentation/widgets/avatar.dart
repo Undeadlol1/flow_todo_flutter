@@ -101,11 +101,11 @@ class _Image extends HookWidget {
               return const SizedBox();
             }
 
-            final experience = (profileState.profile?.experience ?? 0) + 400;
+            final experience = (profileState.profile?.experience ?? 0);
             final progressPercent =
                 _progressPercentageCalculator(experience).floor();
             final widgetProgress = double.parse('${progressPercent / 100}');
-            log('widgetProgress: ${widgetProgress.toString()}');
+            log('avatar widgetProgress: ${widgetProgress.toString()}');
             final lineWidth = radius / 10;
 
             return CircularPercentIndicator(
