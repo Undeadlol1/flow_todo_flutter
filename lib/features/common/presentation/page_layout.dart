@@ -10,7 +10,6 @@ import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
 import '../../tasks/domain/use_cases/go_to_task_creation.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
-import '../../users/presentation/widgets/avatar.dart';
 
 class PageLayout extends StatelessWidget {
   final Widget child;
@@ -40,10 +39,6 @@ class PageLayout extends StatelessWidget {
             appBar: AppBar(
               actions: [
                 _Points(
-                  areNumberAnimationsSuspended: areNumberAnimationsSuspended,
-                ),
-                Avatar(
-                  radius: 15,
                   areNumberAnimationsSuspended: areNumberAnimationsSuspended,
                 ),
                 const SizedBox(width: 8),
