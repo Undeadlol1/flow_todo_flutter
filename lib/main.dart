@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:build_context_provider/build_context_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flow_todo_flutter_2022/core/configure_automatic_di.dart';
@@ -131,7 +130,6 @@ class _MyAppState extends State<MyApp> {
               title: 'Flow TODO',
               darkTheme: darkTheme,
               initialRoute: MainPage.pathName,
-              home: const ListenerThatRunsFunctionsWithBuildContext(),
               routes: {
                 MainPage.pathName: (contex) => const MainPage(),
                 TaskPage.pathName: (contex) => const TaskPage(),

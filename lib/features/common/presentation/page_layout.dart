@@ -1,3 +1,4 @@
+import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flutter/material.dart';
@@ -35,36 +36,41 @@ class PageLayout extends StatelessWidget {
       ),
       child: BlocBuilder<AuthentificationCubit, AuthentificationState>(
         builder: (BuildContext context, authentication) {
-          return Scaffold(
-            resizeToAvoidBottomInset: true,
-            drawer: isDrawerHidden == true ? null : const _Drawer(),
-            appBar: isAppBarHidden
-                ? null
-                : AppBar(
-                    actions: [
-                      _Points(
-                        areNumberAnimationsSuspended:
-                            areNumberAnimationsSuspended,
+          return Stack(
+            children: [
+              const ListenerThatRunsFunctionsWithBuildContext(),
+              Scaffold(
+                resizeToAvoidBottomInset: true,
+                drawer: isDrawerHidden == true ? null : const _Drawer(),
+                appBar: isAppBarHidden
+                    ? null
+                    : AppBar(
+                        actions: [
+                          _Points(
+                            areNumberAnimationsSuspended:
+                                areNumberAnimationsSuspended,
+                          ),
+                          const SizedBox(width: 8),
+                        ],
                       ),
-                      const SizedBox(width: 8),
-                    ],
+                body: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: child,
                   ),
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: child,
+                ),
+                floatingActionButton: isFABHidden == true
+                    ? null
+                    : Container(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: FloatingActionButton(
+                          onPressed: () => GetIt.I<GoToTaskCreation>()(),
+                          child: const Icon(Icons.add),
+                        ),
+                      ),
+                bottomNavigationBar: const _BottomNavigation(),
               ),
-            ),
-            floatingActionButton: isFABHidden == true
-                ? null
-                : Container(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: FloatingActionButton(
-                      onPressed: () => GetIt.I<GoToTaskCreation>()(),
-                      child: const Icon(Icons.add),
-                    ),
-                  ),
-            bottomNavigationBar: const _BottomNavigation(),
+            ],
           );
         },
       ),
