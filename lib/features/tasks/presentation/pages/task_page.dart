@@ -23,7 +23,7 @@ class TaskPage extends StatelessWidget {
 
     return PageLayout(
       isAppBarHidden: false,
-      areNumberAnimationsSuspended: true,
+      isNumbersAnimationSuspended: true,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

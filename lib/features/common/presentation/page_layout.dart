@@ -1,6 +1,8 @@
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,14 +19,14 @@ class PageLayout extends StatelessWidget {
   final bool isFABHidden;
   final bool isDrawerHidden;
   final bool isAppBarHidden;
-  final bool areNumberAnimationsSuspended;
+  final bool isNumbersAnimationSuspended;
   const PageLayout({
     Key? key,
     required this.child,
     this.isFABHidden = true,
     this.isDrawerHidden = true,
     this.isAppBarHidden = false,
-    this.areNumberAnimationsSuspended = true,
+    this.isNumbersAnimationSuspended = true,
   }) : super(key: key);
 
   @override
@@ -46,11 +48,14 @@ class PageLayout extends StatelessWidget {
                     ? null
                     : AppBar(
                         actions: [
-                          _Points(
-                            areNumberAnimationsSuspended:
-                                areNumberAnimationsSuspended,
+                          _UserLevel(
+                            isNumbersAnimationSuspended:
+                                isNumbersAnimationSuspended,
                           ),
-                          const SizedBox(width: 8),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Center(child: Avatar(radius: 16)),
+                          ),
                         ],
                       ),
                 body: SafeArea(
@@ -78,9 +83,10 @@ class PageLayout extends StatelessWidget {
   }
 }
 
-class _Points extends StatelessWidget {
-  final bool areNumberAnimationsSuspended;
-  const _Points({Key? key, required this.areNumberAnimationsSuspended})
+class _UserLevel extends StatelessWidget {
+  final bool isNumbersAnimationSuspended;
+  final UserLevelCalculator _userLevelCalculator = GetIt.I();
+  _UserLevel({Key? key, required this.isNumbersAnimationSuspended})
       : super(key: key);
 
   @override
@@ -93,10 +99,12 @@ class _Points extends StatelessWidget {
             child: Chip(
               label: Row(
                 children: [
-                  const Text('Points: '),
+                  const Text('Level: '),
                   AnimatedNumbers(
-                    number: profileState.profile?.points ?? 0,
-                    areNumberAnimationsSuspended: areNumberAnimationsSuspended,
+                    number: _userLevelCalculator(
+                      profileState.profile?.experience ?? 0,
+                    ).value,
+                    areNumberAnimationsSuspended: isNumbersAnimationSuspended,
                   ),
                 ],
               ),

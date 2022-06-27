@@ -22,7 +22,7 @@ class MainPage extends StatelessWidget {
       isFABHidden: false,
       isAppBarHidden: true,
       isDrawerHidden: false,
-      areNumberAnimationsSuspended: false,
+      isNumbersAnimationSuspended: false,
       child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
         listener: (context, authState) async {
           if (authState is Authenticated) {
