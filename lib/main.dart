@@ -12,11 +12,9 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_pa
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/work_on_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/pages/profile_page.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
-import 'package:fps_widget/fps_widget.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 
@@ -118,42 +116,38 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.ltr,
-      child: FPSWidget(
-        show: kDebugMode,
-        alignment: Alignment.bottomLeft,
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => tasksCubit),
-            BlocProvider(create: (context) => profileCubit),
-            BlocProvider(create: (context) => tasksDoneTodayCubit),
-            BlocProvider(create: (context) => authentificationCubit),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => tasksCubit),
+          BlocProvider(create: (context) => profileCubit),
+          BlocProvider(create: (context) => tasksDoneTodayCubit),
+          BlocProvider(create: (context) => authentificationCubit),
+        ],
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            MaterialApp(
+              theme: lightTheme,
+              title: 'Flow TODO',
+              darkTheme: darkTheme,
+              initialRoute: MainPage.pathName,
+              home: const ListenerThatRunsFunctionsWithBuildContext(),
+              routes: {
+                MainPage.pathName: (contex) => const MainPage(),
+                TaskPage.pathName: (contex) => const TaskPage(),
+                ProfilePage.pathName: (contex) => const ProfilePage(),
+                WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
+              },
+            ),
+            ExperienceProgressBar(
+              themeData:
+                  MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+                              .platformBrightness ==
+                          Brightness.light
+                      ? lightTheme
+                      : darkTheme,
+            ),
           ],
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              MaterialApp(
-                theme: lightTheme,
-                title: 'Flow TODO',
-                darkTheme: darkTheme,
-                initialRoute: MainPage.pathName,
-                home: const ListenerThatRunsFunctionsWithBuildContext(),
-                routes: {
-                  MainPage.pathName: (contex) => const MainPage(),
-                  TaskPage.pathName: (contex) => const TaskPage(),
-                  ProfilePage.pathName: (contex) => const ProfilePage(),
-                  WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
-                },
-              ),
-              ExperienceProgressBar(
-                themeData:
-                    MediaQueryData.fromWindow(WidgetsBinding.instance.window)
-                                .platformBrightness ==
-                            Brightness.light
-                        ? lightTheme
-                        : darkTheme,
-              ),
-            ],
-          ),
         ),
       ),
     );
