@@ -24,7 +24,6 @@ class TasksDoneToday extends StatelessWidget {
                 : tasksDoneAmount / requiredTasksPerDay;
 
             return Card(
-              elevation: 10,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
