@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_creation.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
@@ -10,14 +11,17 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../test_utilities/fakes/fake_user_level_calculator.dart';
+import '../../../test_utilities/mocks/mock_go_to_task_creation.dart';
+import '../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
 
-class _MockGoToTaskCreation extends Mock implements GoToTaskCreation {}
-
-final _mockGoToTaskCreation = _MockGoToTaskCreation();
+final _mockGoToTaskCreation = MockGoToTaskCreation();
 
 void main() {
   setUpAll(() {
     GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
+    GetIt.I.registerSingleton<LevelProgressPercentageCalculator>(
+      MockLevelProgressPercentageCalculator(),
+    );
   });
 
   group('GIVEN PageLayout', () {
