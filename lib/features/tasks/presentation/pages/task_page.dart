@@ -22,6 +22,7 @@ class TaskPage extends StatelessWidget {
     final task = args.task;
 
     return PageLayout(
+      isAppBarHidden: false,
       areNumberAnimationsSuspended: true,
       child: Column(
         children: [

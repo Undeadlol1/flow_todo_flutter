@@ -15,12 +15,14 @@ class PageLayout extends StatelessWidget {
   final Widget child;
   final bool isFABHidden;
   final bool isDrawerHidden;
+  final bool isAppBarHidden;
   final bool areNumberAnimationsSuspended;
   const PageLayout({
     Key? key,
     required this.child,
     this.isFABHidden = true,
     this.isDrawerHidden = true,
+    this.isAppBarHidden = false,
     this.areNumberAnimationsSuspended = true,
   }) : super(key: key);
 
@@ -36,14 +38,17 @@ class PageLayout extends StatelessWidget {
           return Scaffold(
             resizeToAvoidBottomInset: true,
             drawer: isDrawerHidden == true ? null : const _Drawer(),
-            appBar: AppBar(
-              actions: [
-                _Points(
-                  areNumberAnimationsSuspended: areNumberAnimationsSuspended,
-                ),
-                const SizedBox(width: 8),
-              ],
-            ),
+            appBar: isAppBarHidden
+                ? null
+                : AppBar(
+                    actions: [
+                      _Points(
+                        areNumberAnimationsSuspended:
+                            areNumberAnimationsSuspended,
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Padding(

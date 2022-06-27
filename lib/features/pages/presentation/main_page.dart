@@ -20,6 +20,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageLayout(
       isFABHidden: false,
+      isAppBarHidden: true,
       isDrawerHidden: false,
       areNumberAnimationsSuspended: false,
       child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
