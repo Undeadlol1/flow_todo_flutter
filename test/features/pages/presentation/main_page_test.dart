@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/sign_in_with_google.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.dart';
@@ -12,9 +13,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../test_utilities/fakes/fake_user_level_calculator.dart';
 import '../../../test_utilities/fixtures/profile_fixture.dart';
+
+class _MockSignInWithGoogle extends Mock implements SignInWithGoogle {}
 
 void main() {
   final tasksCuibit = TasksCubit();
@@ -46,6 +50,7 @@ void main() {
     setUpAll(() {
       GetIt.I.registerSingleton(authCubit);
       GetIt.I.registerSingleton(tasksCuibit);
+      GetIt.I.registerSingleton<SignInWithGoogle>(_MockSignInWithGoogle());
       GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
     });
 
