@@ -159,14 +159,15 @@ class __$$_DailyStreakCopyWithImpl<$Res> extends _$DailyStreakCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DailyStreak implements _DailyStreak {
+class _$_DailyStreak extends _DailyStreak {
   const _$_DailyStreak(
       {this.updatedAt,
       required this.id,
       required this.userId,
       required this.perDay,
       required this.startsAt,
-      required this.createdAt});
+      required this.createdAt})
+      : super._();
 
   factory _$_DailyStreak.fromJson(Map<String, dynamic> json) =>
       _$$_DailyStreakFromJson(json);
@@ -224,7 +225,7 @@ class _$_DailyStreak implements _DailyStreak {
   }
 }
 
-abstract class _DailyStreak implements DailyStreak {
+abstract class _DailyStreak extends DailyStreak {
   const factory _DailyStreak(
       {final int? updatedAt,
       required final String id,
@@ -232,6 +233,7 @@ abstract class _DailyStreak implements DailyStreak {
       required final int perDay,
       required final int startsAt,
       required final int createdAt}) = _$_DailyStreak;
+  const _DailyStreak._() : super._();
 
   factory _DailyStreak.fromJson(Map<String, dynamic> json) =
       _$_DailyStreak.fromJson;

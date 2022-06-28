@@ -7,6 +7,8 @@ part 'daily_streak.g.dart';
 @freezed
 @Implements<DailyStreakEntity>()
 class DailyStreak with _$DailyStreak {
+  const DailyStreak._();
+
   const factory DailyStreak({
     int? updatedAt,
     required String id,
@@ -18,6 +20,18 @@ class DailyStreak with _$DailyStreak {
 
   factory DailyStreak.fromJson(Map<String, Object?> json) =>
       _$DailyStreakFromJson(json);
+
+  int getDaysInARow() {
+    if (updatedAt == null) return 0;
+
+    final today = DateTime.now().millisecondsSinceEpoch;
+    final differenceInDaysBetweenUpdateAndCreation =
+        DateTime.fromMillisecondsSinceEpoch(updatedAt ?? today)
+            .difference(DateTime.fromMillisecondsSinceEpoch(createdAt))
+            .inDays;
+
+    return differenceInDaysBetweenUpdateAndCreation + 1;
+  }
 
   bool isBroken() {
     final int updatedDaysAgo = _getStreakUpdatedDaysAgo();
