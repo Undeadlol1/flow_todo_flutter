@@ -4,6 +4,8 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_histo
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/users/data/update_profile_repository.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../common/domain/use_cases/go_to_main_page.dart';
@@ -17,6 +19,7 @@ import '../models/task.dart';
 @singleton
 class MakeStepForwardOnTheTask {
   final TasksCubit tasksCubit;
+  final ProfileCubit profileCubit;
   final GoToMainPage goToMainPage;
   final GoToTaskPage goToTaskPage;
   final GetTodaysDate getTodaysDate;
@@ -24,9 +27,11 @@ class MakeStepForwardOnTheTask {
   final AddPointsToViewer addPointsToViewer;
   final TasksDoneTodayCubit tasksDoneTodayCubit;
   final UpdateTaskRepository updateTaskRepository;
+  final UpdateProfileRepository updateProfileRepository;
   final NextRepetitionCalculator nextRepetitionCalculator;
   const MakeStepForwardOnTheTask({
     required this.tasksCubit,
+    required this.profileCubit,
     required this.goToMainPage,
     required this.goToTaskPage,
     required this.getTodaysDate,
@@ -34,6 +39,7 @@ class MakeStepForwardOnTheTask {
     required this.addPointsToViewer,
     required this.tasksDoneTodayCubit,
     required this.updateTaskRepository,
+    required this.updateProfileRepository,
     required this.nextRepetitionCalculator,
   });
 

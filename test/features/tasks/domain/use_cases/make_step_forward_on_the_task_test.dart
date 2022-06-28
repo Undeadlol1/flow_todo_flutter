@@ -15,9 +15,11 @@ import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture_2.dart';
 import '../../../../test_utilities/mocks/mock_go_to_main_page.dart';
 import '../../../../test_utilities/mocks/mock_go_to_task_page.dart';
+import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
 import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_done_today_cubit.dart';
+import '../../../../test_utilities/mocks/mock_update_profile_repository.dart';
 import '../../../../test_utilities/mocks/mock_update_task_repository.dart';
 
 class _MockAddPointsToViewer extends Mock implements AddPointsToViewer {}
@@ -27,6 +29,7 @@ class _MockNextRepetitionCalculator extends Mock
 
 final _tasksCubit = TasksCubit();
 final _mockTasksCubit = MockTasksCubit();
+final _mockProfileCubit = MockProfileCubit();
 final _mockGoToMainPage = MockGoToMainPage();
 final _mockGoToTaskPage = MockGoToTaskPage();
 final _fakeGetTodaysDate = FakeGetTodaysDate();
@@ -35,6 +38,7 @@ final _mockSnackbarService = MockSnackbarService();
 final _mockAddPointsToViewer = _MockAddPointsToViewer();
 final _mockTasksDoneTodayCubit = MockTasksDoneTodayCubit();
 final _mockUpdateTaskRepository = MockUpdateTaskRepository();
+final _mockUpdateProfileRepository = MockUpdateProfileRepository();
 final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
 
 void main() {
@@ -317,6 +321,7 @@ void _mockTypicalCalls({required int amountOfPointsToVerify}) {
 MakeStepForwardOnTheTask _getUseCase() {
   return MakeStepForwardOnTheTask(
     tasksCubit: _tasksCubit,
+    profileCubit: _mockProfileCubit,
     goToMainPage: _mockGoToMainPage,
     goToTaskPage: _mockGoToTaskPage,
     getTodaysDate: _fakeGetTodaysDate,
@@ -324,6 +329,7 @@ MakeStepForwardOnTheTask _getUseCase() {
     addPointsToViewer: _mockAddPointsToViewer,
     tasksDoneTodayCubit: _tasksDoneTodayCubit,
     updateTaskRepository: _mockUpdateTaskRepository,
+    updateProfileRepository: _mockUpdateProfileRepository,
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );
 }
@@ -331,6 +337,7 @@ MakeStepForwardOnTheTask _getUseCase() {
 MakeStepForwardOnTheTask _getUseCaseWithMockedStates() {
   return MakeStepForwardOnTheTask(
     tasksCubit: _mockTasksCubit,
+    profileCubit: _mockProfileCubit,
     goToMainPage: _mockGoToMainPage,
     goToTaskPage: _mockGoToTaskPage,
     getTodaysDate: _fakeGetTodaysDate,
@@ -338,6 +345,7 @@ MakeStepForwardOnTheTask _getUseCaseWithMockedStates() {
     addPointsToViewer: _mockAddPointsToViewer,
     tasksDoneTodayCubit: _mockTasksDoneTodayCubit,
     updateTaskRepository: _mockUpdateTaskRepository,
+    updateProfileRepository: _mockUpdateProfileRepository,
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );
 }

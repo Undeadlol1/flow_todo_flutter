@@ -91,6 +91,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       authentificationCubit: get<_i3.AuthentificationCubit>()));
   gh.singleton<_i25.MakeStepForwardOnTheTask>(_i25.MakeStepForwardOnTheTask(
       tasksCubit: get<_i13.TasksCubit>(),
+      profileCubit: get<_i10.ProfileCubit>(),
       goToMainPage: get<_i21.GoToMainPage>(),
       goToTaskPage: get<_i26.GoToTaskPage>(),
       getTodaysDate: get<_i9.GetTodaysDate>(),
@@ -98,6 +99,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       addPointsToViewer: get<_i18.AddPointsToViewer>(),
       tasksDoneTodayCubit: get<_i14.TasksDoneTodayCubit>(),
       updateTaskRepository: get<_i17.UpdateTaskRepository>(),
+      updateProfileRepository: get<_i16.UpdateProfileRepository>(),
       nextRepetitionCalculator: get<_i27.NextRepetitionCalculator>()));
   gh.singleton<_i28.UpdateTaskNote>(_i28.UpdateTaskNote(
       tasksCubit: get<_i13.TasksCubit>(),
