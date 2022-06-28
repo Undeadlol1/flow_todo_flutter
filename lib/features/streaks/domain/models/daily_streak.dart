@@ -52,6 +52,11 @@ class DailyStreak with _$DailyStreak {
     }
   }
 
+  int? daysSinceUpdate() {
+    if (updatedAt == null) return null;
+    return _getStreakUpdatedDaysAgo();
+  }
+
   int _getStreakUpdatedDaysAgo() {
     final today = DateTime.now();
     return today

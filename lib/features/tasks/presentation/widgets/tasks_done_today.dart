@@ -23,6 +23,14 @@ class TasksDoneToday extends StatelessWidget {
                 ? 1.0
                 : tasksDoneAmount / requiredTasksPerDay;
 
+            final dailyStreak = profileState.profile?.dailyStreak;
+            int daysInARow = dailyStreak?.getDaysInARow() ?? 0;
+            final daysSinceUpdate = dailyStreak?.daysSinceUpdate();
+
+            if (daysSinceUpdate == null || daysSinceUpdate > 1) {
+              daysInARow = 0;
+            }
+
             return Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -59,13 +67,13 @@ class TasksDoneToday extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: const [
-                    //     Text('Won days in a row: '),
-                    //     AnimatedNumbers(number: 0),
-                    //   ],
-                    // )
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Won days in a row: '),
+                        AnimatedNumbers(number: daysInARow),
+                      ],
+                    )
                   ],
                 ),
               ),
