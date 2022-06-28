@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flow_todo_flutter_2022/core/configure_automatic_di.dart';
-import 'package:flow_todo_flutter_2022/core/configure_manual_di.dart';
+import 'package:flow_todo_flutter_2022/core/DI/configure_automatic_di.dart';
+import 'package:flow_todo_flutter_2022/core/DI/configure_manual_di.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/presentation/widgets/experience_progress_bar.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
