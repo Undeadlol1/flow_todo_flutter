@@ -47,7 +47,10 @@ class TasksDoneToday extends StatelessWidget {
                               visible: !isStreakAchievedToday,
                               child: Row(
                                 children: [
-                                  AnimatedNumbers(number: tasksDoneAmount),
+                                  AnimatedNumbers(
+                                    number: tasksDoneAmount,
+                                    duration: const Duration(milliseconds: 500),
+                                  ),
                                   Text(' / $requiredTasksPerDay'),
                                 ],
                               ),
