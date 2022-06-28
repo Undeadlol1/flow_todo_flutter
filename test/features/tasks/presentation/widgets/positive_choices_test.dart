@@ -50,6 +50,20 @@ void main() {
         confidenceToVerify: Confidence.good,
       ),
     );
+
+    testWidgets(
+      "THEN has expalanation text",
+      (WidgetTester tester) async {
+        await tester.pumpWithDependencies();
+
+        expect(
+          find.text(
+            'If you spent at least 5 minutes working on a task, no matter the outcome, you may click "made step forward". Good job.',
+          ),
+          findsOneWidget,
+        );
+      },
+    );
   });
 }
 
