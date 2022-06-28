@@ -60,7 +60,12 @@ class PageLayout extends StatelessWidget {
                       ),
                 body: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.only(
+                      top: 6,
+                      left: 6,
+                      right: 6,
+                      bottom: 12.0,
+                    ),
                     child: child,
                   ),
                 ),
