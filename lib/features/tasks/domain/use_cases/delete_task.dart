@@ -5,27 +5,42 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_c
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../common/services/snackbar_service.dart';
+import 'go_to_task_page.dart';
+
 @singleton
 class DeleteTask {
   final TasksCubit tasksCubit;
   final GoToMainPage goToMainPage;
+  final GoToTaskPage goToTaskPage;
+  final SnackbarService snackbarService;
   final AddPointsToViewer addPointsToUser;
   final DeleteTaskRepository deleteTaskRepository;
+
   DeleteTask({
     required this.tasksCubit,
     required this.goToMainPage,
+    required this.goToTaskPage,
+    required this.snackbarService,
     required this.addPointsToUser,
     required this.deleteTaskRepository,
   });
 
   Future<void> call(Task task) async {
-    goToMainPage();
+    try {
+      goToMainPage();
 
-    tasksCubit.state.tasks.remove(task);
-    tasksCubit.updateList(tasksCubit.state.tasks);
+      tasksCubit.state.tasks.remove(task);
+      tasksCubit.updateList(tasksCubit.state.tasks);
 
-    deleteTaskRepository(task);
+      await deleteTaskRepository(task);
+      return addPointsToUser(10);
+    } catch (error) {
+      snackbarService.displaySnackbar(text: error.toString());
 
-    return addPointsToUser(10);
+      tasksCubit.undo();
+
+      return goToTaskPage.call(task: task);
+    }
   }
 }

@@ -6,12 +6,12 @@
 
 import 'package:build_context_provider/build_context_provider.dart' as _i12;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i5;
-import 'package:firebase_auth/firebase_auth.dart' as _i24;
+import 'package:firebase_auth/firebase_auth.dart' as _i25;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
 import '../../features/authentification/domain/entities/use_cases/logout.dart'
-    as _i23;
+    as _i24;
 import '../../features/authentification/presentation/cubit/authentification_cubit.dart'
     as _i3;
 import '../../features/common/domain/use_cases/go_to_main_page.dart' as _i21;
@@ -26,9 +26,9 @@ import '../../features/tasks/data/get_tasks_to_do_repository.dart' as _i8;
 import '../../features/tasks/data/update_task_repository.dart' as _i17;
 import '../../features/tasks/domain/use_cases/create_task.dart' as _i19;
 import '../../features/tasks/domain/use_cases/delete_task.dart' as _i20;
-import '../../features/tasks/domain/use_cases/go_to_task_page.dart' as _i26;
+import '../../features/tasks/domain/use_cases/go_to_task_page.dart' as _i22;
 import '../../features/tasks/domain/use_cases/make_step_forward_on_the_task.dart'
-    as _i25;
+    as _i26;
 import '../../features/tasks/domain/use_cases/update_task_note.dart' as _i28;
 import '../../features/tasks/presentation/cubit/tasks_cubit.dart' as _i13;
 import '../../features/tasks/presentation/cubit/tasks_done_today_cubit.dart'
@@ -37,7 +37,7 @@ import '../../features/users/data/get_profile_repository.dart' as _i7;
 import '../../features/users/data/update_profile_repository.dart' as _i16;
 import '../../features/users/domain/use_cases/add_points_to_viewer.dart'
     as _i18;
-import '../../features/users/domain/use_cases/get_profile.dart' as _i22;
+import '../../features/users/domain/use_cases/get_profile.dart' as _i23;
 import '../../features/users/presentation/cubit/profile_cubit.dart'
     as _i10; // ignore_for_file: unnecessary_lambdas
 
@@ -79,21 +79,23 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i20.DeleteTask>(_i20.DeleteTask(
       tasksCubit: get<_i13.TasksCubit>(),
       goToMainPage: get<_i21.GoToMainPage>(),
+      goToTaskPage: get<_i22.GoToTaskPage>(),
+      snackbarService: get<_i11.SnackbarService>(),
       addPointsToUser: get<_i18.AddPointsToViewer>(),
       deleteTaskRepository: get<_i6.DeleteTaskRepository>()));
-  gh.singleton<_i22.GetProfile>(_i22.GetProfile(
+  gh.singleton<_i23.GetProfile>(_i23.GetProfile(
       profileCubit: get<_i10.ProfileCubit>(),
       getProfileRepository: get<_i7.GetProfileRepository>()));
-  gh.singleton<_i23.Logout>(_i23.Logout(
+  gh.singleton<_i24.Logout>(_i24.Logout(
       tasksCubit: get<_i13.TasksCubit>(),
       profileCubit: get<_i10.ProfileCubit>(),
-      firebaseAuth: get<_i24.FirebaseAuth>(),
+      firebaseAuth: get<_i25.FirebaseAuth>(),
       authentificationCubit: get<_i3.AuthentificationCubit>()));
-  gh.singleton<_i25.MakeStepForwardOnTheTask>(_i25.MakeStepForwardOnTheTask(
+  gh.singleton<_i26.MakeStepForwardOnTheTask>(_i26.MakeStepForwardOnTheTask(
       tasksCubit: get<_i13.TasksCubit>(),
       profileCubit: get<_i10.ProfileCubit>(),
       goToMainPage: get<_i21.GoToMainPage>(),
-      goToTaskPage: get<_i26.GoToTaskPage>(),
+      goToTaskPage: get<_i22.GoToTaskPage>(),
       getTodaysDate: get<_i9.GetTodaysDate>(),
       snackbarService: get<_i11.SnackbarService>(),
       addPointsToViewer: get<_i18.AddPointsToViewer>(),
