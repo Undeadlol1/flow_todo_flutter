@@ -250,6 +250,12 @@ void main() {
         expect(_tasksCubit.state.tasks, hasLength(1));
       },
     );
+
+    group('WHEN daily streak is achieved', () {
+      test('THEN updates daily streak', () {
+        
+      });
+    });
   });
 }
 
