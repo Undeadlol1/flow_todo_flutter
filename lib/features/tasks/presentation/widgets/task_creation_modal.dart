@@ -1,9 +1,10 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/create_task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+
+import '../../domain/use_cases/create_task.dart';
 
 class CreateTaskModal extends StatefulWidget {
   const CreateTaskModal({Key? key}) : super(key: key);
@@ -84,6 +85,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
           title: inputText,
           userId: authState.user.id,
         );
+        if (mounted) Navigator.of(context).pop();
       } catch (e) {
         titleFormControl.focus();
         titleFormControl.value = inputText;
