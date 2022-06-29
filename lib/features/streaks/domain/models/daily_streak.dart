@@ -43,13 +43,16 @@ class DailyStreak with _$DailyStreak {
   bool shouldUpdate({required final int tasksDoneToday}) {
     final bool isTaskGoalReached = tasksDoneToday >= perDay;
     final bool wasStreakUpdatedToday = _getStreakUpdatedDaysAgo() == 0;
-    0;
 
-    if (!isTaskGoalReached) {
-      return false;
-    } else {
+    if (updatedAt == null && isTaskGoalReached) {
+      return true;
+    }
+
+    if (isTaskGoalReached) {
       return isTaskGoalReached && !wasStreakUpdatedToday;
     }
+
+    return false;
   }
 
   int? daysSinceUpdate() {

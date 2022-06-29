@@ -1,16 +1,20 @@
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/repetition.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/models/daily_streak.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fakes/fake_get_todays_date.dart';
+import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture_2.dart';
 import '../../../../test_utilities/mocks/mock_go_to_main_page.dart';
@@ -47,10 +51,13 @@ void main() {
     reset(_mockAddPointsToViewer);
     reset(_mockTasksCubit);
     reset(_mockTasksDoneTodayCubit);
+    reset(_mockUpdateProfileRepository);
 
     when(() => _mockTasksDoneTodayCubit.update(any())).thenReturn(null);
     when(() => _mockTasksDoneTodayCubit.state)
         .thenReturn(TasksDoneTodayState.loaded([]));
+    when(() => _mockProfileCubit.state)
+        .thenReturn(const ProfileLoaded(profile: profileFixture));
 
     _tasksDoneTodayCubit.update([]);
   });
@@ -252,8 +259,49 @@ void main() {
     );
 
     group('WHEN daily streak is achieved', () {
-      test('THEN updates daily streak', () {
-        
+      setUpAll(() => registerFallbackValue(profileFixture));
+
+      test('THEN updates daily streak', () async {
+        _mockTypicalCalls(amountOfPointsToVerify: 30);
+        final yesterday = DateTime.now()
+            .subtract(const Duration(days: 1))
+            .millisecondsSinceEpoch;
+        final tasksDoneToday = [taskFixture, taskFixture, taskFixture];
+        final profileWithAchievedStreak = profileFixture.copyWith(
+          dailyStreak: DailyStreak(
+            perDay: tasksDoneToday.length,
+            id: '12312313',
+            userId: 'userId123',
+            startsAt: yesterday,
+            createdAt: yesterday,
+          ),
+        );
+        final shouldDailyStreakUpdate = profileWithAchievedStreak.dailyStreak
+            .shouldUpdate(tasksDoneToday: tasksDoneToday.length);
+        expect(shouldDailyStreakUpdate, isTrue);
+        when(() => _mockUpdateProfileRepository(any()))
+            .thenAnswer((_) async {});
+        when(() => _mockProfileCubit.state)
+            .thenReturn(ProfileLoaded(profile: profileWithAchievedStreak));
+        when((() => _mockTasksDoneTodayCubit.state)).thenReturn(
+          TasksDoneTodayState.loaded(
+            tasksDoneToday,
+          ),
+        );
+
+        await _getUseCaseWithMockedStates()(
+          task: taskFixture,
+          howBigWasTheStep: Confidence.good,
+        );
+
+        final repositoryCall = verify(
+          () => _mockUpdateProfileRepository(captureAny()),
+        );
+        repositoryCall.called(1);
+        expect(
+          (repositoryCall.captured.first as Profile).dailyStreak.updatedAt,
+          equals(_fakeGetTodaysDate.returnedValue.millisecondsSinceEpoch),
+        );
       });
     });
   });

@@ -48,18 +48,31 @@ class MakeStepForwardOnTheTask {
     required Confidence howBigWasTheStep,
     bool isTaskDone = false,
   }) async {
+    final profile = profileCubit.state.profile;
     final pointsToAdd =
         _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
     final updatedTask = _getUpdatedTask(task, isTaskDone, howBigWasTheStep);
+    final today = getTodaysDate().millisecondsSinceEpoch;
+    // TODO undo fucntionality
+    final updatedProfile = profile!
+        .copyWith(dailyStreak: profile.dailyStreak.copyWith(updatedAt: today));
 
     tasksCubit.removeTask(task);
     tasksDoneTodayCubit
-        .update([updatedTask, ...tasksDoneTodayCubit.state.tasks]);
+        .update([...tasksDoneTodayCubit.state.tasks, updatedTask]);
 
     try {
       await goToMainPage();
       await addPointsToViewer(pointsToAdd);
       await updateTaskRepository.call(updatedTask);
+      final length2 = tasksDoneTodayCubit.state.tasks.length;
+      // TODO .isBroken check
+      final shouldUpdate = profile.dailyStreak.shouldUpdate(
+        tasksDoneToday: length2,
+      );
+      if (shouldUpdate) {
+        await updateProfileRepository(updatedProfile);
+      }
     } catch (error) {
       snackbarService.displaySnackbar(text: error.toString());
 
