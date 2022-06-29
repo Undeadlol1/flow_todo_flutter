@@ -5,6 +5,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/data/update_profile_repository.dart';
+import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:injectable/injectable.dart';
 
@@ -48,14 +49,11 @@ class MakeStepForwardOnTheTask {
     required Confidence howBigWasTheStep,
     bool isTaskDone = false,
   }) async {
-    final profile = profileCubit.state.profile;
+    final Profile updatedProfile = _getUpdatedProfile();
+    final Task updatedTask =
+        _getUpdatedTask(task, isTaskDone, howBigWasTheStep);
     final pointsToAdd =
         _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
-    final updatedTask = _getUpdatedTask(task, isTaskDone, howBigWasTheStep);
-    final today = getTodaysDate().millisecondsSinceEpoch;
-    // TODO undo fucntionality
-    final updatedProfile = profile!
-        .copyWith(dailyStreak: profile.dailyStreak.copyWith(updatedAt: today));
 
     tasksCubit.removeTask(task);
     tasksDoneTodayCubit
@@ -65,12 +63,7 @@ class MakeStepForwardOnTheTask {
       await goToMainPage();
       await addPointsToViewer(pointsToAdd);
       await updateTaskRepository.call(updatedTask);
-      final length2 = tasksDoneTodayCubit.state.tasks.length;
-      // TODO .isBroken check
-      final shouldUpdate = profile.dailyStreak.shouldUpdate(
-        tasksDoneToday: length2,
-      );
-      if (shouldUpdate) {
+      if (_shouldDailyStreakBeUpdated()) {
         await updateProfileRepository(updatedProfile);
       }
     } catch (error) {
@@ -81,6 +74,26 @@ class MakeStepForwardOnTheTask {
 
       return goToTaskPage.call(task: task);
     }
+  }
+
+  Profile _getUpdatedProfile() {
+    final profile = profileCubit.state.profile;
+    final today = getTodaysDate().millisecondsSinceEpoch;
+
+    // TODO undo fucntionality
+    final updatedProfile = profile!
+        .copyWith(dailyStreak: profile.dailyStreak.copyWith(updatedAt: today));
+    return updatedProfile;
+  }
+
+  bool _shouldDailyStreakBeUpdated() {
+    final profile = profileCubit.state.profile;
+    final tasksDoneToday = tasksDoneTodayCubit.state.tasks.length;
+    // TODO .isBroken check
+    return profile?.dailyStreak.shouldUpdate(
+          tasksDoneToday: tasksDoneToday,
+        ) ??
+        false;
   }
 
   Task _getUpdatedTask(
