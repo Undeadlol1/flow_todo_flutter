@@ -1,26 +1,30 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/update_task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+import '../../domain/models/task.dart';
 import '../../domain/use_cases/create_task.dart';
 
-class CreateTaskModal extends StatefulWidget {
-  const CreateTaskModal({Key? key}) : super(key: key);
+class UpsertTaskForm extends StatefulWidget {
+  final Task? taskToUpdate;
+  const UpsertTaskForm({Key? key, this.taskToUpdate}) : super(key: key);
 
   @override
-  State<CreateTaskModal> createState() => _CreateTaskModalState();
+  State<UpsertTaskForm> createState() => _UpsertTaskFormState();
 }
 
-class _CreateTaskModalState extends State<CreateTaskModal> {
+class _UpsertTaskFormState extends State<UpsertTaskForm> {
   static const _formControlName = 'title';
 
   String? _formError;
 
-  final _form = FormGroup(
+  late final _form = FormGroup(
     {
       _formControlName: FormControl<String>(
+        value: widget.taskToUpdate == null ? '' : widget.taskToUpdate?.title,
         validators: [
           Validators.required,
           Validators.minLength(3),
@@ -81,10 +85,14 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
       setState(() => _formError = null);
 
       try {
-        await GetIt.I<CreateTask>()(
-          title: inputText,
-          userId: authState.user.id,
-        );
+        widget.taskToUpdate == null
+            ? await GetIt.I<CreateTask>()(
+                title: inputText,
+                userId: authState.user.id,
+              )
+            : await GetIt.I<UpdateTask>()(
+                widget.taskToUpdate!.copyWith(title: inputText),
+              );
         if (mounted) Navigator.of(context).pop();
       } catch (e) {
         titleFormControl.focus();

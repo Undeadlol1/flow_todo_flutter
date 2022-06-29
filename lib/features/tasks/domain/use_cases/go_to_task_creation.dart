@@ -13,7 +13,7 @@ class GoToTaskCreation {
       showModalBottomSheet(
         context: context,
         barrierColor: Colors.transparent,
-        builder: (_) => const CreateTaskModal(),
+        builder: (_) => const UpsertTaskForm(),
       );
     });
   }
