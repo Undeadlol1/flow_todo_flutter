@@ -80,24 +80,31 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
       final titleFormControl = _form.control(_formControlName);
       String? inputText = titleFormControl.value as String;
 
-      titleFormControl.unfocus(touched: false);
-      titleFormControl.value = null;
+      if (widget.taskToUpdate == null) {
+        titleFormControl.unfocus(touched: false);
+        titleFormControl.value = null;
+      }
+
       setState(() => _formError = null);
 
       try {
-        widget.taskToUpdate == null
-            ? await GetIt.I<CreateTask>()(
-                title: inputText,
-                userId: authState.user.id,
-              )
-            : await GetIt.I<UpdateTask>()(
-                widget.taskToUpdate!.copyWith(title: inputText),
-              );
-        if (mounted) Navigator.of(context).pop();
+        if (widget.taskToUpdate == null) {
+          await GetIt.I<CreateTask>()(
+            title: inputText,
+            userId: authState.user.id,
+          );
+
+          if (mounted) Navigator.of(context).pop();
+        } else {
+          await GetIt.I<UpdateTask>()(
+            widget.taskToUpdate!.copyWith(title: inputText),
+          );
+        }
       } catch (e) {
         titleFormControl.focus();
         titleFormControl.value = inputText;
         setState(() => _formError = e.toString());
+        debugPrint(e.toString());
       }
     }
   }

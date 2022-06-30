@@ -100,8 +100,9 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       tasksDoneTodayCubit: get<_i14.TasksDoneTodayCubit>(),
       updateTaskRepository: get<_i17.UpdateTaskRepository>(),
       nextRepetitionCalculator: get<_i27.NextRepetitionCalculator>()));
-  gh.singleton<_i28.UpdateTask>(
-      _i28.UpdateTask(updateTaskRepository: get<_i17.UpdateTaskRepository>()));
+  gh.singleton<_i28.UpdateTask>(_i28.UpdateTask(
+      tasksCubit: get<_i13.TasksCubit>(),
+      updateTaskRepository: get<_i17.UpdateTaskRepository>()));
   gh.singleton<_i29.UpdateTaskNote>(_i29.UpdateTaskNote(
       tasksCubit: get<_i13.TasksCubit>(),
       updateTaskRepository: get<_i17.UpdateTaskRepository>()));

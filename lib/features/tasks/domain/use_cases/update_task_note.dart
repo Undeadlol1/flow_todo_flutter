@@ -26,6 +26,7 @@ class UpdateTaskNote {
     required Task updatedTask,
   }) {
     final cubitTasks = tasksCubit.state.tasks;
+    // TODO refactor via cubitTasks.updateTask
     final taskIndex = cubitTasks.indexWhere((i) => i.id == currentTask.id);
     cubitTasks[taskIndex] = updatedTask;
     tasksCubit.updateList(cubitTasks);

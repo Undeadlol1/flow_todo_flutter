@@ -20,17 +20,19 @@ class NegativeChoices extends StatelessWidget {
           onTap: () => GetIt.I<DeleteTask>()(task),
         ),
         ListTile(
-          leading: const Icon(Icons.note_add),
-          title: _buildText('Add a note'),
-          onTap: () =>
-              _navigateToTaskPage(context: context, isNoteEditingVisible: true),
-        ),
-        ListTile(
           leading: const Icon(Icons.title),
           title: _buildText('Rework the task'),
           onTap: () => _navigateToTaskPage(
             context: context,
             isTitleEditingVisible: true,
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.note_add),
+          title: _buildText('Add a note'),
+          onTap: () => _navigateToTaskPage(
+            context: context,
+            isNoteEditingVisible: true,
           ),
         ),
         const SizedBox(height: 10),

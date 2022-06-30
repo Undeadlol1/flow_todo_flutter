@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +105,6 @@ class _Image extends HookWidget {
             final progressPercent =
                 _progressPercentageCalculator(experience).floor();
             final widgetProgress = double.parse('${progressPercent / 100}');
-            log('avatar widgetProgress: ${widgetProgress.toString()}');
             final lineWidth = radius / 10;
 
             return CircularPercentIndicator(

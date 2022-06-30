@@ -16,4 +16,10 @@ class TasksCubit extends Cubit<TasksState> with ReplayCubitMixin {
     state.tasks.remove(task);
     updateList(state.tasks);
   }
+
+  void updateTask(Task updatedTask) {
+    final taskIndex = state.tasks.indexWhere((i) => i.id == updatedTask.id);
+    state.tasks[taskIndex] = updatedTask;
+    updateList(state.tasks);
+  }
 }
