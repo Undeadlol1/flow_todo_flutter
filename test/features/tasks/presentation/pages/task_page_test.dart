@@ -1,7 +1,10 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_task_form.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/what_do_you_feel_about_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_note.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
@@ -12,19 +15,25 @@ import 'package:get_it/get_it.dart';
 
 import '../../../../test_utilities/fakes/fake_user_level_calculator.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
+
+final _binding = TestWidgetsFlutterBinding.ensureInitialized();
 
 void main() {
   group('GIVEN TaskPage', () {
     setUpAll(() {
       GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
+      GetIt.I.registerSingleton<LevelProgressPercentageCalculator>(
+        MockLevelProgressPercentageCalculator(),
+      );
     });
 
     testWidgets(
       "SHOULD have PageLayoutAndDependencies",
       (WidgetTester tester) async {
-        await _pumpWidget(tester);
+        await tester.pumpWithDependencies();
 
-        expect(find.byType(PageLayoutAndDependencies), findsOneWidget);
+        expect(find.byType(PageLayout), findsOneWidget);
       },
     );
 
@@ -50,6 +59,17 @@ void main() {
     );
 
     testWidgets(
+      'WHEN called without arguments '
+      'THEN does not show extra widgets',
+      (tester) async {
+        await tester.pumpWithDependencies(task: taskFixture.copyWith(note: ''));
+
+        expect(find.byType(UpsertNote), findsNothing);
+        expect(find.byType(UpsertTaskForm), findsNothing);
+      },
+    );
+
+    testWidgets(
       'SHOULD display task note',
       _pumpAndRunCallback(
         () => expect(
@@ -60,6 +80,27 @@ void main() {
         ),
       ),
     );
+
+    testWidgets(
+      "WHEN title editing argument is provided "
+      "SHOULD display title editing form",
+      (tester) async {
+        await tester.pumpWithDependencies(isTitleEditingVisible: true);
+
+        expect(
+          find.text(taskFixture.title),
+          findsNWidgets(1),
+          reason: 'Task title should not be visible when form is visible',
+        );
+        expect(
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is UpsertTaskForm && widget.taskToUpdate == taskFixture,
+          ),
+          findsOneWidget,
+        );
+      },
+    );
   });
 }
 
@@ -67,33 +108,42 @@ Future<void> Function(WidgetTester tester) _pumpAndRunCallback(
   Function callback,
 ) {
   return (WidgetTester tester) async {
-    await _pumpWidget(tester);
+    await tester.pumpWithDependencies();
 
     callback();
   };
 }
 
-Future<void> _pumpWidget(WidgetTester tester) async {
-  await tester.pumpWidget(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => AuthentificationCubit(),
+extension on WidgetTester {
+  Future<void> pumpWithDependencies({
+    Task? task,
+    bool isTitleEditingVisible = false,
+  }) async {
+    await _binding.setSurfaceSize(const Size(640, 640));
+    return pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => AuthentificationCubit(),
+          ),
+          BlocProvider(
+            create: (context) => ProfileCubit(),
+          ),
+        ],
+        child: MaterialApp(
+          onGenerateRoute: (settings) {
+            return MaterialPageRoute(
+              settings: RouteSettings(
+                arguments: TaskPageArguments(
+                  task: task ?? taskFixture,
+                  isTitleEditingVisible: isTitleEditingVisible,
+                ),
+              ),
+              builder: (_) => const SizedBox(height: 1000, child: TaskPage()),
+            );
+          },
         ),
-        BlocProvider(
-          create: (context) => ProfileCubit(),
-        ),
-      ],
-      child: MaterialApp(
-        onGenerateRoute: (settings) {
-          return MaterialPageRoute(
-            settings: RouteSettings(
-              arguments: TaskPageArguments(task: taskFixture),
-            ),
-            builder: (_) => const TaskPage(),
-          );
-        },
       ),
-    ),
-  );
+    );
+  }
 }

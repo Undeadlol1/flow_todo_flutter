@@ -1,4 +1,4 @@
-import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout_and_dependencies.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.dart';
 import 'package:flutter/material.dart';
 
 class WorkOnTaskPage extends StatelessWidget {
@@ -7,7 +7,7 @@ class WorkOnTaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const PageLayoutAndDependencies(
+    return const PageLayout(
       child: SizedBox(height: 20),
     );
   }

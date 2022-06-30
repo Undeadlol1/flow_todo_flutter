@@ -1,16 +1,56 @@
 import 'package:extended_image/extended_image.dart';
+import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
-import '../../../authentification/presentation/cubit/authentification_cubit.dart';
+import '../../../leveling/domain/services/level_progress_percentage_calculator.dart';
 import '../../../leveling/domain/services/user_level_calculator.dart';
 import '../cubit/profile_cubit.dart';
 import '../pages/profile_page.dart';
 
 class Avatar extends StatelessWidget {
+  final double radius;
+  final bool areNumberAnimationsSuspended;
+  const Avatar({
+    Key? key,
+    this.areNumberAnimationsSuspended = true,
+    required this.radius,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints.tightFor(width: radius * 2),
+      child: Stack(
+        children: [
+          InkWell(
+            child: Center(
+              child: _Image(radius: radius),
+            ),
+            onTap: () => Navigator.of(context).pushNamed(ProfilePage.pathName),
+          ),
+          Positioned(
+            bottom: 0,
+            width: radius,
+            right: radius / 2,
+            height: radius / 2,
+            child: Center(
+              child: _LevelBadge(radius: radius),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LevelBadge extends StatelessWidget {
+  final double radius;
+  _LevelBadge({Key? key, required this.radius}) : super(key: key);
   final _levelCalculator = GetIt.I<UserLevelCalculator>();
-  Avatar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +61,16 @@ class Avatar extends StatelessWidget {
               .value
               .toString();
 
-          return InkWell(
-            onTap: () {
-              Navigator.of(context).pushNamed(ProfilePage.pathName);
-            },
-            child: Chip(
-              visualDensity: VisualDensity.compact,
-              avatar: const _Image(),
-              label: Text(level),
+          return Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              shape: BoxShape.circle,
+            ),
+            padding: const EdgeInsets.all(4),
+            child: Text(
+              level,
+              style:
+                  TextStyle(fontSize: radius >= 50 ? radius / 5 : radius / 1.5),
             ),
           );
         }
@@ -38,26 +80,52 @@ class Avatar extends StatelessWidget {
   }
 }
 
-class _Image extends StatelessWidget {
-  const _Image({Key? key}) : super(key: key);
+class _Image extends HookWidget {
+  _Image({Key? key, required this.radius}) : super(key: key);
+  final double radius;
+  final LevelProgressPercentageCalculator _progressPercentageCalculator =
+      GetIt.I();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthentificationCubit, AuthentificationState>(
-      builder: (BuildContext context, authentication) {
-        if (authentication is! Authenticated) {
-          return const SizedBox();
-        }
+    final controller = useAnimationController(
+      duration: const Duration(seconds: 1),
+    );
 
-        return CircleAvatar(
-          foregroundImage: authentication.user.avatar == null
-              ? null
-              : ExtendedNetworkImageProvider(
-                  authentication.user.avatar!,
-                  scale: 0.1,
-                  cache: true,
-                  cacheMaxAge: const Duration(days: 4),
-                ),
+    final animation = useAnimation(controller);
+    return BlocBuilder<AuthentificationCubit, AuthentificationState>(
+      builder: (context, authState) {
+        return BlocBuilder<ProfileCubit, ProfileState>(
+          builder: (BuildContext context, profileState) {
+            if (profileState is! ProfileLoaded || authState is! Authenticated) {
+              return const SizedBox();
+            }
+
+            final experience = (profileState.profile?.experience ?? 0);
+            final progressPercent =
+                _progressPercentageCalculator(experience).floor();
+            final widgetProgress = double.parse('${progressPercent / 100}');
+            final lineWidth = radius / 10;
+
+            return CircularPercentIndicator(
+              lineWidth: lineWidth,
+              percent: widgetProgress,
+              radius: radius + lineWidth,
+              progressColor: Theme.of(context).colorScheme.primary,
+              center: CircleAvatar(
+                radius: radius,
+                backgroundImage: authState.user.avatar == null
+                    ? null
+                    : ExtendedNetworkImageProvider(
+                        authState.user.avatar!,
+                        scale: 1,
+                        cache: true,
+                        cacheMaxAge: const Duration(days: 4),
+                      ),
+                // child: CircularProgressIndicator(value: widgetProgress),
+              ),
+            );
+          },
         );
       },
     );

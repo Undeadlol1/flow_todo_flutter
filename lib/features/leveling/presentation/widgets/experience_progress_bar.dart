@@ -6,7 +6,9 @@ import 'package:get_it/get_it.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 class ExperienceProgressBar extends StatefulWidget {
-  const ExperienceProgressBar({Key? key}) : super(key: key);
+  final ThemeData themeData;
+  const ExperienceProgressBar({Key? key, required this.themeData})
+      : super(key: key);
 
   @override
   State<ExperienceProgressBar> createState() => _ExperienceProgressBarState();
@@ -14,19 +16,20 @@ class ExperienceProgressBar extends StatefulWidget {
 
 class _ExperienceProgressBarState extends State<ExperienceProgressBar>
     with TickerProviderStateMixin {
-  final LevelProgressPercentageCalculator _progressPercentageCalculator = GetIt.I();
+  final LevelProgressPercentageCalculator _progressPercentageCalculator =
+      GetIt.I();
 
   @override
   Widget build(BuildContext context) {
-    // return const SizedBox();
     return BlocBuilder<ProfileCubit, ProfileState>(
-      builder: (context, state) {
+      builder: (primaryBuildContext, state) {
         double widgetProgress = 0.0;
         if (state is! ProfileLoaded) {
           return const SizedBox();
         } else {
-          final experience = (state.profile?.experience ?? 0) + 400;
-          final progressPercent = _progressPercentageCalculator(experience).floor();
+          final experience = (state.profile?.experience ?? 0);
+          final progressPercent =
+              _progressPercentageCalculator(experience).floor();
           widgetProgress = double.parse('${progressPercent / 100}');
 
           return Directionality(
@@ -44,9 +47,13 @@ class _ExperienceProgressBarState extends State<ExperienceProgressBar>
                       value: value,
                       borderRadius: 0,
                       borderWidth: 0.0,
-                      borderColor: Colors.grey,
                       direction: Axis.horizontal,
+                      borderColor: Colors.transparent,
                       center: Text("$progressPercent%"),
+                      backgroundColor: widget.themeData.backgroundColor,
+                      valueColor: AlwaysStoppedAnimation(
+                        widget.themeData.primaryColor,
+                      ),
                     );
                   },
                 ),

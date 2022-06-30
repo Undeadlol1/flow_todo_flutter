@@ -18,13 +18,26 @@ void main() {
     );
 
     blocTest<TasksCubit, TasksState>(
-      'WHEN is updated'
+      'WHEN updateList is called '
       'THEN contains updated tasks list',
       build: () => TasksCubit(),
       act: (cubit) => cubit.updateList([taskFixture, taskFixture]),
       verify: (cubit) {
         expect(cubit.state, isA<TasksUpdated>());
         expect(cubit.state.tasks, equals([taskFixture, taskFixture]));
+      },
+    );
+
+    blocTest<TasksCubit, TasksState>(
+      'WHEN is updateTask is called '
+      'THEN updates the task in the list',
+      build: () => TasksCubit()..updateList([taskFixture, taskFixture2]),
+      act: (cubit) =>
+          cubit.updateTask(taskFixture.copyWith(title: 'a new title')),
+      verify: (cubit) {
+        expect(cubit.state, isA<TasksUpdated>());
+        expect(cubit.state.tasks, hasLength(2));
+        expect(cubit.state.tasks.first.title, 'a new title');
       },
     );
 

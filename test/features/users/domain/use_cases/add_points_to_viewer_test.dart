@@ -28,23 +28,31 @@ void main() {
       'WHEN repository throws an error '
       'THEN returns error',
       () async {
-        bool hasCallThrown = false;
         final useCase = _getUseCase();
         const exceptionMessage = 'Something went wrong';
         final exception = Exception(exceptionMessage);
         when(() => _mockUpdateProfileRepository(any())).thenThrow(exception);
         _mockLoadedProfile();
 
-        try {
-          await useCase(10);
-        } catch (error) {
-          hasCallThrown = true;
-
+        return useCase(10).onError((error, stackTrace) {
           expect(error, isA<Exception>());
           expect(error.toString(), 'Exception: $exceptionMessage');
-        } finally {
-          expect(hasCallThrown, isTrue);
-        }
+        });
+      },
+    );
+
+    test(
+      'WHEN repository throws an error '
+      'THEN reverts state change',
+      () async {
+        final useCase = _getUseCase();
+        final exception = Exception('Something went wrong');
+        when(() => _mockUpdateProfileRepository(any())).thenThrow(exception);
+        _mockLoadedProfile();
+
+        return useCase(10).onError((_, __) => {}).whenComplete(
+              () => verify(() => _mockProfileCubit.undo()).called(1),
+            );
       },
     );
 

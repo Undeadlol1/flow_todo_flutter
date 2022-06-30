@@ -57,12 +57,14 @@ void main() {
 
         final createdTaskInDB = await collection.doc(taskIdToInsert).get();
         expect(
-          createdTaskInDB.exists,
-          isTrue,
-          reason: 'task was not found or created',
+          createdTaskInDB.id,
+          allOf([
+            isNotNull,
+            isNotEmpty,
+            taskIdToInsert,
+            createdTaskInDB.get('id'),
+          ]),
         );
-        expect(createdTaskInDB.get('id'), isNotEmpty);
-        expect(createdTaskInDB.get('id'), equals(taskIdToInsert));
       },
     );
 

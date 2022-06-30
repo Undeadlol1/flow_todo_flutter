@@ -1,11 +1,14 @@
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:replay_bloc/replay_bloc.dart';
 
 import '../../domain/models/profile.dart';
 
 part 'profile_state.dart';
 
-class ProfileCubit extends HydratedCubit<ProfileState> {
+@singleton
+class ProfileCubit extends HydratedCubit<ProfileState> with ReplayCubitMixin {
   ProfileCubit() : super(ProfileLoading());
 
   void setProfile(Profile profile) {

@@ -1,6 +1,8 @@
 import 'package:flow_todo_flutter_2022/features/users/data/get_profile_repository.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
+import 'package:injectable/injectable.dart';
 
+@singleton
 class GetProfile {
   final ProfileCubit profileCubit;
   final GetProfileRepository getProfileRepository;

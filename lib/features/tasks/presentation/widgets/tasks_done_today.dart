@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,6 @@ class TasksDoneToday extends StatelessWidget {
                 : tasksDoneAmount / requiredTasksPerDay;
 
             return Card(
-              elevation: 10,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -31,19 +31,41 @@ class TasksDoneToday extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Wins today: ${isStreakAchievedToday ? '' : '${tasksDoneAmount.toString()} / $requiredTasksPerDay'}',
-                        ),
-                        if (isStreakAchievedToday)
-                          const Icon(Icons.check, size: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Tasks done today: '),
+                            Visibility(
+                              visible: !isStreakAchievedToday,
+                              child: Row(
+                                children: [
+                                  AnimatedNumbers(number: tasksDoneAmount),
+                                  Text(' / $requiredTasksPerDay'),
+                                ],
+                              ),
+                            ),
+                            if (isStreakAchievedToday)
+                              const Icon(Icons.check, size: 16),
+                          ],
+                        )
                       ],
                     ),
-                    const SizedBox(height: 20),
-                    LinearProgressIndicator(
-                      value: progressValue <= 0 ? 0.01 : progressValue,
+                    Visibility(
+                      visible: !isStreakAchievedToday,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: LinearProgressIndicator(
+                          value: progressValue <= 0 ? 0.01 : progressValue,
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 20),
-                    const Text('Won days in a row: 0')
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: const [
+                    //     Text('Won days in a row: '),
+                    //     AnimatedNumbers(number: 0),
+                    //   ],
+                    // )
                   ],
                 ),
               ),

@@ -1,8 +1,8 @@
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+
+import '../../domain/use_cases/go_to_task_page.dart';
 
 class TasksListItem extends StatelessWidget {
   final Task task;
@@ -17,9 +17,7 @@ class TasksListItem extends StatelessWidget {
       child: Row(
         children: [
           Flexible(
-            child: StaleTaskDetector().isTale(task)
-                ? const Text('Stale')
-                : Text(task.title),
+            child: Text(task.title),
           ),
         ],
       ),

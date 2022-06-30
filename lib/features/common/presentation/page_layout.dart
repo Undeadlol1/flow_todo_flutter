@@ -1,5 +1,8 @@
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,17 +13,20 @@ import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
 import '../../tasks/domain/use_cases/go_to_task_creation.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
-import '../../users/presentation/widgets/avatar.dart';
 
-class PageLayoutAndDependencies extends StatelessWidget {
+class PageLayout extends StatelessWidget {
   final Widget child;
-  final bool? isFABHidden;
-  final bool? isDrawerHidden;
-  const PageLayoutAndDependencies({
+  final bool isFABHidden;
+  final bool isDrawerHidden;
+  final bool isAppBarHidden;
+  final bool isNumbersAnimationSuspended;
+  const PageLayout({
     Key? key,
     required this.child,
     this.isFABHidden = true,
     this.isDrawerHidden = true,
+    this.isAppBarHidden = false,
+    this.isNumbersAnimationSuspended = true,
   }) : super(key: key);
 
   @override
@@ -32,54 +38,76 @@ class PageLayoutAndDependencies extends StatelessWidget {
       ),
       child: BlocBuilder<AuthentificationCubit, AuthentificationState>(
         builder: (BuildContext context, authentication) {
-          return Scaffold(
-            resizeToAvoidBottomInset: true,
-            drawer: isDrawerHidden == true ? null : const _Drawer(),
-            appBar: AppBar(
-              actions: [
-                _buildPoints(),
-                Avatar(),
-                const SizedBox(width: 8),
-              ],
-            ),
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      child,
-                      const ListenerThatRunsFunctionsWithBuildContext(),
-                    ],
+          return Stack(
+            children: [
+              const ListenerThatRunsFunctionsWithBuildContext(),
+              Scaffold(
+                resizeToAvoidBottomInset: true,
+                drawer: isDrawerHidden == true ? null : const _Drawer(),
+                appBar: isAppBarHidden
+                    ? null
+                    : AppBar(
+                        actions: [
+                          _UserLevel(
+                            isNumbersAnimationSuspended:
+                                isNumbersAnimationSuspended,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Center(child: Avatar(radius: 16)),
+                          ),
+                        ],
+                      ),
+                body: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: child,
                   ),
                 ),
+                floatingActionButton: isFABHidden == true
+                    ? null
+                    : Container(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: FloatingActionButton(
+                          onPressed: () => GetIt.I<GoToTaskCreation>()(),
+                          child: const Icon(Icons.add),
+                        ),
+                      ),
+                bottomNavigationBar: const _BottomNavigation(),
               ),
-            ),
-            floatingActionButton: isFABHidden == true
-                ? null
-                : Container(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: FloatingActionButton(
-                      onPressed: () => GetIt.I<GoToTaskCreation>()(),
-                      child: const Icon(Icons.add),
-                    ),
-                  ),
-            bottomNavigationBar: const _BottomNavigation(),
+            ],
           );
         },
       ),
     );
   }
+}
 
-  Widget _buildPoints() {
+class _UserLevel extends StatelessWidget {
+  final bool isNumbersAnimationSuspended;
+  final UserLevelCalculator _userLevelCalculator = GetIt.I();
+  _UserLevel({Key? key, required this.isNumbersAnimationSuspended})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, profileState) {
         if (profileState is ProfileLoaded) {
           return Container(
             padding: const EdgeInsets.only(right: 7),
             child: Chip(
-              label: Text('Points: ${profileState.profile?.points.toString()}'),
+              label: Row(
+                children: [
+                  const Text('Level: '),
+                  AnimatedNumbers(
+                    number: _userLevelCalculator(
+                      profileState.profile?.experience ?? 0,
+                    ).value,
+                    areNumberAnimationsSuspended: isNumbersAnimationSuspended,
+                  ),
+                ],
+              ),
             ),
           );
         }
@@ -143,7 +171,7 @@ class _Drawer extends StatelessWidget {
                 if (authentication is Authenticated)
                   const SignOutButton()
                 else
-                  const GoogleSignInButton(),
+                  GoogleSignInButton(),
               ],
             ),
           ),

@@ -1,42 +1,59 @@
+import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
 
-import '../../../common/presentation/widgets/pagination.dart';
 import '../cubit/tasks_cubit.dart';
 import 'tasks_list_item.dart';
 
-class TasksList extends StatelessWidget {
+class TasksList extends StatefulWidget {
   const TasksList({Key? key}) : super(key: key);
+
+  @override
+  State<TasksList> createState() => _TasksListState();
+}
+
+class _TasksListState extends State<TasksList> {
+  final int _currentPage = 0;
+  final int _tasksPerPage = 20;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TasksCubit, TasksState>(
       builder: (context, tasksState) {
+        final tasksToDisplay = _getPaginatedTasksSlice(tasksState);
+
         if (tasksState is TasksLoading) {
           return const _LoadingIndicator();
         }
-        return Column(
-          children: [
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: tasksState.tasks.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TasksListItem(task: tasksState.tasks[index]),
-                );
-              },
-            ),
-            if (tasksState.tasks.isNotEmpty)
-              Pagination(
-                onPageChange: (newPageNumber) {},
-              ),
-          ],
+
+        return ListView.builder(
+          itemCount: tasksState.tasks.length,
+          itemBuilder: (BuildContext context, int index) {
+            return TasksListItem(task: tasksState.tasks[index]);
+          },
         );
+        // if (tasksState.tasks.isNotEmpty)
+        //   Pagination(
+        //     onPageChange: (newPageNumber) {
+        //       setState(() => _currentPage = newPageNumber);
+        //     },
+        //   ),
+        // );
       },
     );
+  }
+
+  List<Task> _getPaginatedTasksSlice(TasksState tasksState) {
+    final sliceFrom = _currentPage * _tasksPerPage;
+    final sliceTo = (_currentPage + 1) * _tasksPerPage;
+    var totalAmountOfTasks = tasksState.tasks.length;
+    return tasksState.tasks
+        .getRange(
+          sliceFrom,
+          sliceTo > totalAmountOfTasks ? totalAmountOfTasks : sliceTo,
+        )
+        .toList();
   }
 }
 

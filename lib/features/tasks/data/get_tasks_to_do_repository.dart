@@ -15,7 +15,7 @@ class GetTasksToDoRepository {
           'dueAt',
           isLessThanOrEqualTo: DateTime.now().millisecondsSinceEpoch,
         )
-        .limit(100)
+        .limit(250)
         .get();
 
     final listOfJsons = tasksSnapshot.docs.map((e) => e.data()).toList();

@@ -1,4 +1,3 @@
-import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/pagination.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list_item.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
-
 
 void main() {
   group('GIVEN TasksList', () {
@@ -42,19 +40,19 @@ void main() {
         },
       );
 
-      testWidgets(
-        "THEN displays pagination",
-        (WidgetTester tester) async {
-          final cubit = TasksCubit()..updateList([taskFixture, taskFixture]);
+      // testWidgets(
+      //   "THEN displays pagination",
+      //   (WidgetTester tester) async {
+      //     final cubit = TasksCubit()..updateList([taskFixture, taskFixture]);
 
-          await tester.pumpWithDependencies(
-            tasksCubit: cubit,
-            child: const TasksList(),
-          );
+      //     await tester.pumpWithDependencies(
+      //       tasksCubit: cubit,
+      //       child: const TasksList(),
+      //     );
 
-          expect(find.byType(Pagination), findsOneWidget);
-        },
-      );
+      //     expect(find.byType(Pagination), findsOneWidget);
+      //   },
+      // );
     });
   });
 }
@@ -73,13 +71,11 @@ extension on WidgetTester {
     return pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: SingleChildScrollView(
-            child: BlocProvider(
-              create: (context) => tasksCubit,
-              child: Directionality(
-                textDirection: TextDirection.ltr,
-                child: child,
-              ),
+          body: BlocProvider(
+            create: (context) => tasksCubit,
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: child,
             ),
           ),
         ),

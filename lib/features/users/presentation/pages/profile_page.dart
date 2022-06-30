@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
 
-import '../../../common/presentation/page_layout_and_dependencies.dart';
+import '../../../common/presentation/page_layout.dart';
 
 class ProfilePage extends StatelessWidget {
   static const pathName = '/profile';
@@ -16,7 +16,7 @@ class ProfilePage extends StatelessWidget {
         if (snapshot.hasData) {
           return const ProfileScreen();
         } else {
-          return PageLayoutAndDependencies(
+          return PageLayout(
             child: Center(
               child: SizedBox(
                 height: 500,

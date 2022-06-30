@@ -16,18 +16,13 @@ void main() {
       test(
         "redirects to task page",
         () {
-          GoToTaskPage(contextProvider: buildContextProvider)(task: taskFixture);
+          GoToTaskPage(contextProvider: buildContextProvider)(
+            task: taskFixture,
+          );
 
           expect(buildContextProvider.numberOfCalls, equals(1));
         },
       );
-
-      // test(
-      //   "updates active task state",
-      //   () {
-      //               GoToTaskPage()();
-      //   },
-      // );
     },
   );
 }

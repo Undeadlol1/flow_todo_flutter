@@ -1,7 +1,7 @@
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flutter/material.dart';
 
-import '../../presentation/widgets/task_creation_modal.dart';
+import '../../presentation/widgets/upsert_task_form.dart';
 
 class GoToTaskCreation {
   final BuildContextProvider contextProvider;
@@ -13,7 +13,7 @@ class GoToTaskCreation {
       showModalBottomSheet(
         context: context,
         barrierColor: Colors.transparent,
-        builder: (_) => const CreateTaskModal(),
+        builder: (_) => const UpsertTaskForm(),
       );
     });
   }

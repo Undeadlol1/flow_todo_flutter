@@ -13,10 +13,13 @@ class _PaginationState extends State<Pagination> {
 
   @override
   Widget build(BuildContext context) {
+    final buttonColor = Theme.of(context).buttonTheme.colorScheme?.primary;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
+          color: buttonColor,
           onPressed: () {
             --_currentPage;
 
@@ -24,20 +27,25 @@ class _PaginationState extends State<Pagination> {
               _currentPage = 0;
             }
 
-            widget.onPageChange(_currentPage);
-            setState(() => _currentPage = _currentPage);
+            _changeCurrentPage();
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
         IconButton(
+          color: buttonColor,
           onPressed: () {
             ++_currentPage;
-            widget.onPageChange(_currentPage);
-            setState(() => _currentPage = _currentPage);
+
+            _changeCurrentPage();
           },
           icon: const Icon(Icons.arrow_forward_ios),
         ),
       ],
     );
+  }
+
+  void _changeCurrentPage() {
+    widget.onPageChange(_currentPage);
+    setState(() => _currentPage = _currentPage);
   }
 }
