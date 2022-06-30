@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -16,49 +15,25 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await _setupFirebase();
-
-  configureManualDI();
-
-  configureAutomaticDI();
-
-  final storageDirectory = kIsWeb
-      ? HydratedStorage.webStorageDirectory
-      : await getTemporaryDirectory();
-
-  // Hive.init();
-  await Hive.initFlutter();
-  // await Hive.openBox('ProfileCubit');
-  // Hive.box('ProfileCubit').add(null);
-
-  final storage = await HydratedStorage.build(
-    storageDirectory: storageDirectory,
-  );
   HydratedBlocOverrides.runZoned(
-    () => runApp(
-      const App(),
-    ),
-    storage: storage,
+    () async {
+      await _setupFirebase();
+
+      configureManualDI();
+
+      configureAutomaticDI();
+
+      runApp(const App());
+    },
+    blocObserver: _GlobalBlocObserver(),
+    createStorage: () async {
+      return HydratedStorage.build(
+        storageDirectory: kIsWeb
+            ? HydratedStorage.webStorageDirectory
+            : await getTemporaryDirectory(),
+      );
+    },
   );
-
-  // final storage = await HydratedStorage.build(
-  //   storageDirectory: storageDirectory,
-  // );
-
-  //   HydratedBlocOverrides.runZoned(
-  //   () => runApp(MyApp(
-  //   )),
-  //   storage: storage,
-  // );
-
-  // HydratedBlocOverrides.runZoned(
-  //   () => runApp(const MyApp()),
-  //   storage: await createStorage(),
-  // );
-  // HydratedBlocOverrides.runZoned(
-  //   () => runApp(const MyApp()),
-  //   storage: storage,
-  // );
 }
 
 Future<void> _setupFirebase() async {
@@ -74,4 +49,38 @@ Future<void> _setupFirebase() async {
           '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
+}
+
+class _GlobalBlocObserver extends BlocObserver {
+  @override
+  void onCreate(BlocBase bloc) {
+    super.onCreate(bloc);
+    if (kDebugMode) {
+      print('onCreate -- ${bloc.runtimeType}');
+    }
+  }
+
+  @override
+  void onChange(BlocBase bloc, Change change) {
+    super.onChange(bloc, change);
+    if (kDebugMode) {
+      print('onChange -- ${bloc.runtimeType}, $change');
+    }
+  }
+
+  @override
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    if (kDebugMode) {
+      print('onError -- ${bloc.runtimeType}, $error');
+    }
+    super.onError(bloc, error, stackTrace);
+  }
+
+  @override
+  void onClose(BlocBase bloc) {
+    super.onClose(bloc);
+    if (kDebugMode) {
+      print('onClose -- ${bloc.runtimeType}');
+    }
+  }
 }

@@ -24,13 +24,13 @@ class ProfileCubit extends HydratedCubit<ProfileState> with ReplayCubitMixin {
   }
 
   @override
-  ProfileState? fromJson(Map<String, dynamic> json) {
+  ProfileState fromJson(Map<String, dynamic> json) {
     if (json.isEmpty) return ProfileLoading();
-    return ProfileLoaded(profile: Profile.fromJson(json));
+    return ProfileLoaded(profile: Profile.fromJson(json['profile']));
   }
 
   @override
-  Map<String, dynamic>? toJson(ProfileState state) {
-    return state.profile?.toJson();
+  Map<String, dynamic> toJson(ProfileState state) {
+    return {"profile": state.profile?.toJson()};
   }
 }

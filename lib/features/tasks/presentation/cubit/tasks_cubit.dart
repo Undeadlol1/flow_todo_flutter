@@ -20,15 +20,15 @@ class TasksCubit extends HydratedCubit<TasksState> with ReplayCubitMixin {
   }
 
   @override
-  TasksState? fromJson(Map<String, dynamic> json) {
+  TasksState fromJson(Map<String, dynamic> json) {
     return TasksUpdated(
       tasks: List.from(json['tasks']).map((e) => Task.fromJson(e)).toList(),
     );
   }
 
   @override
-  Map<String, dynamic>? toJson(TasksState state) {
-    return {"tasks": state.tasks.map((e) => e.toJson()).toList().toString()};
+  Map<String, dynamic> toJson(TasksState state) {
+    return {"tasks": state.tasks.map((e) => e.toJson()).toList()};
   }
 
   void updateTask(Task updatedTask) {
