@@ -16,19 +16,8 @@ class UpdateTaskNote {
   Future<void> call({required Task task, required String note}) async {
     final updatedTask = task.copyWith(note: note);
 
-    _updateTaskInCubit(currentTask: task, updatedTask: updatedTask);
+    tasksCubit.updateTask(updatedTask);
 
-    return updateTaskRepository(task.copyWith(note: note));
-  }
-
-  void _updateTaskInCubit({
-    required Task currentTask,
-    required Task updatedTask,
-  }) {
-    final cubitTasks = tasksCubit.state.tasks;
-    // TODO refactor via cubitTasks.updateTask
-    final taskIndex = cubitTasks.indexWhere((i) => i.id == currentTask.id);
-    cubitTasks[taskIndex] = updatedTask;
-    tasksCubit.updateList(cubitTasks);
+    return updateTaskRepository(updatedTask);
   }
 }
