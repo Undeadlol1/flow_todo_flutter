@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../../../common/presentation/page_layout.dart';
 import '../../domain/models/task.dart';
+import '../widgets/task_creation_modal.dart';
 import '../widgets/what_do_you_feel_about_the_task.dart';
 import '../widgets/upsert_note.dart';
 
 class TaskPageArguments {
   final Task task;
   final bool isNoteEditingVisible;
-  TaskPageArguments({required this.task, this.isNoteEditingVisible = false});
+  final bool isTitleEditingVisible;
+  TaskPageArguments({
+    required this.task,
+    this.isNoteEditingVisible = false,
+    this.isTitleEditingVisible = false,
+  });
 }
 
 class TaskPage extends StatelessWidget {
@@ -18,7 +24,7 @@ class TaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args =
-        (ModalRoute.of(context)!.settings.arguments as TaskPageArguments);
+        ModalRoute.of(context)!.settings.arguments as TaskPageArguments;
     final task = args.task;
 
     return PageLayout(
@@ -28,7 +34,8 @@ class TaskPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 20),
-          SelectableText(task.title),
+          if (!args.isTitleEditingVisible) SelectableText(task.title),
+          if (args.isTitleEditingVisible) UpsertTaskForm(taskToUpdate: task),
           if (args.isNoteEditingVisible || task.note.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 20),
@@ -44,7 +51,6 @@ class TaskPage extends StatelessWidget {
                 ),
               ),
             ),
-          // UpsertTaskForm(taskToUpdate: task),
           const SizedBox(height: 20),
           const WhatDoYouFeelAboutTheTask(),
           Card(
