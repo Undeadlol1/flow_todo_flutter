@@ -9,7 +9,9 @@ class GetTasksToDo {
     final getTasks = GetIt.I<GetTasksToDoRepository>();
 
     final tasks = await getTasks(userId: userId);
-    tasks.shuffle();
+    // NOTE: sort tasks semi randomly. Meaning tasks are sorted randomly but
+    // the same list is going to have the same order each time it is loaded.
+    tasks.sort((first, second) => first.id.compareTo(second.id));
     tasksCubit.updateList(tasks.reversed.toList());
   }
 }
