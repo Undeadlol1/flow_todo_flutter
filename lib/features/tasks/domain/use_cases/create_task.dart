@@ -42,7 +42,7 @@ class CreateTask {
     if (profileState is ProfileLoaded) {
       addPointsToUser(10);
     }
-    tasksCubit.state.tasks.add(taskToCreate);
+    tasksCubit.state.tasks.insert(0, taskToCreate);
     tasksCubit.updateList(tasksCubit.state.tasks);
 
     return createTaskRepository(taskToCreate);
