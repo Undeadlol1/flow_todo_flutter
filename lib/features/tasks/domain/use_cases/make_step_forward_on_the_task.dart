@@ -81,15 +81,21 @@ class MakeStepForwardOnTheTask {
     final today = getTodaysDate().millisecondsSinceEpoch;
 
     // TODO undo fucntionality
-    final updatedProfile = profile!
-        .copyWith(dailyStreak: profile.dailyStreak.copyWith(updatedAt: today));
+    final updatedProfile = profile!.copyWith(
+      dailyStreak: profile.dailyStreak.copyWith(
+        updatedAt: today,
+        // NOTE: not tested
+        startsAt: profile.dailyStreak.isBroken()
+            ? today
+            : profile.dailyStreak.startsAt,
+      ),
+    );
     return updatedProfile;
   }
 
   bool _shouldDailyStreakBeUpdated() {
     final profile = profileCubit.state.profile;
     final tasksDoneToday = tasksDoneTodayCubit.state.tasks.length;
-    // TODO .isBroken check
     return profile?.dailyStreak.shouldUpdate(
           tasksDoneToday: tasksDoneToday,
         ) ??
