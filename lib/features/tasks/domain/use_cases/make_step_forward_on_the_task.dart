@@ -120,7 +120,6 @@ class MakeStepForwardOnTheTask {
       dueAt: nextRepetition.dueAt,
       repetitionLevel: nextRepetition.repetitionLevel,
       history: [
-        ...task.history,
         TaskHistory(
           createdAt: today,
           actionType: isTaskDone
@@ -129,6 +128,8 @@ class MakeStepForwardOnTheTask {
                   ? TaskHistoryActionType.leapForward
                   : TaskHistoryActionType.stepForward,
         ),
+        // TODO test order.
+        ...task.history,
       ],
     );
   }

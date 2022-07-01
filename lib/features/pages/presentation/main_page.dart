@@ -1,16 +1,17 @@
-import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
-import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
+import '../../authentification/presentation/widgets/google_sign_in_button.dart';
 import '../../common/presentation/page_layout.dart';
+import '../../tasks/domain/use_cases/get_tasks_done_today.dart';
 import '../../tasks/domain/use_cases/get_tasks_to_do.dart';
 import '../../tasks/presentation/widgets/tasks_done_today.dart';
 import '../../tasks/presentation/widgets/tasks_list.dart';
 import '../../users/domain/use_cases/get_profile.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
+import '../../users/presentation/widgets/avatar.dart';
 
 class MainPage extends StatelessWidget {
   static const pathName = '/main';
@@ -28,6 +29,7 @@ class MainPage extends StatelessWidget {
           if (authState is Authenticated) {
             GetIt.I<GetProfile>()(userId: authState.user.id);
             GetIt.I<GetTasksToDo>()(userId: authState.user.id);
+            GetIt.I<GetTasksDoneToday>()(userId: authState.user.id);
           }
         },
         builder: (context, authState) {
