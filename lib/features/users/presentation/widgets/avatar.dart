@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flutter/material.dart';
@@ -89,90 +87,59 @@ class _Image extends StatefulWidget {
   State<_Image> createState() => _ImageState();
 }
 
-// TODO refactor everything. Was tired while writing this code.
 class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
-  late Animation<double> animation;
-  late AnimationController controller;
-  bool isStatusListenerAdded = false;
+  bool isAnimationListenerAdded = false;
   double previousValueOfProgressCircle = 0;
+
+  late Animation<double> _animation;
+  late final AnimationController _animationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1500),
+  );
+
   final LevelProgressPercentageCalculator _progressPercentageCalculator =
       GetIt.I();
 
   @override
-  void initState() {
-    super.initState();
-    controller = AnimationController(
-      duration: const Duration(milliseconds: 1500),
-      vsync: this,
-    );
-  }
-
-  @override
   void dispose() {
-    controller.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final controller = useAnimationController(
-    //   duration: const Duration(seconds: 1),
-    // );
-    // final animation = useAnimation(controller);
     return BlocBuilder<AuthentificationCubit, AuthentificationState>(
       builder: (context, authState) {
         return BlocConsumer<ProfileCubit, ProfileState>(
           listener: (context, profileState) {
             if (profileState is! ProfileLoaded) return;
 
-            final experience = (profileState.profile?.experience ?? 0);
-
-            final progressPercent =
-                _progressPercentageCalculator(experience).floor();
-            final widgetProgress = double.parse('${progressPercent / 100}');
-            log('widgetProgress: $widgetProgress');
-            log('previousValueOfProgressCircle: $previousValueOfProgressCircle');
-
-            animation = Tween<double>(
-              end: widgetProgress,
+            _animation = Tween<double>(
+              end: _getLevelProgress(profileState),
               begin: previousValueOfProgressCircle,
-            ).animate(controller);
+            ).animate(_animationController);
 
-            if (isStatusListenerAdded == false) {
-              animation.addListener(
-                () => setState(() {
-                  // log('SETSTATE');
-                }),
-              );
-              animation.addStatusListener((status) {
-                if (status == AnimationStatus.completed) {
-                  log('COMPLETE');
-                }
-              });
-              isStatusListenerAdded = true;
+            if (isAnimationListenerAdded == false) {
+              _animation.addListener(() => setState(() {}));
+              isAnimationListenerAdded = true;
             }
-            // log('ABOUT to forward');
-            controller.reset();
-            controller.forward();
+
+            _animationController
+              ..reset()
+              ..forward();
           },
           builder: (BuildContext context, profileState) {
             if (profileState is! ProfileLoaded || authState is! Authenticated) {
               return const SizedBox();
             }
 
-            final experience = (profileState.profile?.experience ?? 0);
-            final progressPercent =
-                _progressPercentageCalculator(experience).floor();
-            final widgetProgress = double.parse('${progressPercent / 100}');
             final lineWidth = widget.radius / 10;
 
-            previousValueOfProgressCircle = widgetProgress;
-            log('animation.value: ${animation.value}');
-            // log('animation details: ${animation.toStringDetails()}');
+            previousValueOfProgressCircle = _getLevelProgress(profileState);
 
             return CircularPercentIndicator(
               lineWidth: lineWidth,
-              percent: animation.value,
+              percent: _animation.value,
               radius: widget.radius + lineWidth,
               progressColor: Theme.of(context).colorScheme.primary,
               center: CircleAvatar(
@@ -192,5 +159,12 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
         );
       },
     );
+  }
+
+  double _getLevelProgress(profileState) {
+    final experience = (profileState.profile?.experience ?? 0);
+    final progressPercent = _progressPercentageCalculator(experience).floor();
+    final widgetProgress = double.parse('${progressPercent / 100}');
+    return widgetProgress;
   }
 }
