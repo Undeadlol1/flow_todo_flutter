@@ -93,6 +93,7 @@ class _Image extends StatefulWidget {
 class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
   late Animation<double> animation;
   late AnimationController controller;
+  bool isStatusListenerAdded = false;
   double previousValueOfProgressCircle = 0;
   final LevelProgressPercentageCalculator _progressPercentageCalculator =
       GetIt.I();
@@ -100,12 +101,10 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    controller =
-        AnimationController(duration: const Duration(seconds: 2), vsync: this );
-    animation = Tween<double>(begin: 0, end: 1) .animate(controller)
-      ..addListener(() => setState(() {}));
-    // #enddocregion addListener
-    controller.forward();
+    controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
   }
 
   @override
@@ -127,7 +126,6 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
             if (profileState is! ProfileLoaded) return;
 
             final experience = (profileState.profile?.experience ?? 0);
-            log('experience: $experience');
 
             final progressPercent =
                 _progressPercentageCalculator(experience).floor();
@@ -136,11 +134,26 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
             log('previousValueOfProgressCircle: $previousValueOfProgressCircle');
 
             animation = Tween<double>(
-              begin: previousValueOfProgressCircle,
               end: widgetProgress,
+              begin: previousValueOfProgressCircle,
             ).animate(controller);
 
-            controller.forward(from: widgetProgress);
+            if (isStatusListenerAdded == false) {
+              animation.addListener(
+                () => setState(() {
+                  // log('SETSTATE');
+                }),
+              );
+              animation.addStatusListener((status) {
+                if (status == AnimationStatus.completed) {
+                  log('COMPLETE');
+                }
+              });
+              isStatusListenerAdded = true;
+            }
+            // log('ABOUT to forward');
+            controller.reset();
+            controller.forward();
           },
           builder: (BuildContext context, profileState) {
             if (profileState is! ProfileLoaded || authState is! Authenticated) {
@@ -155,6 +168,7 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
 
             previousValueOfProgressCircle = widgetProgress;
             log('animation.value: ${animation.value}');
+            // log('animation details: ${animation.toStringDetails()}');
 
             return CircularPercentIndicator(
               lineWidth: lineWidth,
