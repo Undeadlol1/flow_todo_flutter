@@ -1,8 +1,9 @@
+import 'dart:developer';
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -57,7 +58,7 @@ class _LevelBadge extends StatelessWidget {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, profileState) {
         if (profileState is ProfileLoaded) {
-          final level = _levelCalculator(profileState.profile?.points ?? 0)
+          final level = _levelCalculator(profileState.profile?.experience ?? 0)
               .value
               .toString();
 
@@ -80,22 +81,67 @@ class _LevelBadge extends StatelessWidget {
   }
 }
 
-class _Image extends HookWidget {
-  _Image({Key? key, required this.radius}) : super(key: key);
+class _Image extends StatefulWidget {
+  const _Image({Key? key, required this.radius}) : super(key: key);
   final double radius;
+
+  @override
+  State<_Image> createState() => _ImageState();
+}
+
+// TODO refactor everything. Was tired while writing this code.
+class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
+  late Animation<double> animation;
+  late AnimationController controller;
+  double previousValueOfProgressCircle = 0;
   final LevelProgressPercentageCalculator _progressPercentageCalculator =
       GetIt.I();
 
   @override
-  Widget build(BuildContext context) {
-    final controller = useAnimationController(
-      duration: const Duration(seconds: 1),
-    );
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(duration: const Duration(seconds: 2), vsync: this );
+    animation = Tween<double>(begin: 0, end: 1) .animate(controller)
+      ..addListener(() => setState(() {}));
+    // #enddocregion addListener
+    controller.forward();
+  }
 
-    final animation = useAnimation(controller);
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // final controller = useAnimationController(
+    //   duration: const Duration(seconds: 1),
+    // );
+    // final animation = useAnimation(controller);
     return BlocBuilder<AuthentificationCubit, AuthentificationState>(
       builder: (context, authState) {
-        return BlocBuilder<ProfileCubit, ProfileState>(
+        return BlocConsumer<ProfileCubit, ProfileState>(
+          listener: (context, profileState) {
+            if (profileState is! ProfileLoaded) return;
+
+            final experience = (profileState.profile?.experience ?? 0);
+            log('experience: $experience');
+
+            final progressPercent =
+                _progressPercentageCalculator(experience).floor();
+            final widgetProgress = double.parse('${progressPercent / 100}');
+            log('widgetProgress: $widgetProgress');
+            log('previousValueOfProgressCircle: $previousValueOfProgressCircle');
+
+            animation = Tween<double>(
+              begin: previousValueOfProgressCircle,
+              end: widgetProgress,
+            ).animate(controller);
+
+            controller.forward(from: widgetProgress);
+          },
           builder: (BuildContext context, profileState) {
             if (profileState is! ProfileLoaded || authState is! Authenticated) {
               return const SizedBox();
@@ -105,15 +151,18 @@ class _Image extends HookWidget {
             final progressPercent =
                 _progressPercentageCalculator(experience).floor();
             final widgetProgress = double.parse('${progressPercent / 100}');
-            final lineWidth = radius / 10;
+            final lineWidth = widget.radius / 10;
+
+            previousValueOfProgressCircle = widgetProgress;
+            log('animation.value: ${animation.value}');
 
             return CircularPercentIndicator(
               lineWidth: lineWidth,
-              percent: widgetProgress,
-              radius: radius + lineWidth,
+              percent: animation.value,
+              radius: widget.radius + lineWidth,
               progressColor: Theme.of(context).colorScheme.primary,
               center: CircleAvatar(
-                radius: radius,
+                radius: widget.radius,
                 backgroundImage: authState.user.avatar == null
                     ? null
                     : ExtendedNetworkImageProvider(
