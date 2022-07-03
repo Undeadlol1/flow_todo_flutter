@@ -77,53 +77,55 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
               );
             }
 
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text('Tasks done today: '),
-                            Visibility(
-                              visible: !isStreakAchievedToday,
-                              child: Row(
-                                children: [
-                                  AnimatedNumbers(number: tasksDoneAmount),
-                                  Text(' / $requiredTasksPerDay'),
-                                ],
-                              ),
+            return Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+                right: 16,
+                left: 16,
+                bottom: 4,
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('Tasks done today: '),
+                          Visibility(
+                            visible: !isStreakAchievedToday,
+                            child: Row(
+                              children: [
+                                AnimatedNumbers(number: tasksDoneAmount),
+                                Text(' / $requiredTasksPerDay'),
+                              ],
                             ),
-                            if (isStreakAchievedToday)
-                              const Icon(Icons.check, size: 16),
-                          ],
-                        )
-                      ],
-                    ),
-                    Visibility(
-                      visible: _animationController.isAnimating ||
-                          !isStreakAchievedToday,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: LinearProgressIndicator(
-                          value:
-                              _animation.value <= 0 ? 0.01 : _animation.value,
-                        ),
+                          ),
+                          if (isStreakAchievedToday)
+                            const Icon(Icons.check, size: 16),
+                        ],
+                      )
+                    ],
+                  ),
+                  Visibility(
+                    visible: _animationController.isAnimating ||
+                        !isStreakAchievedToday,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: LinearProgressIndicator(
+                        value: _animation.value <= 0 ? 0.01 : _animation.value,
                       ),
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: const [
-                    //     Text('Won days in a row: '),
-                    //     AnimatedNumbers(number: 0),
-                    //   ],
-                    // )
-                  ],
-                ),
+                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: const [
+                  //     Text('Won days in a row: '),
+                  //     AnimatedNumbers(number: 0),
+                  //   ],
+                  // )
+                ],
               ),
             );
           },
