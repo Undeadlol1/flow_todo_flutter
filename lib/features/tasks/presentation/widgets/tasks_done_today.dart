@@ -61,11 +61,21 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
             final tasksDoneAmount = tasksDoneState.tasks.length;
             final isStreakAchievedToday =
                 tasksDoneAmount >= requiredTasksPerDay;
-            final progressValue = isStreakAchievedToday
-                ? 1.0
-                : tasksDoneAmount / requiredTasksPerDay;
+            final progressValue = _getProgressValue(
+              requiredTasksPerDay: requiredTasksPerDay,
+              tasksDoneAmount: tasksDoneAmount,
+            );
 
             previousProgressValue = progressValue;
+
+            if (_hasFirstAnimationForcefullyRan == false) {
+              _runProgressAnimation(
+                tasksDoneAmount: tasksDoneAmount,
+                context: context,
+                requiredTasksPerDay: requiredTasksPerDay,
+                tasksDoneTodayState: tasksDoneState,
+              );
+            }
 
             return Card(
               child: Padding(
@@ -129,16 +139,16 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
     required TasksDoneTodayState tasksDoneTodayState,
   }) {
     if (!mounted) return;
-    if (_hasFirstAnimationForcefullyRan) return;
     if (tasksDoneAmount > requiredTasksPerDay) return;
 
-    final isStreakAchievedToday = tasksDoneAmount >= requiredTasksPerDay;
-    final progressValue =
-        isStreakAchievedToday ? 1.0 : tasksDoneAmount / requiredTasksPerDay;
+    final double progressValue = _getProgressValue(
+      tasksDoneAmount: tasksDoneAmount,
+      requiredTasksPerDay: requiredTasksPerDay,
+    );
 
     tasksDoneTodayState.when(
       loading: () {},
-      loaded: (loadedTasksState) {
+      loaded: (_) {
         Future.microtask(() {
           _hasFirstAnimationForcefullyRan = true;
 
@@ -158,5 +168,13 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
         });
       },
     );
+  }
+
+  double _getProgressValue({
+    required int tasksDoneAmount,
+    required int requiredTasksPerDay,
+  }) {
+    final isStreakAchievedToday = tasksDoneAmount >= requiredTasksPerDay;
+    return isStreakAchievedToday ? 1.0 : tasksDoneAmount / requiredTasksPerDay;
   }
 }
