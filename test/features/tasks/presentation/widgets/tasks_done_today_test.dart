@@ -34,7 +34,7 @@ void main() {
 
           await tester.pumpWithDependencies(const TasksDoneToday());
 
-          expect(find.textContaining('Tasks done today: '), findsOneWidget);
+          expect(find.textContaining('Wins today: '), findsOneWidget);
           expect(find.textContaining('2'), findsOneWidget);
         },
       );

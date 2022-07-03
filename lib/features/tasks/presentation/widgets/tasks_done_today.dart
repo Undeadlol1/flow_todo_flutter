@@ -99,7 +99,7 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Tasks done today: '),
+                          const Text('Wins today: '),
                           Visibility(
                             visible: !isStreakAchievedToday,
                             child: Row(
