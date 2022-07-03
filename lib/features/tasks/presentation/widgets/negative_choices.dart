@@ -20,17 +20,20 @@ class NegativeChoices extends StatelessWidget {
           onTap: () => GetIt.I<DeleteTask>()(task),
         ),
         ListTile(
+          leading: const Icon(Icons.title),
+          title: _buildText('Rework the task'),
+          onTap: () => _navigateToTaskPage(
+            context: context,
+            isTitleEditingVisible: true,
+          ),
+        ),
+        ListTile(
           leading: const Icon(Icons.note_add),
           title: _buildText('Add a note'),
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.pushReplacementNamed(
-              context,
-              TaskPage.pathName,
-              arguments:
-                  TaskPageArguments(task: task, isNoteEditingVisible: true),
-            );
-          },
+          onTap: () => _navigateToTaskPage(
+            context: context,
+            isNoteEditingVisible: true,
+          ),
         ),
         const SizedBox(height: 10),
       ],
@@ -39,5 +42,22 @@ class NegativeChoices extends StatelessWidget {
 
   Widget _buildText(String text) {
     return Text(text, textAlign: TextAlign.center);
+  }
+
+  void _navigateToTaskPage({
+    required BuildContext context,
+    bool isNoteEditingVisible = false,
+    bool isTitleEditingVisible = false,
+  }) {
+    Navigator.pop(context);
+    Navigator.pushReplacementNamed(
+      context,
+      TaskPage.pathName,
+      arguments: TaskPageArguments(
+        task: task,
+        isNoteEditingVisible: isNoteEditingVisible,
+        isTitleEditingVisible: isTitleEditingVisible,
+      ),
+    );
   }
 }

@@ -32,7 +32,8 @@ import '../../features/tasks/domain/use_cases/get_tasks_done_today.dart'
 import '../../features/tasks/domain/use_cases/go_to_task_page.dart' as _i23;
 import '../../features/tasks/domain/use_cases/make_step_forward_on_the_task.dart'
     as _i28;
-import '../../features/tasks/domain/use_cases/update_task_note.dart' as _i30;
+import '../../features/tasks/domain/use_cases/update_task.dart' as _i30;
+import '../../features/tasks/domain/use_cases/update_task_note.dart' as _i31;
 import '../../features/tasks/presentation/cubit/tasks_cubit.dart' as _i14;
 import '../../features/tasks/presentation/cubit/tasks_done_today_cubit.dart'
     as _i15;
@@ -111,7 +112,10 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       updateTaskRepository: get<_i18.UpdateTaskRepository>(),
       updateProfileRepository: get<_i17.UpdateProfileRepository>(),
       nextRepetitionCalculator: get<_i29.NextRepetitionCalculator>()));
-  gh.singleton<_i30.UpdateTaskNote>(_i30.UpdateTaskNote(
+  gh.singleton<_i30.UpdateTask>(_i30.UpdateTask(
+      tasksCubit: get<_i14.TasksCubit>(),
+      updateTaskRepository: get<_i18.UpdateTaskRepository>()));
+  gh.singleton<_i31.UpdateTaskNote>(_i31.UpdateTaskNote(
       tasksCubit: get<_i14.TasksCubit>(),
       updateTaskRepository: get<_i18.UpdateTaskRepository>()));
   return get;

@@ -40,12 +40,13 @@ class MainPage extends StatelessWidget {
                   if (profileState is ProfileLoaded)
                     Card(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           if (authState is Authenticated)
                             Container(
-                              margin: const EdgeInsets.only(top: 10),
-                              child: const Avatar(radius: 75),
+                              margin: const EdgeInsets.only(top: 12),
+                              child: const Avatar(radius: 60),
                             ),
                           const TasksDoneToday(),
                         ],

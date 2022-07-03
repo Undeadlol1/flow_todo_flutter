@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +31,6 @@ class _ExperienceProgressBarState extends State<ExperienceProgressBar>
           final progressPercent =
               _progressPercentageCalculator(experience).floor();
           widgetProgress = double.parse('${progressPercent / 100}');
-          log('progress bar widgetProgress: ${widgetProgress.toString()}');
 
           return Directionality(
             textDirection: TextDirection.ltr,
