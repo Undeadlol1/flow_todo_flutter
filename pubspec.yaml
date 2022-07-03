@@ -58,6 +58,7 @@ dependencies:
   countup: ^0.1.4
   flutter_hooks: ^0.18.5+1
   memoize: ^3.0.0
+  timeago: ^3.2.2
 
 dev_dependencies:
   flutter_test:
