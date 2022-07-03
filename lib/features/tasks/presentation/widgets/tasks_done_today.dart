@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +48,7 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
             final int requiredTasksPerDay =
                 profileState.profile?.dailyStreak.perDay ?? 1;
             final tasksDoneAmount = tasksDoneState.tasks.length;
-            _runAnimation(
+            _runProgressAnimation(
               context: context,
               tasksDoneAmount: tasksDoneAmount,
               tasksDoneTodayState: tasksDoneState,
@@ -68,8 +66,6 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
                 : tasksDoneAmount / requiredTasksPerDay;
 
             previousProgressValue = progressValue;
-
-            log('animation.value: ${_animation.value.toString()}');
 
             return Card(
               child: Padding(
@@ -99,7 +95,8 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
                       ],
                     ),
                     Visibility(
-                      visible: !isStreakAchievedToday,
+                      visible: _animationController.isAnimating ||
+                          !isStreakAchievedToday,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         child: LinearProgressIndicator(
@@ -125,16 +122,20 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
     );
   }
 
-  void _runAnimation({
+  void _runProgressAnimation({
     required int tasksDoneAmount,
     required BuildContext context,
     required int requiredTasksPerDay,
     required TasksDoneTodayState tasksDoneTodayState,
   }) {
     if (!mounted) return;
+    if (_hasFirstAnimationForcefullyRan) return;
+    if (tasksDoneAmount > requiredTasksPerDay) return;
+
     final isStreakAchievedToday = tasksDoneAmount >= requiredTasksPerDay;
     final progressValue =
         isStreakAchievedToday ? 1.0 : tasksDoneAmount / requiredTasksPerDay;
+
     tasksDoneTodayState.when(
       loading: () {},
       loaded: (loadedTasksState) {
