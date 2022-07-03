@@ -7,6 +7,8 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_d
 import 'package:flow_todo_flutter_2022/features/users/data/update_profile_repository.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
+import 'package:timeago/timeago.dart' as relativetime;
+
 import 'package:injectable/injectable.dart';
 
 import '../../../common/domain/use_cases/go_to_main_page.dart';
@@ -61,8 +63,7 @@ class MakeStepForwardOnTheTask {
 
     if (isTaskDone == false) {
       snackbarService.displaySnackbar(
-        text:
-            'You will see this task again in ${_getNumberOfDaysWhenWeWillSeeTheTaskAgain(updatedTask)} days',
+        text: _getNumberOfDaysForNextIterationText(updatedTask),
       );
     }
 
@@ -151,11 +152,11 @@ class MakeStepForwardOnTheTask {
             : 20;
   }
 
-  int _getNumberOfDaysWhenWeWillSeeTheTaskAgain(Task updatedTask) {
-    final today = getTodaysDate();
-    return DateTime.fromMillisecondsSinceEpoch(updatedTask.dueAt)
-        .difference(today)
-        .inDays;
+  String _getNumberOfDaysForNextIterationText(Task updatedTask) {
+    return 'You will see this task again in ${relativetime.format(
+      DateTime.fromMillisecondsSinceEpoch(updatedTask.dueAt),
+      allowFromNow: true,
+    )}';
   }
 }
 
