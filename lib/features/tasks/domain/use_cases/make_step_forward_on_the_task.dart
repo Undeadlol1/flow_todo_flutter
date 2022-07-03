@@ -59,6 +59,13 @@ class MakeStepForwardOnTheTask {
     tasksDoneTodayCubit
         .update([...tasksDoneTodayCubit.state.tasks, updatedTask]);
 
+    if (isTaskDone == false) {
+      snackbarService.displaySnackbar(
+        text:
+            'You will see this task again in ${_getNumberOfDaysWhenWeWillSeeTheTaskAgain(updatedTask)} days',
+      );
+    }
+
     try {
       await goToMainPage();
       await addPointsToViewer(pointsToAdd);
@@ -84,7 +91,6 @@ class MakeStepForwardOnTheTask {
     final updatedProfile = profile!.copyWith(
       dailyStreak: profile.dailyStreak.copyWith(
         updatedAt: today,
-        // NOTE: not tested
         startsAt: profile.dailyStreak.isBroken()
             ? today
             : profile.dailyStreak.startsAt,
@@ -143,6 +149,13 @@ class MakeStepForwardOnTheTask {
         : howBigWasTheStep == Confidence.good
             ? 30
             : 20;
+  }
+
+  int _getNumberOfDaysWhenWeWillSeeTheTaskAgain(Task updatedTask) {
+    final today = getTodaysDate();
+    return DateTime.fromMillisecondsSinceEpoch(updatedTask.dueAt)
+        .difference(today)
+        .inDays;
   }
 }
 
