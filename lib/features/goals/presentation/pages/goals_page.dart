@@ -1,3 +1,6 @@
+import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/get_goals.dart';
+import 'package:get_it/get_it.dart';
+
 import '../../../tasks/presentation/widgets/tasks_done_today.dart';
 import '../../../users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +10,8 @@ import '../../../common/presentation/page_layout.dart';
 
 class GoalsPage extends StatelessWidget {
   static const pathName = '/goals';
-  const GoalsPage({Key? key}) : super(key: key);
+  final GetGoals getGoals = GetIt.I();
+  GoalsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +21,10 @@ class GoalsPage extends StatelessWidget {
       isDrawerHidden: false,
       isNumbersAnimationSuspended: false,
       child: BlocConsumer<ProfileCubit, ProfileState>(
-        listener: (context, authState) async {
-          // if (authState is Authenticated) {
-          // GetIt.I<GetProfile>()(userId: authState.user.id);
-          // GetIt.I<GetTasksToDo>()(userId: authState.user.id);
-          // GetIt.I<GetTasksDoneToday>()(userId: authState.user.id);
-          // }
+        listener: (context, profileState) async {
+          if (ProfileCubit is ProfileLoaded) {
+            getGoals(userId: profileState.profile!.id);
+          }
         },
         builder: (context, profileState) {
           return Column(

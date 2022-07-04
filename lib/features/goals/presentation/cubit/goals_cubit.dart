@@ -9,7 +9,7 @@ part 'goals_cubit.freezed.dart';
 
 @singleton
 class GoalsCubit extends Cubit<GoalsState> with ReplayCubitMixin {
-  GoalsCubit() : super(const GoalsState.loading());
+  GoalsCubit() : super(GoalsState.loading());
 
   void update(List<Goal> goals) {
     emit(GoalsState.loaded(goals));

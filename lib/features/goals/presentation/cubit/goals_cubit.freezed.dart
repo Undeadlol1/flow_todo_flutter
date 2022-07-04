@@ -92,7 +92,7 @@ class __$$_loadingCopyWithImpl<$Res> extends _$GoalsStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_loading extends _loading {
-  const _$_loading() : super._();
+  _$_loading() : super._();
 
   @override
   String toString() {
@@ -172,8 +172,8 @@ class _$_loading extends _loading {
 }
 
 abstract class _loading extends GoalsState {
-  const factory _loading() = _$_loading;
-  const _loading._() : super._();
+  factory _loading() = _$_loading;
+  _loading._() : super._();
 }
 
 /// @nodoc
@@ -208,7 +208,7 @@ class __$$_loadedCopyWithImpl<$Res> extends _$GoalsStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_loaded extends _loaded {
-  const _$_loaded(final List<Goal> goals)
+  _$_loaded(final List<Goal> goals)
       : _goals = goals,
         super._();
 
@@ -305,8 +305,8 @@ class _$_loaded extends _loaded {
 }
 
 abstract class _loaded extends GoalsState {
-  const factory _loaded(final List<Goal> goals) = _$_loaded;
-  const _loaded._() : super._();
+  factory _loaded(final List<Goal> goals) = _$_loaded;
+  _loaded._() : super._();
 
   List<Goal> get goals => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
