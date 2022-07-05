@@ -1,6 +1,7 @@
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
+import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/avatar.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,6 @@ import 'package:get_it/get_it.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
-import '../../tasks/domain/use_cases/go_to_task_creation.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
 
 class PageLayout extends StatelessWidget {
@@ -74,7 +74,9 @@ class PageLayout extends StatelessWidget {
                     : Container(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: FloatingActionButton(
-                          onPressed: () => GetIt.I<GoToTaskCreation>()(),
+                          // onPressed: () => GetIt.I<GoToTaskCreation>()(),
+                          onPressed: () => Navigator.of(context)
+                              .pushNamed(GoalsPage.pathName),
                           child: const Icon(Icons.add),
                         ),
                       ),

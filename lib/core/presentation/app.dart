@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -101,6 +102,7 @@ class _AppState extends State<App> {
               routes: {
                 MainPage.pathName: (contex) => const MainPage(),
                 TaskPage.pathName: (contex) => const TaskPage(),
+                GoalsPage.pathName: (contex) => GoalsPage(),
                 ProfilePage.pathName: (contex) => const ProfilePage(),
                 WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
               },
