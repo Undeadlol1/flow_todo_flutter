@@ -1,4 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/get_goals.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../tasks/presentation/widgets/tasks_done_today.dart';
@@ -19,6 +20,7 @@ class GoalsPage extends StatelessWidget {
       isAppBarHidden: true,
       isDrawerHidden: false,
       isNumbersAnimationSuspended: false,
+      floatingActionButton: const CreateTaskFAB(),
       child: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, profileState) async {
           if (ProfileCubit is ProfileLoaded) {
