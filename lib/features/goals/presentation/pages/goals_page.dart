@@ -1,8 +1,8 @@
 import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/get_goals.dart';
+import 'package:flow_todo_flutter_2022/features/goals/presentation/widgets/upsert_goal_form.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../../tasks/presentation/widgets/tasks_done_today.dart';
 import '../../../users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,14 +30,7 @@ class GoalsPage extends StatelessWidget {
         builder: (context, profileState) {
           return Column(
             children: [
-              if (profileState is ProfileLoaded)
-                Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [TasksDoneToday()],
-                  ),
-                ),
+              if (profileState is ProfileLoaded) const UpsertGoalForm(),
               const Expanded(
                 child: _GoalsList(),
               ),

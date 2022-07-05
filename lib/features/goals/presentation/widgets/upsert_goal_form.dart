@@ -50,14 +50,14 @@ class _UpsertGoalFormState extends State<UpsertGoalForm> {
                 child: Column(
                   children: <Widget>[
                     ReactiveTextField(
-                      autofocus: true,
+                      autofocus: false,
                       formControlName: _formControlName,
                       validationMessages: _getValidationMessages,
                       textCapitalization: TextCapitalization.sentences,
                       onSubmitted: () => _handleSubmit(authState: authState),
                       decoration: InputDecoration(
                         errorText: _formError,
-                        labelText: 'Enter your task',
+                        labelText: 'Enter your goal',
                         border: const UnderlineInputBorder(),
                       ),
                     ),
