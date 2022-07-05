@@ -16,7 +16,6 @@ class GoalsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageLayout(
-      isFABHidden: false,
       isAppBarHidden: true,
       isDrawerHidden: false,
       isNumbersAnimationSuspended: false,
