@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -20,10 +21,10 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageLayout(
-      isFABHidden: false,
       isAppBarHidden: true,
       isDrawerHidden: false,
       isNumbersAnimationSuspended: false,
+      floatingActionButton: const CreateTaskFAB(),
       child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
         listener: (context, authState) async {
           if (authState is Authenticated) {

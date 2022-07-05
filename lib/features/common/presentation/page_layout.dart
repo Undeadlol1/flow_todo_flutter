@@ -1,7 +1,6 @@
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
-import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/avatar.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +15,14 @@ import '../../users/presentation/cubit/profile_cubit.dart';
 
 class PageLayout extends StatelessWidget {
   final Widget child;
-  final bool isFABHidden;
   final bool isDrawerHidden;
   final bool isAppBarHidden;
+  final Widget? floatingActionButton;
   final bool isNumbersAnimationSuspended;
   const PageLayout({
     Key? key,
     required this.child,
-    this.isFABHidden = true,
+    this.floatingActionButton,
     this.isDrawerHidden = true,
     this.isAppBarHidden = false,
     this.isNumbersAnimationSuspended = true,
@@ -69,17 +68,7 @@ class PageLayout extends StatelessWidget {
                     child: child,
                   ),
                 ),
-                floatingActionButton: isFABHidden == true
-                    ? null
-                    : Container(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: FloatingActionButton(
-                          // onPressed: () => GetIt.I<GoToTaskCreation>()(),
-                          onPressed: () => Navigator.of(context)
-                              .pushNamed(GoalsPage.pathName),
-                          child: const Icon(Icons.add),
-                        ),
-                      ),
+                floatingActionButton: floatingActionButton,
                 bottomNavigationBar: const _BottomNavigation(),
               ),
             ],
