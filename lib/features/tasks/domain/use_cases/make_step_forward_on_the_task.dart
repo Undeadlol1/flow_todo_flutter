@@ -121,9 +121,9 @@ class MakeStepForwardOnTheTask {
     );
 
     return task.copyWith(
-      isDone: isTaskDone,
-      doneAt: today,
       updatedAt: today,
+      isDone: isTaskDone,
+      doneAt: isTaskDone ? today : null,
       dueAt: nextRepetition.dueAt,
       repetitionLevel: nextRepetition.repetitionLevel,
       history: [
