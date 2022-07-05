@@ -107,6 +107,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       getProfileRepository: get<_i8.GetProfileRepository>()));
   gh.singleton<_i29.GetTasksDoneToday>(_i29.GetTasksDoneToday(
       tasksDoneTodayCubit: get<_i17.TasksDoneTodayCubit>(),
+      exceptionHandler: get<_i21.UseCaseExceptionHandler>(),
       getTasksDoneTodayRepository: get<_i9.GetTasksDoneTodayRepository>()));
   gh.singleton<_i30.Logout>(_i30.Logout(
       tasksCubit: get<_i16.TasksCubit>(),
