@@ -129,7 +129,10 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text('Won days in a row: '),
-                      AnimatedNumbers(number: daysInARow),
+                      AnimatedNumbers(
+                        number: daysInARow,
+                        duration: const Duration(milliseconds: 200),
+                      ),
                     ],
                   ),
                 ],
