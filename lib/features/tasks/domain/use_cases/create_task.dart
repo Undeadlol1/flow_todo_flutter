@@ -35,8 +35,8 @@ class CreateTask {
       // NOTE .trim is not tested.
       title: title.trim(),
       id: uniqueIdGenerator(),
-      dueAt: getTodaysDate().millisecondsSinceEpoch,
-      createdAt: getTodaysDate().millisecondsSinceEpoch,
+      dueAt: getTodaysDate(),
+      createdAt: getTodaysDate(),
     );
 
     if (profileState is ProfileLoaded) {

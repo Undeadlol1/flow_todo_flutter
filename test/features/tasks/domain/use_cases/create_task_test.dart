@@ -97,15 +97,13 @@ void main() {
     });
 
     test('calls repository with proper dates in the task', () async {
-      final millisecondsSinceEpoch = _dateToReturn.millisecondsSinceEpoch;
-
       await _buildUseCase()(title: taskTitle, userId: userId);
 
       final taskArgument = verify(() => _mockCreateTaskRepository(captureAny()))
           .captured
           .first as Task;
-      expect(taskArgument.dueAt, millisecondsSinceEpoch);
-      expect(taskArgument.createdAt, millisecondsSinceEpoch);
+      expect(taskArgument.dueAt, _dateToReturn);
+      expect(taskArgument.createdAt, _dateToReturn);
     });
   });
 }

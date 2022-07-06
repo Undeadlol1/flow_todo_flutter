@@ -124,7 +124,7 @@ class MakeStepForwardOnTheTask {
       updatedAt: today,
       isDone: isTaskDone,
       doneAt: isTaskDone ? today : null,
-      dueAt: nextRepetition.dueAt,
+      dueAt: DateTime.fromMillisecondsSinceEpoch(nextRepetition.dueAt),
       repetitionLevel: nextRepetition.repetitionLevel,
       history: [
         TaskHistory(
@@ -154,7 +154,7 @@ class MakeStepForwardOnTheTask {
 
   String _getNumberOfDaysForNextIterationText(Task updatedTask) {
     return 'You will see this task again in ${relativetime.format(
-      DateTime.fromMillisecondsSinceEpoch(updatedTask.dueAt),
+      updatedTask.dueAt,
       allowFromNow: true,
     )}';
   }

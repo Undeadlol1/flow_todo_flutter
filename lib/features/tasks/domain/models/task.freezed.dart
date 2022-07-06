@@ -21,10 +21,12 @@ Task _$TaskFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Task {
   String get id => throw _privateConstructorUsedError;
-  int get dueAt => throw _privateConstructorUsedError;
   bool get isDone => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
-  int get createdAt => throw _privateConstructorUsedError;
+  @_MillisecondsToDateTimeConverter()
+  DateTime get dueAt => throw _privateConstructorUsedError;
+  @_MillisecondsToDateTimeConverter()
+  DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'name')
   String get title => throw _privateConstructorUsedError;
   @JsonKey(defaultValue: '')
@@ -48,10 +50,10 @@ abstract class $TaskCopyWith<$Res> {
       _$TaskCopyWithImpl<$Res>;
   $Res call(
       {String id,
-      int dueAt,
       bool isDone,
       String userId,
-      int createdAt,
+      @_MillisecondsToDateTimeConverter() DateTime dueAt,
+      @_MillisecondsToDateTimeConverter() DateTime createdAt,
       @JsonKey(name: 'name') String title,
       @JsonKey(defaultValue: '') String note,
       @JsonKey(defaultValue: []) List<String> tags,
@@ -72,9 +74,9 @@ class _$TaskCopyWithImpl<$Res> implements $TaskCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
-    Object? dueAt = freezed,
     Object? isDone = freezed,
     Object? userId = freezed,
+    Object? dueAt = freezed,
     Object? createdAt = freezed,
     Object? title = freezed,
     Object? note = freezed,
@@ -89,10 +91,6 @@ class _$TaskCopyWithImpl<$Res> implements $TaskCopyWith<$Res> {
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      dueAt: dueAt == freezed
-          ? _value.dueAt
-          : dueAt // ignore: cast_nullable_to_non_nullable
-              as int,
       isDone: isDone == freezed
           ? _value.isDone
           : isDone // ignore: cast_nullable_to_non_nullable
@@ -101,10 +99,14 @@ class _$TaskCopyWithImpl<$Res> implements $TaskCopyWith<$Res> {
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
+      dueAt: dueAt == freezed
+          ? _value.dueAt
+          : dueAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -144,10 +146,10 @@ abstract class _$$_TaskCopyWith<$Res> implements $TaskCopyWith<$Res> {
   @override
   $Res call(
       {String id,
-      int dueAt,
       bool isDone,
       String userId,
-      int createdAt,
+      @_MillisecondsToDateTimeConverter() DateTime dueAt,
+      @_MillisecondsToDateTimeConverter() DateTime createdAt,
       @JsonKey(name: 'name') String title,
       @JsonKey(defaultValue: '') String note,
       @JsonKey(defaultValue: []) List<String> tags,
@@ -169,9 +171,9 @@ class __$$_TaskCopyWithImpl<$Res> extends _$TaskCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? dueAt = freezed,
     Object? isDone = freezed,
     Object? userId = freezed,
+    Object? dueAt = freezed,
     Object? createdAt = freezed,
     Object? title = freezed,
     Object? note = freezed,
@@ -186,10 +188,6 @@ class __$$_TaskCopyWithImpl<$Res> extends _$TaskCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      dueAt: dueAt == freezed
-          ? _value.dueAt
-          : dueAt // ignore: cast_nullable_to_non_nullable
-              as int,
       isDone: isDone == freezed
           ? _value.isDone
           : isDone // ignore: cast_nullable_to_non_nullable
@@ -198,10 +196,14 @@ class __$$_TaskCopyWithImpl<$Res> extends _$TaskCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
+      dueAt: dueAt == freezed
+          ? _value.dueAt
+          : dueAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -240,10 +242,10 @@ class __$$_TaskCopyWithImpl<$Res> extends _$TaskCopyWithImpl<$Res>
 class _$_Task implements _Task {
   const _$_Task(
       {required this.id,
-      required this.dueAt,
       required this.isDone,
       required this.userId,
-      required this.createdAt,
+      @_MillisecondsToDateTimeConverter() required this.dueAt,
+      @_MillisecondsToDateTimeConverter() required this.createdAt,
       @JsonKey(name: 'name') required this.title,
       @JsonKey(defaultValue: '') required this.note,
       @JsonKey(defaultValue: []) required final List<String> tags,
@@ -259,13 +261,15 @@ class _$_Task implements _Task {
   @override
   final String id;
   @override
-  final int dueAt;
-  @override
   final bool isDone;
   @override
   final String userId;
   @override
-  final int createdAt;
+  @_MillisecondsToDateTimeConverter()
+  final DateTime dueAt;
+  @override
+  @_MillisecondsToDateTimeConverter()
+  final DateTime createdAt;
   @override
   @JsonKey(name: 'name')
   final String title;
@@ -297,7 +301,7 @@ class _$_Task implements _Task {
 
   @override
   String toString() {
-    return 'Task(id: $id, dueAt: $dueAt, isDone: $isDone, userId: $userId, createdAt: $createdAt, title: $title, note: $note, tags: $tags, history: $history, doneAt: $doneAt, updatedAt: $updatedAt, repetitionLevel: $repetitionLevel)';
+    return 'Task(id: $id, isDone: $isDone, userId: $userId, dueAt: $dueAt, createdAt: $createdAt, title: $title, note: $note, tags: $tags, history: $history, doneAt: $doneAt, updatedAt: $updatedAt, repetitionLevel: $repetitionLevel)';
   }
 
   @override
@@ -306,9 +310,9 @@ class _$_Task implements _Task {
         (other.runtimeType == runtimeType &&
             other is _$_Task &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.dueAt, dueAt) &&
             const DeepCollectionEquality().equals(other.isDone, isDone) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
+            const DeepCollectionEquality().equals(other.dueAt, dueAt) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.note, note) &&
@@ -325,9 +329,9 @@ class _$_Task implements _Task {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(dueAt),
       const DeepCollectionEquality().hash(isDone),
       const DeepCollectionEquality().hash(userId),
+      const DeepCollectionEquality().hash(dueAt),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(note),
@@ -351,10 +355,10 @@ class _$_Task implements _Task {
 abstract class _Task implements Task {
   const factory _Task(
       {required final String id,
-      required final int dueAt,
       required final bool isDone,
       required final String userId,
-      required final int createdAt,
+      @_MillisecondsToDateTimeConverter() required final DateTime dueAt,
+      @_MillisecondsToDateTimeConverter() required final DateTime createdAt,
       @JsonKey(name: 'name') required final String title,
       @JsonKey(defaultValue: '') required final String note,
       @JsonKey(defaultValue: []) required final List<String> tags,
@@ -368,13 +372,15 @@ abstract class _Task implements Task {
   @override
   String get id => throw _privateConstructorUsedError;
   @override
-  int get dueAt => throw _privateConstructorUsedError;
-  @override
   bool get isDone => throw _privateConstructorUsedError;
   @override
   String get userId => throw _privateConstructorUsedError;
   @override
-  int get createdAt => throw _privateConstructorUsedError;
+  @_MillisecondsToDateTimeConverter()
+  DateTime get dueAt => throw _privateConstructorUsedError;
+  @override
+  @_MillisecondsToDateTimeConverter()
+  DateTime get createdAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'name')
   String get title => throw _privateConstructorUsedError;
