@@ -102,7 +102,7 @@ class MakeStepForwardOnTheTask {
 
   bool _shouldDailyStreakBeUpdated() {
     final profile = profileCubit.state.profile;
-    final tasksDoneToday = tasksDoneTodayCubit.state.tasks.length;
+    final tasksDoneToday = tasksDoneTodayCubit.state.tasks.length + 1;
     return profile?.dailyStreak.shouldUpdate(
           tasksDoneToday: tasksDoneToday,
         ) ??
@@ -121,9 +121,9 @@ class MakeStepForwardOnTheTask {
     );
 
     return task.copyWith(
-      isDone: isTaskDone,
-      doneAt: today,
       updatedAt: today,
+      isDone: isTaskDone,
+      doneAt: isTaskDone ? today : null,
       dueAt: nextRepetition.dueAt,
       repetitionLevel: nextRepetition.repetitionLevel,
       history: [

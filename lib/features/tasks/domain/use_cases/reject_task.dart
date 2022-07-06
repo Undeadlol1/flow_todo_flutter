@@ -9,7 +9,7 @@ import '../../../common/services/snackbar_service.dart';
 import 'go_to_task_page.dart';
 
 @singleton
-class DeleteTask {
+class RejectTask {
   final TasksCubit tasksCubit;
   final GoToMainPage goToMainPage;
   final GoToTaskPage goToTaskPage;
@@ -17,7 +17,7 @@ class DeleteTask {
   final AddPointsToViewer addPointsToUser;
   final DeleteTaskRepository deleteTaskRepository;
 
-  DeleteTask({
+  RejectTask({
     required this.tasksCubit,
     required this.goToMainPage,
     required this.goToTaskPage,
@@ -26,12 +26,16 @@ class DeleteTask {
     required this.deleteTaskRepository,
   });
 
+  static const _encouragingText =
+      "Don't be afraid to get rid of unimportant tasks. You have been awarded with experience";
+
   Future<void> call(Task task) async {
     try {
       goToMainPage();
 
       tasksCubit.state.tasks.remove(task);
       tasksCubit.updateList(tasksCubit.state.tasks);
+      snackbarService.displaySnackbar(text: _encouragingText);
 
       await deleteTaskRepository(task);
       return addPointsToUser(10);

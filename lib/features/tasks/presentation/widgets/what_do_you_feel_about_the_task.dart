@@ -26,7 +26,7 @@ class WhatDoYouFeelAboutTheTask extends StatelessWidget {
             context: context,
             builder: (_) => NegativeChoices(task: task),
           ),
-          icon: const Icon(Icons.thumb_down),
+          icon: const Icon(Icons.edit),
         ),
       ],
     );
