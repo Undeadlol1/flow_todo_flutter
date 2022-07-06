@@ -137,12 +137,18 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
         final lineWidth = widget.radius / 10;
 
         _previousValueOfProgressCircle = _getLevelProgress(profileState);
-        return CircularPercentIndicator(
-          lineWidth: lineWidth,
-          percent: _animation.value,
-          radius: widget.radius + lineWidth,
-          progressColor: Theme.of(context).colorScheme.primary,
-          center: CircleAvatar(
+        return AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
+            return CircularPercentIndicator(
+              lineWidth: lineWidth,
+              percent: _animation.value,
+              radius: widget.radius + lineWidth,
+              progressColor: Theme.of(context).colorScheme.primary,
+              center: child,
+            );
+          },
+          child: CircleAvatar(
             radius: widget.radius,
             backgroundImage: authState.user.avatar == null
                 ? null
