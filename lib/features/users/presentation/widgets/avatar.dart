@@ -122,41 +122,38 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthentificationCubit, AuthentificationState>(
-      builder: (context, authState) {
-        return BlocConsumer<ProfileCubit, ProfileState>(
-          listener: _runAnimation,
-          builder: (BuildContext context, profileState) {
-            if (profileState is! ProfileLoaded || authState is! Authenticated) {
-              return const SizedBox();
-            }
+    final authState = BlocProvider.of<AuthentificationCubit>(context).state;
+    return BlocConsumer<ProfileCubit, ProfileState>(
+      listener: _runAnimation,
+      builder: (BuildContext context, profileState) {
+        if (profileState is! ProfileLoaded || authState is! Authenticated) {
+          return const SizedBox();
+        }
 
-            if (_hasFirstAnimationForcefullyRan == false) {
-              _runAnimation(context, profileState);
-            }
+        if (_hasFirstAnimationForcefullyRan == false) {
+          _runAnimation(context, profileState);
+        }
 
-            final lineWidth = widget.radius / 10;
+        final lineWidth = widget.radius / 10;
 
-            _previousValueOfProgressCircle = _getLevelProgress(profileState);
-            return CircularPercentIndicator(
-              lineWidth: lineWidth,
-              percent: _animation.value,
-              radius: widget.radius + lineWidth,
-              progressColor: Theme.of(context).colorScheme.primary,
-              center: CircleAvatar(
-                radius: widget.radius,
-                backgroundImage: authState.user.avatar == null
-                    ? null
-                    : ExtendedNetworkImageProvider(
-                        authState.user.avatar!,
-                        scale: 1,
-                        cache: true,
-                        cacheMaxAge: const Duration(days: 4),
-                      ),
-                // child: CircularProgressIndicator(value: widgetProgress),
-              ),
-            );
-          },
+        _previousValueOfProgressCircle = _getLevelProgress(profileState);
+        return CircularPercentIndicator(
+          lineWidth: lineWidth,
+          percent: _animation.value,
+          radius: widget.radius + lineWidth,
+          progressColor: Theme.of(context).colorScheme.primary,
+          center: CircleAvatar(
+            radius: widget.radius,
+            backgroundImage: authState.user.avatar == null
+                ? null
+                : ExtendedNetworkImageProvider(
+                    authState.user.avatar!,
+                    scale: 1,
+                    cache: true,
+                    cacheMaxAge: const Duration(days: 4),
+                  ),
+            // child: CircularProgressIndicator(value: widgetProgress),
+          ),
         );
       },
     );
