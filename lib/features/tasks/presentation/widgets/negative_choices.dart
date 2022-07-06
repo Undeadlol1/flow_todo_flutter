@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../domain/models/task.dart';
-import '../../domain/use_cases/delete_task.dart';
+import '../../domain/use_cases/reject_task.dart';
 import '../pages/task_page.dart';
 
 class NegativeChoices extends StatelessWidget {
@@ -17,7 +17,7 @@ class NegativeChoices extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.delete),
           title: _buildText('Reject the task'),
-          onTap: () => GetIt.I<DeleteTask>()(task),
+          onTap: () => GetIt.I<RejectTask>()(task),
         ),
         ListTile(
           leading: const Icon(Icons.title),
