@@ -1,8 +1,11 @@
-import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/goals/domain/models/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+
+import '../../../authentification/presentation/cubit/authentification_cubit.dart';
+import '../../domain/models/goal.dart';
+import '../../domain/use_cases/create_goal.dart';
 
 class UpsertGoalForm extends StatefulWidget {
   final Goal? goalToUpdate;
@@ -85,10 +88,10 @@ class _UpsertGoalFormState extends State<UpsertGoalForm> {
 
       try {
         if (widget.goalToUpdate == null) {
-          // await GetIt.I<CreateTask>()(
-          //   title: inputText,
-          //   userId: authState.user.id,
-          // );
+          await GetIt.I<CreateGoal>()(
+            title: inputText,
+            userId: authState.user.id,
+          );
 
           if (mounted) Navigator.of(context).pop();
         } else {
