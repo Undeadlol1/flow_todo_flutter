@@ -1,4 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/get_goals.dart';
+import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/widgets/upsert_goal_form.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
 import 'package:get_it/get_it.dart';
@@ -16,27 +17,30 @@ class GoalsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageLayout(
-      isAppBarHidden: true,
-      isDrawerHidden: false,
-      isNumbersAnimationSuspended: false,
-      floatingActionButton: const CreateTaskFAB(),
-      child: BlocConsumer<ProfileCubit, ProfileState>(
-        listener: (context, profileState) async {
-          if (ProfileCubit is ProfileLoaded) {
-            getGoals(userId: profileState.profile!.id);
-          }
-        },
-        builder: (context, profileState) {
-          return Column(
-            children: [
-              if (profileState is ProfileLoaded) const UpsertGoalForm(),
-              const Expanded(
-                child: _GoalsList(),
-              ),
-            ],
-          );
-        },
+    return BlocProvider(
+      create: (context) => GetIt.I<GoalsCubit>(),
+      child: PageLayout(
+        isAppBarHidden: true,
+        isDrawerHidden: false,
+        isNumbersAnimationSuspended: false,
+        floatingActionButton: const CreateTaskFAB(),
+        child: BlocConsumer<ProfileCubit, ProfileState>(
+          listener: (context, profileState) async {
+            if (ProfileCubit is ProfileLoaded) {
+              getGoals(userId: profileState.profile!.id);
+            }
+          },
+          builder: (context, profileState) {
+            return Column(
+              children: [
+                if (profileState is ProfileLoaded) const UpsertGoalForm(),
+                const Expanded(
+                  child: _GoalsList(),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -47,14 +51,20 @@ class _GoalsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [Text('SOmething')],
+    return BlocBuilder<GoalsCubit, GoalsState>(
+      builder: (context, goalsState) {
+        return goalsState.map(
+          loading: (value) => const SizedBox(),
+          loaded: (_) {
+            return ListView.builder(
+              itemCount: goalsState.goals.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Text(goalsState.goals[index].title);
+              },
+            );
+          },
+        );
+      },
     );
-    // return ListView.builder(
-    //   itemCount: tasksState.tasks.length,
-    //   itemBuilder: (BuildContext context, int index) {
-    //     return TasksListItem(task: tasksState.tasks[index]);
-    //   },
-    // );
   }
 }
