@@ -100,19 +100,22 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text('Wins today: '),
-                          Visibility(
-                            visible: !isStreakAchievedToday,
-                            child: Row(
-                              children: [
-                                AnimatedNumbers(number: tasksDoneAmount),
-                                Text(' / $requiredTasksPerDay'),
-                              ],
+                          tasksDoneState.maybeMap(
+                            loaded: (value) => Visibility(
+                              visible: !isStreakAchievedToday,
+                              child: Row(
+                                children: [
+                                  AnimatedNumbers(number: tasksDoneAmount),
+                                  Text(' / $requiredTasksPerDay'),
+                                ],
+                              ),
                             ),
+                            orElse: () => const SizedBox(),
                           ),
                           if (isStreakAchievedToday)
                             const Icon(Icons.check, size: 16),
                         ],
-                      )
+                      ),
                     ],
                   ),
                   Visibility(
