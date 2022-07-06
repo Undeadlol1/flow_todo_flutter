@@ -53,7 +53,12 @@ class PageLayout extends StatelessWidget {
                           ),
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Center(child: Avatar(radius: 16)),
+                            child: Center(
+                              child: Avatar(
+                                radius: 16,
+                                isLevelHidden: true,
+                              ),
+                            ),
                           ),
                         ],
                       ),

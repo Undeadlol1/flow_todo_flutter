@@ -13,8 +13,10 @@ import '../pages/profile_page.dart';
 class Avatar extends StatelessWidget {
   final double radius;
   final bool areNumberAnimationsSuspended;
+  final bool isLevelHidden;
   const Avatar({
     Key? key,
+    this.isLevelHidden = false,
     this.areNumberAnimationsSuspended = true,
     required this.radius,
   }) : super(key: key);
@@ -31,15 +33,17 @@ class Avatar extends StatelessWidget {
             ),
             onTap: () => Navigator.of(context).pushNamed(ProfilePage.pathName),
           ),
-          Positioned(
-            bottom: 0,
-            width: radius,
-            right: radius / 2,
-            height: radius / 2,
-            child: Center(
-              child: _LevelBadge(radius: radius),
-            ),
-          ),
+          isLevelHidden
+              ? const SizedBox()
+              : Positioned(
+                  bottom: 0,
+                  width: radius,
+                  right: radius / 2,
+                  height: radius / 2,
+                  child: Center(
+                    child: _LevelBadge(radius: radius),
+                  ),
+                ),
         ],
       ),
     );
@@ -80,8 +84,8 @@ class _LevelBadge extends StatelessWidget {
 }
 
 class _Image extends StatefulWidget {
-  const _Image({Key? key, required this.radius}) : super(key: key);
   final double radius;
+  const _Image({Key? key, required this.radius}) : super(key: key);
 
   @override
   State<_Image> createState() => _ImageState();
@@ -90,7 +94,7 @@ class _Image extends StatefulWidget {
 class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
   bool _isAnimationListenerAdded = false;
   bool _hasFirstAnimationForcefullyRan = false;
-  double previousValueOfProgressCircle = 0;
+  double _previousValueOfProgressCircle = 0;
   late Animation<double> _animation;
   late final AnimationController _animationController;
 
@@ -133,8 +137,7 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
 
             final lineWidth = widget.radius / 10;
 
-            previousValueOfProgressCircle = _getLevelProgress(profileState);
-
+            _previousValueOfProgressCircle = _getLevelProgress(profileState);
             return CircularPercentIndicator(
               lineWidth: lineWidth,
               percent: _animation.value,
@@ -168,7 +171,7 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
 
       _animation = Tween<double>(
         end: _getLevelProgress(profileState),
-        begin: previousValueOfProgressCircle,
+        begin: _previousValueOfProgressCircle,
       ).animate(_animationController);
 
       if (_isAnimationListenerAdded == false) {
