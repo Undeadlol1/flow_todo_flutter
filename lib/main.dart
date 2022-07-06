@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterfire_ui/auth.dart';
 
@@ -11,7 +12,10 @@ import 'core/presentation/app.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  debugRepaintRainbowEnabled = true;
+
   WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
