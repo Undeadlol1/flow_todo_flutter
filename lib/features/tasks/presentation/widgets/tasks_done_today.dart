@@ -21,6 +21,13 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
   late Animation<double> _animation;
   late final AnimationController _animationController;
 
+  static const _padding = EdgeInsets.only(
+    top: 12,
+    left: 16,
+    right: 16,
+    bottom: 4,
+  );
+
   @override
   void initState() {
     super.initState();
@@ -42,8 +49,9 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileCubit, ProfileState>(
-      builder: (context, profileState) {
+    return Builder(
+      builder: (context) {
+        final ProfileState profileState = context.watch<ProfileCubit>().state;
         return BlocConsumer<TasksDoneTodayCubit, TasksDoneTodayState>(
           listener: (context, tasksDoneState) {
             _runProgressAnimation(
@@ -53,16 +61,11 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
             );
           },
           builder: (context, tasksDoneState) {
-            final dailyStreak = profileState.profile?.dailyStreak;
             final int requiredTasksPerDay =
                 profileState.profile?.dailyStreak.perDay ?? 1;
             final tasksDoneAmount = tasksDoneState.tasks.length;
             final isStreakAchievedToday =
                 tasksDoneAmount >= requiredTasksPerDay;
-            final int daysInARow = dailyStreak?.isBroken() ?? false
-                ? 0
-                : dailyStreak?.getDaysInARow() ?? 0;
-
             previousProgressValue = _getProgressValue(
               tasksDoneAmount: tasksDoneAmount,
               requiredTasksPerDay: requiredTasksPerDay,
@@ -77,61 +80,22 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
             }
 
             return Padding(
-              padding: const EdgeInsets.only(
-                top: 12,
-                right: 16,
-                left: 16,
-                bottom: 4,
-              ),
+              padding: _padding,
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('Wins today: '),
-                          tasksDoneState.maybeMap(
-                            loaded: (value) => Visibility(
-                              visible: !isStreakAchievedToday,
-                              child: Row(
-                                children: [
-                                  AnimatedNumbers(number: tasksDoneAmount),
-                                  Text(' / $requiredTasksPerDay'),
-                                ],
-                              ),
-                            ),
-                            orElse: () => const SizedBox(),
-                          ),
-                          if (isStreakAchievedToday)
-                            const Icon(Icons.check, size: 16),
-                        ],
-                      ),
-                    ],
+                  _WinsTodayText(
+                    tasksDoneState: tasksDoneState,
+                    tasksDoneAmount: tasksDoneAmount,
+                    requiredTasksPerDay: requiredTasksPerDay,
+                    isStreakAchievedToday: isStreakAchievedToday,
                   ),
-                  Visibility(
-                    visible: _animationController.isAnimating ||
-                        !isStreakAchievedToday,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: LinearProgressIndicator(
-                        value: _animation.value <= 0 ? 0.01 : _animation.value,
-                      ),
-                    ),
+                  _ProgressBar(
+                    animationController: _animationController,
+                    isStreakAchievedToday: isStreakAchievedToday,
+                    animation: _animation,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Won days in a row: '),
-                      if (profileState is ProfileLoaded)
-                        AnimatedNumbers(
-                          number: daysInARow,
-                          duration: const Duration(milliseconds: 200),
-                          areNumberAnimationsSuspended:
-                              !_hasFirstAnimationForcefullyRan,
-                        ),
-                    ],
+                  _DaysInARowText(
+                    areAnimationsEnabled: _hasFirstAnimationForcefullyRan,
                   ),
                 ],
               ),
@@ -187,5 +151,105 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
   }) {
     final isStreakAchievedToday = tasksDoneAmount >= requiredTasksPerDay;
     return isStreakAchievedToday ? 1.0 : tasksDoneAmount / requiredTasksPerDay;
+  }
+}
+
+class _DaysInARowText extends StatelessWidget {
+  final bool areAnimationsEnabled;
+  const _DaysInARowText({
+    Key? key,
+    required this.areAnimationsEnabled,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Builder(
+      builder: (context) {
+        final ProfileState profileState = context.watch<ProfileCubit>().state;
+
+        final dailyStreak = profileState.profile?.dailyStreak;
+        final int daysInARow = dailyStreak?.isBroken() ?? false
+            ? 0
+            : dailyStreak?.getDaysInARow() ?? 0;
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Won days in a row: '),
+            if (profileState is ProfileLoaded)
+              AnimatedNumbers(
+                number: daysInARow,
+                duration: const Duration(milliseconds: 200),
+                areNumberAnimationsSuspended: !areAnimationsEnabled,
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ProgressBar extends StatelessWidget {
+  const _ProgressBar({
+    Key? key,
+    required AnimationController animationController,
+    required this.isStreakAchievedToday,
+    required Animation<double> animation,
+  })  : _animationController = animationController,
+        _animation = animation,
+        super(key: key);
+
+  final AnimationController _animationController;
+  final bool isStreakAchievedToday;
+  final Animation<double> _animation;
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: _animationController.isAnimating || !isStreakAchievedToday,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: LinearProgressIndicator(
+          value: _animation.value <= 0 ? 0.01 : _animation.value,
+        ),
+      ),
+    );
+  }
+}
+
+class _WinsTodayText extends StatelessWidget {
+  const _WinsTodayText({
+    Key? key,
+    required this.isStreakAchievedToday,
+    required this.tasksDoneAmount,
+    required this.requiredTasksPerDay,
+    required this.tasksDoneState,
+  }) : super(key: key);
+
+  final TasksDoneTodayState tasksDoneState;
+  final bool isStreakAchievedToday;
+  final int tasksDoneAmount;
+  final int requiredTasksPerDay;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('Wins today: '),
+        tasksDoneState.maybeMap(
+          loaded: (value) => Visibility(
+            visible: !isStreakAchievedToday,
+            child: Row(
+              children: [
+                AnimatedNumbers(number: tasksDoneAmount),
+                Text(' / $requiredTasksPerDay'),
+              ],
+            ),
+          ),
+          orElse: () => const SizedBox(),
+        ),
+        if (isStreakAchievedToday) const Icon(Icons.check, size: 16),
+      ],
+    );
   }
 }
