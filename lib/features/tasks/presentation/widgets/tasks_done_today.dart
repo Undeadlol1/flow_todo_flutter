@@ -62,18 +62,14 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
             final tasksDoneAmount = tasksDoneState.tasks.length;
             final isStreakAchievedToday =
                 tasksDoneAmount >= requiredTasksPerDay;
-            final progressValue = _getProgressValue(
+            final int daysInARow = dailyStreak?.isBroken() ?? false
+                ? 0
+                : dailyStreak?.getDaysInARow() ?? 0;
+
+            previousProgressValue = _getProgressValue(
               requiredTasksPerDay: requiredTasksPerDay,
               tasksDoneAmount: tasksDoneAmount,
             );
-            final daysSinceUpdate = dailyStreak?.daysSinceUpdate();
-            int daysInARow = dailyStreak?.getDaysInARow() ?? 0;
-
-            if (daysSinceUpdate == null || daysSinceUpdate > 1) {
-              daysInARow = 0;
-            }
-
-            previousProgressValue = progressValue;
 
             if (_hasFirstAnimationForcefullyRan == false) {
               _runProgressAnimation(
