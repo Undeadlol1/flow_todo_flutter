@@ -1,4 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/models/daily_streak.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,17 +45,13 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, profileState) {
         return BlocConsumer<TasksDoneTodayCubit, TasksDoneTodayState>(
-          listener: ((context, tasksDoneState) {
-            final int requiredTasksPerDay =
-                profileState.profile?.dailyStreak.perDay ?? 1;
-            final tasksDoneAmount = tasksDoneState.tasks.length;
+          listener: (context, tasksDoneState) {
             _runProgressAnimation(
               context: context,
-              tasksDoneAmount: tasksDoneAmount,
               tasksDoneTodayState: tasksDoneState,
-              requiredTasksPerDay: requiredTasksPerDay,
+              dailyStreak: profileState.profile?.dailyStreak,
             );
-          }),
+          },
           builder: (context, tasksDoneState) {
             final dailyStreak = profileState.profile?.dailyStreak;
             final int requiredTasksPerDay =
@@ -67,16 +64,15 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
                 : dailyStreak?.getDaysInARow() ?? 0;
 
             previousProgressValue = _getProgressValue(
-              requiredTasksPerDay: requiredTasksPerDay,
               tasksDoneAmount: tasksDoneAmount,
+              requiredTasksPerDay: requiredTasksPerDay,
             );
 
             if (_hasFirstAnimationForcefullyRan == false) {
               _runProgressAnimation(
-                tasksDoneAmount: tasksDoneAmount,
                 context: context,
-                requiredTasksPerDay: requiredTasksPerDay,
                 tasksDoneTodayState: tasksDoneState,
+                dailyStreak: profileState.profile?.dailyStreak,
               );
             }
 
@@ -147,17 +143,18 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
   }
 
   void _runProgressAnimation({
-    required int tasksDoneAmount,
     required BuildContext context,
-    required int requiredTasksPerDay,
+    required DailyStreak? dailyStreak,
     required TasksDoneTodayState tasksDoneTodayState,
   }) {
+    final tasksDoneAmount = tasksDoneTodayState.tasks.length;
+
     if (!mounted) return;
-    if (tasksDoneAmount > requiredTasksPerDay) return;
+    if (tasksDoneAmount > (dailyStreak?.perDay ?? 1)) return;
 
     final double progressValue = _getProgressValue(
       tasksDoneAmount: tasksDoneAmount,
-      requiredTasksPerDay: requiredTasksPerDay,
+      requiredTasksPerDay: dailyStreak?.perDay ?? 1,
     );
 
     tasksDoneTodayState.when(
