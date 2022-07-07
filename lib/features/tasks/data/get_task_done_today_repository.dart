@@ -19,12 +19,11 @@ class GetTasksDoneTodayRepository {
         .limit(250)
         .get();
 
-    final listOfJsons = tasksSnapshot.docs.map((e) => e.data()).toList();
-
-    return compute(_parseListOfJsons, listOfJsons);
+    return compute(_parseListOfJsons, tasksSnapshot);
   }
 }
 
-List<Task> _parseListOfJsons(List<Map<String, dynamic>> docs) {
-  return docs.map(Task.fromJson).toList();
+List<Task> _parseListOfJsons(QuerySnapshot<Map<String, dynamic>> snapshots) {
+  final listOfJsons = snapshots.docs.map((e) => e.data()).toList();
+  return listOfJsons.map(Task.fromJson).toList();
 }
