@@ -11,8 +11,6 @@ import 'core/presentation/app.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  // debugRepaintRainbowEnabled = true;
-
   WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setPreferredOrientations([
@@ -33,8 +31,6 @@ Future<void> _setupFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
