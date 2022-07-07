@@ -39,23 +39,8 @@ class MainPage extends StatelessWidget {
               return Column(
                 children: [
                   if (profileState is ProfileLoaded)
-                    Card(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (authState is Authenticated)
-                            Container(
-                              margin: const EdgeInsets.only(top: 12),
-                              child: const Avatar(radius: 60),
-                            ),
-                          const TasksDoneToday(),
-                        ],
-                      ),
-                    ),
-                  const Expanded(
-                    child: TasksList(),
-                  ),
+                    const _ProgressSummaryCard(),
+                  const Expanded(child: TasksList()),
                   if (authState is NotAuthenticated)
                     SizedBox(
                       height: 500,
@@ -68,6 +53,27 @@ class MainPage extends StatelessWidget {
             },
           );
         },
+      ),
+    );
+  }
+}
+
+class _ProgressSummaryCard extends StatelessWidget {
+  const _ProgressSummaryCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 12),
+            child: const Avatar(radius: 60),
+          ),
+          const TasksDoneToday(),
+        ],
       ),
     );
   }
