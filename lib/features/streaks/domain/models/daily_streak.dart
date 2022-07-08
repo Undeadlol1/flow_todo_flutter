@@ -1,4 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/streaks/domain/entities/daily_streak_entity.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'daily_streak.freezed.dart';
@@ -25,49 +26,40 @@ class DailyStreak with _$DailyStreak {
     if (updatedAt == null) return 0;
 
     final today = DateTime.now().millisecondsSinceEpoch;
-    final differenceInDaysBetweenUpdateAndCreation =
+    final differenceInDaysBetweenUpdateAndStart =
         DateTime.fromMillisecondsSinceEpoch(updatedAt ?? today)
-            .difference(DateTime.fromMillisecondsSinceEpoch(createdAt))
+            .difference(DateTime.fromMillisecondsSinceEpoch(startsAt))
             .inDays;
 
-    return differenceInDaysBetweenUpdateAndCreation + 1;
+    return differenceInDaysBetweenUpdateAndStart + 1;
   }
 
-  bool isInterrupted() {
-    final int updatedDaysAgo = _getStreakUpdatedDaysAgo();
-
-    if (updatedDaysAgo == 1) return false;
-    return updatedDaysAgo > 1;
-  }
+  bool isInterrupted() => !_wasStreakUpdatedInPast24Hours();
 
   bool shouldUpdate({required final int tasksDoneToday}) {
     final bool isTaskGoalReached = tasksDoneToday >= perDay;
-    final bool wasStreakUpdatedToday = _getStreakUpdatedDaysAgo() == 0;
 
     if (updatedAt == null && isTaskGoalReached) {
       return true;
     }
 
     if (isTaskGoalReached) {
-      return isTaskGoalReached && !wasStreakUpdatedToday;
+      return isTaskGoalReached && !_wasStreakUpdatedInPast24Hours();
     }
 
     return false;
   }
 
-  int? daysSinceUpdate() {
-    if (updatedAt == null) return null;
-    return _getStreakUpdatedDaysAgo();
-  }
-
-  int _getStreakUpdatedDaysAgo() {
+  bool _wasStreakUpdatedInPast24Hours() {
     final today = DateTime.now();
-    return today
+    final updatedHoursAgo = today
         .difference(
           DateTime.fromMillisecondsSinceEpoch(
             updatedAt ?? today.millisecondsSinceEpoch,
           ),
         )
-        .inDays;
+        .inHours;
+
+    return updatedHoursAgo <= 24;
   }
 }

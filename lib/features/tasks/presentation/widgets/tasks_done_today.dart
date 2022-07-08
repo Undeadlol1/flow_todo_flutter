@@ -168,9 +168,10 @@ class _DaysInARowText extends StatelessWidget {
         final ProfileState profileState = context.watch<ProfileCubit>().state;
 
         final dailyStreak = profileState.profile?.dailyStreak;
-        final int daysInARow = dailyStreak?.isInterrupted() ?? false
+        final int daysInARow = dailyStreak?.isInterrupted() ?? true
             ? 0
             : dailyStreak?.getDaysInARow() ?? 0;
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -191,25 +192,23 @@ class _DaysInARowText extends StatelessWidget {
 class _ProgressBar extends StatelessWidget {
   const _ProgressBar({
     Key? key,
-    required AnimationController animationController,
+    required this.animation,
+    required this.animationController,
     required this.isStreakAchievedToday,
-    required Animation<double> animation,
-  })  : _animationController = animationController,
-        _animation = animation,
-        super(key: key);
+  }) : super(key: key);
 
-  final AnimationController _animationController;
+  final AnimationController animationController;
   final bool isStreakAchievedToday;
-  final Animation<double> _animation;
+  final Animation<double> animation;
 
   @override
   Widget build(BuildContext context) {
     return Visibility(
-      visible: _animationController.isAnimating || !isStreakAchievedToday,
+      visible: animationController.isAnimating || !isStreakAchievedToday,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: LinearProgressIndicator(
-          value: _animation.value <= 0 ? 0.01 : _animation.value,
+          value: animation.value <= 0 ? 0.01 : animation.value,
         ),
       ),
     );
