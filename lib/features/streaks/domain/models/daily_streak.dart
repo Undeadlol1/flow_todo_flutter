@@ -33,7 +33,7 @@ class DailyStreak with _$DailyStreak {
     return differenceInDaysBetweenUpdateAndCreation + 1;
   }
 
-  bool isBroken() {
+  bool isInterrupted() {
     final int updatedDaysAgo = _getStreakUpdatedDaysAgo();
 
     if (updatedDaysAgo == 1) return false;

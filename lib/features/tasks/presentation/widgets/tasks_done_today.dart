@@ -168,7 +168,7 @@ class _DaysInARowText extends StatelessWidget {
         final ProfileState profileState = context.watch<ProfileCubit>().state;
 
         final dailyStreak = profileState.profile?.dailyStreak;
-        final int daysInARow = dailyStreak?.isBroken() ?? false
+        final int daysInARow = dailyStreak?.isInterrupted() ?? false
             ? 0
             : dailyStreak?.getDaysInARow() ?? 0;
         return Row(

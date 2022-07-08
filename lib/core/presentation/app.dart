@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -122,6 +123,7 @@ class _AppState extends State<App> {
   }
 
   void _syncFirebaseAuthWithAuthenticationCubit(firebase_auth.User? user) {
+    log('user: ${user.toString()}');
     if (user == null) {
       tasksCubit.updateList([]);
       profileCubit.setProfileNotFoundOrUnloaded();

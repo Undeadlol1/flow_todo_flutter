@@ -92,7 +92,7 @@ class MakeStepForwardOnTheTask {
     final updatedProfile = profile!.copyWith(
       dailyStreak: profile.dailyStreak.copyWith(
         updatedAt: today,
-        startsAt: profile.dailyStreak.isBroken()
+        startsAt: profile.dailyStreak.isInterrupted()
             ? today
             : profile.dailyStreak.startsAt,
       ),
