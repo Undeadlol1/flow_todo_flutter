@@ -36,6 +36,7 @@ class TaskPage extends StatelessWidget {
           Positioned(
             right: 0,
             child: IconButton(
+              key: const Key('edit menu'),
               onPressed: () => showModalBottomSheet(
                 context: context,
                 builder: (_) => NegativeChoices(task: task),

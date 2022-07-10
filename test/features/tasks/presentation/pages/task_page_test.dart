@@ -3,15 +3,17 @@ import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/positive_choices.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_task_form.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/what_do_you_feel_about_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_note.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fakes/fake_user_level_calculator.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
@@ -19,7 +21,16 @@ import '../../../../test_utilities/mocks/mock_level_progress_percentage_calculat
 
 final _binding = TestWidgetsFlutterBinding.ensureInitialized();
 
+class _MockMakeStepForwardOnATask extends Mock
+    implements MakeStepForwardOnTheTask {}
+
 void main() {
+  setUpAll(() {
+    GetIt.I.registerSingleton<MakeStepForwardOnTheTask>(
+      _MockMakeStepForwardOnATask(),
+    );
+  });
+
   group('GIVEN TaskPage', () {
     setUpAll(() {
       GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
@@ -54,7 +65,17 @@ void main() {
     testWidgets(
       "SHOULD display task decisions",
       _pumpAndRunCallback(() {
-        expect(find.byType(WhatDoYouFeelAboutTheTask), findsOneWidget);
+        expect(find.byType(PositiveChoices), findsOneWidget);
+      }),
+    );
+
+    testWidgets(
+      "SHOULD task editing options",
+      _pumpAndRunCallback(() {
+        expect(
+          find.byKey(const Key('edit menu')),
+          findsOneWidget,
+        );
       }),
     );
 
@@ -119,7 +140,7 @@ extension on WidgetTester {
     Task? task,
     bool isTitleEditingVisible = false,
   }) async {
-    await _binding.setSurfaceSize(const Size(640, 640));
+    await _binding.setSurfaceSize(const Size(700, 700));
     return pumpWidget(
       MultiBlocProvider(
         providers: [
