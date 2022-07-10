@@ -20,6 +20,64 @@ void main() {
       expect(daysInARow, 2);
     });
 
+    group('GIVEN .shouldUpdate', () {
+      test('Should update if started yesterday.', () {
+        final result = dailyStreakFixture
+            .copyWith(
+              perDay: 3,
+              startsAt: yesterday.millisecondsSinceEpoch,
+              updatedAt: null,
+            )
+            .shouldUpdate(
+              tasksDoneToday: 3,
+            );
+
+        expect(result, true);
+      });
+
+      test('Should not update twice per day.', () {
+        final result = dailyStreakFixture
+            .copyWith(
+              perDay: 3,
+              startsAt: twoDaysAgo.millisecondsSinceEpoch,
+              updatedAt: today.millisecondsSinceEpoch,
+            )
+            .shouldUpdate(
+              tasksDoneToday: 5,
+            );
+
+        expect(result, false);
+      });
+
+      test('Specific case: if started yesterday, dont reset today.', () {
+        final shouldUpdate = dailyStreakFixture
+            .copyWith(
+              perDay: 3,
+              startsAt: yesterday.millisecondsSinceEpoch,
+              updatedAt: yesterday.millisecondsSinceEpoch,
+            )
+            .shouldUpdate(
+              tasksDoneToday: 5,
+            );
+
+        expect(shouldUpdate, true);
+      });
+
+      test("Specific case: if started two days ago, don't reset.", () {
+        final shouldUpdate = dailyStreakFixture
+            .copyWith(
+              perDay: 3,
+              startsAt: twoDaysAgo.millisecondsSinceEpoch,
+              updatedAt: yesterday.millisecondsSinceEpoch,
+            )
+            .shouldUpdate(
+              tasksDoneToday: 5,
+            );
+
+        expect(shouldUpdate, true);
+      });
+    });
+
     group(
       'WHEN .isInterrupted called',
       () {
@@ -45,15 +103,6 @@ void main() {
             updatedAt: today,
             startsAt: yesterday,
             isInterrupted: false,
-          ),
-        );
-
-        test(
-          'WHEN started and updated yesterday ' 'THEN returns false',
-          _verifyIsStreakInterrupted(
-            isInterrupted: false,
-            startsAt: yesterday,
-            updatedAt: yesterday,
           ),
         );
 

@@ -52,14 +52,12 @@ class DailyStreak with _$DailyStreak {
 
   bool _wasStreakUpdatedInPast24Hours() {
     final today = DateTime.now();
-    final updatedHoursAgo = today
-        .difference(
-          DateTime.fromMillisecondsSinceEpoch(
-            updatedAt ?? today.millisecondsSinceEpoch,
-          ),
-        )
-        .inHours;
+    final timeDifference = today.difference(
+      DateTime.fromMillisecondsSinceEpoch(
+        updatedAt ?? today.millisecondsSinceEpoch,
+      ),
+    );
 
-    return updatedHoursAgo <= 24;
+    return timeDifference.inHours < 24;
   }
 }
