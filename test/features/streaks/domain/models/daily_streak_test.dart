@@ -7,7 +7,7 @@ void main() {
   final yesterday = DateTime.now().subtract(const Duration(days: 1));
   final twoDaysAgo = DateTime.now().subtract(const Duration(days: 2));
   final threeDaysAgo = DateTime.now().subtract(const Duration(days: 3));
-
+  final tenDaysAgo = DateTime.now().subtract(const Duration(days: 10));
   group('GIVEN DailyStreak', () {
     test('WHEN .daysInARow is called THEN detects days in a row properly', () {
       final daysInARow = dailyStreakFixture
@@ -41,76 +41,59 @@ void main() {
         test(
           'WHEN streak started yesterday and was updated today '
           'THEN returns false',
-          () {
-            final isInterrupted = dailyStreakFixture
-                .copyWith(
-                  startsAt: yesterday.millisecondsSinceEpoch,
-                  updatedAt: today.millisecondsSinceEpoch,
-                )
-                .isInterrupted();
-
-            expect(isInterrupted, false);
-          },
+          _verifyIsStreakInterrupted(
+            updatedAt: today,
+            startsAt: yesterday,
+            isInterrupted: false,
+          ),
         );
 
-        test('WHEN started and updated yesterday ' 'THEN returns false', () {
-          final isInterrupted = dailyStreakFixture
-              .copyWith(
-                startsAt: yesterday.millisecondsSinceEpoch,
-                updatedAt: yesterday.millisecondsSinceEpoch,
-              )
-              .isInterrupted();
-
-          expect(isInterrupted, false);
-        });
+        test(
+          'WHEN started and updated yesterday ' 'THEN returns false',
+          _verifyIsStreakInterrupted(
+            isInterrupted: false,
+            startsAt: yesterday,
+            updatedAt: yesterday,
+          ),
+        );
 
         test(
           'WHEN started multiple days ago and was not updated yesterday '
           'THEN returns true',
-          () {
-            final tenDaysAgo =
-                DateTime.now().subtract(const Duration(days: 10));
-            final isInterrupted = dailyStreakFixture
-                .copyWith(
-                  startsAt: tenDaysAgo.millisecondsSinceEpoch,
-                  updatedAt: twoDaysAgo.millisecondsSinceEpoch,
-                )
-                .isInterrupted();
-
-            expect(isInterrupted, true);
-          },
+          _verifyIsStreakInterrupted(
+            isInterrupted: true,
+            startsAt: tenDaysAgo,
+            updatedAt: twoDaysAgo,
+          ),
         );
 
         test(
           'WHEN started 3 days ago and was updated two days ago '
           'THEN returns true',
-          () {
-            final isInterrupted = dailyStreakFixture
-                .copyWith(
-                  startsAt: threeDaysAgo.millisecondsSinceEpoch,
-                  updatedAt: twoDaysAgo.millisecondsSinceEpoch,
-                )
-                .isInterrupted();
-
-            expect(isInterrupted, true);
-          },
+          _verifyIsStreakInterrupted(
+            isInterrupted: true,
+            updatedAt: twoDaysAgo,
+            startsAt: threeDaysAgo,
+          ),
         );
       },
     );
   });
 }
 
-void _verifyStreakInterrupted({
+_verifyIsStreakInterrupted({
   required DateTime startsAt,
   required DateTime updatedAt,
   required bool isInterrupted,
 }) {
-  final result = dailyStreakFixture
-      .copyWith(
-        startsAt: startsAt.millisecondsSinceEpoch,
-        updatedAt: updatedAt.millisecondsSinceEpoch,
-      )
-      .isInterrupted();
+  return () {
+    final result = dailyStreakFixture
+        .copyWith(
+          startsAt: startsAt.millisecondsSinceEpoch,
+          updatedAt: updatedAt.millisecondsSinceEpoch,
+        )
+        .isInterrupted();
 
-  expect(result, isInterrupted);
+    expect(result, isInterrupted);
+  };
 }
