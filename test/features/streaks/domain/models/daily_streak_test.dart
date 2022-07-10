@@ -9,6 +9,17 @@ void main() {
   final threeDaysAgo = DateTime.now().subtract(const Duration(days: 3));
 
   group('GIVEN DailyStreak', () {
+    test('WHEN .daysInARow is called THEN detects days in a row properly', () {
+      final daysInARow = dailyStreakFixture
+          .copyWith(
+            startsAt: yesterday.millisecondsSinceEpoch,
+            updatedAt: today.millisecondsSinceEpoch,
+          )
+          .getDaysInARow();
+
+      expect(daysInARow, 2);
+    });
+
     group(
       'WHEN .isInterrupted called',
       () {
