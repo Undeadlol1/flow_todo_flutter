@@ -32,16 +32,21 @@ class _CountDownState extends State<CountDown> {
 
   @override
   Widget build(BuildContext context) {
-    const duration = Duration(minutes: 5);
-    final timeToDisplay = duration.inSeconds - stopwatch.elapsed.inSeconds;
+    const countdownDuration = Duration(seconds: 5);
+    final timeToDisplay =
+        countdownDuration.inSeconds - stopwatch.elapsed.inSeconds;
+    final isCountdownCompleted =
+        stopwatch.elapsed.inMilliseconds > countdownDuration.inMilliseconds;
 
-    if (stopwatch.elapsed.inMilliseconds > duration.inMilliseconds) {
+    if (isCountdownCompleted) {
       timer.cancel();
     }
 
     return FloatingActionButton(
-      child: Text(timeToDisplay.toString()),
-      onPressed: () {},
+      onPressed: null,
+      child: isCountdownCompleted
+          ? const Icon(Icons.check)
+          : Text(timeToDisplay.toString()),
     );
   }
 }
