@@ -10,16 +10,16 @@ class CountDown extends StatefulWidget {
 }
 
 class _CountDownState extends State<CountDown> {
-  late final Timer timer;
-  late final Stopwatch stopwatch;
+  late final Timer _timer;
+  late final Stopwatch _stopwatch;
 
   final _countdownDuration = const Duration(minutes: 5);
 
   @override
   void initState() {
     super.initState();
-    stopwatch = Stopwatch()..start();
-    timer = Timer.periodic(
+    _stopwatch = Stopwatch()..start();
+    _timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) => setState(() {}),
     );
@@ -27,30 +27,24 @@ class _CountDownState extends State<CountDown> {
 
   @override
   void dispose() {
-    timer.cancel();
-    stopwatch.stop();
+    _timer.cancel();
+    _stopwatch.stop();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final isCountdownCompleted =
-        stopwatch.elapsed.inMilliseconds > _countdownDuration.inMilliseconds;
-    final timeToDisplay =
-        (_countdownDuration.inMinutes - stopwatch.elapsed.inMinutes) - 1;
-    final minutesRemaining = timeToDisplay - stopwatch.elapsed.inMinutes < 0
-        ? 0
-        : timeToDisplay - stopwatch.elapsed.inMinutes;
-    final secondsRemaining =
-        (_countdownDuration.inSeconds - stopwatch.elapsed.inSeconds) -
-            (minutesRemaining * 60) -
-            1;
-
-    debugPrint('${stopwatch.elapsed}');
-
-    if (isCountdownCompleted) {
-      timer.cancel();
-    }
+        _stopwatch.elapsed.inMicroseconds > _countdownDuration.inMicroseconds;
+    final remainingCountdown = Duration(
+      microseconds: isCountdownCompleted
+          ? 0
+          : (_countdownDuration.inMicroseconds -
+              _stopwatch.elapsedMicroseconds),
+    );
+    final String minutesAndSeconds =
+        "${remainingCountdown.inMinutes.remainder(60)}"
+        ":${(remainingCountdown.inSeconds.remainder(60))}";
 
     return FloatingActionButton(
       onPressed: null,
@@ -58,7 +52,7 @@ class _CountDownState extends State<CountDown> {
         duration: const Duration(milliseconds: 400),
         child: isCountdownCompleted
             ? const Icon(Icons.check)
-            : Text('$minutesRemaining:$secondsRemaining'),
+            : Text(minutesAndSeconds),
       ),
     );
   }
