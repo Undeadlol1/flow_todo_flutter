@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../common/presentation/page_layout.dart';
+import '../../../common/presentation/widgets/countdown.dart';
 import '../../domain/models/task.dart';
 import '../widgets/upsert_task_form.dart';
 import '../widgets/what_do_you_feel_about_the_task.dart';
@@ -30,6 +31,7 @@ class TaskPage extends StatelessWidget {
     return PageLayout(
       isAppBarHidden: false,
       isNumbersAnimationSuspended: true,
+      floatingActionButton: const CountDown(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

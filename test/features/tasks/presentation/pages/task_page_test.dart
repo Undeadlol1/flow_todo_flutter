@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/countdown.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
@@ -78,6 +79,13 @@ void main() {
           ),
           findsOneWidget,
         ),
+      ),
+    );
+
+    testWidgets(
+      'SHOULD display task note',
+      _pumpAndRunCallback(
+        () => expect(find.byType(CountDown), findsOneWidget),
       ),
     );
 

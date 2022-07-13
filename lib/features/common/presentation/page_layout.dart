@@ -73,7 +73,10 @@ class PageLayout extends StatelessWidget {
                     child: child,
                   ),
                 ),
-                floatingActionButton: floatingActionButton,
+                floatingActionButton: Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: floatingActionButton,
+                ),
                 bottomNavigationBar: const _BottomNavigation(),
               ),
             ],
