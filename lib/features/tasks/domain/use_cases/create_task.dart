@@ -7,7 +7,7 @@ import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_point
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:injectable/injectable.dart';
 
-@singleton
+@lazySingleton
 class CreateTask {
   final TasksCubit tasksCubit;
   final ProfileCubit profileCubit;

@@ -85,7 +85,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i22.AddPointsToViewer>(_i22.AddPointsToViewer(
       profileCubit: get<_i13.ProfileCubit>(),
       updateProfileRepository: get<_i19.UpdateProfileRepository>()));
-  gh.singleton<_i23.CreateTask>(_i23.CreateTask(
+  gh.lazySingleton<_i23.CreateTask>(() => _i23.CreateTask(
       tasksCubit: get<_i16.TasksCubit>(),
       profileCubit: get<_i13.ProfileCubit>(),
       getTodaysDate: get<_i11.GetTodaysDate>(),
