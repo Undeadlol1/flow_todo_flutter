@@ -172,17 +172,20 @@ class _DaysInARowText extends StatelessWidget {
             ? 0
             : dailyStreak?.getDaysInARow() ?? 0;
 
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Won days in a row: '),
-            if (profileState is ProfileLoaded)
-              AnimatedNumbers(
-                number: daysInARow,
-                duration: const Duration(milliseconds: 200),
-                areNumberAnimationsSuspended: !areAnimationsEnabled,
-              ),
-          ],
+        return Visibility(
+          visible: daysInARow > 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Won days in a row: '),
+              if (profileState is ProfileLoaded)
+                AnimatedNumbers(
+                  number: daysInARow,
+                  duration: const Duration(milliseconds: 200),
+                  areNumberAnimationsSuspended: !areAnimationsEnabled,
+                ),
+            ],
+          ),
         );
       },
     );
