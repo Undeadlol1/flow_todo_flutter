@@ -23,7 +23,7 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
+    return Container(
       constraints: BoxConstraints.tightFor(width: radius * 2),
       child: Stack(
         children: [
@@ -40,9 +40,7 @@ class Avatar extends StatelessWidget {
                   width: radius,
                   right: radius / 2,
                   height: radius / 2,
-                  child: Center(
-                    child: _LevelBadge(radius: radius),
-                  ),
+                  child: _LevelBadge(radius: radius),
                 ),
         ],
       ),
@@ -65,15 +63,16 @@ class _LevelBadge extends StatelessWidget {
               .toString();
 
           return Container(
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.secondaryContainer,
               shape: BoxShape.circle,
             ),
-            padding: const EdgeInsets.all(4),
             child: Text(
               level,
-              style:
-                  TextStyle(fontSize: radius >= 50 ? radius / 5 : radius / 1.5),
+              style: TextStyle(
+                fontSize: radius >= 50 ? radius / 3.8 : radius / 1.5,
+              ),
             ),
           );
         }
@@ -152,11 +151,16 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
             radius: widget.radius,
             backgroundImage: authState.user.avatar == null
                 ? null
-                : ExtendedNetworkImageProvider(
-                    authState.user.avatar!,
-                    scale: 1,
-                    cache: true,
-                    cacheMaxAge: const Duration(days: 4),
+                : ResizeImage(
+                    ExtendedNetworkImageProvider(
+                      authState.user.avatar!,
+                      printError: true,
+                      scale: 1,
+                      cache: true,
+                      cacheMaxAge: const Duration(days: 4),
+                    ),
+                    width: 330,
+                    height: 330,
                   ),
             // child: CircularProgressIndicator(value: widgetProgress),
           ),
