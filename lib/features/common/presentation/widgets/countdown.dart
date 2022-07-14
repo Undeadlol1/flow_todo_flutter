@@ -46,13 +46,15 @@ class _CountDownState extends State<CountDown> {
         "${remainingCountdown.inMinutes.remainder(60)}"
         ":${(remainingCountdown.inSeconds.remainder(60))}";
 
-    return FloatingActionButton(
-      onPressed: null,
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 400),
-        child: isCountdownCompleted
-            ? const Icon(Icons.check)
-            : Text(minutesAndSeconds),
+    return RepaintBoundary(
+      child: FloatingActionButton(
+        onPressed: null,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 400),
+          child: isCountdownCompleted
+              ? const Icon(Icons.check)
+              : Text(minutesAndSeconds),
+        ),
       ),
     );
   }
