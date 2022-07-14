@@ -133,9 +133,11 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
           _runAnimation(context, profileState);
         }
 
-        final lineWidth = widget.radius / 10;
-
         _previousValueOfProgressCircle = _getLevelProgress(profileState);
+
+        final lineWidth = widget.radius / 10;
+        final int preferredImageSize = (widget.radius * 6).toInt();
+
         return AnimatedBuilder(
           animation: _animation,
           builder: (context, child) {
@@ -159,8 +161,8 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
                       cache: true,
                       cacheMaxAge: const Duration(days: 4),
                     ),
-                    width: 330,
-                    height: 330,
+                    width: preferredImageSize,
+                    height: preferredImageSize,
                   ),
             // child: CircularProgressIndicator(value: widgetProgress),
           ),
