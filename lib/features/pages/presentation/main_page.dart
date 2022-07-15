@@ -20,22 +20,23 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageLayout(
-      isAppBarHidden: true,
-      isDrawerHidden: false,
-      isNumbersAnimationSuspended: false,
-      floatingActionButton: const CreateTaskFAB(),
-      child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
-        listener: (context, authState) async {
-          if (authState is Authenticated) {
-            GetIt.I<GetProfile>()(userId: authState.user.id);
-            GetIt.I<GetTasksToDo>()(userId: authState.user.id);
-            GetIt.I<GetTasksDoneToday>()(userId: authState.user.id);
-          }
-        },
-        builder: (context, authState) {
-          return BlocBuilder<ProfileCubit, ProfileState>(
-            builder: (context, profileState) {
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (context, profileState) {
+        return PageLayout(
+          isAppBarHidden: true,
+          isDrawerHidden: false,
+          isNumbersAnimationSuspended: false,
+          floatingActionButton:
+              profileState is ProfileLoaded ? const CreateTaskFAB() : null,
+          child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
+            listener: (context, authState) async {
+              if (authState is Authenticated) {
+                GetIt.I<GetProfile>()(userId: authState.user.id);
+                GetIt.I<GetTasksToDo>()(userId: authState.user.id);
+                GetIt.I<GetTasksDoneToday>()(userId: authState.user.id);
+              }
+            },
+            builder: (context, authState) {
               return Column(
                 children: [
                   if (profileState is ProfileLoaded)
@@ -51,9 +52,9 @@ class MainPage extends StatelessWidget {
                 ],
               );
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
