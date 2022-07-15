@@ -64,17 +64,15 @@ class _ProgressSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 210),
+      constraints: const BoxConstraints(minHeight: 170),
       child: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
+        child: Row(
           children: [
             Container(
-              margin: const EdgeInsets.only(top: 12),
+              margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               child: const Avatar(radius: 60),
             ),
-            const TasksDoneToday(),
+            const Flexible(child: TasksDoneToday()),
           ],
         ),
       ),

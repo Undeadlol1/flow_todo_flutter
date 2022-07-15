@@ -175,7 +175,7 @@ class _DaysInARowText extends StatelessWidget {
         return Visibility(
           visible: daysInARow > 0,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const Text('Won days in a row: '),
               if (profileState is ProfileLoaded)
@@ -235,7 +235,7 @@ class _WinsTodayText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         const Text('Wins today: '),
         tasksDoneState.maybeMap(
