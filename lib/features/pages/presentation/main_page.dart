@@ -37,18 +37,24 @@ class MainPage extends StatelessWidget {
               }
             },
             builder: (context, authState) {
+              if (authState is NotAuthenticated) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Please sign in to play the game:'),
+                      const SizedBox(height: 10),
+                      GoogleSignInButton(),
+                    ],
+                  ),
+                );
+              }
+
               return Column(
                 children: [
                   if (profileState is ProfileLoaded)
                     const _ProgressSummaryCard(),
                   const Expanded(child: TasksList()),
-                  if (authState is NotAuthenticated)
-                    SizedBox(
-                      height: 500,
-                      child: Center(
-                        child: GoogleSignInButton(),
-                      ),
-                    ),
                 ],
               );
             },
