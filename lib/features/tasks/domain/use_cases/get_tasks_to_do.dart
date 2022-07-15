@@ -9,6 +9,8 @@ class GetTasksToDo {
   GetTasksToDo({required this.getTasks, required this.tasksCubit});
 
   Future<void> call({required String userId}) async {
+    tasksCubit.setLoading();
+
     final tasks = await getTasks(userId: userId);
 
     tasksCubit.updateList(tasks..shuffle());
