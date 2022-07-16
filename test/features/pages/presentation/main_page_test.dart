@@ -1,4 +1,4 @@
-import 'package:flow_todo_flutter_2022/core/presentation/pages/presentation/main_page.dart';
+import 'package:flow_todo_flutter_2022/core/presentation/pages/main_page.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/sign_in_with_google.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
