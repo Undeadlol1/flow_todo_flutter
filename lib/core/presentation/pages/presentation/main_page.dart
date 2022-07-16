@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import '../../../../features/authentification/presentation/cubit/authentification_cubit.dart';
 import '../../../../features/authentification/presentation/widgets/google_sign_in_button.dart';
 import '../../../../features/common/presentation/page_layout.dart';
+import '../../../../features/quests/presentation/widgets/active_quest.dart';
 import '../../../../features/tasks/domain/use_cases/get_tasks_done_today.dart';
 import '../../../../features/tasks/domain/use_cases/get_tasks_to_do.dart';
 import '../../../../features/tasks/presentation/widgets/tasks_done_today.dart';
@@ -79,6 +80,7 @@ class _ProgressSummaryCard extends StatelessWidget {
               margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               child: const Avatar(radius: 60),
             ),
+            const ActiveQuest(),
             const Flexible(child: TasksDoneToday()),
           ],
         ),
