@@ -49,33 +49,33 @@ void main() {
         expect(result, false);
       });
 
-      test('Specific case: if started yesterday, dont reset today.', () {
-        final shouldStreakIncrement = dailyStreakFixture
-            .copyWith(
-              perDay: 3,
-              startsAt: yesterday.millisecondsSinceEpoch,
-              updatedAt: yesterday.millisecondsSinceEpoch,
-            )
-            .shouldStreakIncrement(
-              tasksDoneToday: 5,
-            );
+      // test('Specific case: if started yesterday, dont reset today.', () {
+      //   final shouldStreakIncrement = dailyStreakFixture
+      //       .copyWith(
+      //         perDay: 3,
+      //         startsAt: yesterday.millisecondsSinceEpoch,
+      //         updatedAt: yesterday.millisecondsSinceEpoch,
+      //       )
+      //       .shouldStreakIncrement(
+      //         tasksDoneToday: 5,
+      //       );
 
-        expect(shouldStreakIncrement, true);
-      });
+      //   expect(shouldStreakIncrement, true);
+      // });
 
-      test("Specific case: if started two days ago, don't reset.", () {
-        final shouldStreakIncrement = dailyStreakFixture
-            .copyWith(
-              perDay: 3,
-              startsAt: twoDaysAgo.millisecondsSinceEpoch,
-              updatedAt: yesterday.millisecondsSinceEpoch,
-            )
-            .shouldStreakIncrement(
-              tasksDoneToday: 5,
-            );
+      // test("Specific case: if started two days ago, don't reset.", () {
+      //   final shouldStreakIncrement = dailyStreakFixture
+      //       .copyWith(
+      //         perDay: 3,
+      //         startsAt: twoDaysAgo.millisecondsSinceEpoch,
+      //         updatedAt: yesterday.millisecondsSinceEpoch,
+      //       )
+      //       .shouldStreakIncrement(
+      //         tasksDoneToday: 5,
+      //       );
 
-        expect(shouldStreakIncrement, true);
-      });
+      //   expect(shouldStreakIncrement, true);
+      // });
     });
 
     group(

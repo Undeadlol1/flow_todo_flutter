@@ -1,5 +1,4 @@
 import 'package:flow_todo_flutter_2022/features/streaks/domain/entities/daily_streak_entity.dart';
-import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'daily_streak.freezed.dart';
@@ -49,7 +48,17 @@ class DailyStreak with _$DailyStreak {
 
   bool _wasStreakUpdatedInPast24Hours() {
     final today = DateTime.now();
-    final timeDifference = today.difference(
+    final bool wasStreakCreatedYesterday =
+        DateTime.fromMillisecondsSinceEpoch(createdAt)
+                .difference(today)
+                .inDays ==
+            1;
+    if (updatedAt == null && wasStreakCreatedYesterday) {
+      return false;
+    }
+
+    final yesterdayMidnight = DateTime(today.year, today.month, today.day);
+    final timeDifference = yesterdayMidnight.difference(
       DateTime.fromMillisecondsSinceEpoch(
         updatedAt ?? today.millisecondsSinceEpoch,
       ),
