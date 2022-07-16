@@ -5,6 +5,7 @@ import 'package:flow_todo_flutter_2022/features/authentification/presentation/wi
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/quests/presentation/widgets/active_quest.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_done_today.dart';
@@ -60,6 +61,18 @@ void main() {
         await tester.pumpWithDependencies();
 
         expect(find.byType(TasksList), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      "WHEN user is logged in "
+      "THEN displays ActiveQuest",
+      (WidgetTester tester) async {
+        _profileCubit.setProfile(profileFixture);
+
+        await tester.pumpWithDependencies();
+
+        expect(find.byType(ActiveQuest), findsOneWidget);
       },
     );
 

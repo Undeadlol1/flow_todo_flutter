@@ -82,6 +82,8 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
             return Padding(
               padding: _padding,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   _WinsTodayText(
                     tasksDoneState: tasksDoneState,
@@ -192,6 +194,7 @@ class _DaysInARowText extends StatelessWidget {
   }
 }
 
+// TODO make this reusable?
 class _ProgressBar extends StatelessWidget {
   const _ProgressBar({
     Key? key,
@@ -210,8 +213,10 @@ class _ProgressBar extends StatelessWidget {
       visible: animationController.isAnimating || !isStreakAchievedToday,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        child: LinearProgressIndicator(
-          value: animation.value <= 0 ? 0.01 : animation.value,
+        child: SizedBox(
+          child: LinearProgressIndicator(
+            value: animation.value <= 0 ? 0.01 : animation.value,
+          ),
         ),
       ),
     );
