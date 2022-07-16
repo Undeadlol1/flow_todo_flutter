@@ -10,9 +10,9 @@ _$_Task _$$_TaskFromJson(Map<String, dynamic> json) => _$_Task(
       id: json['id'] as String,
       isDone: json['isDone'] as bool,
       userId: json['userId'] as String,
-      dueAt: const _MillisecondsToDateTimeConverter()
+      dueAt: const MillisecondsToDateTimePropertyConverter()
           .fromJson(json['dueAt'] as int),
-      createdAt: const _MillisecondsToDateTimeConverter()
+      createdAt: const MillisecondsToDateTimePropertyConverter()
           .fromJson(json['createdAt'] as int),
       title: json['name'] as String,
       note: json['note'] as String? ?? '',
@@ -32,9 +32,10 @@ Map<String, dynamic> _$$_TaskToJson(_$_Task instance) => <String, dynamic>{
       'id': instance.id,
       'isDone': instance.isDone,
       'userId': instance.userId,
-      'dueAt': const _MillisecondsToDateTimeConverter().toJson(instance.dueAt),
-      'createdAt':
-          const _MillisecondsToDateTimeConverter().toJson(instance.createdAt),
+      'dueAt': const MillisecondsToDateTimePropertyConverter()
+          .toJson(instance.dueAt),
+      'createdAt': const MillisecondsToDateTimePropertyConverter()
+          .toJson(instance.createdAt),
       'name': instance.title,
       'note': instance.note,
       'tags': instance.tags,

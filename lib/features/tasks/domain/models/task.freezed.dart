@@ -23,9 +23,9 @@ mixin _$Task {
   String get id => throw _privateConstructorUsedError;
   bool get isDone => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
-  @_MillisecondsToDateTimeConverter()
+  @MillisecondsToDateTimePropertyConverter()
   DateTime get dueAt => throw _privateConstructorUsedError;
-  @_MillisecondsToDateTimeConverter()
+  @MillisecondsToDateTimePropertyConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'name')
   String get title => throw _privateConstructorUsedError;
@@ -52,8 +52,8 @@ abstract class $TaskCopyWith<$Res> {
       {String id,
       bool isDone,
       String userId,
-      @_MillisecondsToDateTimeConverter() DateTime dueAt,
-      @_MillisecondsToDateTimeConverter() DateTime createdAt,
+      @MillisecondsToDateTimePropertyConverter() DateTime dueAt,
+      @MillisecondsToDateTimePropertyConverter() DateTime createdAt,
       @JsonKey(name: 'name') String title,
       @JsonKey(defaultValue: '') String note,
       @JsonKey(defaultValue: []) List<String> tags,
@@ -148,8 +148,8 @@ abstract class _$$_TaskCopyWith<$Res> implements $TaskCopyWith<$Res> {
       {String id,
       bool isDone,
       String userId,
-      @_MillisecondsToDateTimeConverter() DateTime dueAt,
-      @_MillisecondsToDateTimeConverter() DateTime createdAt,
+      @MillisecondsToDateTimePropertyConverter() DateTime dueAt,
+      @MillisecondsToDateTimePropertyConverter() DateTime createdAt,
       @JsonKey(name: 'name') String title,
       @JsonKey(defaultValue: '') String note,
       @JsonKey(defaultValue: []) List<String> tags,
@@ -244,8 +244,8 @@ class _$_Task implements _Task {
       {required this.id,
       required this.isDone,
       required this.userId,
-      @_MillisecondsToDateTimeConverter() required this.dueAt,
-      @_MillisecondsToDateTimeConverter() required this.createdAt,
+      @MillisecondsToDateTimePropertyConverter() required this.dueAt,
+      @MillisecondsToDateTimePropertyConverter() required this.createdAt,
       @JsonKey(name: 'name') required this.title,
       @JsonKey(defaultValue: '') required this.note,
       @JsonKey(defaultValue: []) required final List<String> tags,
@@ -265,10 +265,10 @@ class _$_Task implements _Task {
   @override
   final String userId;
   @override
-  @_MillisecondsToDateTimeConverter()
+  @MillisecondsToDateTimePropertyConverter()
   final DateTime dueAt;
   @override
-  @_MillisecondsToDateTimeConverter()
+  @MillisecondsToDateTimePropertyConverter()
   final DateTime createdAt;
   @override
   @JsonKey(name: 'name')
@@ -357,12 +357,18 @@ abstract class _Task implements Task {
       {required final String id,
       required final bool isDone,
       required final String userId,
-      @_MillisecondsToDateTimeConverter() required final DateTime dueAt,
-      @_MillisecondsToDateTimeConverter() required final DateTime createdAt,
-      @JsonKey(name: 'name') required final String title,
-      @JsonKey(defaultValue: '') required final String note,
-      @JsonKey(defaultValue: []) required final List<String> tags,
-      @JsonKey(defaultValue: []) required final List<TaskHistory> history,
+      @MillisecondsToDateTimePropertyConverter()
+          required final DateTime dueAt,
+      @MillisecondsToDateTimePropertyConverter()
+          required final DateTime createdAt,
+      @JsonKey(name: 'name')
+          required final String title,
+      @JsonKey(defaultValue: '')
+          required final String note,
+      @JsonKey(defaultValue: [])
+          required final List<String> tags,
+      @JsonKey(defaultValue: [])
+          required final List<TaskHistory> history,
       final int? doneAt,
       final int? updatedAt,
       final int? repetitionLevel}) = _$_Task;
@@ -376,10 +382,10 @@ abstract class _Task implements Task {
   @override
   String get userId => throw _privateConstructorUsedError;
   @override
-  @_MillisecondsToDateTimeConverter()
+  @MillisecondsToDateTimePropertyConverter()
   DateTime get dueAt => throw _privateConstructorUsedError;
   @override
-  @_MillisecondsToDateTimeConverter()
+  @MillisecondsToDateTimePropertyConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'name')
