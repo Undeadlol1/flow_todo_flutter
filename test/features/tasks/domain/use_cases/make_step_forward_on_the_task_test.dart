@@ -120,7 +120,7 @@ void main() {
 
     test(
       'WHEN something throws an error '
-      'THEN states revert back updates',
+      'THEN navigates back to task page',
       () async {
         _mockTypicalCalls(amountOfPointsToVerify: 20);
         when(() => _mockUpdateTaskRepository(any()))

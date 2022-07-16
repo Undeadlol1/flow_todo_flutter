@@ -69,11 +69,11 @@ class MakeStepForwardOnTheTask {
 
     try {
       await goToMainPage();
-      await addPointsToViewer(pointsToAdd);
       await updateTaskRepository.call(updatedTask);
       if (_shouldDailyStreakBeUpdated()) {
         await updateProfileRepository(updatedProfile);
       }
+      await addPointsToViewer(pointsToAdd);
     } catch (error) {
       snackbarService.displaySnackbar(text: error.toString());
 
