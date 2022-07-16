@@ -60,8 +60,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       () => _i4.CreateTaskRepository(firestore: get<_i5.FirebaseFirestore>()));
   gh.factory<_i6.DeleteTaskRepository>(
       () => _i6.DeleteTaskRepository(firestore: get<_i5.FirebaseFirestore>()));
-  gh.singleton<_i7.GetGoalsRepository>(
-      _i7.GetGoalsRepository(firestore: get<_i5.FirebaseFirestore>()));
+  gh.factory<_i7.GetGoalsRepository>(
+      () => _i7.GetGoalsRepository(firestore: get<_i5.FirebaseFirestore>()));
   gh.singleton<_i8.GetProfileRepository>(
       _i8.GetProfileRepository(firestore: get<_i5.FirebaseFirestore>()));
   gh.singleton<_i9.GetTasksDoneTodayRepository>(
@@ -110,6 +110,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       tasksCubit: get<_i16.TasksCubit>(),
       profileCubit: get<_i13.ProfileCubit>(),
       firebaseAuth: get<_i29.FirebaseAuth>(),
+      tasksDoneTodayCubit: get<_i17.TasksDoneTodayCubit>(),
       authentificationCubit: get<_i3.AuthentificationCubit>()));
   gh.singleton<_i30.MakeStepForwardOnTheTask>(_i30.MakeStepForwardOnTheTask(
       tasksCubit: get<_i16.TasksCubit>(),

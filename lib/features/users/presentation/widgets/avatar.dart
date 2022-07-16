@@ -151,7 +151,7 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
           },
           child: CircleAvatar(
             radius: widget.radius,
-            backgroundImage: authState.user.avatar == null
+            foregroundImage: authState.user.avatar == null
                 ? null
                 : ResizeImage(
                     ExtendedNetworkImageProvider(

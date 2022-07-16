@@ -20,40 +20,47 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageLayout(
-      isAppBarHidden: true,
-      isDrawerHidden: false,
-      isNumbersAnimationSuspended: false,
-      floatingActionButton: const CreateTaskFAB(),
-      child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
-        listener: (context, authState) async {
-          if (authState is Authenticated) {
-            GetIt.I<GetProfile>()(userId: authState.user.id);
-            GetIt.I<GetTasksToDo>()(userId: authState.user.id);
-            GetIt.I<GetTasksDoneToday>()(userId: authState.user.id);
-          }
-        },
-        builder: (context, authState) {
-          return BlocBuilder<ProfileCubit, ProfileState>(
-            builder: (context, profileState) {
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (context, profileState) {
+        return PageLayout(
+          isAppBarHidden: true,
+          isDrawerHidden: false,
+          isNumbersAnimationSuspended: false,
+          floatingActionButton:
+              profileState is ProfileLoaded ? const CreateTaskFAB() : null,
+          child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
+            listener: (context, authState) async {
+              if (authState is Authenticated) {
+                GetIt.I<GetProfile>()(userId: authState.user.id);
+                GetIt.I<GetTasksToDo>()(userId: authState.user.id);
+                GetIt.I<GetTasksDoneToday>()(userId: authState.user.id);
+              }
+            },
+            builder: (context, authState) {
+              if (authState is NotAuthenticated) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Please sign in to play the game:'),
+                      const SizedBox(height: 10),
+                      GoogleSignInButton(),
+                    ],
+                  ),
+                );
+              }
+
               return Column(
                 children: [
                   if (profileState is ProfileLoaded)
                     const _ProgressSummaryCard(),
                   const Expanded(child: TasksList()),
-                  if (authState is NotAuthenticated)
-                    SizedBox(
-                      height: 500,
-                      child: Center(
-                        child: GoogleSignInButton(),
-                      ),
-                    ),
                 ],
               );
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
@@ -63,15 +70,18 @@ class _ProgressSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Row(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            child: const Avatar(radius: 60),
-          ),
-          const Flexible(child: TasksDoneToday()),
-        ],
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 170),
+      child: Card(
+        child: Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              child: const Avatar(radius: 60),
+            ),
+            const Flexible(child: TasksDoneToday()),
+          ],
+        ),
       ),
     );
   }
