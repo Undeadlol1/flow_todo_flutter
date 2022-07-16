@@ -36,7 +36,7 @@ class DailyStreak with _$DailyStreak {
 
   bool isInterrupted() => !_wasStreakUpdatedInPast24Hours();
 
-  bool shouldUpdate({required final int tasksDoneToday}) {
+  bool shouldStreakIncrement({required final int tasksDoneToday}) {
     final bool isTaskGoalReached = tasksDoneToday >= perDay;
 
     if (updatedAt == null && isTaskGoalReached) {

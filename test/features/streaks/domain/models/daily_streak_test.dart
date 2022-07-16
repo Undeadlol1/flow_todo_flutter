@@ -20,29 +20,29 @@ void main() {
       expect(daysInARow, 2);
     });
 
-    group('GIVEN .shouldUpdate', () {
-      test('Should update if started yesterday.', () {
+    group('GIVEN .shouldStreakIncrement', () {
+      test('WHEN streak strted yesterday THEN returns true', () {
         final result = dailyStreakFixture
             .copyWith(
               perDay: 3,
               startsAt: yesterday.millisecondsSinceEpoch,
               updatedAt: null,
             )
-            .shouldUpdate(
+            .shouldStreakIncrement(
               tasksDoneToday: 3,
             );
 
         expect(result, true);
       });
 
-      test('Should not update twice per day.', () {
+      test('WHEN streak was already incremented today THEN returns false', () {
         final result = dailyStreakFixture
             .copyWith(
               perDay: 3,
               startsAt: twoDaysAgo.millisecondsSinceEpoch,
               updatedAt: today.millisecondsSinceEpoch,
             )
-            .shouldUpdate(
+            .shouldStreakIncrement(
               tasksDoneToday: 5,
             );
 
@@ -50,31 +50,31 @@ void main() {
       });
 
       test('Specific case: if started yesterday, dont reset today.', () {
-        final shouldUpdate = dailyStreakFixture
+        final shouldStreakIncrement = dailyStreakFixture
             .copyWith(
               perDay: 3,
               startsAt: yesterday.millisecondsSinceEpoch,
               updatedAt: yesterday.millisecondsSinceEpoch,
             )
-            .shouldUpdate(
+            .shouldStreakIncrement(
               tasksDoneToday: 5,
             );
 
-        expect(shouldUpdate, true);
+        expect(shouldStreakIncrement, true);
       });
 
       test("Specific case: if started two days ago, don't reset.", () {
-        final shouldUpdate = dailyStreakFixture
+        final shouldStreakIncrement = dailyStreakFixture
             .copyWith(
               perDay: 3,
               startsAt: twoDaysAgo.millisecondsSinceEpoch,
               updatedAt: yesterday.millisecondsSinceEpoch,
             )
-            .shouldUpdate(
+            .shouldStreakIncrement(
               tasksDoneToday: 5,
             );
 
-        expect(shouldUpdate, true);
+        expect(shouldStreakIncrement, true);
       });
     });
 

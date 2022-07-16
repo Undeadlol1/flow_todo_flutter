@@ -70,7 +70,7 @@ class MakeStepForwardOnTheTask {
     try {
       await goToMainPage();
       await updateTaskRepository.call(updatedTask);
-      if (_shouldDailyStreakBeUpdated()) {
+      if (_shouldDailyStreakIncrement()) {
         await updateProfileRepository(updatedProfile);
       }
       await addPointsToViewer(pointsToAdd);
@@ -100,10 +100,10 @@ class MakeStepForwardOnTheTask {
     return updatedProfile;
   }
 
-  bool _shouldDailyStreakBeUpdated() {
+  bool _shouldDailyStreakIncrement() {
     final profile = profileCubit.state.profile;
     final tasksDoneToday = tasksDoneTodayCubit.state.tasks.length + 1;
-    return profile?.dailyStreak.shouldUpdate(
+    return profile?.dailyStreak.shouldStreakIncrement(
           tasksDoneToday: tasksDoneToday,
         ) ??
         false;
