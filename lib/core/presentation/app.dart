@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flow_todo_flutter_2022/core/presentation/pages/presentation/main_page.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +11,6 @@ import 'package:get_it/get_it.dart';
 import '../../features/authentification/domain/entities/user.dart';
 import '../../features/authentification/presentation/cubit/authentification_cubit.dart';
 import '../../features/leveling/presentation/widgets/experience_progress_bar.dart';
-import '../../features/pages/presentation/main_page.dart';
 import '../../features/tasks/presentation/cubit/tasks_cubit.dart';
 import '../../features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import '../../features/tasks/presentation/pages/task_page.dart';

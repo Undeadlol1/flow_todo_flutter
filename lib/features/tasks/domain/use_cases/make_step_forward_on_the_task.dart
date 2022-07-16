@@ -103,7 +103,7 @@ class MakeStepForwardOnTheTask {
   bool _shouldDailyStreakBeUpdated() {
     final profile = profileCubit.state.profile;
     final tasksDoneToday = tasksDoneTodayCubit.state.tasks.length + 1;
-    return profile?.dailyStreak.shouldUpdate(
+    return profile?.dailyStreak.shouldStreakIncrement(
           tasksDoneToday: tasksDoneToday,
         ) ??
         false;
