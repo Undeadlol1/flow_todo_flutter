@@ -21,7 +21,6 @@ class _ExperienceProgressBarState extends State<ExperienceProgressBar>
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox();
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (primaryBuildContext, state) {
         double widgetProgress = 0.0;

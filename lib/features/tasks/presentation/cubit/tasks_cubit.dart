@@ -12,6 +12,10 @@ class TasksCubit extends Cubit<TasksState> with ReplayCubitMixin {
     emit(TasksUpdated(tasks: tasks));
   }
 
+  void setLoading() {
+    emit(TasksLoading());
+  }
+
   void removeTask(Task task) {
     state.tasks.remove(task);
     updateList(state.tasks);

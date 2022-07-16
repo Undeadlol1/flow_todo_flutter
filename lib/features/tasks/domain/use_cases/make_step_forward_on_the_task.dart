@@ -69,11 +69,11 @@ class MakeStepForwardOnTheTask {
 
     try {
       await goToMainPage();
-      await addPointsToViewer(pointsToAdd);
       await updateTaskRepository.call(updatedTask);
-      if (_shouldDailyStreakBeUpdated()) {
+      if (_shouldDailyStreakIncrement()) {
         await updateProfileRepository(updatedProfile);
       }
+      await addPointsToViewer(pointsToAdd);
     } catch (error) {
       snackbarService.displaySnackbar(text: error.toString());
 
@@ -92,7 +92,7 @@ class MakeStepForwardOnTheTask {
     final updatedProfile = profile!.copyWith(
       dailyStreak: profile.dailyStreak.copyWith(
         updatedAt: today,
-        startsAt: profile.dailyStreak.isBroken()
+        startsAt: profile.dailyStreak.isInterrupted()
             ? today
             : profile.dailyStreak.startsAt,
       ),
@@ -100,10 +100,10 @@ class MakeStepForwardOnTheTask {
     return updatedProfile;
   }
 
-  bool _shouldDailyStreakBeUpdated() {
+  bool _shouldDailyStreakIncrement() {
     final profile = profileCubit.state.profile;
     final tasksDoneToday = tasksDoneTodayCubit.state.tasks.length + 1;
-    return profile?.dailyStreak.shouldUpdate(
+    return profile?.dailyStreak.shouldStreakIncrement(
           tasksDoneToday: tasksDoneToday,
         ) ??
         false;
@@ -159,63 +159,3 @@ class MakeStepForwardOnTheTask {
     )}';
   }
 }
-
-        // TaskService.deactivateActiveTasks(tasks),
-        // upsertTask({
-        //   ...task,
-        //   ...values,
-        //   history: [...get(task, 'history', []), historyToAdd],
-        // }),
-        // createTaskLog({
-        //   ...historyToAdd,
-        //   taskId,
-        //   userId,
-        //   createdAt: Date.now(),
-        // }),
-        // ViewerController.rewardUserForWorkingOnATask({
-        //   points,
-        //   snackbarMessage,
-        // }),
-        // TaskService.activateNextTask({
-        //   nextTaskId,
-        //   currentTasks: tasks,
-        // }),
-        // updateDailyStreak({
-        //   profile,
-        //   userId,
-        //   tasksDoneToday,
-        // }),
-
-  // function stepForward(confidence: Confidence, pointsToAdd?: number) {
-  //   const nextRepetition = calculateNextRepetition(
-  //     props.task,
-  //     confidence,
-  //   );
-  //   props
-  //     .updateTask({
-  //       values: {
-  //         isCurrent: false,
-  //         ...nextRepetition,
-  //       },
-  //       history: {
-  //         taskId: props.task.id,
-  //         userId: props.task.userId,
-  //         createdAt: Date.now(),
-  //         // @ts-ignore
-  //         actionType:
-  //           confidence === 'normal' ? 'stepForward' : 'leapForward',
-  //       },
-  //       pointsToAdd: confidence === 'normal' ? 10 : 20,
-  //       snackbarMessage: t('important to step forward'),
-  //     })
-  //     .then(() => {
-  //       Snackbar.addToQueue(
-  //         t('you will see task again in', {
-  //           date: distanceBetweenDates(
-  //             nextRepetition.dueAt,
-  //             new Date(),
-  //           ),
-  //         }),
-  //       );
-  //     });
-  // }

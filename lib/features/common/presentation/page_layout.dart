@@ -53,7 +53,12 @@ class PageLayout extends StatelessWidget {
                           ),
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Center(child: Avatar(radius: 16)),
+                            child: Center(
+                              child: Avatar(
+                                radius: 16,
+                                isLevelHidden: true,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -68,7 +73,10 @@ class PageLayout extends StatelessWidget {
                     child: child,
                   ),
                 ),
-                floatingActionButton: floatingActionButton,
+                floatingActionButton: Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: floatingActionButton,
+                ),
                 bottomNavigationBar: const _BottomNavigation(),
               ),
             ],

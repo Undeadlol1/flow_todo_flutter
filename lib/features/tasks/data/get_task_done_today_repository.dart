@@ -9,13 +9,13 @@ class GetTasksDoneTodayRepository {
   const GetTasksDoneTodayRepository({required this.firestore});
 
   Future<List<Task>> call({required String userId}) async {
-    final yesterday =
-        DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch;
-
     final tasksSnapshot = await firestore
         .collection('tasks')
         .where('userId', isEqualTo: userId)
-        .where('updatedAt', isGreaterThanOrEqualTo: yesterday)
+        .where(
+          'updatedAt',
+          isGreaterThanOrEqualTo: _getDateOfYesterdaysMidnight(),
+        )
         .limit(250)
         .get();
 
@@ -27,4 +27,10 @@ class GetTasksDoneTodayRepository {
 
 List<Task> _parseListOfJsons(List<Map<String, dynamic>> docs) {
   return docs.map(Task.fromJson).toList();
+}
+
+int _getDateOfYesterdaysMidnight() {
+  final now = DateTime.now();
+  final yesterdayMidnight = DateTime(now.year, now.month, now.day);
+  return yesterdayMidnight.millisecondsSinceEpoch;
 }

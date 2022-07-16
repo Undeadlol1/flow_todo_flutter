@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:injectable/injectable.dart';
 
 import '../domain/models/goal.dart';
 
-// TODO use lazy singleton?
-@singleton
 class GetGoalsRepository {
   final FirebaseFirestore firestore;
   const GetGoalsRepository({required this.firestore});

@@ -1,4 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/streaks/domain/entities/daily_streak_entity.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'daily_streak.freezed.dart';
@@ -25,49 +26,35 @@ class DailyStreak with _$DailyStreak {
     if (updatedAt == null) return 0;
 
     final today = DateTime.now().millisecondsSinceEpoch;
-    final differenceInDaysBetweenUpdateAndCreation =
+    final differenceInDaysBetweenUpdateAndStart =
         DateTime.fromMillisecondsSinceEpoch(updatedAt ?? today)
-            .difference(DateTime.fromMillisecondsSinceEpoch(createdAt))
+            .difference(DateTime.fromMillisecondsSinceEpoch(startsAt))
             .inDays;
 
-    return differenceInDaysBetweenUpdateAndCreation + 1;
+    return differenceInDaysBetweenUpdateAndStart + 1;
   }
 
-  bool isBroken() {
-    final int updatedDaysAgo = _getStreakUpdatedDaysAgo();
+  bool isInterrupted() => !_wasStreakUpdatedInPast24Hours();
 
-    if (updatedDaysAgo == 1) return false;
-    return updatedDaysAgo > 1;
-  }
-
-  bool shouldUpdate({required final int tasksDoneToday}) {
+  bool shouldStreakIncrement({required final int tasksDoneToday}) {
     final bool isTaskGoalReached = tasksDoneToday >= perDay;
-    final bool wasStreakUpdatedToday = _getStreakUpdatedDaysAgo() == 0;
+    final bool wasStreakNotUpdatedToday = !_wasStreakUpdatedInPast24Hours();
 
     if (updatedAt == null && isTaskGoalReached) {
       return true;
     }
 
-    if (isTaskGoalReached) {
-      return isTaskGoalReached && !wasStreakUpdatedToday;
-    }
-
-    return false;
+    return isTaskGoalReached && wasStreakNotUpdatedToday;
   }
 
-  int? daysSinceUpdate() {
-    if (updatedAt == null) return null;
-    return _getStreakUpdatedDaysAgo();
-  }
-
-  int _getStreakUpdatedDaysAgo() {
+  bool _wasStreakUpdatedInPast24Hours() {
     final today = DateTime.now();
-    return today
-        .difference(
-          DateTime.fromMillisecondsSinceEpoch(
-            updatedAt ?? today.millisecondsSinceEpoch,
-          ),
-        )
-        .inDays;
+    final timeDifference = today.difference(
+      DateTime.fromMillisecondsSinceEpoch(
+        updatedAt ?? today.millisecondsSinceEpoch,
+      ),
+    );
+
+    return timeDifference.inHours < 24;
   }
 }

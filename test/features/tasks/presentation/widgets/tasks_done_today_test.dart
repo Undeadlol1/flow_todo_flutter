@@ -66,15 +66,6 @@ void main() {
         },
       );
 
-      testWidgets(
-        'THEN displays daily streak',
-        (tester) async {
-          await tester.pumpWithDependencies(const TasksDoneToday());
-
-          expect(find.textContaining('Won days in a row: '), findsOneWidget);
-          expect(_findAnimatedNumbers(0), findsWidgets);
-        },
-      );
     });
   });
 }

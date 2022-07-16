@@ -73,10 +73,8 @@ void main() {
   });
 
   group('GIVEN MakeStepForwardOnTheTask', () {
-    test(
-      'WHEN something throws an error '
-      'THEN snackbar is displayed',
-      () async {
+    group('WHEN something throws an error', () {
+      test('THEN snackbar is displayed', () async {
         const errorText = 'Something went wrong 123';
         void snackBarServiceCall() {
           _mockSnackbarService.displaySnackbar(text: 'Exception: $errorText');
@@ -94,13 +92,9 @@ void main() {
         );
 
         verify(snackBarServiceCall).called(1);
-      },
-    );
+      });
 
-    test(
-      'WHEN something throws an error '
-      'THEN states revert back updates',
-      () async {
+      test('THEN states revert back updates', () async {
         const errorText = 'Something went wrong 123';
 
         _mockTypicalCalls(amountOfPointsToVerify: 20);
@@ -115,13 +109,9 @@ void main() {
 
         verify(() => _mockTasksCubit.undo()).called(1);
         verify(() => _mockTasksDoneTodayCubit.undo()).called(1);
-      },
-    );
+      });
 
-    test(
-      'WHEN something throws an error '
-      'THEN states revert back updates',
-      () async {
+      test('THEN navigates back to task page', () async {
         _mockTypicalCalls(amountOfPointsToVerify: 20);
         when(() => _mockUpdateTaskRepository(any()))
             .thenThrow(Exception('An error'));
@@ -133,8 +123,8 @@ void main() {
         );
 
         verify(() => _mockGoToTaskPage(task: taskFixture)).called(1);
-      },
-    );
+      });
+    });
 
     test(
       'WHEN isDone argument is false '
@@ -277,7 +267,7 @@ void main() {
           ),
         );
         final shouldDailyStreakUpdate = profileWithAchievedStreak.dailyStreak
-            .shouldUpdate(tasksDoneToday: tasksDoneToday.length);
+            .shouldStreakIncrement(tasksDoneToday: tasksDoneToday.length);
         expect(shouldDailyStreakUpdate, isTrue);
         when(() => _mockUpdateProfileRepository(any()))
             .thenAnswer((_) async {});
