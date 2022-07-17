@@ -21,10 +21,7 @@ class ActiveQuest extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: level.toDouble()),
-              const Text(
-                'Quest: reach level 20',
-                textAlign: TextAlign.left,
-              ),
+              const Text('Quest: reach level 20'),
               const _ProgressBar(),
             ],
           );
@@ -43,9 +40,7 @@ class _ProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Padding(
       padding: EdgeInsets.symmetric(vertical: 20),
-      child: LinearProgressIndicator(
-        value: 0.5,
-      ),
+      child: LinearProgressIndicator(value: 0.5),
     );
   }
 }

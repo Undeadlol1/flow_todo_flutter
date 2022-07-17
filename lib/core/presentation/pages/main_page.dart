@@ -54,8 +54,14 @@ class MainPage extends StatelessWidget {
               return Column(
                 children: [
                   if (profileState is ProfileLoaded)
-                    const _ProgressSummaryCard(),
-                  const Expanded(child: TasksList()),
+                    const Expanded(
+                      flex: 1,
+                      child: _ProgressSummaryCard(),
+                    ),
+                  const Expanded(
+                    flex: 3,
+                    child: TasksList(),
+                  ),
                 ],
               );
             },
@@ -72,31 +78,28 @@ class _ProgressSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const contraints = BoxConstraints.tightForFinite(width: 220);
-    return UnconstrainedBox(
-      // constraints: const BoxConstraints(minHeight: 210),
-      child: Card(
-        child: Row(
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: const Avatar(radius: 60),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ConstrainedBox(
-                  constraints: contraints,
-                  child: ActiveQuest(),
-                ),
-                ConstrainedBox(
-                  constraints: contraints,
-                  child: const TasksDoneToday(),
-                ),
-              ],
-            ),
-          ],
-        ),
+    return Card(
+      child: Row(
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            child: const Avatar(radius: 60),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ConstrainedBox(
+                constraints: contraints,
+                child: ActiveQuest(),
+              ),
+              ConstrainedBox(
+                constraints: contraints,
+                child: const TasksDoneToday(),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
