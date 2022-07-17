@@ -86,8 +86,6 @@ class _ProgressSummaryCard extends StatelessWidget {
             child: const Avatar(radius: 60),
           ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
             children: [
               ConstrainedBox(
                 constraints: contraints,
