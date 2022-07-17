@@ -22,7 +22,6 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
   late final AnimationController _animationController;
 
   static const _padding = EdgeInsets.only(
-    top: 12,
     left: 16,
     right: 16,
     bottom: 4,

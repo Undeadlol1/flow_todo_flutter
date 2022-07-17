@@ -9,6 +9,12 @@ class ActiveQuest extends StatelessWidget {
   ActiveQuest({Key? key}) : super(key: key);
   final _levelCalculator = GetIt.I<UserLevelCalculator>();
 
+  static const _padding = EdgeInsets.only(
+    left: 16,
+    right: 16,
+    bottom: 4,
+  );
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
@@ -17,13 +23,16 @@ class ActiveQuest extends StatelessWidget {
           final level =
               _levelCalculator(profileState.profile?.experience ?? 0).value;
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: level.toDouble()),
-              const Text('Quest: reach level 20'),
-              const _ProgressBar(),
-            ],
+          return Padding(
+            padding: _padding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: level.toDouble()),
+                const Text('Quest: reach level 20'),
+                const _ProgressBar(),
+              ],
+            ),
           );
         } else {
           return const SizedBox();
