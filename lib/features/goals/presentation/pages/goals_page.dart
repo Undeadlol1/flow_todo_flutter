@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/get_goals.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/widgets/upsert_goal_form.dart';
@@ -71,7 +72,18 @@ class _GoalsList extends StatelessWidget {
             return ListView.builder(
               itemCount: goalsState.goals.length,
               itemBuilder: (BuildContext context, int index) {
-                return Text(goalsState.goals[index].title);
+                final goal = goalsState.goals[index];
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(goal.title),
+                    ),
+                    AnimatedNumbers(number: goal.points),
+                    IconButton(onPressed: () {}, icon: const Icon(Icons.add))
+                  ],
+                );
               },
             );
           },
