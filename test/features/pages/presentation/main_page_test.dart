@@ -2,6 +2,7 @@ import 'package:flow_todo_flutter_2022/features/authentification/domain/entities
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/pages/presentation/main_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
@@ -17,41 +18,29 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../test_utilities/fakes/fake_user_level_calculator.dart';
 import '../../../test_utilities/fixtures/profile_fixture.dart';
+import '../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
 
 class _MockSignInWithGoogle extends Mock implements SignInWithGoogle {}
 
+final _tasksCuibit = TasksCubit();
+var _profileCubit = ProfileCubit();
+var _authCubit = AuthentificationCubit();
+
 void main() {
-  final tasksCuibit = TasksCubit();
-  var profileCubit = ProfileCubit();
-  var authCubit = AuthentificationCubit();
-
-  Future<void> _pumpWidget(WidgetTester tester) async {
-    await tester.pumpWidget(
-      MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => authCubit),
-          BlocProvider(create: (context) => tasksCuibit),
-          BlocProvider(create: (context) => profileCubit),
-          BlocProvider(create: (context) => TasksDoneTodayCubit()),
-        ],
-        child: const MaterialApp(
-          home: MainPage(),
-        ),
-      ),
-    );
-  }
-
   group('GIVEN MainPage', () {
     setUp(() {
-      profileCubit = ProfileCubit();
-      authCubit = AuthentificationCubit();
+      _profileCubit = ProfileCubit();
+      _authCubit = AuthentificationCubit();
     });
 
     setUpAll(() {
-      GetIt.I.registerSingleton(authCubit);
-      GetIt.I.registerSingleton(tasksCuibit);
+      GetIt.I.registerSingleton(_authCubit);
+      GetIt.I.registerSingleton(_tasksCuibit);
       GetIt.I.registerSingleton<SignInWithGoogle>(_MockSignInWithGoogle());
       GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
+      GetIt.I.registerSingleton<LevelProgressPercentageCalculator>(
+        MockLevelProgressPercentageCalculator(),
+      );
     });
 
     tearDownAll(GetIt.I.reset);
@@ -59,7 +48,7 @@ void main() {
     testWidgets(
       "SHOULD have PageLayoutAndDependencies",
       (WidgetTester tester) async {
-        await _pumpWidget(tester);
+        await tester.pumpWithDependencies();
 
         expect(find.byType(PageLayout), findsOneWidget);
       },
@@ -68,7 +57,7 @@ void main() {
     testWidgets(
       "SHOULD display TasksList",
       (WidgetTester tester) async {
-        await _pumpWidget(tester);
+        await tester.pumpWithDependencies();
 
         expect(find.byType(TasksList), findsOneWidget);
       },
@@ -78,9 +67,9 @@ void main() {
       "WHEN user is logged in "
       "THEN displays TasksDoneToday",
       (WidgetTester tester) async {
-        profileCubit.setProfile(profileFixture);
+        _profileCubit.setProfile(profileFixture);
 
-        await _pumpWidget(tester);
+        await tester.pumpWithDependencies();
 
         expect(find.byType(TasksDoneToday), findsOneWidget);
       },
@@ -90,9 +79,9 @@ void main() {
       "WHEN user is not logged in "
       "THEN does not display TasksDoneToday",
       (WidgetTester tester) async {
-        profileCubit.setProfileNotFoundOrUnloaded();
+        _profileCubit.setProfileNotFoundOrUnloaded();
 
-        await _pumpWidget(tester);
+        await tester.pumpWithDependencies();
 
         expect(find.byType(TasksDoneToday), findsNothing);
       },
@@ -102,12 +91,30 @@ void main() {
       "WHEN user is not logged in "
       "THEN displays google sign in button",
       (WidgetTester tester) async {
-        authCubit.setNotAuthenticated();
+        _authCubit.setNotAuthenticated();
 
-        await _pumpWidget(tester);
+        await tester.pumpWithDependencies();
 
         expect(find.byType(GoogleSignInButton), findsOneWidget);
       },
     );
   });
+}
+
+extension _PumpWithScaffold on WidgetTester {
+  Future<void> pumpWithDependencies() async {
+    await pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => _authCubit),
+          BlocProvider(create: (context) => _tasksCuibit),
+          BlocProvider(create: (context) => _profileCubit),
+          BlocProvider(create: (context) => TasksDoneTodayCubit()),
+        ],
+        child: const MaterialApp(
+          home: MainPage(),
+        ),
+      ),
+    );
+  }
 }

@@ -11,7 +11,6 @@ import '../../features/leveling/domain/services/level_progress_percentage_calcul
 import '../../features/leveling/domain/services/user_level_calculator.dart';
 import '../../features/spaced_repetition/domain/services/next_repetition_calculator.dart';
 import '../../features/tasks/domain/services/stale_task_detector.dart';
-import '../../features/tasks/domain/use_cases/get_tasks_to_do.dart';
 import '../../features/tasks/domain/use_cases/go_to_task_creation.dart';
 import '../../features/tasks/domain/use_cases/go_to_task_page.dart';
 
@@ -42,6 +41,5 @@ void configureManualDI() {
   injector.registerSingleton(GoToTaskPage(contextProvider: injector.get()));
   injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
   injector.registerSingleton(SignInWithGoogle(firebaseAuth: injector.get()));
-  injector.registerSingleton(const GetTasksToDo());
   injector.registerSingleton(StaleTaskDetector());
 }

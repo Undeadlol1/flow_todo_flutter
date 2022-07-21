@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterfire_ui/auth.dart';
 
@@ -12,16 +11,11 @@ import 'core/presentation/app.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  debugRepaintRainbowEnabled = true;
-
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitDown,
-    DeviceOrientation.portraitUp,
-  ]);
+  _configureDeviceOrientation();
 
-  await _setupFirebase();
+  await _configureFirebase();
 
   configureManualDI();
 
@@ -30,12 +24,17 @@ void main() async {
   runApp(const App());
 }
 
-Future<void> _setupFirebase() async {
+void _configureDeviceOrientation() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+}
+
+Future<void> _configureFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(

@@ -25,49 +25,41 @@ class DailyStreak with _$DailyStreak {
     if (updatedAt == null) return 0;
 
     final today = DateTime.now().millisecondsSinceEpoch;
-    final differenceInDaysBetweenUpdateAndCreation =
+    final differenceInDaysBetweenUpdateAndStart =
         DateTime.fromMillisecondsSinceEpoch(updatedAt ?? today)
-            .difference(DateTime.fromMillisecondsSinceEpoch(createdAt))
+            .difference(DateTime.fromMillisecondsSinceEpoch(startsAt))
             .inDays;
 
-    return differenceInDaysBetweenUpdateAndCreation + 1;
+    return differenceInDaysBetweenUpdateAndStart + 1;
   }
 
-  bool isBroken() {
-    final int updatedDaysAgo = _getStreakUpdatedDaysAgo();
-
-    if (updatedDaysAgo == 1) return false;
-    return updatedDaysAgo > 1;
+  bool isInterrupted() {
+    if (updatedAt == null) return true;
+    return !_wasStreakUpdatedToday();
   }
 
-  bool shouldUpdate({required final int tasksDoneToday}) {
+  bool shouldStreakIncrement({required final int tasksDoneToday}) {
     final bool isTaskGoalReached = tasksDoneToday >= perDay;
-    final bool wasStreakUpdatedToday = _getStreakUpdatedDaysAgo() == 0;
 
     if (updatedAt == null && isTaskGoalReached) {
       return true;
     }
 
-    if (isTaskGoalReached) {
-      return isTaskGoalReached && !wasStreakUpdatedToday;
+    if (_wasStreakUpdatedToday()) {
+      return false;
     }
 
-    return false;
+    return isTaskGoalReached && isInterrupted();
   }
 
-  int? daysSinceUpdate() {
-    if (updatedAt == null) return null;
-    return _getStreakUpdatedDaysAgo();
-  }
-
-  int _getStreakUpdatedDaysAgo() {
+  bool _wasStreakUpdatedToday() {
     final today = DateTime.now();
-    return today
-        .difference(
-          DateTime.fromMillisecondsSinceEpoch(
-            updatedAt ?? today.millisecondsSinceEpoch,
-          ),
-        )
-        .inDays;
+
+    return updatedAt == null
+        ? false
+        : today
+                .difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!))
+                .inDays ==
+            0;
   }
 }
