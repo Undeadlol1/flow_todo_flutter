@@ -34,27 +34,27 @@ class DailyStreak with _$DailyStreak {
   }
 
   bool isInterrupted() {
-    return !_wasStreakUpdatedSinceYesterdayMidnight();
+    if (updatedAt == null) return true;
+    return !_wasStreakUpdatedToday();
   }
 
   bool shouldStreakIncrement({required final int tasksDoneToday}) {
-    print('was updated today: ${_wasStreakUpdatedSinceYesterdayMidnight()}');
+    print('was updated today: ${_wasStreakUpdatedToday()}');
     final bool isTaskGoalReached = tasksDoneToday >= perDay;
 
     if (updatedAt == null && isTaskGoalReached) {
       return true;
     }
 
-    if (_wasStreakUpdatedSinceYesterdayMidnight()) {
+    if (_wasStreakUpdatedToday()) {
       return false;
     }
 
     return isTaskGoalReached && isInterrupted();
   }
 
-  bool _wasStreakUpdatedSinceYesterdayMidnight() {
+  bool _wasStreakUpdatedToday() {
     final today = DateTime.now();
-    final yesterdayMidnight = DateTime(today.year, today.month, today.day);
 
     final bool wasStreakStartedYesterday =
         DateTime.fromMillisecondsSinceEpoch(startsAt)
@@ -62,24 +62,34 @@ class DailyStreak with _$DailyStreak {
                 .inDays ==
             1;
 
-    final updatedAgo = yesterdayMidnight.difference(
+    final updatedAgo = today.difference(
       DateTime.fromMillisecondsSinceEpoch(
         updatedAt ?? today.millisecondsSinceEpoch,
       ),
     );
 
+    final wasStreakUpdatedYesterday = updatedAgo.inDays <= 1 ? true : false;
+
+    print('-----------------------');
     print('today: ${today.toString()}');
-    print('yesterdayMidnight: ${yesterdayMidnight.toString()}');
     print(
       'updatedAt: ${updatedAt != null ? DateTime.fromMillisecondsSinceEpoch(updatedAt!) : 'is null'}',
     );
     print('updatedAgo: ${updatedAgo.toString()}');
-    print('updatedAgo.inHours: ${updatedAgo.inHours.toString()}');
+    print('updatedAgo.inDays: ${updatedAgo.inDays.toString()}');
+    print('wasStreakUpdatedYesterday $wasStreakUpdatedYesterday');
 
-    if (updatedAt == null && wasStreakStartedYesterday) {
-      return true;
-    }
+    return updatedAt == null
+        ? false
+        : today
+                .difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!))
+                .inDays ==
+            0;
 
-    return updatedAgo.inHours <= 24 ? true : false;
+    // if (updatedAt == null && wasStreakStartedYesterday) {
+    //   return true;
+    // }
+
+    // return updatedAgo.inDays > 1;
   }
 }
