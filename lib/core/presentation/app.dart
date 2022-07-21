@@ -98,7 +98,7 @@ class _AppState extends State<App> {
               theme: lightTheme,
               title: 'Flow TODO',
               darkTheme: darkTheme,
-              initialRoute: MainPage.pathName,
+              initialRoute: GoalsPage.pathName,
               routes: {
                 MainPage.pathName: (contex) => const MainPage(),
                 TaskPage.pathName: (contex) => const TaskPage(),

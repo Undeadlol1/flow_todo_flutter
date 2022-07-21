@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/get_goals.dart';
+import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/make_step_forward_on_a_goal.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/widgets/upsert_goal_form.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
@@ -81,7 +82,10 @@ class _GoalsList extends StatelessWidget {
                       child: Text(goal.title),
                     ),
                     AnimatedNumbers(number: goal.points),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.add))
+                    IconButton(
+                      onPressed: () => GetIt.I<MakeStepForwardOnAGoal>()(goal),
+                      icon: const Icon(Icons.add),
+                    )
                   ],
                 );
               },

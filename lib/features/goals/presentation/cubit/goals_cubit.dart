@@ -14,4 +14,13 @@ class GoalsCubit extends Cubit<GoalsState> with ReplayCubitMixin {
   void update(List<Goal> goals) {
     emit(GoalsState.loaded(goals));
   }
+
+  void updateGoal(Goal updatedGoal) {
+    final updateGoalsList = [...state.goals];
+    final goalIndex = state.goals.indexWhere((i) => i.id == updatedGoal.id);
+
+    updateGoalsList[goalIndex] = updatedGoal;
+
+    update(updateGoalsList);
+  }
 }
