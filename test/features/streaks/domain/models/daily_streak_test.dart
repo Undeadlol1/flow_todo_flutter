@@ -4,7 +4,7 @@ import '../../../../test_utilities/fixtures/daily_streak_fixture.dart';
 
 void main() {
   final today = DateTime.now();
-  final yesterday = DateTime.now().subtract(const Duration(days: 1));
+  final yesterday = DateTime.now().subtract(const Duration(days: 1, hours: 1));
   final twoDaysAgo = DateTime.now().subtract(const Duration(days: 2));
   final threeDaysAgo = DateTime.now().subtract(const Duration(days: 3));
   final tenDaysAgo = DateTime.now().subtract(const Duration(days: 10));
@@ -48,20 +48,6 @@ void main() {
 
         expect(result, false);
       });
-
-      // test('Specific case: if started yesterday, dont reset today.', () {
-      //   final shouldStreakIncrement = dailyStreakFixture
-      //       .copyWith(
-      //         perDay: 3,
-      //         startsAt: yesterday.millisecondsSinceEpoch,
-      //         updatedAt: yesterday.millisecondsSinceEpoch,
-      //       )
-      //       .shouldStreakIncrement(
-      //         tasksDoneToday: 5,
-      //       );
-
-      //   expect(shouldStreakIncrement, true);
-      // });
 
       // test("Specific case: if started two days ago, don't reset.", () {
       //   final shouldStreakIncrement = dailyStreakFixture

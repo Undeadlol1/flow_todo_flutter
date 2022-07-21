@@ -33,36 +33,40 @@ class DailyStreak with _$DailyStreak {
     return differenceInDaysBetweenUpdateAndStart + 1;
   }
 
-  bool isInterrupted() => !_wasStreakUpdatedInPast24Hours();
+  bool isInterrupted() => !_wasStreakUpdatedSinceYesterdayMidnight();
 
   bool shouldStreakIncrement({required final int tasksDoneToday}) {
     final bool isTaskGoalReached = tasksDoneToday >= perDay;
-    final bool wasStreakNotUpdatedToday = !_wasStreakUpdatedInPast24Hours();
 
     if (updatedAt == null && isTaskGoalReached) {
       return true;
     }
 
-    return isTaskGoalReached && wasStreakNotUpdatedToday;
+    return isTaskGoalReached && isInterrupted();
   }
 
-  bool _wasStreakUpdatedInPast24Hours() {
-    final today = DateTime.now();
-    final bool wasStreakCreatedYesterday =
-        DateTime.fromMillisecondsSinceEpoch(createdAt)
-                .difference(today)
-                .inDays ==
-            1;
-    if (updatedAt == null && wasStreakCreatedYesterday) {
-      return false;
-    }
+  bool _wasStreakUpdatedSinceYesterdayMidnight() {
+    // final bool wasStreakStartedYesterday =
+    //     DateTime.fromMillisecondsSinceEpoch(startsAt)
+    //             .difference(DateTime.now())
+    //             .inDays ==
+    //         1;
 
+    final today = DateTime.now();
     final yesterdayMidnight = DateTime(today.year, today.month, today.day);
     final timeDifference = yesterdayMidnight.difference(
       DateTime.fromMillisecondsSinceEpoch(
         updatedAt ?? today.millisecondsSinceEpoch,
       ),
     );
+
+    // if (updatedAt == null) {
+    //   return false;
+    // }
+
+    // if (updatedAt == null && wasStreakStartedYesterday) {
+    //   return false;
+    // }
 
     return timeDifference.inHours < 24;
   }
