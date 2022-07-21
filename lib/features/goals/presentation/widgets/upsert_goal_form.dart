@@ -93,7 +93,7 @@ class _UpsertGoalFormState extends State<UpsertGoalForm> {
             userId: authState.user.id,
           );
 
-          if (mounted) Navigator.of(context).pop();
+          // if (mounted) Navigator.of(context).pop();
         } else {
           //   widget.goalToUpdate!.copyWith(title: inputText),
           // );
