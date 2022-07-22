@@ -3,7 +3,6 @@ import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/get_goals
 import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/make_step_forward_on_a_goal.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/widgets/upsert_goal_form.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../authentification/presentation/cubit/authentification_cubit.dart';
@@ -13,10 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/presentation/page_layout.dart';
+import '../widgets/create_goal_fab.dart';
 
 class GoalsPage extends StatelessWidget {
   static const pathName = '/goals';
-  final GetGoals getGoals = GetIt.I();
+  final GetGoals _getGoals = GetIt.I();
   GoalsPage({Key? key}) : super(key: key);
 
   @override
@@ -27,7 +27,7 @@ class GoalsPage extends StatelessWidget {
         isAppBarHidden: true,
         isDrawerHidden: false,
         isNumbersAnimationSuspended: false,
-        floatingActionButton: const CreateTaskFAB(),
+        floatingActionButton: CreateGoalFAB(),
         child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
           listener: (context, authState) async {
             if (authState is Authenticated) {
@@ -39,16 +39,14 @@ class GoalsPage extends StatelessWidget {
             return BlocConsumer<ProfileCubit, ProfileState>(
               listener: (context, profileState) async {
                 if (profileState is ProfileLoaded) {
-                  return GetIt.I<GetGoals>()(userId: profileState.profile!.id);
+                  return _getGoals(userId: profileState.profile!.id);
                 }
               },
               builder: (context, profileState) {
                 return Column(
                   children: [
-                    if (profileState is ProfileLoaded) const UpsertGoalForm(),
-                    const Expanded(
-                      child: _GoalsList(),
-                    ),
+
+                    const Expanded(child: _GoalsList()),
                   ],
                 );
               },
