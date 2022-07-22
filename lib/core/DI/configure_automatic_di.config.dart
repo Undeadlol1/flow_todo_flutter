@@ -133,7 +133,9 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i33.MakeStepForwardOnAGoal>(() =>
       _i33.MakeStepForwardOnAGoal(
           goalsCubit: get<_i13.GoalsCubit>(),
-          updateGoalRepo: get<_i20.UpdateGoalRepository>()));
+          profileCubit: get<_i14.ProfileCubit>(),
+          updateGoalRepo: get<_i20.UpdateGoalRepository>(),
+          updateProfileRepository: get<_i21.UpdateProfileRepository>()));
   gh.singleton<_i34.MakeStepForwardOnTheTask>(_i34.MakeStepForwardOnTheTask(
       tasksCubit: get<_i17.TasksCubit>(),
       profileCubit: get<_i14.ProfileCubit>(),
