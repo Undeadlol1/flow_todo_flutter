@@ -1,4 +1,3 @@
-import 'package:flow_todo_flutter_2022/features/goals/presentation/widgets/create_goal_fab.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
