@@ -1,4 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/goals/presentation/widgets/create_goal_fab.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -8,11 +9,10 @@ import '../../authentification/presentation/widgets/google_sign_in_button.dart';
 import '../../common/presentation/page_layout.dart';
 import '../../tasks/domain/use_cases/get_tasks_done_today.dart';
 import '../../tasks/domain/use_cases/get_tasks_to_do.dart';
-import '../../tasks/presentation/widgets/tasks_done_today.dart';
 import '../../tasks/presentation/widgets/tasks_list.dart';
 import '../../users/domain/use_cases/get_profile.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
-import '../../users/presentation/widgets/avatar.dart';
+import '../../users/presentation/widgets/player_progress_summary.dart';
 
 class MainPage extends StatelessWidget {
   static const pathName = '/main';
@@ -27,7 +27,7 @@ class MainPage extends StatelessWidget {
           isDrawerHidden: false,
           isNumbersAnimationSuspended: false,
           floatingActionButton:
-              profileState is ProfileLoaded ? CreateGoalFAB() : null,
+              profileState is ProfileLoaded ? const CreateTaskFAB() : null,
           child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
             listener: (context, authState) async {
               if (authState is Authenticated) {
@@ -53,7 +53,7 @@ class MainPage extends StatelessWidget {
               return Column(
                 children: [
                   if (profileState is ProfileLoaded)
-                    const _ProgressSummaryCard(),
+                    const PlayerProgressSummary(),
                   const Expanded(child: TasksList()),
                 ],
               );
@@ -61,28 +61,6 @@ class MainPage extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _ProgressSummaryCard extends StatelessWidget {
-  const _ProgressSummaryCard({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 170),
-      child: Card(
-        child: Row(
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: const Avatar(radius: 60),
-            ),
-            const Flexible(child: TasksDoneToday()),
-          ],
-        ),
-      ),
     );
   }
 }

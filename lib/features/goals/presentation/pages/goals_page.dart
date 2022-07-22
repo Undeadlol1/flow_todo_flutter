@@ -3,6 +3,7 @@ import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/get_goals
 import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/make_step_forward_on_a_goal.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/widgets/upsert_goal_form.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/player_progress_summary.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../authentification/presentation/cubit/authentification_cubit.dart';
@@ -44,9 +45,9 @@ class GoalsPage extends StatelessWidget {
               },
               builder: (context, profileState) {
                 return Column(
-                  children: [
-
-                    const Expanded(child: _GoalsList()),
+                  children: const [
+                    PlayerProgressSummary(),
+                    Expanded(child: _GoalsList()),
                   ],
                 );
               },
