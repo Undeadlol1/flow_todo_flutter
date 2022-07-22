@@ -2,7 +2,6 @@ import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/anim
 import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/get_goals.dart';
 import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/make_step_forward_on_a_goal.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/goals/presentation/widgets/upsert_goal_form.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/player_progress_summary.dart';
 import 'package:get_it/get_it.dart';
 
@@ -37,20 +36,18 @@ class GoalsPage extends StatelessWidget {
             }
           },
           builder: (context, authState) {
-            return BlocConsumer<ProfileCubit, ProfileState>(
+            return BlocListener<ProfileCubit, ProfileState>(
               listener: (context, profileState) async {
                 if (profileState is ProfileLoaded) {
                   return _getGoals(userId: profileState.profile!.id);
                 }
               },
-              builder: (context, profileState) {
-                return Column(
-                  children: const [
-                    PlayerProgressSummary(),
-                    Expanded(child: _GoalsList()),
-                  ],
-                );
-              },
+              child: Column(
+                children: [
+                  const PlayerProgressSummary(),
+                  Expanded(child: _GoalsList()),
+                ],
+              ),
             );
           },
         ),
@@ -60,14 +57,28 @@ class GoalsPage extends StatelessWidget {
 }
 
 class _GoalsList extends StatelessWidget {
-  const _GoalsList({Key? key}) : super(key: key);
+  _GoalsList({Key? key}) : super(key: key);
+  final MakeStepForwardOnAGoal makeStepForwardOnAGoal = GetIt.I();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GoalsCubit, GoalsState>(
+      buildWhen: ((previous, current) {
+        if (previous.goals.isEmpty || current.goals.isEmpty) return true;
+
+        final int combinedPointsOfPreviousState =
+            previous.goals.reduce((previous, next) {
+          return previous.copyWith(points: next.points + previous.points);
+        }).points;
+        final int combinedPointsOfNextState =
+            current.goals.reduce((previous, next) {
+          return previous.copyWith(points: next.points + previous.points);
+        }).points;
+        return combinedPointsOfNextState > combinedPointsOfPreviousState;
+      }),
       builder: (context, goalsState) {
-        return goalsState.map(
-          loading: (value) => const SizedBox(),
+        return goalsState.when(
+          loading: () => const SizedBox(),
           loaded: (_) {
             return ListView.builder(
               itemCount: goalsState.goals.length,
@@ -82,7 +93,7 @@ class _GoalsList extends StatelessWidget {
                     ),
                     AnimatedNumbers(number: goal.points),
                     IconButton(
-                      onPressed: () => GetIt.I<MakeStepForwardOnAGoal>()(goal),
+                      onPressed: () => makeStepForwardOnAGoal(goal),
                       icon: const Icon(Icons.add),
                     )
                   ],
