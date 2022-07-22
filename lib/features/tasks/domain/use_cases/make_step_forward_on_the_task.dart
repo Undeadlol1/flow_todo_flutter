@@ -51,11 +51,8 @@ class MakeStepForwardOnTheTask {
     required Confidence howBigWasTheStep,
     bool isTaskDone = false,
   }) async {
-    final Profile updatedProfile = _getUpdatedProfile();
     final Task updatedTask =
         _getUpdatedTask(task, isTaskDone, howBigWasTheStep);
-    final pointsToAdd =
-        _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
 
     tasksCubit.removeTask(task);
     tasksDoneTodayCubit
@@ -70,14 +67,17 @@ class MakeStepForwardOnTheTask {
     try {
       await goToMainPage();
       await updateTaskRepository.call(updatedTask);
+      await addPointsToViewer(
+        _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep),
+      );
       if (_shouldDailyStreakIncrement()) {
-        await updateProfileRepository(updatedProfile);
+        await updateProfileRepository(_getUpdatedProfile());
       }
-      await addPointsToViewer(pointsToAdd);
     } catch (error) {
       snackbarService.displaySnackbar(text: error.toString());
 
       tasksCubit.undo();
+      profileCubit.undo();
       tasksDoneTodayCubit.undo();
 
       return goToTaskPage.call(task: task);
@@ -85,24 +85,23 @@ class MakeStepForwardOnTheTask {
   }
 
   Profile _getUpdatedProfile() {
-    final profile = profileCubit.state.profile;
     final today = getTodaysDate().millisecondsSinceEpoch;
+    final streak = profileCubit.state.profile!.dailyStreak;
 
-    // TODO undo fucntionality
-    final updatedProfile = profile!.copyWith(
-      dailyStreak: profile.dailyStreak.copyWith(
+    final updatedProfile = profileCubit.state.profile!.copyWith(
+      dailyStreak: streak.copyWith(
         updatedAt: today,
-        startsAt: profile.dailyStreak.isInterrupted()
-            ? today
-            : profile.dailyStreak.startsAt,
+        startsAt: streak.isInterrupted() ? today : streak.startsAt,
       ),
     );
+
     return updatedProfile;
   }
 
   bool _shouldDailyStreakIncrement() {
     final profile = profileCubit.state.profile;
     final tasksDoneToday = tasksDoneTodayCubit.state.tasks.length + 1;
+
     return profile?.dailyStreak.shouldStreakIncrement(
           tasksDoneToday: tasksDoneToday,
         ) ??
