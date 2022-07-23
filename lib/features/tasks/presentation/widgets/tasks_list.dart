@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterfire_ui/auth.dart';
 
 import '../cubit/tasks_cubit.dart';
 import 'tasks_list_item.dart';
@@ -40,10 +39,7 @@ class _LoadingIndicator extends StatelessWidget {
     return const Center(
       child: SizedBox(
         height: 550,
-        child: LoadingIndicator(
-          size: 50,
-          borderWidth: 1,
-        ),
+        child: CircularProgressIndicator(),
       ),
     );
   }

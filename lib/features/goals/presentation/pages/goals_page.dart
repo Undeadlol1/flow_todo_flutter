@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/get_goals.dart';
@@ -60,7 +58,7 @@ class _GoalsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GoalsCubit, GoalsState>(
-      buildWhen: ((previous, current) {
+      buildWhen: (previous, current) {
         if (previous.goals.isEmpty || current.goals.isEmpty) return true;
 
         final int combinedPointsOfPreviousState =
@@ -72,11 +70,10 @@ class _GoalsList extends StatelessWidget {
           return previous.copyWith(points: next.points + previous.points);
         }).points;
         return combinedPointsOfNextState > combinedPointsOfPreviousState;
-      }),
+      },
       builder: (context, goalsState) {
-        log('goalsState: ${goalsState.toString()}');
         return goalsState.when(
-          loading: () => const SizedBox(),
+          loading: () => const Center(child: CircularProgressIndicator()),
           loaded: (_) {
             return ListView.builder(
               itemCount: goalsState.goals.length,
