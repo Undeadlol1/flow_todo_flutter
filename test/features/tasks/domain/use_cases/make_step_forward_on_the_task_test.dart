@@ -370,8 +370,8 @@ MakeStepForwardOnTheTask _getUseCase() {
     snackbarService: _mockSnackbarService,
     addPointsToViewer: _mockAddPointsToViewer,
     tasksDoneTodayCubit: _tasksDoneTodayCubit,
-    updateTaskRepository: _mockUpdateTaskRepository,
-    updateProfileRepository: _mockUpdateProfileRepository,
+    updateTask: _mockUpdateTaskRepository,
+    updateProfile: _mockUpdateProfileRepository,
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );
 }
@@ -386,8 +386,8 @@ MakeStepForwardOnTheTask _getUseCaseWithMockedStates() {
     snackbarService: _mockSnackbarService,
     addPointsToViewer: _mockAddPointsToViewer,
     tasksDoneTodayCubit: _mockTasksDoneTodayCubit,
-    updateTaskRepository: _mockUpdateTaskRepository,
-    updateProfileRepository: _mockUpdateProfileRepository,
+    updateTask: _mockUpdateTaskRepository,
+    updateProfile: _mockUpdateProfileRepository,
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );
 }

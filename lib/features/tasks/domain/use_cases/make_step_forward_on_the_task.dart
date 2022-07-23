@@ -29,8 +29,8 @@ class MakeStepForwardOnTheTask {
   final SnackbarService snackbarService;
   final AddPointsToViewer addPointsToViewer;
   final TasksDoneTodayCubit tasksDoneTodayCubit;
-  final UpdateTaskRepository updateTaskRepository;
-  final UpdateProfileRepository updateProfileRepository;
+  final UpdateTaskRepository updateTask;
+  final UpdateProfileRepository updateProfile;
   final NextRepetitionCalculator nextRepetitionCalculator;
   const MakeStepForwardOnTheTask({
     required this.tasksCubit,
@@ -41,8 +41,8 @@ class MakeStepForwardOnTheTask {
     required this.snackbarService,
     required this.addPointsToViewer,
     required this.tasksDoneTodayCubit,
-    required this.updateTaskRepository,
-    required this.updateProfileRepository,
+    required this.updateTask,
+    required this.updateProfile,
     required this.nextRepetitionCalculator,
   });
 
@@ -58,20 +58,15 @@ class MakeStepForwardOnTheTask {
     try {
       final Task updatedTask =
           _getUpdatedTask(task, isTaskDone, howBigWasTheStep);
+      final pointsToAdd =
+          _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
 
-      if (isTaskDone == false) {
-        snackbarService.displaySnackbar(
-          text: _getNumberOfDaysForNextIterationText(updatedTask),
-        );
-      }
-
+      _displaySnackbar(isTaskDone, updatedTask);
       await goToMainPage();
-      await updateTaskRepository.call(updatedTask);
-      await addPointsToViewer(
-        _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep),
-      );
+      await updateTask(updatedTask);
+      await addPointsToViewer(pointsToAdd);
       if (_shouldDailyStreakIncrement()) {
-        await updateProfileRepository(_getUpdatedProfile());
+        await updateProfile(_getUpdatedProfile());
       }
     } catch (error) {
       return _handleErrors(error: error, task: task);
@@ -155,6 +150,14 @@ class MakeStepForwardOnTheTask {
         : howBigWasTheStep == Confidence.good
             ? 30
             : 20;
+  }
+
+  void _displaySnackbar(bool isTaskDone, Task updatedTask) {
+    if (isTaskDone == false) {
+      snackbarService.displaySnackbar(
+        text: _getNumberOfDaysForNextIterationText(updatedTask),
+      );
+    }
   }
 
   String _getNumberOfDaysForNextIterationText(Task updatedTask) {

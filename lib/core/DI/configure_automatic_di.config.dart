@@ -145,8 +145,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       snackbarService: get<_i15.SnackbarService>(),
       addPointsToViewer: get<_i24.AddPointsToViewer>(),
       tasksDoneTodayCubit: get<_i18.TasksDoneTodayCubit>(),
-      updateTaskRepository: get<_i22.UpdateTaskRepository>(),
-      updateProfileRepository: get<_i21.UpdateProfileRepository>(),
+      updateTask: get<_i22.UpdateTaskRepository>(),
+      updateProfile: get<_i21.UpdateProfileRepository>(),
       nextRepetitionCalculator: get<_i37.NextRepetitionCalculator>()));
   gh.singleton<_i38.RejectTask>(_i38.RejectTask(
       tasksCubit: get<_i17.TasksCubit>(),
