@@ -159,7 +159,7 @@ class __$$_DailyStreakCopyWithImpl<$Res> extends _$DailyStreakCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DailyStreak extends _DailyStreak with DiagnosticableTreeMixin {
+class _$_DailyStreak extends _DailyStreak {
   const _$_DailyStreak(
       {this.updatedAt,
       required this.id,
@@ -186,21 +186,8 @@ class _$_DailyStreak extends _DailyStreak with DiagnosticableTreeMixin {
   final int createdAt;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'DailyStreak(updatedAt: $updatedAt, id: $id, userId: $userId, perDay: $perDay, startsAt: $startsAt, createdAt: $createdAt)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'DailyStreak'))
-      ..add(DiagnosticsProperty('updatedAt', updatedAt))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('userId', userId))
-      ..add(DiagnosticsProperty('perDay', perDay))
-      ..add(DiagnosticsProperty('startsAt', startsAt))
-      ..add(DiagnosticsProperty('createdAt', createdAt));
   }
 
   @override

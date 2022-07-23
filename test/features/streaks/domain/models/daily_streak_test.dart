@@ -49,41 +49,51 @@ void main() {
         expect(result, false);
       });
 
-      test('Specific case: if started yesterday, dont reset today.', () {
-        final shouldStreakIncrement = dailyStreakFixture
-            .copyWith(
-              perDay: 3,
-              startsAt: yesterday.millisecondsSinceEpoch,
-              updatedAt: yesterday.millisecondsSinceEpoch,
-            )
-            .shouldStreakIncrement(
-              tasksDoneToday: 5,
-            );
+      test(
+        'WHEN streak started yesterda '
+        'AND was not updated today  '
+        'THEN returns true',
+        () {
+          final shouldStreakIncrement = dailyStreakFixture
+              .copyWith(
+                perDay: 3,
+                startsAt: yesterday.millisecondsSinceEpoch,
+                updatedAt: null,
+              )
+              .shouldStreakIncrement(
+                tasksDoneToday: 5,
+              );
 
-        expect(shouldStreakIncrement, true);
-      });
+          expect(shouldStreakIncrement, true);
+        },
+      );
 
-      test("Specific case: if started two days ago, don't reset.", () {
-        final shouldStreakIncrement = dailyStreakFixture
-            .copyWith(
-              perDay: 3,
-              startsAt: twoDaysAgo.millisecondsSinceEpoch,
-              updatedAt: yesterday.millisecondsSinceEpoch,
-            )
-            .shouldStreakIncrement(
-              tasksDoneToday: 5,
-            );
+      test(
+        'WHEN streak started two days ago '
+        'AND was updated yesterday '
+        'THEN returns true',
+        () {
+          final shouldStreakIncrement = dailyStreakFixture
+              .copyWith(
+                perDay: 3,
+                startsAt: twoDaysAgo.millisecondsSinceEpoch,
+                updatedAt: yesterday.millisecondsSinceEpoch,
+              )
+              .shouldStreakIncrement(
+                tasksDoneToday: 5,
+              );
 
-        expect(shouldStreakIncrement, true);
-      });
+          expect(shouldStreakIncrement, true);
+        },
+      );
     });
 
     group(
       'WHEN .isInterrupted called',
       () {
         test(
-          'WHEN streak started yesterday and was not updated today '
-          'THEN returns false',
+          'WHEN streak was never updated '
+          'THEN returns true',
           () {
             final isInterrupted = dailyStreakFixture
                 .copyWith(
@@ -92,7 +102,7 @@ void main() {
                 )
                 .isInterrupted();
 
-            expect(isInterrupted, false);
+            expect(isInterrupted, true);
           },
         );
 

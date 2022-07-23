@@ -1,5 +1,4 @@
 import 'package:flow_todo_flutter_2022/features/streaks/domain/entities/daily_streak_entity.dart';
-import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'daily_streak.freezed.dart';
@@ -25,36 +24,38 @@ class DailyStreak with _$DailyStreak {
   int getDaysInARow() {
     if (updatedAt == null) return 0;
 
-    final today = DateTime.now().millisecondsSinceEpoch;
     final differenceInDaysBetweenUpdateAndStart =
-        DateTime.fromMillisecondsSinceEpoch(updatedAt ?? today)
-            .difference(DateTime.fromMillisecondsSinceEpoch(startsAt))
+        DateTime.fromMillisecondsSinceEpoch(startsAt)
+            .difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!))
             .inDays;
 
     return differenceInDaysBetweenUpdateAndStart + 1;
   }
 
-  bool isInterrupted() => !_wasStreakUpdatedInPast24Hours();
+  bool isInterrupted() {
+    if (updatedAt == null) return true;
+    return !_wasStreakUpdatedToday();
+  }
 
   bool shouldStreakIncrement({required final int tasksDoneToday}) {
     final bool isTaskGoalReached = tasksDoneToday >= perDay;
-    final bool wasStreakNotUpdatedToday = !_wasStreakUpdatedInPast24Hours();
 
     if (updatedAt == null && isTaskGoalReached) {
       return true;
     }
 
-    return isTaskGoalReached && wasStreakNotUpdatedToday;
+    if (_wasStreakUpdatedToday()) {
+      return false;
+    }
+
+    return isTaskGoalReached && isInterrupted();
   }
 
-  bool _wasStreakUpdatedInPast24Hours() {
+  bool _wasStreakUpdatedToday() {
     final today = DateTime.now();
-    final timeDifference = today.difference(
-      DateTime.fromMillisecondsSinceEpoch(
-        updatedAt ?? today.millisecondsSinceEpoch,
-      ),
-    );
+    final difference =
+        today.difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!));
 
-    return timeDifference.inHours < 24;
+    return updatedAt == null ? false : difference.inDays == 0;
   }
 }

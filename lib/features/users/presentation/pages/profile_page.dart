@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
 
 import '../../../common/presentation/page_layout.dart';
+import '../../../goals/presentation/pages/goals_page.dart';
 
 class ProfilePage extends StatelessWidget {
   static const pathName = '/profile';
@@ -14,7 +15,17 @@ class ProfilePage extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.hasData) {
-          return const ProfileScreen();
+          return ProfileScreen(
+            children: [
+              Center(
+                child: ElevatedButton(
+                  onPressed: () =>
+                      Navigator.pushNamed(context, GoalsPage.pathName),
+                  child: const Text('Go to Goals'),
+                ),
+              ),
+            ],
+          );
         } else {
           return PageLayout(
             child: Center(

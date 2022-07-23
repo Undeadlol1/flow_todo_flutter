@@ -10,6 +10,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_d
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_done_today.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/player_progress_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -77,13 +78,13 @@ void main() {
 
     testWidgets(
       "WHEN user is not logged in "
-      "THEN does not display TasksDoneToday",
+      "THEN does not display PlayerProgressSummary",
       (WidgetTester tester) async {
         _profileCubit.setProfileNotFoundOrUnloaded();
 
         await tester.pumpWithDependencies();
 
-        expect(find.byType(TasksDoneToday), findsNothing);
+        expect(find.byType(PlayerProgressSummary), findsNothing);
       },
     );
 
