@@ -5,8 +5,8 @@ class MillisecondsToDateTimePropertyConverter
   const MillisecondsToDateTimePropertyConverter();
 
   @override
-  DateTime fromJson(int json) {
-    return DateTime.fromMillisecondsSinceEpoch(json);
+  DateTime fromJson(int milliseconds) {
+    return DateTime.fromMillisecondsSinceEpoch(milliseconds);
   }
 
   @override

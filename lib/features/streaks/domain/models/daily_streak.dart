@@ -25,9 +25,9 @@ class DailyStreak with _$DailyStreak {
   int getDaysInARow() {
     if (updatedAt == null) return 0;
 
-    final differenceInDaysBetweenUpdateAndStart = startsAt
-        .difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!))
-        .inDays;
+    final updateDate = DateTime.fromMillisecondsSinceEpoch(updatedAt!);
+    final differenceInDaysBetweenUpdateAndStart =
+        updateDate.difference(startsAt).inDays;
 
     return differenceInDaysBetweenUpdateAndStart + 1;
   }

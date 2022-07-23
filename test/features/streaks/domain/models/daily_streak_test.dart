@@ -4,7 +4,7 @@ import '../../../../test_utilities/fixtures/daily_streak_fixture.dart';
 
 void main() {
   final today = DateTime.now();
-  final yesterday = today.subtract(const Duration(days: 1));
+  final yesterday = today.subtract(const Duration(days: 1, hours: 1));
   final twoDaysAgo = today.subtract(const Duration(days: 2));
   final threeDaysAgo = today.subtract(const Duration(days: 3));
   final tenDaysAgo = today.subtract(const Duration(days: 10));
@@ -12,8 +12,8 @@ void main() {
     test('WHEN .daysInARow is called THEN detects days in a row properly', () {
       final daysInARow = dailyStreakFixture
           .copyWith(
-            startsAt: yesterday,
             updatedAt: today.millisecondsSinceEpoch,
+            startsAt: yesterday,
           )
           .getDaysInARow();
 
