@@ -24,10 +24,9 @@ class DailyStreak with _$DailyStreak {
   int getDaysInARow() {
     if (updatedAt == null) return 0;
 
-    final today = DateTime.now().millisecondsSinceEpoch;
     final differenceInDaysBetweenUpdateAndStart =
-        DateTime.fromMillisecondsSinceEpoch(updatedAt ?? today)
-            .difference(DateTime.fromMillisecondsSinceEpoch(startsAt))
+        DateTime.fromMillisecondsSinceEpoch(startsAt)
+            .difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!))
             .inDays;
 
     return differenceInDaysBetweenUpdateAndStart + 1;
@@ -54,12 +53,9 @@ class DailyStreak with _$DailyStreak {
 
   bool _wasStreakUpdatedToday() {
     final today = DateTime.now();
+    final difference =
+        today.difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!));
 
-    return updatedAt == null
-        ? false
-        : today
-                .difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!))
-                .inDays ==
-            0;
+    return updatedAt == null ? false : difference.inDays == 0;
   }
 }

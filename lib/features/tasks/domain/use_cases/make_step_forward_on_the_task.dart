@@ -141,7 +141,6 @@ class MakeStepForwardOnTheTask {
                   ? TaskHistoryActionType.leapForward
                   : TaskHistoryActionType.stepForward,
         ),
-        // TODO test order.
         ...task.history,
       ],
     );
