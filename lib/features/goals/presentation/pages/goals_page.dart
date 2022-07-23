@@ -33,19 +33,16 @@ class _GoalsPageState extends State<GoalsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetIt.I<GoalsCubit>(),
-      child: PageLayout(
-        isAppBarHidden: false,
-        isDrawerHidden: true,
-        isNumbersAnimationSuspended: true,
-        floatingActionButton: CreateGoalFAB(),
-        child: Column(
-          children: [
-            const PlayerProgressSummary(),
-            Expanded(child: _GoalsList()),
-          ],
-        ),
+    return PageLayout(
+      isAppBarHidden: false,
+      isDrawerHidden: true,
+      isNumbersAnimationSuspended: true,
+      floatingActionButton: CreateGoalFAB(),
+      child: Column(
+        children: [
+          const PlayerProgressSummary(),
+          Expanded(child: _GoalsList()),
+        ],
       ),
     );
   }
