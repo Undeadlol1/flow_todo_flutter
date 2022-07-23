@@ -1,8 +1,10 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/models/daily_streak.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../users/presentation/cubit/profile_cubit.dart';
 
@@ -156,7 +158,8 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
 
 class _DaysInARowText extends StatelessWidget {
   final bool areAnimationsEnabled;
-  const _DaysInARowText({
+  final StreakDaysInARowCalculator streakDaysInARowCalculator = GetIt.I();
+  _DaysInARowText({
     Key? key,
     required this.areAnimationsEnabled,
   }) : super(key: key);
@@ -170,7 +173,10 @@ class _DaysInARowText extends StatelessWidget {
         final dailyStreak = profileState.profile?.dailyStreak;
         final int daysInARow = dailyStreak?.isInterrupted() ?? true
             ? 0
-            : dailyStreak?.getDaysInARow() ?? 0;
+            : streakDaysInARowCalculator(
+                updatedAt: dailyStreak?.updatedAt,
+                startsAt: dailyStreak?.startsAt ?? DateTime.now(),
+              );
 
         return Visibility(
           visible: daysInARow > 0,

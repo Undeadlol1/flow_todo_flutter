@@ -22,16 +22,6 @@ class DailyStreak with _$DailyStreak {
   factory DailyStreak.fromJson(Map<String, Object?> json) =>
       _$DailyStreakFromJson(json);
 
-  int getDaysInARow() {
-    if (updatedAt == null) return 0;
-
-    final updateDate = DateTime.fromMillisecondsSinceEpoch(updatedAt!);
-    final differenceInDaysBetweenUpdateAndStart =
-        updateDate.difference(startsAt).inDays;
-
-    return differenceInDaysBetweenUpdateAndStart + 1;
-  }
-
   bool isInterrupted() {
     if (updatedAt == null) return true;
     return !_wasStreakUpdatedToday();

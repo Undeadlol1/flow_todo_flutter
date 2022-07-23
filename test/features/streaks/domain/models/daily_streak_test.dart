@@ -9,17 +9,6 @@ void main() {
   final threeDaysAgo = today.subtract(const Duration(days: 3));
   final tenDaysAgo = today.subtract(const Duration(days: 10));
   group('GIVEN DailyStreak', () {
-    test('WHEN .daysInARow is called THEN detects days in a row properly', () {
-      final daysInARow = dailyStreakFixture
-          .copyWith(
-            updatedAt: today.millisecondsSinceEpoch,
-            startsAt: yesterday,
-          )
-          .getDaysInARow();
-
-      expect(daysInARow, 2);
-    });
-
     group('GIVEN .shouldStreakIncrement', () {
       test('WHEN streak strted yesterday THEN returns true', () {
         final result = dailyStreakFixture

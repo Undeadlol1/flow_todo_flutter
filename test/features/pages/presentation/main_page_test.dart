@@ -5,6 +5,7 @@ import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/pages/presentation/main_page.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_done_today.dart';
@@ -39,6 +40,9 @@ void main() {
       GetIt.I.registerSingleton(_tasksCuibit);
       GetIt.I.registerSingleton<SignInWithGoogle>(_MockSignInWithGoogle());
       GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
+      GetIt.I.registerSingleton<StreakDaysInARowCalculator>(
+        const StreakDaysInARowCalculator(),
+      );
       GetIt.I.registerSingleton<LevelProgressPercentageCalculator>(
         MockLevelProgressPercentageCalculator(),
       );
