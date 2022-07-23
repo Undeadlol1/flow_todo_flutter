@@ -1,12 +1,12 @@
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/repetition.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,6 +27,8 @@ import '../../../../test_utilities/mocks/mock_update_task_repository.dart';
 
 class _MockAddPointsToViewer extends Mock implements AddPointsToViewer {}
 
+class _MockIncrementDailyStreak extends Mock implements IncrementDailyStreak {}
+
 class _MockNextRepetitionCalculator extends Mock
     implements NextRepetitionCalculator {}
 
@@ -43,13 +45,16 @@ final _mockTasksDoneTodayCubit = MockTasksDoneTodayCubit();
 final _mockUpdateTaskRepository = MockUpdateTaskRepository();
 final _mockUpdateProfileRepository = MockUpdateProfileRepository();
 final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
+final IncrementDailyStreak _mockIncrementDailyStreak =
+    _MockIncrementDailyStreak();
 
 void main() {
   setUp(() {
+    reset(_mockTasksCubit);
     reset(_mockGoToTaskPage);
     reset(_mockAddPointsToViewer);
-    reset(_mockTasksCubit);
     reset(_mockTasksDoneTodayCubit);
+    reset(_mockIncrementDailyStreak);
     reset(_mockUpdateProfileRepository);
 
     when(() => _mockTasksDoneTodayCubit.update(any())).thenReturn(null);
@@ -247,47 +252,19 @@ void main() {
       },
     );
 
-    group('WHEN daily streak is achieved', () {
-      setUpAll(() => registerFallbackValue(profileFixture));
-
-      test('THEN updates daily streak', () async {
+    test(
+      'WHEN called THEN calls IncrementStreak service',
+      () async {
         _mockTypicalCalls(amountOfPointsToVerify: 30);
-        final yesterday = DateTime.now().subtract(const Duration(days: 1));
-        final tasksDoneToday = [taskFixture, taskFixture, taskFixture];
-        final profileWithAchievedStreak = profileFixture.copyWith.dailyStreak(
-          perDay: tasksDoneToday.length,
-          startsAt: yesterday,
-          createdAt: yesterday,
-        );
-        when(() => _mockUpdateProfileRepository(any()))
-            .thenAnswer(Future.value);
-        when(() => _mockProfileCubit.state)
-            .thenReturn(ProfileLoaded(profile: profileWithAchievedStreak));
-        when((() => _mockTasksDoneTodayCubit.state)).thenReturn(
-          TasksDoneTodayState.loaded(
-            tasksDoneToday,
-          ),
-        );
 
-        final shouldDailyStreakUpdate = profileWithAchievedStreak.dailyStreak
-            .shouldStreakIncrement(tasksDoneToday: tasksDoneToday.length);
-        expect(shouldDailyStreakUpdate, isTrue);
-
-        await _getUseCaseWithMockedStates()(
+        await _getUseCase()(
           task: taskFixture,
           howBigWasTheStep: Confidence.good,
         );
 
-        final profileUpdate = verify(
-          () => _mockUpdateProfileRepository(captureAny()),
-        );
-        profileUpdate.called(1);
-        expect(
-          (profileUpdate.captured.first as Profile).dailyStreak.updatedAt,
-          equals(_fakeGetTodaysDate.returnedValue.millisecondsSinceEpoch),
-        );
-      });
-    });
+        verify(() => _mockIncrementDailyStreak()).called(1);
+      },
+    );
   });
 }
 
@@ -345,6 +322,7 @@ Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument({
 
 void _mockTypicalCalls({required int amountOfPointsToVerify}) {
   when(() => _mockGoToMainPage()).thenAnswer((_) async {});
+  when(() => _mockIncrementDailyStreak()).thenAnswer((_) async {});
   when(() => _mockUpdateTaskRepository(any())).thenAnswer((_) async {});
   when(() => _mockAddPointsToViewer(amountOfPointsToVerify))
       .thenAnswer((_) async {});
@@ -364,10 +342,11 @@ MakeStepForwardOnTheTask _getUseCase() {
     goToTaskPage: _mockGoToTaskPage,
     getTodaysDate: _fakeGetTodaysDate,
     snackbarService: _mockSnackbarService,
+    updateTask: _mockUpdateTaskRepository,
     addPointsToViewer: _mockAddPointsToViewer,
     tasksDoneTodayCubit: _tasksDoneTodayCubit,
-    updateTask: _mockUpdateTaskRepository,
     updateProfile: _mockUpdateProfileRepository,
+    incrementDailyStreak: _mockIncrementDailyStreak,
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );
 }
@@ -380,10 +359,11 @@ MakeStepForwardOnTheTask _getUseCaseWithMockedStates() {
     goToTaskPage: _mockGoToTaskPage,
     getTodaysDate: _fakeGetTodaysDate,
     snackbarService: _mockSnackbarService,
-    addPointsToViewer: _mockAddPointsToViewer,
-    tasksDoneTodayCubit: _mockTasksDoneTodayCubit,
     updateTask: _mockUpdateTaskRepository,
+    addPointsToViewer: _mockAddPointsToViewer,
     updateProfile: _mockUpdateProfileRepository,
+    tasksDoneTodayCubit: _mockTasksDoneTodayCubit,
+    incrementDailyStreak: _mockIncrementDailyStreak,
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );
 }

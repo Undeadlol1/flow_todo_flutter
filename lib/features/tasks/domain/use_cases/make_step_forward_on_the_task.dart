@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
@@ -27,22 +28,24 @@ class MakeStepForwardOnTheTask {
   final GoToTaskPage goToTaskPage;
   final GetTodaysDate getTodaysDate;
   final SnackbarService snackbarService;
-  final AddPointsToViewer addPointsToViewer;
-  final TasksDoneTodayCubit tasksDoneTodayCubit;
   final UpdateTaskRepository updateTask;
+  final AddPointsToViewer addPointsToViewer;
   final UpdateProfileRepository updateProfile;
+  final TasksDoneTodayCubit tasksDoneTodayCubit;
+  final IncrementDailyStreak incrementDailyStreak;
   final NextRepetitionCalculator nextRepetitionCalculator;
   const MakeStepForwardOnTheTask({
     required this.tasksCubit,
+    required this.updateTask,
     required this.profileCubit,
     required this.goToMainPage,
     required this.goToTaskPage,
     required this.getTodaysDate,
+    required this.updateProfile,
     required this.snackbarService,
     required this.addPointsToViewer,
     required this.tasksDoneTodayCubit,
-    required this.updateTask,
-    required this.updateProfile,
+    required this.incrementDailyStreak,
     required this.nextRepetitionCalculator,
   });
 
@@ -65,9 +68,7 @@ class MakeStepForwardOnTheTask {
       await goToMainPage();
       await updateTask(updatedTask);
       await addPointsToViewer(pointsToAdd);
-      if (_shouldDailyStreakIncrement()) {
-        await updateProfile(_getUpdatedProfile());
-      }
+      await incrementDailyStreak();
     } catch (error) {
       return _handleErrors(error: error, task: task);
     }
@@ -98,16 +99,6 @@ class MakeStepForwardOnTheTask {
     );
 
     return updatedProfile;
-  }
-
-  bool _shouldDailyStreakIncrement() {
-    final profile = profileCubit.state.profile;
-    final tasksDoneToday = tasksDoneTodayCubit.state.tasks.length;
-
-    return profile?.dailyStreak.shouldStreakIncrement(
-          tasksDoneToday: tasksDoneToday,
-        ) ??
-        false;
   }
 
   Task _getUpdatedTask(
