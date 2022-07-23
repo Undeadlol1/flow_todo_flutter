@@ -36,9 +36,9 @@ class _GoalsPageState extends State<GoalsPage> {
     return BlocProvider(
       create: (context) => GetIt.I<GoalsCubit>(),
       child: PageLayout(
-        isAppBarHidden: true,
-        isDrawerHidden: false,
-        isNumbersAnimationSuspended: false,
+        isAppBarHidden: false,
+        isDrawerHidden: true,
+        isNumbersAnimationSuspended: true,
         floatingActionButton: CreateGoalFAB(),
         child: Column(
           children: [
