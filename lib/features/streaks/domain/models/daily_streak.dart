@@ -52,10 +52,12 @@ class DailyStreak with _$DailyStreak {
   }
 
   bool _wasStreakUpdatedToday() {
+    if (updatedAt == null) return false;
+
     final today = DateTime.now();
     final difference =
         today.difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!));
 
-    return updatedAt == null ? false : difference.inDays == 0;
+    return difference.inDays == 0;
   }
 }
