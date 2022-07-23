@@ -37,10 +37,7 @@ class _LoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: SizedBox(
-        height: 550,
-        child: CircularProgressIndicator(),
-      ),
+      child: CircularProgressIndicator(),
     );
   }
 }
