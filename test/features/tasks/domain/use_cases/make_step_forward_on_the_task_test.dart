@@ -1,7 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/repetition.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
-import 'package:flow_todo_flutter_2022/features/streaks/domain/models/daily_streak.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
@@ -255,20 +254,13 @@ void main() {
         _mockTypicalCalls(amountOfPointsToVerify: 30);
         final yesterday = DateTime.now().subtract(const Duration(days: 1));
         final tasksDoneToday = [taskFixture, taskFixture, taskFixture];
-        final profileWithAchievedStreak = profileFixture.copyWith(
-          dailyStreak: DailyStreak(
-            perDay: tasksDoneToday.length,
-            id: '12312313',
-            userId: 'userId123',
-            startsAt: yesterday,
-            createdAt: yesterday,
-          ),
+        final profileWithAchievedStreak = profileFixture.copyWith.dailyStreak(
+          perDay: tasksDoneToday.length,
+          startsAt: yesterday,
+          createdAt: yesterday,
         );
-        final shouldDailyStreakUpdate = profileWithAchievedStreak.dailyStreak
-            .shouldStreakIncrement(tasksDoneToday: tasksDoneToday.length);
-        expect(shouldDailyStreakUpdate, isTrue);
         when(() => _mockUpdateProfileRepository(any()))
-            .thenAnswer((_) async {});
+            .thenAnswer(Future.value);
         when(() => _mockProfileCubit.state)
             .thenReturn(ProfileLoaded(profile: profileWithAchievedStreak));
         when((() => _mockTasksDoneTodayCubit.state)).thenReturn(
@@ -277,17 +269,21 @@ void main() {
           ),
         );
 
+        final shouldDailyStreakUpdate = profileWithAchievedStreak.dailyStreak
+            .shouldStreakIncrement(tasksDoneToday: tasksDoneToday.length);
+        expect(shouldDailyStreakUpdate, isTrue);
+
         await _getUseCaseWithMockedStates()(
           task: taskFixture,
           howBigWasTheStep: Confidence.good,
         );
 
-        final repositoryCall = verify(
+        final profileUpdate = verify(
           () => _mockUpdateProfileRepository(captureAny()),
         );
-        repositoryCall.called(1);
+        profileUpdate.called(1);
         expect(
-          (repositoryCall.captured.first as Profile).dailyStreak.updatedAt,
+          (profileUpdate.captured.first as Profile).dailyStreak.updatedAt,
           equals(_fakeGetTodaysDate.returnedValue.millisecondsSinceEpoch),
         );
       });
