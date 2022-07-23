@@ -12,8 +12,8 @@ void main() {
     test('WHEN .daysInARow is called THEN detects days in a row properly', () {
       final daysInARow = dailyStreakFixture
           .copyWith(
-            startsAt: yesterday.millisecondsSinceEpoch,
             updatedAt: today.millisecondsSinceEpoch,
+            startsAt: yesterday.millisecondsSinceEpoch,
           )
           .getDaysInARow();
 

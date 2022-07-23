@@ -25,8 +25,10 @@ class DailyStreak with _$DailyStreak {
     if (updatedAt == null) return 0;
 
     final differenceInDaysBetweenUpdateAndStart =
-        DateTime.fromMillisecondsSinceEpoch(startsAt)
-            .difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!))
+        DateTime.fromMillisecondsSinceEpoch(updatedAt!)
+            .difference(
+              DateTime.fromMillisecondsSinceEpoch(startsAt),
+            )
             .inDays;
 
     return differenceInDaysBetweenUpdateAndStart + 1;
