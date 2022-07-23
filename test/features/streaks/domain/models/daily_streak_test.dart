@@ -4,15 +4,15 @@ import '../../../../test_utilities/fixtures/daily_streak_fixture.dart';
 
 void main() {
   final today = DateTime.now();
-  final yesterday = DateTime.now().subtract(const Duration(days: 1));
-  final twoDaysAgo = DateTime.now().subtract(const Duration(days: 2));
-  final threeDaysAgo = DateTime.now().subtract(const Duration(days: 3));
-  final tenDaysAgo = DateTime.now().subtract(const Duration(days: 10));
+  final yesterday = today.subtract(const Duration(days: 1));
+  final twoDaysAgo = today.subtract(const Duration(days: 2));
+  final threeDaysAgo = today.subtract(const Duration(days: 3));
+  final tenDaysAgo = today.subtract(const Duration(days: 10));
   group('GIVEN DailyStreak', () {
     test('WHEN .daysInARow is called THEN detects days in a row properly', () {
       final daysInARow = dailyStreakFixture
           .copyWith(
-            startsAt: yesterday.millisecondsSinceEpoch,
+            startsAt: yesterday,
             updatedAt: today.millisecondsSinceEpoch,
           )
           .getDaysInARow();
@@ -25,7 +25,7 @@ void main() {
         final result = dailyStreakFixture
             .copyWith(
               perDay: 3,
-              startsAt: yesterday.millisecondsSinceEpoch,
+              startsAt: yesterday,
               updatedAt: null,
             )
             .shouldStreakIncrement(
@@ -39,7 +39,7 @@ void main() {
         final result = dailyStreakFixture
             .copyWith(
               perDay: 3,
-              startsAt: twoDaysAgo.millisecondsSinceEpoch,
+              startsAt: twoDaysAgo,
               updatedAt: today.millisecondsSinceEpoch,
             )
             .shouldStreakIncrement(
@@ -57,7 +57,7 @@ void main() {
           final shouldStreakIncrement = dailyStreakFixture
               .copyWith(
                 perDay: 3,
-                startsAt: yesterday.millisecondsSinceEpoch,
+                startsAt: yesterday,
                 updatedAt: null,
               )
               .shouldStreakIncrement(
@@ -76,7 +76,7 @@ void main() {
           final shouldStreakIncrement = dailyStreakFixture
               .copyWith(
                 perDay: 3,
-                startsAt: twoDaysAgo.millisecondsSinceEpoch,
+                startsAt: twoDaysAgo,
                 updatedAt: yesterday.millisecondsSinceEpoch,
               )
               .shouldStreakIncrement(
@@ -98,7 +98,7 @@ void main() {
             final isInterrupted = dailyStreakFixture
                 .copyWith(
                   updatedAt: null,
-                  startsAt: yesterday.millisecondsSinceEpoch,
+                  startsAt: yesterday,
                 )
                 .isInterrupted();
 
@@ -148,7 +148,7 @@ _verifyIsStreakInterrupted({
   return () {
     final result = dailyStreakFixture
         .copyWith(
-          startsAt: startsAt.millisecondsSinceEpoch,
+          startsAt: startsAt,
           updatedAt: updatedAt.millisecondsSinceEpoch,
         )
         .isInterrupted();

@@ -5,6 +5,6 @@ final dailyStreakFixture = DailyStreak(
   updatedAt: null,
   id: 'someId123',
   userId: 'someUserId123',
-  startsAt: DateTime.now().millisecondsSinceEpoch,
-  createdAt: DateTime.now().millisecondsSinceEpoch,
+  startsAt: DateTime.now(),
+  createdAt: DateTime.now(),
 );

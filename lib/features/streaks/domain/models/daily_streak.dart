@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/core/services/milliseconds_to_datetime_property_converter.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/entities/daily_streak_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -14,8 +15,8 @@ class DailyStreak with _$DailyStreak {
     required String id,
     required String userId,
     required int perDay,
-    required int startsAt,
-    required int createdAt,
+    @MillisecondsToDateTimePropertyConverter() required DateTime startsAt,
+    @MillisecondsToDateTimePropertyConverter() required DateTime createdAt,
   }) = _DailyStreak;
 
   factory DailyStreak.fromJson(Map<String, Object?> json) =>
@@ -24,10 +25,9 @@ class DailyStreak with _$DailyStreak {
   int getDaysInARow() {
     if (updatedAt == null) return 0;
 
-    final differenceInDaysBetweenUpdateAndStart =
-        DateTime.fromMillisecondsSinceEpoch(startsAt)
-            .difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!))
-            .inDays;
+    final differenceInDaysBetweenUpdateAndStart = startsAt
+        .difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!))
+        .inDays;
 
     return differenceInDaysBetweenUpdateAndStart + 1;
   }

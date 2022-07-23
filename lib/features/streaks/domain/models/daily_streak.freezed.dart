@@ -24,8 +24,10 @@ mixin _$DailyStreak {
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   int get perDay => throw _privateConstructorUsedError;
-  int get startsAt => throw _privateConstructorUsedError;
-  int get createdAt => throw _privateConstructorUsedError;
+  @MillisecondsToDateTimePropertyConverter()
+  DateTime get startsAt => throw _privateConstructorUsedError;
+  @MillisecondsToDateTimePropertyConverter()
+  DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,8 +45,8 @@ abstract class $DailyStreakCopyWith<$Res> {
       String id,
       String userId,
       int perDay,
-      int startsAt,
-      int createdAt});
+      @MillisecondsToDateTimePropertyConverter() DateTime startsAt,
+      @MillisecondsToDateTimePropertyConverter() DateTime createdAt});
 }
 
 /// @nodoc
@@ -84,11 +86,11 @@ class _$DailyStreakCopyWithImpl<$Res> implements $DailyStreakCopyWith<$Res> {
       startsAt: startsAt == freezed
           ? _value.startsAt
           : startsAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
     ));
   }
 }
@@ -105,8 +107,8 @@ abstract class _$$_DailyStreakCopyWith<$Res>
       String id,
       String userId,
       int perDay,
-      int startsAt,
-      int createdAt});
+      @MillisecondsToDateTimePropertyConverter() DateTime startsAt,
+      @MillisecondsToDateTimePropertyConverter() DateTime createdAt});
 }
 
 /// @nodoc
@@ -148,11 +150,11 @@ class __$$_DailyStreakCopyWithImpl<$Res> extends _$DailyStreakCopyWithImpl<$Res>
       startsAt: startsAt == freezed
           ? _value.startsAt
           : startsAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
     ));
   }
 }
@@ -165,8 +167,8 @@ class _$_DailyStreak extends _DailyStreak {
       required this.id,
       required this.userId,
       required this.perDay,
-      required this.startsAt,
-      required this.createdAt})
+      @MillisecondsToDateTimePropertyConverter() required this.startsAt,
+      @MillisecondsToDateTimePropertyConverter() required this.createdAt})
       : super._();
 
   factory _$_DailyStreak.fromJson(Map<String, dynamic> json) =>
@@ -181,9 +183,11 @@ class _$_DailyStreak extends _DailyStreak {
   @override
   final int perDay;
   @override
-  final int startsAt;
+  @MillisecondsToDateTimePropertyConverter()
+  final DateTime startsAt;
   @override
-  final int createdAt;
+  @MillisecondsToDateTimePropertyConverter()
+  final DateTime createdAt;
 
   @override
   String toString() {
@@ -231,8 +235,10 @@ abstract class _DailyStreak extends DailyStreak {
       required final String id,
       required final String userId,
       required final int perDay,
-      required final int startsAt,
-      required final int createdAt}) = _$_DailyStreak;
+      @MillisecondsToDateTimePropertyConverter()
+          required final DateTime startsAt,
+      @MillisecondsToDateTimePropertyConverter()
+          required final DateTime createdAt}) = _$_DailyStreak;
   const _DailyStreak._() : super._();
 
   factory _DailyStreak.fromJson(Map<String, dynamic> json) =
@@ -247,9 +253,11 @@ abstract class _DailyStreak extends DailyStreak {
   @override
   int get perDay => throw _privateConstructorUsedError;
   @override
-  int get startsAt => throw _privateConstructorUsedError;
+  @MillisecondsToDateTimePropertyConverter()
+  DateTime get startsAt => throw _privateConstructorUsedError;
   @override
-  int get createdAt => throw _privateConstructorUsedError;
+  @MillisecondsToDateTimePropertyConverter()
+  DateTime get createdAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_DailyStreakCopyWith<_$_DailyStreak> get copyWith =>

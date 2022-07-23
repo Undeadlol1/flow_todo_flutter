@@ -57,7 +57,7 @@ void main() {
     when(() => _mockTasksDoneTodayCubit.state)
         .thenReturn(TasksDoneTodayState.loaded([]));
     when(() => _mockProfileCubit.state)
-        .thenReturn(const ProfileLoaded(profile: profileFixture));
+        .thenReturn(ProfileLoaded(profile: profileFixture));
 
     _tasksDoneTodayCubit.update([]);
   });
@@ -253,9 +253,7 @@ void main() {
 
       test('THEN updates daily streak', () async {
         _mockTypicalCalls(amountOfPointsToVerify: 30);
-        final yesterday = DateTime.now()
-            .subtract(const Duration(days: 1))
-            .millisecondsSinceEpoch;
+        final yesterday = DateTime.now().subtract(const Duration(days: 1));
         final tasksDoneToday = [taskFixture, taskFixture, taskFixture];
         final profileWithAchievedStreak = profileFixture.copyWith(
           dailyStreak: DailyStreak(

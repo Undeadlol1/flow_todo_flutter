@@ -21,7 +21,7 @@ final _MockTasksDoneTodayCubit _mockTasksDoneTodayCubit =
 void main() {
   group('GIVEN TasksDoneToday', () {
     setUpAll(() {
-      _stubProfileState(const ProfileLoaded(profile: profileFixture));
+      _stubProfileState(ProfileLoaded(profile: profileFixture));
     });
 
     group('WHEN pumped', () {
@@ -53,7 +53,7 @@ void main() {
       testWidgets(
         'THEN how many tasks are required per day',
         (tester) async {
-          _stubProfileState(const ProfileLoaded(profile: profileFixture));
+          _stubProfileState(ProfileLoaded(profile: profileFixture));
           _stubTasksDoneTodayState(TasksDoneTodayState.loaded([]));
 
           await tester.pumpWithDependencies(const TasksDoneToday());
@@ -65,7 +65,6 @@ void main() {
           expect(_findAnimatedNumbers(0), findsWidgets);
         },
       );
-
     });
   });
 }

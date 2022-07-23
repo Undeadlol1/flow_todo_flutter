@@ -12,8 +12,10 @@ _$_DailyStreak _$$_DailyStreakFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       userId: json['userId'] as String,
       perDay: json['perDay'] as int,
-      startsAt: json['startsAt'] as int,
-      createdAt: json['createdAt'] as int,
+      startsAt: const MillisecondsToDateTimePropertyConverter()
+          .fromJson(json['startsAt'] as int),
+      createdAt: const MillisecondsToDateTimePropertyConverter()
+          .fromJson(json['createdAt'] as int),
     );
 
 Map<String, dynamic> _$$_DailyStreakToJson(_$_DailyStreak instance) =>
@@ -22,6 +24,8 @@ Map<String, dynamic> _$$_DailyStreakToJson(_$_DailyStreak instance) =>
       'id': instance.id,
       'userId': instance.userId,
       'perDay': instance.perDay,
-      'startsAt': instance.startsAt,
-      'createdAt': instance.createdAt,
+      'startsAt': const MillisecondsToDateTimePropertyConverter()
+          .toJson(instance.startsAt),
+      'createdAt': const MillisecondsToDateTimePropertyConverter()
+          .toJson(instance.createdAt),
     };
