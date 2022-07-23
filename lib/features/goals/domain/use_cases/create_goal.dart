@@ -41,8 +41,7 @@ class CreateGoal {
       if (profileCubit.state is ProfileLoaded) {
         addPointsToUser(10);
       }
-      goalsCubit.state.goals.insert(0, goalToCreate);
-      goalsCubit.update(goalsCubit.state.goals);
+      goalsCubit.update([goalToCreate, ...goalsCubit.state.goals]);
 
       return createGoalRepo(goalToCreate);
     } on Exception catch (error) {

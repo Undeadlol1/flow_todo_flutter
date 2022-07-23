@@ -58,7 +58,7 @@ class _GoalsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GoalsCubit, GoalsState>(
-      buildWhen: _buildOnlyWhenPointsAreAdded,
+      buildWhen: _buildWhen,
       builder: (context, goalsState) {
         return goalsState.when(
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -89,8 +89,10 @@ class _GoalsList extends StatelessWidget {
     );
   }
 
-  bool _buildOnlyWhenPointsAreAdded(GoalsState previous, GoalsState current) {
+  bool _buildWhen(GoalsState previous, GoalsState current) {
     if (previous.goals.isEmpty || current.goals.isEmpty) return true;
+
+    if (previous.goals.length != current.goals.length) return true;
 
     final int combinedPointsOfPreviousState =
         previous.goals.reduce((previous, next) {
