@@ -58,19 +58,7 @@ class _GoalsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GoalsCubit, GoalsState>(
-      buildWhen: (previous, current) {
-        if (previous.goals.isEmpty || current.goals.isEmpty) return true;
-
-        final int combinedPointsOfPreviousState =
-            previous.goals.reduce((previous, next) {
-          return previous.copyWith(points: next.points + previous.points);
-        }).points;
-        final int combinedPointsOfNextState =
-            current.goals.reduce((previous, next) {
-          return previous.copyWith(points: next.points + previous.points);
-        }).points;
-        return combinedPointsOfNextState > combinedPointsOfPreviousState;
-      },
+      buildWhen: _buildOnlyWhenPointsAreAdded,
       builder: (context, goalsState) {
         return goalsState.when(
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -99,5 +87,19 @@ class _GoalsList extends StatelessWidget {
         );
       },
     );
+  }
+
+  bool _buildOnlyWhenPointsAreAdded(GoalsState previous, GoalsState current) {
+    if (previous.goals.isEmpty || current.goals.isEmpty) return true;
+
+    final int combinedPointsOfPreviousState =
+        previous.goals.reduce((previous, next) {
+      return previous.copyWith(points: next.points + previous.points);
+    }).points;
+    final int combinedPointsOfNextState =
+        current.goals.reduce((previous, next) {
+      return previous.copyWith(points: next.points + previous.points);
+    }).points;
+    return combinedPointsOfNextState > combinedPointsOfPreviousState;
   }
 }
