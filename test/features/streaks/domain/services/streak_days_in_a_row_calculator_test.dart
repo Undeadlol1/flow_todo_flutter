@@ -19,8 +19,8 @@ void main() {
     test('WHEN is called THEN detects days in a row properly', () {
       expect(
         const StreakDaysInARowCalculator()(
-          updatedAt: today.millisecondsSinceEpoch,
           startsAt: yesterday,
+          updatedAt: today.millisecondsSinceEpoch,
         ),
         2,
       );
