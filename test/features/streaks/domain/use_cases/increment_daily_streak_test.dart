@@ -35,8 +35,7 @@ void main() {
       setUpAll(() => registerFallbackValue(profileFixture));
 
       test('THEN updates daily streak', () async {
-        final yesterday =
-            DateTime.now().subtract(const Duration(days: 1, hours: 1));
+        final yesterday = DateTime.now().subtract(const Duration(days: 1));
         final tasksDoneToday = [taskFixture, taskFixture, taskFixture];
         final profileWithAchievedStreak = profileFixture.copyWith.dailyStreak(
           perDay: tasksDoneToday.length,
@@ -52,7 +51,7 @@ void main() {
             .shouldStreakIncrement(tasksDoneToday: tasksDoneToday.length);
         expect(shouldDailyStreakUpdate, isTrue);
 
-        await _gService()();
+        await _getService()();
 
         final profileUpdate = verify(
           () => _mockUpdateProfileRepository(captureAny()),
@@ -67,12 +66,12 @@ void main() {
   });
 }
 
-IncrementDailyStreak _gService() {
+IncrementDailyStreak _getService() {
   return IncrementDailyStreak(
     profileCubit: _mockProfileCubit,
     getTodaysDate: _fakeGetTodaysDate,
-    tasksDoneTodayCubit: _mockTasksDoneTodayCubit,
     updateProfile: _mockUpdateProfileRepository,
+    tasksDoneTodayCubit: _mockTasksDoneTodayCubit,
   );
 }
 
