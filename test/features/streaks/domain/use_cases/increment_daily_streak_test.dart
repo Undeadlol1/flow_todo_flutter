@@ -39,19 +39,7 @@ void main() {
       test(
         'AND streak has not been updated today THEN updates daily streak',
         () async {
-          final tasksDoneToday = [taskFixture, taskFixture, taskFixture];
-          final profileWithAchievedStreak = profileFixture.copyWith.dailyStreak(
-            perDay: tasksDoneToday.length,
-            startsAt: yesterday,
-          );
-          _mockTypicalCalls(
-            tasksDoneToday: tasksDoneToday,
-            profile: profileWithAchievedStreak,
-          );
-
-          final shouldDailyStreakIncrement = profileWithAchievedStreak
-              .dailyStreak
-              .shouldStreakIncrement(tasksDoneToday: tasksDoneToday.length);
+          _mockStatesAndRepos(tasksDoneToday: 3, startsAt: yesterday);
 
           await _getService()();
 
@@ -61,7 +49,6 @@ void main() {
           final updatedStreak =
               (profileUpdate.captured.first as Profile).dailyStreak;
           profileUpdate.called(1);
-          expect(shouldDailyStreakIncrement, isTrue);
           expect(
             updatedStreak.startsAt,
             equals(yesterday),
@@ -77,7 +64,11 @@ void main() {
       test(
         'AND streak has been updated today THEN does not update daily streak',
         () async {
-          _mockSomething(3, yesterday);
+          _mockStatesAndRepos(
+            tasksDoneToday: 3,
+            startsAt: yesterday,
+            updatedAt: DateTime.now().millisecondsSinceEpoch,
+          );
 
           await _getService()();
 
@@ -90,20 +81,22 @@ void main() {
   });
 }
 
-// TODO rename
-void _mockSomething(int length, DateTime yesterday) {
-  final tasksDoneToday = List.generate(length, (index) => taskFixture);
-  expect(tasksDoneToday, hasLength(length));
+void _mockStatesAndRepos({
+  int? updatedAt,
+  required DateTime startsAt,
+  required int tasksDoneToday,
+}) {
+  final tasksList = List.generate(tasksDoneToday, (index) => taskFixture);
+  final profile = profileFixture.copyWith.dailyStreak(
+    startsAt: startsAt,
+    updatedAt: updatedAt,
+    perDay: tasksDoneToday,
+  );
 
-  final profileWithAchievedStreak = profileFixture.copyWith.dailyStreak(
-    perDay: length,
-    startsAt: yesterday,
-    updatedAt: DateTime.now().millisecondsSinceEpoch,
-  );
-  _mockTypicalCalls(
-    tasksDoneToday: tasksDoneToday,
-    profile: profileWithAchievedStreak,
-  );
+  assert(tasksList.length == tasksDoneToday);
+  assert(profile.dailyStreak.perDay == tasksDoneToday);
+
+  _mockTypicalCalls(tasksDoneToday: tasksList, profile: profile);
 }
 
 IncrementDailyStreak _getService() {
