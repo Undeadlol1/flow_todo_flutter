@@ -71,7 +71,9 @@ void main() {
             reason: 'Reason: start date must not change',
           );
           expect(
-              updatedStreak.updatedAt, equals(_today.millisecondsSinceEpoch));
+            updatedStreak.updatedAt,
+            equals(_today.millisecondsSinceEpoch),
+          );
         },
       );
 
