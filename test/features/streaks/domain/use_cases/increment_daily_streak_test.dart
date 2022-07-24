@@ -13,11 +13,12 @@ import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_done_today_cubit.dart';
 import '../../../../test_utilities/mocks/mock_update_profile_repository.dart';
 
-final today = DateTime.now();
+final _today = DateTime.now();
+final _yesterday = DateTime.now().subtract(const Duration(days: 1));
 
 class _FakeGetTodaysDate extends Fake implements GetTodaysDate {
   @override
-  DateTime call() => today;
+  DateTime call() => _today;
 }
 
 final _mockProfileCubit = MockProfileCubit();
@@ -26,8 +27,6 @@ final _mockTasksDoneTodayCubit = MockTasksDoneTodayCubit();
 final _mockUpdateProfileRepository = MockUpdateProfileRepository();
 
 void main() {
-  final yesterday = DateTime.now().subtract(const Duration(days: 1));
-
   setUp(() {
     reset(_mockTasksDoneTodayCubit);
     reset(_mockUpdateProfileRepository);
@@ -56,7 +55,7 @@ void main() {
       test(
         'AND streak has not been updated today THEN updates daily streak',
         () async {
-          _mockStatesAndRepos(tasksDoneToday: 3, startsAt: yesterday);
+          _mockStatesAndRepos(tasksDoneToday: 3, startsAt: _yesterday);
 
           await _getService()();
 
@@ -68,10 +67,11 @@ void main() {
           profileUpdate.called(1);
           expect(
             updatedStreak.startsAt,
-            equals(yesterday),
+            equals(_yesterday),
             reason: 'Reason: start date must not change',
           );
-          expect(updatedStreak.updatedAt, equals(today.millisecondsSinceEpoch));
+          expect(
+              updatedStreak.updatedAt, equals(_today.millisecondsSinceEpoch));
         },
       );
 
@@ -80,7 +80,7 @@ void main() {
         () async {
           _mockStatesAndRepos(
             tasksDoneToday: 3,
-            startsAt: yesterday,
+            startsAt: _yesterday,
             updatedAt: DateTime.now().millisecondsSinceEpoch,
           );
 
