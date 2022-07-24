@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
@@ -6,15 +7,21 @@ import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../test_utilities/fakes/fake_get_todays_date.dart';
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_done_today_cubit.dart';
 import '../../../../test_utilities/mocks/mock_update_profile_repository.dart';
 
+final today = DateTime.now();
+
+class _FakeGetTodaysDate extends Fake implements GetTodaysDate {
+  @override
+  DateTime call() => today;
+}
+
 final _mockProfileCubit = MockProfileCubit();
-final _fakeGetTodaysDate = FakeGetTodaysDate();
+final _fakeGetTodaysDate = _FakeGetTodaysDate();
 final _mockTasksDoneTodayCubit = MockTasksDoneTodayCubit();
 final _mockUpdateProfileRepository = MockUpdateProfileRepository();
 
@@ -64,10 +71,7 @@ void main() {
             equals(yesterday),
             reason: 'Reason: start date must not change',
           );
-          expect(
-            updatedStreak.updatedAt,
-            equals(_fakeGetTodaysDate.returnedValue.millisecondsSinceEpoch),
-          );
+          expect(updatedStreak.updatedAt, equals(today.millisecondsSinceEpoch));
         },
       );
 
