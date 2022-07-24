@@ -33,7 +33,9 @@ class DailyStreak with _$DailyStreak {
   }
 
   bool isInterrupted() {
-    if (updatedAt == null) return true;
+    final streakStartedDaysAgo = DateTime.now().difference(startsAt).inDays;
+
+    if (streakStartedDaysAgo <= 1) return false;
     return !_wasStreakUpdatedToday();
   }
 

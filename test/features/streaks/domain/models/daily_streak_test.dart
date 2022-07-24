@@ -92,8 +92,9 @@ void main() {
       'WHEN .isInterrupted called',
       () {
         test(
-          'WHEN streak was never updated '
-          'THEN returns true',
+          'WHEN streak started yesterday '
+          'AND streak was never updated '
+          'THEN returns false',
           () {
             final isInterrupted = dailyStreakFixture
                 .copyWith(
@@ -102,7 +103,7 @@ void main() {
                 )
                 .isInterrupted();
 
-            expect(isInterrupted, true);
+            expect(isInterrupted, false);
           },
         );
 
