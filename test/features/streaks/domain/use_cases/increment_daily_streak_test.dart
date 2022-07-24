@@ -19,6 +19,8 @@ final _mockTasksDoneTodayCubit = MockTasksDoneTodayCubit();
 final _mockUpdateProfileRepository = MockUpdateProfileRepository();
 
 void main() {
+  final yesterday = DateTime.now().subtract(const Duration(days: 1));
+
   setUp(() {
     reset(_mockTasksDoneTodayCubit);
     reset(_mockUpdateProfileRepository);
@@ -34,34 +36,58 @@ void main() {
     group('WHEN daily streak is achieved', () {
       setUpAll(() => registerFallbackValue(profileFixture));
 
-      test('THEN updates daily streak', () async {
-        final yesterday = DateTime.now().subtract(const Duration(days: 1));
-        final tasksDoneToday = [taskFixture, taskFixture, taskFixture];
-        final profileWithAchievedStreak = profileFixture.copyWith.dailyStreak(
-          perDay: tasksDoneToday.length,
-          startsAt: yesterday,
-          createdAt: yesterday,
-        );
-        _mockTypicalCalls(
-          profile: profileWithAchievedStreak,
-          tasksDoneToday: tasksDoneToday,
-        );
+      test(
+        'AND streak has not been updated today THEN updates daily streak',
+        () async {
+          final tasksDoneToday = [taskFixture, taskFixture, taskFixture];
+          final profileWithAchievedStreak = profileFixture.copyWith.dailyStreak(
+            perDay: tasksDoneToday.length,
+            startsAt: yesterday,
+          );
+          _mockTypicalCalls(
+            tasksDoneToday: tasksDoneToday,
+            profile: profileWithAchievedStreak,
+          );
 
-        final shouldDailyStreakUpdate = profileWithAchievedStreak.dailyStreak
-            .shouldStreakIncrement(tasksDoneToday: tasksDoneToday.length);
-        expect(shouldDailyStreakUpdate, isTrue);
+          final shouldDailyStreakIncrement = profileWithAchievedStreak
+              .dailyStreak
+              .shouldStreakIncrement(tasksDoneToday: tasksDoneToday.length);
 
-        await _getService()();
+          await _getService()();
 
-        final profileUpdate = verify(
-          () => _mockUpdateProfileRepository(captureAny()),
-        );
-        profileUpdate.called(1);
-        expect(
-          (profileUpdate.captured.first as Profile).dailyStreak.updatedAt,
-          equals(_fakeGetTodaysDate.returnedValue.millisecondsSinceEpoch),
-        );
-      });
+          final profileUpdate = verify(
+            () => _mockUpdateProfileRepository(captureAny()),
+          );
+          profileUpdate.called(1);
+          expect(shouldDailyStreakIncrement, isTrue);
+          expect(
+            (profileUpdate.captured.first as Profile).dailyStreak.updatedAt,
+            equals(_fakeGetTodaysDate.returnedValue.millisecondsSinceEpoch),
+          );
+        },
+      );
+
+      test(
+        'AND streak has been updated today THEN does not update daily streak',
+        () async {
+          final tasksDoneToday = [taskFixture, taskFixture, taskFixture];
+          final profileWithAchievedStreak = profileFixture.copyWith.dailyStreak(
+            perDay: tasksDoneToday.length,
+            startsAt: yesterday,
+            updatedAt: DateTime.now().millisecondsSinceEpoch,
+          );
+          _mockTypicalCalls(
+            tasksDoneToday: tasksDoneToday,
+            profile: profileWithAchievedStreak,
+          );
+
+          await _getService()();
+
+          verifyNever(
+            () => _mockUpdateProfileRepository(captureAny()),
+          );
+        },
+      );
     });
   });
 }
