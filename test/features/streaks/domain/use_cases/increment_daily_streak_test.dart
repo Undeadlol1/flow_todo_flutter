@@ -33,9 +33,19 @@ void main() {
   });
 
   group('GIVEN IncrementDailyStreak', () {
-    group('WHEN daily streak is achieved', () {
-      setUpAll(() => registerFallbackValue(profileFixture));
+    setUpAll(() => registerFallbackValue(profileFixture));
 
+    test('WHEN streak is not achieved ' 'THEN does nothing', () async {
+      _mockTypicalCalls(profile: profileFixture, tasksDoneToday: []);
+
+      await _getService()();
+
+      verifyNever(
+        () => _mockUpdateProfileRepository(captureAny()),
+      );
+    });
+
+    group('WHEN daily streak is achieved', () {
       test(
         'AND streak has not been updated today THEN updates daily streak',
         () async {
