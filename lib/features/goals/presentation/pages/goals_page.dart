@@ -86,6 +86,7 @@ class _GoalsList extends StatelessWidget {
     );
   }
 
+  // TODO https://github.com/felangel/bloc/issues/1144
   bool _buildWhen(GoalsState previous, GoalsState current) {
     if (previous.goals.isEmpty || current.goals.isEmpty) return true;
 
