@@ -16,7 +16,7 @@ _$_Profile _$$_ProfileFromJson(Map<String, dynamic> json) => _$_Profile(
       dailyStreak:
           DailyStreak.fromJson(json['dailyStreak'] as Map<String, dynamic>),
       areEcouragingMessagesDisabled:
-          json['areEcouragingMessagesDisabled'] as bool,
+          json['areEcouragingMessagesDisabled'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_ProfileToJson(_$_Profile instance) =>

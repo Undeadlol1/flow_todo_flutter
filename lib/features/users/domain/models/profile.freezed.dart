@@ -27,6 +27,7 @@ mixin _$Profile {
   String get userId => throw _privateConstructorUsedError;
   int get createdAt => throw _privateConstructorUsedError;
   DailyStreak get dailyStreak => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: false)
   bool get areEcouragingMessagesDisabled => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,7 +47,7 @@ abstract class $ProfileCopyWith<$Res> {
       String userId,
       int createdAt,
       DailyStreak dailyStreak,
-      bool areEcouragingMessagesDisabled});
+      @JsonKey(defaultValue: false) bool areEcouragingMessagesDisabled});
 
   $DailyStreakCopyWith<$Res> get dailyStreak;
 }
@@ -128,7 +129,7 @@ abstract class _$$_ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       String userId,
       int createdAt,
       DailyStreak dailyStreak,
-      bool areEcouragingMessagesDisabled});
+      @JsonKey(defaultValue: false) bool areEcouragingMessagesDisabled});
 
   @override
   $DailyStreakCopyWith<$Res> get dailyStreak;
@@ -203,7 +204,8 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
       required this.userId,
       required this.createdAt,
       required this.dailyStreak,
-      required this.areEcouragingMessagesDisabled});
+      @JsonKey(defaultValue: false)
+          required this.areEcouragingMessagesDisabled});
 
   factory _$_Profile.fromJson(Map<String, dynamic> json) =>
       _$$_ProfileFromJson(json);
@@ -223,6 +225,7 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
   @override
   final DailyStreak dailyStreak;
   @override
+  @JsonKey(defaultValue: false)
   final bool areEcouragingMessagesDisabled;
 
   @override
@@ -298,7 +301,8 @@ abstract class _Profile implements Profile {
       required final String userId,
       required final int createdAt,
       required final DailyStreak dailyStreak,
-      required final bool areEcouragingMessagesDisabled}) = _$_Profile;
+      @JsonKey(defaultValue: false)
+          required final bool areEcouragingMessagesDisabled}) = _$_Profile;
 
   factory _Profile.fromJson(Map<String, dynamic> json) = _$_Profile.fromJson;
 
@@ -317,6 +321,7 @@ abstract class _Profile implements Profile {
   @override
   DailyStreak get dailyStreak => throw _privateConstructorUsedError;
   @override
+  @JsonKey(defaultValue: false)
   bool get areEcouragingMessagesDisabled => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
