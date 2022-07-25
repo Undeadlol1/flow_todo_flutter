@@ -87,7 +87,6 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
                     tasksDoneState: tasksDoneState,
                     tasksDoneAmount: tasksDoneAmount,
                     requiredTasksPerDay: requiredTasksPerDay,
-                    isStreakAchievedToday: isStreakAchievedToday,
                   ),
                   _ProgressBar(
                     animationController: _animationController,
@@ -221,14 +220,12 @@ class _ProgressBar extends StatelessWidget {
 class _WinsTodayText extends StatelessWidget {
   const _WinsTodayText({
     Key? key,
-    required this.isStreakAchievedToday,
     required this.tasksDoneAmount,
     required this.requiredTasksPerDay,
     required this.tasksDoneState,
   }) : super(key: key);
 
   final TasksDoneTodayState tasksDoneState;
-  final bool isStreakAchievedToday;
   final int tasksDoneAmount;
   final int requiredTasksPerDay;
 
@@ -239,18 +236,28 @@ class _WinsTodayText extends StatelessWidget {
       children: [
         const Text('Wins today: '),
         tasksDoneState.maybeMap(
-          loaded: (value) => Visibility(
-            visible: !isStreakAchievedToday,
-            child: Row(
-              children: [
-                AnimatedNumbers(number: tasksDoneAmount),
-                Text(' / $requiredTasksPerDay'),
-              ],
-            ),
+          loaded: (value) => Row(
+            children: [
+              AnimatedNumbers(number: tasksDoneAmount),
+              Text(
+                tasksDoneAmount >= requiredTasksPerDay
+                    ? ' '
+                    : ' / $requiredTasksPerDay',
+              ),
+              if (tasksDoneAmount >= requiredTasksPerDay)
+                Icon(
+                  Icons.check,
+                  size: 22,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              if (tasksDoneAmount >= (requiredTasksPerDay * 2))
+                Text(
+                  ' x${(tasksDoneAmount - tasksDoneAmount.remainder(requiredTasksPerDay)) ~/ requiredTasksPerDay}',
+                ),
+            ],
           ),
           orElse: () => const SizedBox(),
         ),
-        if (isStreakAchievedToday) const Icon(Icons.check, size: 16),
       ],
     );
   }
