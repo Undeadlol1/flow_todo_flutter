@@ -59,10 +59,8 @@ class MakeStepForwardOnTheTask {
     profileCubit.setProfile(_getUpdatedProfile());
 
     try {
-      final Task updatedTask =
-          _getUpdatedTask(task, isTaskDone, howBigWasTheStep);
-      final pointsToAdd =
-          _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
+      final updatedTask = _getUpdatedTask(task, isTaskDone, howBigWasTheStep);
+      final pointsToAdd = _getAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
 
       _displaySnackbar(isTaskDone, updatedTask);
       await goToMainPage();
@@ -132,7 +130,7 @@ class MakeStepForwardOnTheTask {
     );
   }
 
-  int _calculateAmountOfPointsToAdd(
+  int _getAmountOfPointsToAdd(
     bool isTaskDone,
     Confidence howBigWasTheStep,
   ) {
