@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../users/presentation/cubit/profile_cubit.dart';
+import 'wins_today_test.dart';
 
 class TasksDoneToday extends StatefulWidget {
   const TasksDoneToday({Key? key}) : super(key: key);
@@ -83,11 +84,7 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
               padding: _padding,
               child: Column(
                 children: [
-                  _WinsTodayText(
-                    tasksDoneState: tasksDoneState,
-                    tasksDoneAmount: tasksDoneAmount,
-                    requiredTasksPerDay: requiredTasksPerDay,
-                  ),
+                  const WinsTodayText(),
                   _ProgressBar(
                     animationController: _animationController,
                     isStreakAchievedToday: isStreakAchievedToday,
@@ -213,52 +210,6 @@ class _ProgressBar extends StatelessWidget {
           value: animation.value <= 0 ? 0.01 : animation.value,
         ),
       ),
-    );
-  }
-}
-
-class _WinsTodayText extends StatelessWidget {
-  const _WinsTodayText({
-    Key? key,
-    required this.tasksDoneAmount,
-    required this.requiredTasksPerDay,
-    required this.tasksDoneState,
-  }) : super(key: key);
-
-  final TasksDoneTodayState tasksDoneState;
-  final int tasksDoneAmount;
-  final int requiredTasksPerDay;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const Text('Wins today: '),
-        tasksDoneState.maybeMap(
-          loaded: (value) => Row(
-            children: [
-              AnimatedNumbers(number: tasksDoneAmount),
-              Text(
-                tasksDoneAmount >= requiredTasksPerDay
-                    ? ' '
-                    : ' / $requiredTasksPerDay',
-              ),
-              if (tasksDoneAmount >= requiredTasksPerDay)
-                Icon(
-                  Icons.check,
-                  size: 22,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              if (tasksDoneAmount >= (requiredTasksPerDay * 2))
-                Text(
-                  ' x${(tasksDoneAmount - tasksDoneAmount.remainder(requiredTasksPerDay)) ~/ requiredTasksPerDay}',
-                ),
-            ],
-          ),
-          orElse: () => const SizedBox(),
-        ),
-      ],
     );
   }
 }
