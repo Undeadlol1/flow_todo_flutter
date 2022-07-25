@@ -28,14 +28,16 @@ class ProfilePage extends StatelessWidget {
               ),
               BlocBuilder<ProfileCubit, ProfileState>(
                 builder: (context, state) {
+                  final today = DateTime.now();
+                  final streak = state.profile?.dailyStreak;
+
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 10),
                       const Text('Debug information for developers:'),
-                      Text(
-                        'Streak starts at: ${state.profile?.dailyStreak.startsAt}',
-                      ),
+                      Text('Today is: $today'),
+                      Text('Streak starts at: ${streak?.startsAt}'),
                       Text(
                         'Streak was updated at: ${DateTime.fromMillisecondsSinceEpoch(state.profile?.dailyStreak.updatedAt ?? 0)}',
                       ),

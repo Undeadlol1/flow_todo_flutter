@@ -56,10 +56,16 @@ class DailyStreak with _$DailyStreak {
   bool _wasStreakUpdatedToday() {
     if (updatedAt == null) return false;
 
-    final today = DateTime.now();
-    final difference =
-        today.difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!));
+    return DateTime.fromMillisecondsSinceEpoch(updatedAt!)
+            .difference(_getBeginningOfToday())
+            .inHours
+            .sign >=
+        0;
+  }
 
-    return difference.inDays == 0;
+  DateTime _getBeginningOfToday() {
+    final now = DateTime.now();
+    final yesterdayMidnight = DateTime(now.year, now.month, now.day);
+    return yesterdayMidnight;
   }
 }
