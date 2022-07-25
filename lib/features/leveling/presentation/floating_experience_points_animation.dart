@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +19,8 @@ class _FloatingExperiencePointsAnimationState
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
-  bool isTextVisible = false;
+  bool _isTextVisible = false;
+  static const _textRevealedDuration = Duration(seconds: 2);
 
   @override
   void initState() {
@@ -36,26 +38,34 @@ class _FloatingExperiencePointsAnimationState
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: (context, state) {
-        setState(() => isTextVisible = true);
+        setState(() => _isTextVisible = true);
         Timer(
-          const Duration(seconds: 1),
-          () => setState(() => isTextVisible = false),
+          _textRevealedDuration,
+          () => setState(() => _isTextVisible = false),
         );
       },
       buildWhen: _buildWhenUserIsRewardedWithExp,
       listenWhen: _buildWhenUserIsRewardedWithExp,
       builder: (context, profileState) {
-        return Visibility(
-          visible: isTextVisible,
+        return AnimatedOpacity(
+          duration: const Duration(milliseconds: 500),
+          opacity: _isTextVisible ? 1 : 0,
           child: Container(
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Text(
-              profileState.profile?.experience.toString() ?? '0',
+
+            child: AnimatedNumbers(
+              duration: Duration(
+                milliseconds: _textRevealedDuration.inMilliseconds - 500,
+              ),
+              number: profileState.profile?.experience ?? 0,
             ),
+            // child: Text(
+            //   profileState.profile?.experience.toString() ?? '0',
+            // ),
           ),
         );
       },

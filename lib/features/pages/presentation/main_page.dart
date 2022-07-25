@@ -30,7 +30,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     Future.microtask(
       () {
-        timer = Timer.periodic(const Duration(seconds: 3), (_) {
+        timer = Timer.periodic(const Duration(seconds: 5), (_) {
           GetIt.I<ProfileCubit>().addPoints(10);
         });
       },
