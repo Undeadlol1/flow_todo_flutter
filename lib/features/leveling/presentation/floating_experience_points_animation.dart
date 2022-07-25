@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,24 +14,10 @@ class FloatingExperiencePointsAnimation extends StatefulWidget {
 }
 
 class _FloatingExperiencePointsAnimationState
-    extends State<FloatingExperiencePointsAnimation>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-
+    extends State<FloatingExperiencePointsAnimation> {
   bool _isTextVisible = false;
+  int _expPointsToDisplay = 0;
   static const _textRevealedDuration = Duration(seconds: 2);
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,16 +41,7 @@ class _FloatingExperiencePointsAnimationState
               color: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(10),
             ),
-
-            child: AnimatedNumbers(
-              duration: Duration(
-                milliseconds: _textRevealedDuration.inMilliseconds - 500,
-              ),
-              number: profileState.profile?.experience ?? 0,
-            ),
-            // child: Text(
-            //   profileState.profile?.experience.toString() ?? '0',
-            // ),
+            child: Text('+$_expPointsToDisplay'),
           ),
         );
       },
@@ -73,6 +49,15 @@ class _FloatingExperiencePointsAnimationState
   }
 
   bool _buildWhenUserIsRewardedWithExp(previous, current) {
-    return previous is ProfileLoaded && current is ProfileLoaded;
+    if (previous is ProfileLoaded && current is ProfileLoaded) {
+      final expDifference = _expPointsToDisplay =
+          (current.profile?.experience ?? 0) -
+              (previous.profile?.experience ?? 0);
+
+      _expPointsToDisplay = expDifference;
+
+      return true;
+    }
+    return false;
   }
 }
