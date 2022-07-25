@@ -56,7 +56,7 @@ class _FloatingExperiencePointsAnimationState
 
       _expPointsToDisplay = expDifference;
 
-      return true;
+      return !expDifference.isNegative;
     }
     return false;
   }
