@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/user.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/create_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/update_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_task_form.dart';
@@ -10,6 +11,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
 
 class _MockCreateTask extends Mock implements CreateTask {}
 
@@ -28,6 +30,7 @@ void main() {
   setUpAll(() {
     GetIt.I.registerSingleton<CreateTask>(_mockCreateTask);
     GetIt.I.registerSingleton<UpdateTask>(_mockUpdateTask);
+    GetIt.I.registerSingleton<SnackbarService>(MockSnackbarService());
   });
 
   group('GIVEN UpsertTaskForm', () {
