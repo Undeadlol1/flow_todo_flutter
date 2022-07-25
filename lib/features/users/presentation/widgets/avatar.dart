@@ -169,13 +169,16 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
                       ),
                 // child: CircularProgressIndicator(value: widgetProgress),
               ),
-              Positioned(
-                bottom: widget.radius / 2,
-                right: widget.radius / 2,
-                width: widget.radius,
-                height: widget.radius,
-                child: const Center(child: FloatingExperiencePointsAnimation()),
-              ),
+              if (widget.radius >= 60)
+                Positioned(
+                  width: widget.radius,
+                  height: widget.radius,
+                  right: widget.radius / 2,
+                  bottom: widget.radius / 2,
+                  child: const Center(
+                    child: FloatingExperiencePointsAnimation(),
+                  ),
+                ),
             ],
           ),
         );
