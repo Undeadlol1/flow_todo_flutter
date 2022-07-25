@@ -1,5 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/presentation/floating_experience_points_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -149,22 +150,29 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
               center: child,
             );
           },
-          child: CircleAvatar(
-            radius: widget.radius,
-            foregroundImage: authState.user.avatar == null
-                ? null
-                : ResizeImage(
-                    ExtendedNetworkImageProvider(
-                      authState.user.avatar!,
-                      printError: true,
-                      scale: 1,
-                      cache: true,
-                      cacheMaxAge: const Duration(days: 4),
-                    ),
-                    width: preferredImageSize,
-                    height: preferredImageSize,
-                  ),
-            // child: CircularProgressIndicator(value: widgetProgress),
+          child: Stack(
+            children: [
+              CircleAvatar(
+                radius: widget.radius,
+                foregroundImage: authState.user.avatar == null
+                    ? null
+                    : ResizeImage(
+                        ExtendedNetworkImageProvider(
+                          authState.user.avatar!,
+                          printError: true,
+                          scale: 1,
+                          cache: true,
+                          cacheMaxAge: const Duration(days: 4),
+                        ),
+                        width: preferredImageSize,
+                        height: preferredImageSize,
+                      ),
+                // child: CircularProgressIndicator(value: widgetProgress),
+              ),
+              const Center(
+                child: FloatingExperiencePointsAnimation(),
+              ),
+            ],
           ),
         );
       },

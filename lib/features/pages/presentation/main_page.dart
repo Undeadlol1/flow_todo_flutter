@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,9 +15,34 @@ import '../../users/domain/use_cases/get_profile.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
 import '../../users/presentation/widgets/player_progress_summary.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   static const pathName = '/main';
   const MainPage({Key? key}) : super(key: key);
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  late Timer timer;
+
+  @override
+  void initState() {
+    Future.microtask(
+      () {
+        timer = Timer.periodic(const Duration(seconds: 3), (_) {
+          GetIt.I<ProfileCubit>().addPoints(10);
+        });
+      },
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
