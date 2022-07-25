@@ -15,16 +15,23 @@ class FloatingExperiencePointsAnimation extends StatefulWidget {
 
 class _FloatingExperiencePointsAnimationState
     extends State<FloatingExperiencePointsAnimation> {
+  Timer? _hideTextTimer;
   bool _isTextVisible = false;
   int _expPointsToDisplay = 0;
   static const _textRevealedDuration = Duration(seconds: 2);
+
+  @override
+  void dispose() {
+    _hideTextTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: (context, state) {
         setState(() => _isTextVisible = true);
-        Timer(
+        _hideTextTimer = Timer(
           _textRevealedDuration,
           () => setState(() => _isTextVisible = false),
         );
@@ -38,8 +45,8 @@ class _FloatingExperiencePointsAnimationState
           child: Container(
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(10),
+              color: Theme.of(context).colorScheme.background,
             ),
             child: Text('+$_expPointsToDisplay'),
           ),
