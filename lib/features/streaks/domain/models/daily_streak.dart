@@ -23,7 +23,13 @@ class DailyStreak with _$DailyStreak {
       _$DailyStreakFromJson(json);
 
   bool isInterrupted() {
-    final streakStartedDaysAgo = DateTime.now().difference(startsAt).inDays;
+    final streakStartedDaysAgo = DateTime.now()
+        .difference(
+          DateTime.fromMillisecondsSinceEpoch(
+            updatedAt ?? DateTime.now().millisecondsSinceEpoch,
+          ),
+        )
+        .inDays;
 
     if (streakStartedDaysAgo <= 1) return false;
     return !_wasStreakUpdatedToday();
@@ -32,15 +38,15 @@ class DailyStreak with _$DailyStreak {
   bool shouldStreakIncrement({required final int tasksDoneToday}) {
     final bool isTaskGoalReached = tasksDoneToday >= perDay;
 
-    if (updatedAt == null && isTaskGoalReached) {
-      return true;
+    if (isTaskGoalReached) {
+      if (updatedAt == null) {
+        return true;
+      }
+
+      return !_wasStreakUpdatedToday();
     }
 
-    if (_wasStreakUpdatedToday()) {
-      return false;
-    }
-
-    return isTaskGoalReached && isInterrupted();
+    return false;
   }
 
   bool _wasStreakUpdatedToday() {

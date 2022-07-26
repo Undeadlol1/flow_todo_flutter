@@ -36,6 +36,9 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 10),
                       const Text('Debug information for developers:'),
+                      Text(
+                        'Is streak interrupted: ${streak?.isInterrupted().toString() ?? 'null value'}',
+                      ),
                       Text('Today is: $today'),
                       Text('Streak starts at: ${streak?.startsAt}'),
                       Text(

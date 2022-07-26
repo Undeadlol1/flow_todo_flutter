@@ -31,15 +31,13 @@ void main() {
               startsAt: twoDaysAgo,
               updatedAt: today.millisecondsSinceEpoch,
             )
-            .shouldStreakIncrement(
-              tasksDoneToday: 5,
-            );
+            .shouldStreakIncrement(tasksDoneToday: 5);
 
         expect(result, false);
       });
 
       test(
-        'WHEN streak started yesterda '
+        'WHEN streak started yesterday '
         'AND was not updated today  '
         'THEN returns true',
         () {
@@ -49,9 +47,7 @@ void main() {
                 startsAt: yesterday,
                 updatedAt: null,
               )
-              .shouldStreakIncrement(
-                tasksDoneToday: 5,
-              );
+              .shouldStreakIncrement(tasksDoneToday: 5);
 
           expect(shouldStreakIncrement, true);
         },
@@ -68,9 +64,7 @@ void main() {
                 startsAt: twoDaysAgo,
                 updatedAt: yesterday.millisecondsSinceEpoch,
               )
-              .shouldStreakIncrement(
-                tasksDoneToday: 5,
-              );
+              .shouldStreakIncrement(tasksDoneToday: 5);
 
           expect(shouldStreakIncrement, true);
         },
