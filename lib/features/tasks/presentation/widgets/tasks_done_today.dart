@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../users/presentation/cubit/profile_cubit.dart';
-import 'wins_today_test.dart';
+import 'wins_today_text.dart';
 
 class TasksDoneToday extends StatefulWidget {
   const TasksDoneToday({Key? key}) : super(key: key);
