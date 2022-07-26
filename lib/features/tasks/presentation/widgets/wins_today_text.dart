@@ -17,7 +17,7 @@ class WinsTodayText extends StatelessWidget {
 
         final tasksDoneAmount = tasksDoneState.tasks.length;
         final requiredTasksPerDay =
-            profileState.profile?.dailyStreak.perDay ?? 0;
+            profileState.profile?.dailyStreak.perDay ?? 3;
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
