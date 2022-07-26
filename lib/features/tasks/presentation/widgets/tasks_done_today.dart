@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../users/presentation/cubit/profile_cubit.dart';
+import 'wins_today_test.dart';
 
 class TasksDoneToday extends StatefulWidget {
   const TasksDoneToday({Key? key}) : super(key: key);
@@ -85,12 +86,7 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
               padding: _padding,
               child: Column(
                 children: [
-                  _WinsTodayText(
-                    tasksDoneState: tasksDoneState,
-                    tasksDoneAmount: tasksDoneAmount,
-                    requiredTasksPerDay: requiredTasksPerDay,
-                    isStreakAchievedToday: isStreakAchievedToday,
-                  ),
+                  const WinsTodayText(),
                   _ProgressBar(
                     animationController: _animationController,
                     isStreakAchievedToday: isStreakAchievedToday,
@@ -220,44 +216,6 @@ class _ProgressBar extends StatelessWidget {
           value: animation.value <= 0 ? 0.01 : animation.value,
         ),
       ),
-    );
-  }
-}
-
-class _WinsTodayText extends StatelessWidget {
-  const _WinsTodayText({
-    Key? key,
-    required this.isStreakAchievedToday,
-    required this.tasksDoneAmount,
-    required this.requiredTasksPerDay,
-    required this.tasksDoneState,
-  }) : super(key: key);
-
-  final TasksDoneTodayState tasksDoneState;
-  final bool isStreakAchievedToday;
-  final int tasksDoneAmount;
-  final int requiredTasksPerDay;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const Text('Wins today: '),
-        tasksDoneState.maybeMap(
-          loaded: (value) => Visibility(
-            visible: !isStreakAchievedToday,
-            child: Row(
-              children: [
-                AnimatedNumbers(number: tasksDoneAmount),
-                Text(' / $requiredTasksPerDay'),
-              ],
-            ),
-          ),
-          orElse: () => const SizedBox(),
-        ),
-        if (isStreakAchievedToday) const Icon(Icons.check, size: 16),
-      ],
     );
   }
 }

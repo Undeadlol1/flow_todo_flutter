@@ -23,7 +23,9 @@ class DailyStreak with _$DailyStreak {
       _$DailyStreakFromJson(json);
 
   bool isInterrupted() {
-    if (updatedAt == null) return true;
+    final streakStartedDaysAgo = DateTime.now().difference(startsAt).inDays;
+
+    if (streakStartedDaysAgo <= 1) return false;
     return !_wasStreakUpdatedToday();
   }
 
@@ -44,10 +46,16 @@ class DailyStreak with _$DailyStreak {
   bool _wasStreakUpdatedToday() {
     if (updatedAt == null) return false;
 
-    final today = DateTime.now();
-    final difference =
-        today.difference(DateTime.fromMillisecondsSinceEpoch(updatedAt!));
+    return DateTime.fromMillisecondsSinceEpoch(updatedAt!)
+            .difference(_getBeginningOfToday())
+            .inHours
+            .sign >=
+        0;
+  }
 
-    return difference.inDays == 0;
+  DateTime _getBeginningOfToday() {
+    final now = DateTime.now();
+    final yesterdayMidnight = DateTime(now.year, now.month, now.day);
+    return yesterdayMidnight;
   }
 }

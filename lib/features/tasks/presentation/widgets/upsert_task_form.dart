@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+import '../../../common/services/snackbar_service.dart';
 import '../../domain/models/task.dart';
 import '../../domain/use_cases/create_task.dart';
 
@@ -99,6 +100,7 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
           await GetIt.I<UpdateTask>()(
             widget.taskToUpdate!.copyWith(title: inputText),
           );
+          GetIt.I<SnackbarService>().displaySnackbar(text: 'Saved!');
         }
       } catch (e) {
         titleFormControl.focus();
