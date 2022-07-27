@@ -8,7 +8,6 @@ import '../../features/common/domain/use_cases/go_to_main_page.dart';
 import '../../features/leveling/domain/entities/default_leveling_config.dart';
 import '../../features/leveling/domain/services/experience_to_reach_next_level_calculator.dart';
 import '../../features/leveling/domain/services/level_progress_percentage_calculator.dart';
-import '../../features/leveling/domain/services/user_level_calculator.dart';
 import '../../features/spaced_repetition/domain/services/next_repetition_calculator.dart';
 import '../../features/tasks/domain/services/stale_task_detector.dart';
 import '../../features/tasks/domain/use_cases/go_to_task_creation.dart';
@@ -23,11 +22,6 @@ void configureManualDI() {
   injector.registerSingleton(
     ExperienceToReachNextLevelCalculator(
       levelingConfig: DefaultLevelingConfig(),
-    ),
-  );
-  injector.registerSingleton(
-    UserLevelCalculator(
-      experienceToReachALevelCalculator: injector.get(),
     ),
   );
   injector.registerSingleton(

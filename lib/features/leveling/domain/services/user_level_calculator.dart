@@ -1,8 +1,10 @@
+import 'package:injectable/injectable.dart';
 import 'package:memoize/memoize.dart';
 
 import '../entities/user_level.dart';
 import 'experience_to_reach_next_level_calculator.dart';
 
+@injectable
 class UserLevelCalculator {
   final ExperienceToReachNextLevelCalculator experienceToReachALevelCalculator;
 
