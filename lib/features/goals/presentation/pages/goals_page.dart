@@ -54,6 +54,8 @@ class _GoalsList extends StatelessWidget {
   final calculateLevel = GetIt.I<UserLevelCalculator>();
   final MakeStepForwardOnAGoal makeStepForwardOnAGoal = GetIt.I();
 
+  final _padding = const EdgeInsets.only(left: 10);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GoalsCubit, GoalsState>(
@@ -66,13 +68,15 @@ class _GoalsList extends StatelessWidget {
               itemCount: goalsState.goals.length,
               itemBuilder: (BuildContext context, int index) {
                 final goal = goalsState.goals[index];
+                var secondRowTextStyle = Theme.of(context).textTheme.caption;
                 return Column(
                   children: [
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: _padding,
                           child: Text(goal.title),
                         ),
                         IconButton(
@@ -84,12 +88,21 @@ class _GoalsList extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Level: ${calculateLevel(goal.points).value}'),
+                        Padding(
+                          padding: _padding,
+                          child: Text(
+                            'Level: ${calculateLevel(goal.points).value}',
+                            style: secondRowTextStyle,
+                          ),
+                        ),
                         const SizedBox(width: 5),
                         Row(
                           children: [
-                            const Text('Points: '),
-                            AnimatedNumbers(number: goal.points),
+                            Text('Points: ', style: secondRowTextStyle),
+                            AnimatedNumbers(
+                              number: goal.points,
+                              style: secondRowTextStyle,
+                            ),
                           ],
                         )
                       ],
