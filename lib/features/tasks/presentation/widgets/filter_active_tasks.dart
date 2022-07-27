@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:remove_emoji/remove_emoji.dart';
 
+// NOTE: https://github.com/SphericalKat/dart-fuzzywuzzy/issues/6#issuecomment-1177672619
 final _removeEmoji = RemoveEmoji().removemoji;
 
 class FilterActiveTasks extends StatelessWidget {
