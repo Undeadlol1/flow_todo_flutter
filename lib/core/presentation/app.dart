@@ -103,7 +103,7 @@ class _AppState extends State<App> {
               darkTheme: darkTheme,
               initialRoute: MainPage.pathName,
               routes: {
-                MainPage.pathName: (contex) => const MainPage(),
+                MainPage.pathName: (contex) => MainPage(),
                 TaskPage.pathName: (contex) => const TaskPage(),
                 GoalsPage.pathName: (contex) => const GoalsPage(),
                 ProfilePage.pathName: (contex) => const ProfilePage(),

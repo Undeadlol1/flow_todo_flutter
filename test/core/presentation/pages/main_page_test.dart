@@ -6,6 +6,7 @@ import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_p
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/core/presentation/pages/main_page.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/filter_active_tasks.dart';
@@ -26,8 +27,9 @@ import '../../../test_utilities/mocks/mock_level_progress_percentage_calculator.
 class _MockSignInWithGoogle extends Mock implements SignInWithGoogle {}
 
 final _tasksCuibit = TasksCubit();
-var _profileCubit = ProfileCubit();
-var _authCubit = AuthentificationCubit();
+ProfileCubit _profileCubit = ProfileCubit();
+AuthentificationCubit _authCubit = AuthentificationCubit();
+final _filteredTasksCubit = FilteredTasksCubit();
 
 void main() {
   group('GIVEN MainPage', () {
@@ -39,6 +41,7 @@ void main() {
     setUpAll(() {
       GetIt.I.registerSingleton(_authCubit);
       GetIt.I.registerSingleton(_tasksCuibit);
+      GetIt.I.registerSingleton(_filteredTasksCubit);
       GetIt.I.registerSingleton<SignInWithGoogle>(_MockSignInWithGoogle());
       GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
       GetIt.I.registerSingleton<StreakDaysInARowCalculator>(
@@ -126,7 +129,7 @@ extension _PumpWithScaffold on WidgetTester {
           BlocProvider(create: (context) => _profileCubit),
           BlocProvider(create: (context) => TasksDoneTodayCubit()),
         ],
-        child: const MaterialApp(
+        child: MaterialApp(
           home: MainPage(),
         ),
       ),
