@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,16 +15,21 @@ class TasksList extends StatefulWidget {
 class _TasksListState extends State<TasksList> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TasksCubit, TasksState>(
-      builder: (context, tasksState) {
+    return Builder(
+      builder: (context) {
+        final tasksState = context.watch<TasksCubit>();
+        final filteredTasks = context.watch<FilteredTasksCubit>().state.tasks;
+        final tasksToDisplay =
+            filteredTasks.isEmpty ? tasksState.state.tasks : filteredTasks;
+
         if (tasksState is TasksLoading) {
           return const _LoadingIndicator();
         }
 
         return ListView.builder(
-          itemCount: tasksState.tasks.length,
+          itemCount: tasksToDisplay.length,
           itemBuilder: (BuildContext context, int index) {
-            return TasksListItem(task: tasksState.tasks[index]);
+            return TasksListItem(task: tasksToDisplay[index]);
           },
         );
       },
