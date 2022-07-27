@@ -27,10 +27,10 @@ class ActiveQuest extends StatelessWidget {
             padding: _padding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                SizedBox(height: 15),
-                Text('Quest: reach level 20'),
-                _ProgressBar(),
+              children: [
+                const SizedBox(height: 15),
+                Text('Quest: reach level ${level + 5}'),
+                const _ProgressBar(),
               ],
             ),
           );
