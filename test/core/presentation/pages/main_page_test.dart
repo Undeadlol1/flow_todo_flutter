@@ -72,26 +72,27 @@ void main() {
       },
     );
 
-    testWidgets(
-      "SHOULD display TasksList",
-      (WidgetTester tester) async {
-        await tester.pumpWithDependencies();
+    group("WHEN user is logged in THEN", () {
+      setUp(() => _profileCubit.setProfile(profileFixture));
 
-        expect(find.byType(FilterActiveTasks), findsOneWidget);
-      },
-    );
+      testWidgets(
+        "displays FilterActiveTasks",
+        (WidgetTester tester) async {
+          await tester.pumpWithDependencies();
 
-    testWidgets(
-      "WHEN user is logged in "
-      "THEN displays TasksDoneToday",
-      (WidgetTester tester) async {
-        _profileCubit.setProfile(profileFixture);
+          expect(find.byType(FilterActiveTasks), findsOneWidget);
+        },
+      );
 
-        await tester.pumpWithDependencies();
+      testWidgets(
+        "displays TasksDoneToday",
+        (WidgetTester tester) async {
+          await tester.pumpWithDependencies();
 
-        expect(find.byType(TasksDoneToday), findsOneWidget);
-      },
-    );
+          expect(find.byType(TasksDoneToday), findsOneWidget);
+        },
+      );
+    });
 
     testWidgets(
       "WHEN user is not logged in "
