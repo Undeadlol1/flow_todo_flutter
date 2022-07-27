@@ -58,6 +58,8 @@ class _GoalsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final secondRowTextStyle = Theme.of(context).textTheme.caption;
+
     return BlocBuilder<GoalsCubit, GoalsState>(
       buildWhen: _buildWhen,
       builder: (context, goalsState) {
@@ -68,7 +70,7 @@ class _GoalsList extends StatelessWidget {
               itemCount: goalsState.goals.length,
               itemBuilder: (BuildContext context, int index) {
                 final goal = goalsState.goals[index];
-                var secondRowTextStyle = Theme.of(context).textTheme.caption;
+
                 return Column(
                   children: [
                     const SizedBox(height: 10),
