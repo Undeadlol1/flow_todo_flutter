@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flow_todo_flutter_2022/core/presentation/pages/main_page.dart';
+import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +28,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final TasksCubit tasksCubit = GetIt.I();
+  final GoalsCubit goalsCubit = GetIt.I();
   final ProfileCubit profileCubit = GetIt.I();
   final TasksDoneTodayCubit tasksDoneTodayCubit = GetIt.I();
   final AuthentificationCubit authentificationCubit = GetIt.I();
@@ -86,10 +88,11 @@ class _AppState extends State<App> {
       textDirection: TextDirection.ltr,
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => tasksCubit),
-          BlocProvider(create: (context) => profileCubit),
-          BlocProvider(create: (context) => tasksDoneTodayCubit),
-          BlocProvider(create: (context) => authentificationCubit),
+          BlocProvider(create: (_) => tasksCubit),
+          BlocProvider(create: (_) => goalsCubit),
+          BlocProvider(create: (_) => profileCubit),
+          BlocProvider(create: (_) => tasksDoneTodayCubit),
+          BlocProvider(create: (_) => authentificationCubit),
         ],
         child: Stack(
           alignment: Alignment.bottomCenter,
@@ -102,7 +105,7 @@ class _AppState extends State<App> {
               routes: {
                 MainPage.pathName: (contex) => const MainPage(),
                 TaskPage.pathName: (contex) => const TaskPage(),
-                GoalsPage.pathName: (contex) => GoalsPage(),
+                GoalsPage.pathName: (contex) => const GoalsPage(),
                 ProfilePage.pathName: (contex) => const ProfilePage(),
                 WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
               },

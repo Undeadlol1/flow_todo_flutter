@@ -18,7 +18,8 @@ void main() {
     'THEN returns error',
     () async {
       final mockFirestore = _MockFirebaseFirestore();
-      when(_typicalFirestoreCall(mockFirestore)).thenThrow(Exception('Something went wrong'));
+      when(_typicalFirestoreCall(mockFirestore))
+          .thenThrow(Exception('Something went wrong'));
 
       expect(
         () => GetTasksToDoRepository(firestore: mockFirestore).call(userId: ''),
@@ -34,11 +35,13 @@ void main() {
     () async {
       final mockFirestore = _MockFirebaseFirestore();
 
-      when(_typicalFirestoreCall(mockFirestore))
-          .thenAnswer((_) => null as Future<QuerySnapshot<Map<String, dynamic>>>);
+      when(_typicalFirestoreCall(mockFirestore)).thenAnswer(
+        (_) => null as Future<QuerySnapshot<Map<String, dynamic>>>,
+      );
 
       try {
-        await GetTasksToDoRepository(firestore: mockFirestore).call(userId: _properUserId);
+        await GetTasksToDoRepository(firestore: mockFirestore)
+            .call(userId: _properUserId);
       } catch (e) {
         verify(_typicalFirestoreCall(mockFirestore)).called(1);
       }
@@ -55,7 +58,9 @@ void main() {
             .add(_buildTaskMap(userId: _properUserId))
             .then((_) => collection.add(_buildTaskMap(userId: _properUserId)))
             .then((_) => collection.add(_buildTaskMap(userId: '')))
-            .then((_) => collection.add(_buildTaskMap(userId: _improperUserId)));
+            .then(
+              (_) => collection.add(_buildTaskMap(userId: _improperUserId)),
+            );
 
         final result = await GetTasksToDoRepository(firestore: instance).call(
           userId: _properUserId,
@@ -72,7 +77,10 @@ void main() {
         final collection = instance.collection('tasks');
         await collection
             .add(_buildTaskMap(userId: _properUserId, isDone: true))
-            .then((_) => collection.add(_buildTaskMap(userId: _properUserId, isDone: false)));
+            .then(
+              (_) => collection
+                  .add(_buildTaskMap(userId: _properUserId, isDone: false)),
+            );
 
         final result = await GetTasksToDoRepository(firestore: instance).call(
           userId: _properUserId,
@@ -89,12 +97,16 @@ void main() {
         final collection = instance.collection('tasks');
         final tommorowsDateInMilliseconds =
             DateTime.now().add(const Duration(days: 1)).millisecondsSinceEpoch;
-        final yesterdaysDateInMilliseconds =
-            DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch;
+        final yesterdaysDateInMilliseconds = DateTime.now()
+            .subtract(const Duration(days: 1))
+            .millisecondsSinceEpoch;
 
         await collection
             .add(_buildTaskMap(dueAt: tommorowsDateInMilliseconds))
-            .then((_) => collection.add(_buildTaskMap(dueAt: yesterdaysDateInMilliseconds)));
+            .then(
+              (_) => collection
+                  .add(_buildTaskMap(dueAt: yesterdaysDateInMilliseconds)),
+            );
 
         final result = await GetTasksToDoRepository(firestore: instance).call(
           userId: _properUserId,
@@ -109,7 +121,8 @@ void main() {
       () async {
         final instance = FakeFirebaseFirestore();
 
-        final result = await GetTasksToDoRepository(firestore: instance).call(userId: '');
+        final result =
+            await GetTasksToDoRepository(firestore: instance).call(userId: '');
 
         expect(result, equals([]));
       },
@@ -124,7 +137,10 @@ _typicalFirestoreCall(_MockFirebaseFirestore mockFirestore) {
         .collection('tasks')
         .where('userId', isEqualTo: userId)
         .where('isDone', isEqualTo: false)
-        .where('dueAt', isLessThanOrEqualTo: DateTime.now().millisecondsSinceEpoch)
+        .where(
+          'dueAt',
+          isLessThanOrEqualTo: DateTime.now().millisecondsSinceEpoch,
+        )
         .limit(100)
         .get();
   };
@@ -133,14 +149,14 @@ _typicalFirestoreCall(_MockFirebaseFirestore mockFirestore) {
 Map<String, Object> _buildTaskMap({
   String userId = _properUserId,
   bool isDone = false,
-  num? dueAt,
+  int? dueAt,
 }) {
   final taskConvertedToMap = {
     'isDone': isDone,
     'userId': userId,
     'id': taskFixture.id,
     'name': taskFixture.title,
-    'createdAt': taskFixture.createdAt,
+    'createdAt': taskFixture.createdAt.millisecondsSinceEpoch,
     'dueAt': dueAt ?? DateTime.now().millisecondsSinceEpoch,
   };
 

@@ -1,10 +1,13 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/models/daily_streak.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../users/presentation/cubit/profile_cubit.dart';
+import 'wins_today_text.dart';
 
 class TasksDoneToday extends StatefulWidget {
   const TasksDoneToday({Key? key}) : super(key: key);
@@ -84,12 +87,7 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _WinsTodayText(
-                    tasksDoneState: tasksDoneState,
-                    tasksDoneAmount: tasksDoneAmount,
-                    requiredTasksPerDay: requiredTasksPerDay,
-                    isStreakAchievedToday: isStreakAchievedToday,
-                  ),
+                  const WinsTodayText(),
                   _ProgressBar(
                     animationController: _animationController,
                     isStreakAchievedToday: isStreakAchievedToday,
@@ -157,7 +155,8 @@ class _TasksDoneTodayState extends State<TasksDoneToday>
 
 class _DaysInARowText extends StatelessWidget {
   final bool areAnimationsEnabled;
-  const _DaysInARowText({
+  final StreakDaysInARowCalculator streakDaysInARowCalculator = GetIt.I();
+  _DaysInARowText({
     Key? key,
     required this.areAnimationsEnabled,
   }) : super(key: key);
@@ -171,7 +170,10 @@ class _DaysInARowText extends StatelessWidget {
         final dailyStreak = profileState.profile?.dailyStreak;
         final int daysInARow = dailyStreak?.isInterrupted() ?? true
             ? 0
-            : dailyStreak?.getDaysInARow() ?? 0;
+            : streakDaysInARowCalculator(
+                updatedAt: dailyStreak?.updatedAt,
+                startsAt: dailyStreak?.startsAt ?? DateTime.now(),
+              );
 
         return Visibility(
           visible: daysInARow > 0,
@@ -218,44 +220,6 @@ class _ProgressBar extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _WinsTodayText extends StatelessWidget {
-  const _WinsTodayText({
-    Key? key,
-    required this.isStreakAchievedToday,
-    required this.tasksDoneAmount,
-    required this.requiredTasksPerDay,
-    required this.tasksDoneState,
-  }) : super(key: key);
-
-  final TasksDoneTodayState tasksDoneState;
-  final bool isStreakAchievedToday;
-  final int tasksDoneAmount;
-  final int requiredTasksPerDay;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const Text('Wins today: '),
-        tasksDoneState.maybeMap(
-          loaded: (value) => Visibility(
-            visible: !isStreakAchievedToday,
-            child: Row(
-              children: [
-                AnimatedNumbers(number: tasksDoneAmount),
-                Text(' / $requiredTasksPerDay'),
-              ],
-            ),
-          ),
-          orElse: () => const SizedBox(),
-        ),
-        if (isStreakAchievedToday) const Icon(Icons.check, size: 16),
-      ],
     );
   }
 }

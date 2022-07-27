@@ -12,7 +12,12 @@ class StaleTaskDetector {
         _differenceInDaysWithToday(task.dueAt) > 3;
     final bool hasTaskBeenUpdatedRecently = task.updatedAt == null
         ? false
-        : _differenceInDaysWithToday(task.updatedAt!) < 5;
+        : _differenceInDaysWithToday(
+              DateTime.fromMillisecondsSinceEpoch(
+                task.updatedAt!,
+              ),
+            ) <
+            5;
 
     if (hasTaskBeenUpdatedRecently) {
       return false;
@@ -28,7 +33,7 @@ class StaleTaskDetector {
     return false;
   }
 
-  int _differenceInDaysWithToday(int time) {
-    return now.difference(DateTime.fromMillisecondsSinceEpoch(time)).inDays;
+  int _differenceInDaysWithToday(DateTime time) {
+    return now.difference(time).inDays;
   }
 }

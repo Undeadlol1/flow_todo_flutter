@@ -5,12 +5,13 @@ import 'package:flow_todo_flutter_2022/features/authentification/presentation/wi
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
-import 'package:flow_todo_flutter_2022/features/quests/presentation/widgets/active_quest.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_done_today.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/player_progress_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -39,6 +40,9 @@ void main() {
       GetIt.I.registerSingleton(_tasksCuibit);
       GetIt.I.registerSingleton<SignInWithGoogle>(_MockSignInWithGoogle());
       GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
+      GetIt.I.registerSingleton<StreakDaysInARowCalculator>(
+        const StreakDaysInARowCalculator(),
+      );
       GetIt.I.registerSingleton<LevelProgressPercentageCalculator>(
         MockLevelProgressPercentageCalculator(),
       );
@@ -66,18 +70,6 @@ void main() {
 
     testWidgets(
       "WHEN user is logged in "
-      "THEN displays ActiveQuest",
-      (WidgetTester tester) async {
-        _profileCubit.setProfile(profileFixture);
-
-        await tester.pumpWithDependencies();
-
-        expect(find.byType(ActiveQuest), findsOneWidget);
-      },
-    );
-
-    testWidgets(
-      "WHEN user is logged in "
       "THEN displays TasksDoneToday",
       (WidgetTester tester) async {
         _profileCubit.setProfile(profileFixture);
@@ -90,13 +82,13 @@ void main() {
 
     testWidgets(
       "WHEN user is not logged in "
-      "THEN does not display TasksDoneToday",
+      "THEN does not display PlayerProgressSummary",
       (WidgetTester tester) async {
         _profileCubit.setProfileNotFoundOrUnloaded();
 
         await tester.pumpWithDependencies();
 
-        expect(find.byType(TasksDoneToday), findsNothing);
+        expect(find.byType(PlayerProgressSummary), findsNothing);
       },
     );
 

@@ -8,10 +8,12 @@ part of 'task.dart';
 
 _$_Task _$$_TaskFromJson(Map<String, dynamic> json) => _$_Task(
       id: json['id'] as String,
-      dueAt: json['dueAt'] as int,
       isDone: json['isDone'] as bool,
       userId: json['userId'] as String,
-      createdAt: json['createdAt'] as int,
+      dueAt: const MillisecondsToDateTimePropertyConverter()
+          .fromJson(json['dueAt'] as int),
+      createdAt: const MillisecondsToDateTimePropertyConverter()
+          .fromJson(json['createdAt'] as int),
       title: json['name'] as String,
       note: json['note'] as String? ?? '',
       tags:
@@ -28,10 +30,12 @@ _$_Task _$$_TaskFromJson(Map<String, dynamic> json) => _$_Task(
 
 Map<String, dynamic> _$$_TaskToJson(_$_Task instance) => <String, dynamic>{
       'id': instance.id,
-      'dueAt': instance.dueAt,
       'isDone': instance.isDone,
       'userId': instance.userId,
-      'createdAt': instance.createdAt,
+      'dueAt': const MillisecondsToDateTimePropertyConverter()
+          .toJson(instance.dueAt),
+      'createdAt': const MillisecondsToDateTimePropertyConverter()
+          .toJson(instance.createdAt),
       'name': instance.title,
       'note': instance.note,
       'tags': instance.tags,

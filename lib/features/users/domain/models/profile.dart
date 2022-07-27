@@ -20,8 +20,9 @@ class Profile with _$Profile {
     required String userId,
     required int createdAt,
     required DailyStreak dailyStreak,
-    required bool areEcouragingMessagesDisabled,
+    @JsonKey(defaultValue: false) required bool areEcouragingMessagesDisabled,
   }) = _Profile;
 
-  factory Profile.fromJson(Map<String, Object?> json) => _$ProfileFromJson(json);
+  factory Profile.fromJson(Map<String, Object?> json) =>
+      _$ProfileFromJson(json);
 }

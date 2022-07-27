@@ -1,10 +1,12 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_done_today.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
@@ -21,7 +23,10 @@ final _MockTasksDoneTodayCubit _mockTasksDoneTodayCubit =
 void main() {
   group('GIVEN TasksDoneToday', () {
     setUpAll(() {
-      _stubProfileState(const ProfileLoaded(profile: profileFixture));
+      GetIt.I.registerSingleton<StreakDaysInARowCalculator>(
+        const StreakDaysInARowCalculator(),
+      );
+      _stubProfileState(ProfileLoaded(profile: profileFixture));
     });
 
     group('WHEN pumped', () {
@@ -53,7 +58,7 @@ void main() {
       testWidgets(
         'THEN how many tasks are required per day',
         (tester) async {
-          _stubProfileState(const ProfileLoaded(profile: profileFixture));
+          _stubProfileState(ProfileLoaded(profile: profileFixture));
           _stubTasksDoneTodayState(TasksDoneTodayState.loaded([]));
 
           await tester.pumpWithDependencies(const TasksDoneToday());
@@ -65,7 +70,6 @@ void main() {
           expect(_findAnimatedNumbers(0), findsWidgets);
         },
       );
-
     });
   });
 }

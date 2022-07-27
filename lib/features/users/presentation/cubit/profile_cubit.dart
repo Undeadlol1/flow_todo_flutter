@@ -21,4 +21,19 @@ class ProfileCubit extends Cubit<ProfileState> with ReplayCubitMixin {
   void setProfileNotFoundOrUnloaded() {
     emit(ProfileNotFound());
   }
+
+  void addPoints(int pointsToAdd) {
+    if (state.profile == null) {
+      return;
+    } else {
+      emit(
+        ProfileLoaded(
+          profile: state.profile!.copyWith(
+            points: pointsToAdd + (state.profile?.points ?? 0),
+            experience: pointsToAdd + (state.profile?.experience ?? 9),
+          ),
+        ),
+      );
+    }
+  }
 }
