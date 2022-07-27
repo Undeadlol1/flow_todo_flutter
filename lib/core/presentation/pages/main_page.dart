@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../authentification/presentation/cubit/authentification_cubit.dart';
-import '../../authentification/presentation/widgets/google_sign_in_button.dart';
-import '../../common/presentation/page_layout.dart';
-import '../../tasks/domain/use_cases/get_tasks_done_today.dart';
-import '../../tasks/domain/use_cases/get_tasks_to_do.dart';
-import '../../tasks/presentation/widgets/tasks_list.dart';
-import '../../users/domain/use_cases/get_profile.dart';
-import '../../users/presentation/cubit/profile_cubit.dart';
-import '../../users/presentation/widgets/player_progress_summary.dart';
+import '../../../features/authentification/presentation/cubit/authentification_cubit.dart';
+import '../../../features/authentification/presentation/widgets/google_sign_in_button.dart';
+import '../../../features/common/presentation/page_layout.dart';
+import '../../../features/tasks/domain/use_cases/get_tasks_done_today.dart';
+import '../../../features/tasks/domain/use_cases/get_tasks_to_do.dart';
+import '../../../features/tasks/presentation/widgets/tasks_list.dart';
+import '../../../features/users/domain/use_cases/get_profile.dart';
+import '../../../features/users/presentation/cubit/profile_cubit.dart';
+import '../../../features/users/presentation/widgets/player_progress_summary.dart';
 
 class MainPage extends StatelessWidget {
   static const pathName = '/main';

@@ -1,7 +1,7 @@
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../pages/presentation/main_page.dart';
+import '../../../../core/presentation/pages/main_page.dart';
 
 class GoToMainPage {
   final BuildContextProvider contextProvider;

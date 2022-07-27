@@ -11,7 +11,7 @@ import 'package:get_it/get_it.dart';
 import '../../features/authentification/domain/entities/user.dart';
 import '../../features/authentification/presentation/cubit/authentification_cubit.dart';
 import '../../features/leveling/presentation/widgets/experience_progress_bar.dart';
-import '../../features/pages/presentation/main_page.dart';
+import 'pages/main_page.dart';
 import '../../features/tasks/presentation/cubit/tasks_cubit.dart';
 import '../../features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
 import '../../features/tasks/presentation/pages/task_page.dart';
