@@ -11,8 +11,21 @@ import '../../domain/models/task.dart';
 // NOTE: https://github.com/SphericalKat/dart-fuzzywuzzy/issues/6#issuecomment-1177672619
 final _removeEmoji = RemoveEmoji().removemoji;
 
-class FilterActiveTasks extends StatelessWidget {
+class FilterActiveTasks extends StatefulWidget {
   const FilterActiveTasks({Key? key}) : super(key: key);
+
+  @override
+  State<FilterActiveTasks> createState() => _FilterActiveTasksState();
+}
+
+class _FilterActiveTasksState extends State<FilterActiveTasks> {
+  final _inputController = TextEditingController();
+
+  @override
+  void dispose() {
+    _inputController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +39,19 @@ class FilterActiveTasks extends StatelessWidget {
             horizontal: 10,
           ),
           child: TextField(
-            decoration: const InputDecoration(hintText: 'Filter tasks'),
+            controller: _inputController,
+            decoration: InputDecoration(
+              hintText: 'Filter tasks',
+              suffixIcon: _inputController.text.isEmpty
+                  ? null
+                  : IconButton(
+                      onPressed: () {
+                        _inputController.clear();
+                        _resetFilteredTasksList();
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
+            ),
             onChanged: (text) {
               _debouceFuzzySearch(
                 text: text,
@@ -49,6 +74,13 @@ class FilterActiveTasks extends StatelessWidget {
       'filter_active_tasks',
       const Duration(milliseconds: 500),
       () {
+        setState(() {});
+
+        if (text.trim().isEmpty) {
+          _resetFilteredTasksList();
+          return;
+        }
+
         final taskTitles =
             activeTasks.map((e) => e.title).map(_removeEmoji).toList();
         final List<Task> matchedTitles = extractTop(
@@ -67,5 +99,9 @@ class FilterActiveTasks extends StatelessWidget {
         context.read<FilteredTasksCubit>().update(matchedTitles);
       },
     );
+  }
+
+  void _resetFilteredTasksList() {
+    context.read<FilteredTasksCubit>().update([]);
   }
 }
