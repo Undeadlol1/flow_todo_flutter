@@ -5,8 +5,14 @@ class FilterActiveTasks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TextField()
+    return const Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: 7,
+        horizontal: 10,
+      ),
+      child: TextField(
+        decoration: InputDecoration(hintText: 'Filter tasks'),
+      ),
     );
   }
 }
