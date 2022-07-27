@@ -60,7 +60,8 @@ dependencies:
   memoize: ^3.0.0
   timeago: ^3.2.2
   easy_debounce: ^2.0.2+1
-  fuzzy: ^0.3.0
+  fuzzywuzzy: ^0.2.0
+  remove_emoji: ^0.0.7
 
 dev_dependencies:
   flutter_test:

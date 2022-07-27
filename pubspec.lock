@@ -504,13 +504,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.3"
-  fuzzy:
+  fuzzywuzzy:
     dependency: "direct main"
     description:
-      name: fuzzy
+      name: fuzzywuzzy
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0"
+    version: "0.2.0"
   get_it:
     dependency: "direct main"
     description:
@@ -651,13 +651,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.2.0"
-  latinize:
-    dependency: transitive
-    description:
-      name: latinize
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.2"
   lints:
     dependency: transitive
     description:
@@ -889,6 +882,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "13.0.0"
+  remove_emoji:
+    dependency: "direct main"
+    description:
+      name: remove_emoji
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.7"
   replay_bloc:
     dependency: "direct main"
     description:
