@@ -58,8 +58,9 @@ class FilterActiveTasks extends StatelessWidget {
           choices: taskTitles,
         )
             .map(
-              (match) =>
-                  activeTasks.firstWhere((task) => task.title == match.choice),
+              (match) => activeTasks.firstWhere(
+                (task) => task.title.trim() == match.choice.trim(),
+              ),
             )
             .toList();
 
