@@ -8,6 +8,7 @@ import 'package:flow_todo_flutter_2022/core/presentation/pages/main_page.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/filter_active_tasks.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_done_today.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
@@ -65,6 +66,15 @@ void main() {
         await tester.pumpWithDependencies();
 
         expect(find.byType(TasksList), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      "SHOULD display TasksList",
+      (WidgetTester tester) async {
+        await tester.pumpWithDependencies();
+
+        expect(find.byType(FilterActiveTasks), findsOneWidget);
       },
     );
 

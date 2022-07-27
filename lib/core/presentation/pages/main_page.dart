@@ -1,4 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/filter_active_tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -53,6 +54,7 @@ class MainPage extends StatelessWidget {
                 children: [
                   if (profileState is ProfileLoaded)
                     const PlayerProgressSummary(),
+                  const FilterActiveTasks(),
                   const Expanded(child: TasksList()),
                 ],
               );
