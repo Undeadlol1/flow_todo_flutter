@@ -61,7 +61,7 @@ class _GoalsList extends StatelessWidget {
     final secondRowTextStyle = Theme.of(context).textTheme.caption;
 
     return BlocBuilder<GoalsCubit, GoalsState>(
-      buildWhen: _buildWhen,
+      buildWhen: _buildOnlyOnceOnChange,
       builder: (context, goalsState) {
         return goalsState.when(
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -120,7 +120,7 @@ class _GoalsList extends StatelessWidget {
   }
 
   // TODO https://github.com/felangel/bloc/issues/1144#issuecomment-625803682
-  bool _buildWhen(GoalsState previous, GoalsState current) {
+  bool _buildOnlyOnceOnChange(GoalsState previous, GoalsState current) {
     if (previous.goals.isEmpty || current.goals.isEmpty) return true;
 
     if (previous.goals.length != current.goals.length) return true;
