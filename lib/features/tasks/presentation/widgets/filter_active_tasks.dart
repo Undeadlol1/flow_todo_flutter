@@ -60,6 +60,7 @@ class _FilterActiveTasksState extends State<FilterActiveTasks> {
                       icon: const Icon(Icons.clear),
                     ),
             ),
+            onEditingComplete: _unfocusInputField.primaryFocus?.unfocus,
             onChanged: (text) {
               _debouceFuzzySearch(
                 text: text,
@@ -72,6 +73,8 @@ class _FilterActiveTasksState extends State<FilterActiveTasks> {
       },
     );
   }
+
+  FocusManager get _unfocusInputField => FocusManager.instance;
 
   void _debouceFuzzySearch({
     required String text,
