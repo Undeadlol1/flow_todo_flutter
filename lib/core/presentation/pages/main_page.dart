@@ -1,6 +1,4 @@
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/filter_active_tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -17,9 +15,8 @@ import '../../../features/users/presentation/widgets/player_progress_summary.dar
 
 class MainPage extends StatelessWidget {
   static const pathName = '/main';
-  final _filteredTasksCubit = GetIt.I<FilteredTasksCubit>();
 
-  MainPage({Key? key}) : super(key: key);
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,17 +50,12 @@ class MainPage extends StatelessWidget {
                 );
               }
 
-              return BlocProvider(
-                create: (_) => _filteredTasksCubit,
-                child: Column(
-                  children: [
-                    if (profileState is ProfileLoaded)
-                      const PlayerProgressSummary(),
-                    if (profileState is ProfileLoaded)
-                      const FilterActiveTasks(),
-                    const Expanded(child: TasksList()),
-                  ],
-                ),
+              return Column(
+                children: [
+                  if (profileState is ProfileLoaded)
+                    const PlayerProgressSummary(),
+                  const Expanded(child: TasksList()),
+                ],
               );
             },
           ),

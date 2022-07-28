@@ -130,7 +130,7 @@ extension _PumpWithScaffold on WidgetTester {
           BlocProvider(create: (context) => _profileCubit),
           BlocProvider(create: (context) => TasksDoneTodayCubit()),
         ],
-        child: MaterialApp(
+        child: const MaterialApp(
           home: MainPage(),
         ),
       ),
