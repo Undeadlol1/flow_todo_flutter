@@ -39,6 +39,12 @@ class _FilterActiveTasksState extends State<FilterActiveTasks> {
             horizontal: 10,
           ),
           child: TextField(
+            toolbarOptions: const ToolbarOptions(
+              cut: true,
+              copy: true,
+              paste: true,
+              selectAll: true,
+            ),
             controller: _inputController,
             decoration: InputDecoration(
               hintText: 'Filter tasks',
