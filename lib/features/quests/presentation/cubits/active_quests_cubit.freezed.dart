@@ -19,19 +19,19 @@ mixin _$ActiveQuestsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<QuestEntity> quests) loaded,
+    required TResult Function(List<Quest> quests) loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<QuestEntity> quests)? loaded,
+    TResult Function(List<Quest> quests)? loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<QuestEntity> quests)? loaded,
+    TResult Function(List<Quest> quests)? loaded,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -114,7 +114,7 @@ class _$_Loading extends _Loading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<QuestEntity> quests) loaded,
+    required TResult Function(List<Quest> quests) loaded,
   }) {
     return loading();
   }
@@ -123,7 +123,7 @@ class _$_Loading extends _Loading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<QuestEntity> quests)? loaded,
+    TResult Function(List<Quest> quests)? loaded,
   }) {
     return loading?.call();
   }
@@ -132,7 +132,7 @@ class _$_Loading extends _Loading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<QuestEntity> quests)? loaded,
+    TResult Function(List<Quest> quests)? loaded,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -182,7 +182,7 @@ abstract class _Loading extends ActiveQuestsState {
 abstract class _$$_loadedCopyWith<$Res> {
   factory _$$_loadedCopyWith(_$_loaded value, $Res Function(_$_loaded) then) =
       __$$_loadedCopyWithImpl<$Res>;
-  $Res call({List<QuestEntity> quests});
+  $Res call({List<Quest> quests});
 }
 
 /// @nodoc
@@ -203,7 +203,7 @@ class __$$_loadedCopyWithImpl<$Res>
       quests == freezed
           ? _value._quests
           : quests // ignore: cast_nullable_to_non_nullable
-              as List<QuestEntity>,
+              as List<Quest>,
     ));
   }
 }
@@ -211,13 +211,13 @@ class __$$_loadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_loaded extends _loaded {
-  _$_loaded(final List<QuestEntity> quests)
+  _$_loaded(final List<Quest> quests)
       : _quests = quests,
         super._();
 
-  final List<QuestEntity> _quests;
+  final List<Quest> _quests;
   @override
-  List<QuestEntity> get quests {
+  List<Quest> get quests {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_quests);
   }
@@ -248,7 +248,7 @@ class _$_loaded extends _loaded {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<QuestEntity> quests) loaded,
+    required TResult Function(List<Quest> quests) loaded,
   }) {
     return loaded(quests);
   }
@@ -257,7 +257,7 @@ class _$_loaded extends _loaded {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<QuestEntity> quests)? loaded,
+    TResult Function(List<Quest> quests)? loaded,
   }) {
     return loaded?.call(quests);
   }
@@ -266,7 +266,7 @@ class _$_loaded extends _loaded {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<QuestEntity> quests)? loaded,
+    TResult Function(List<Quest> quests)? loaded,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -308,10 +308,10 @@ class _$_loaded extends _loaded {
 }
 
 abstract class _loaded extends ActiveQuestsState {
-  factory _loaded(final List<QuestEntity> quests) = _$_loaded;
+  factory _loaded(final List<Quest> quests) = _$_loaded;
   _loaded._() : super._();
 
-  List<QuestEntity> get quests => throw _privateConstructorUsedError;
+  List<Quest> get quests => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$$_loadedCopyWith<_$_loaded> get copyWith =>
       throw _privateConstructorUsedError;
