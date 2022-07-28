@@ -1,7 +1,11 @@
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
+import '../../../users/presentation/cubit/profile_cubit.dart';
 import '../cubit/tasks_cubit.dart';
+import 'filter_active_tasks.dart';
 import 'tasks_list_item.dart';
 
 class TasksList extends StatefulWidget {
@@ -12,21 +16,42 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<TasksCubit, TasksState>(
-      builder: (context, tasksState) {
-        if (tasksState is TasksLoading) {
-          return const _LoadingIndicator();
-        }
+  final _filteredTasksCubit = GetIt.I<FilteredTasksCubit>();
 
-        return ListView.builder(
-          itemCount: tasksState.tasks.length,
-          itemBuilder: (BuildContext context, int index) {
-            return TasksListItem(task: tasksState.tasks[index]);
-          },
-        );
-      },
+  @override
+  build(_) {
+    return BlocProvider(
+      create: (_) => _filteredTasksCubit,
+      child: Builder(
+        builder: (cx) {
+          final profileState = cx.watch<ProfileCubit>().state;
+          final TasksState tasksState = cx.watch<TasksCubit>().state;
+          final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
+
+          if (tasksState is TasksLoading) {
+            return const _LoadingIndicator();
+          }
+
+          final tasksToDisplay =
+              filteredTasks.isEmpty ? tasksState.tasks : filteredTasks;
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                if (profileState is ProfileLoaded) const FilterActiveTasks(),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: tasksToDisplay.length,
+                  itemBuilder: (_, index) {
+                    return TasksListItem(task: tasksToDisplay[index]);
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

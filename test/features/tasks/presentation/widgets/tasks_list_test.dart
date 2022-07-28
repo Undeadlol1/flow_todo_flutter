@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list_item.dart';
@@ -39,20 +40,6 @@ void main() {
           expect(find.byType(TasksListItem), findsNWidgets(2));
         },
       );
-
-      // testWidgets(
-      //   "THEN displays pagination",
-      //   (WidgetTester tester) async {
-      //     final cubit = TasksCubit()..updateList([taskFixture, taskFixture]);
-
-      //     await tester.pumpWithDependencies(
-      //       tasksCubit: cubit,
-      //       child: const TasksList(),
-      //     );
-
-      //     expect(find.byType(Pagination), findsOneWidget);
-      //   },
-      // );
     });
   });
 }
@@ -71,12 +58,16 @@ extension on WidgetTester {
     return pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: BlocProvider(
-            create: (context) => tasksCubit,
-            child: Directionality(
-              textDirection: TextDirection.ltr,
-              child: child,
-            ),
+          body: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => tasksCubit,
+              ),
+              BlocProvider(
+                create: (context) => FilteredTasksCubit(),
+              ),
+            ],
+            child: child,
           ),
         ),
       ),

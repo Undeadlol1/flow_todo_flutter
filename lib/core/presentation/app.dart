@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import 'pages/main_page.dart';
 import '../../features/authentification/domain/entities/user.dart';
 import '../../features/authentification/presentation/cubit/authentification_cubit.dart';
 import '../../features/leveling/presentation/widgets/experience_progress_bar.dart';
