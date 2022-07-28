@@ -22,38 +22,35 @@ class _TasksListState extends State<TasksList> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => _filteredTasksCubit,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Builder(
-          builder: (cx) {
-            final tasksState = cx.watch<TasksCubit>();
-            final profileState = cx.watch<ProfileCubit>().state;
-            final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
+      child: Builder(
+        builder: (cx) {
+          final tasksState = cx.watch<TasksCubit>();
+          final profileState = cx.watch<ProfileCubit>().state;
+          final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
 
-            if (tasksState is TasksLoading) {
-              return const _LoadingIndicator();
-            }
+          if (tasksState is TasksLoading) {
+            return const _LoadingIndicator();
+          }
 
-            final tasksToDisplay =
-                filteredTasks.isEmpty ? tasksState.state.tasks : filteredTasks;
+          final tasksToDisplay =
+              filteredTasks.isEmpty ? tasksState.state.tasks : filteredTasks;
 
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  if (profileState is ProfileLoaded) const FilterActiveTasks(),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: tasksToDisplay.length,
-                    itemBuilder: (_, index) {
-                      return TasksListItem(task: tasksToDisplay[index]);
-                    },
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                if (profileState is ProfileLoaded) const FilterActiveTasks(),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: tasksToDisplay.length,
+                  itemBuilder: (_, index) {
+                    return TasksListItem(task: tasksToDisplay[index]);
+                  },
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
