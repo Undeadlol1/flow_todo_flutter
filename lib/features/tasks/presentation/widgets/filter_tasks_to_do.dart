@@ -11,14 +11,14 @@ import '../../domain/models/task.dart';
 // NOTE: https://github.com/SphericalKat/dart-fuzzywuzzy/issues/6#issuecomment-1177672619
 final _removeEmoji = RemoveEmoji().removemoji;
 
-class FilterActiveTasks extends StatefulWidget {
-  const FilterActiveTasks({Key? key}) : super(key: key);
+class FilterTasksToDo extends StatefulWidget {
+  const FilterTasksToDo({Key? key}) : super(key: key);
 
   @override
-  State<FilterActiveTasks> createState() => _FilterActiveTasksState();
+  State<FilterTasksToDo> createState() => _FilterTasksToDoState();
 }
 
-class _FilterActiveTasksState extends State<FilterActiveTasks> {
+class _FilterTasksToDoState extends State<FilterTasksToDo> {
   final _inputController = TextEditingController();
 
   @override
@@ -33,40 +33,48 @@ class _FilterActiveTasksState extends State<FilterActiveTasks> {
       builder: (context) {
         final activeTasks = context.watch<TasksCubit>().state.tasks;
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 7,
-            horizontal: 10,
-          ),
-          child: TextField(
-            toolbarOptions: const ToolbarOptions(
-              cut: true,
-              copy: true,
-              paste: true,
-              selectAll: true,
+        return Focus(
+          onFocusChange: (hasFocus) {
+            if (hasFocus == false) {
+              _unfocusInputField();
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 7,
+              horizontal: 10,
             ),
-            controller: _inputController,
-            decoration: InputDecoration(
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              hintText: 'Filter tasks',
-              suffixIcon: _inputController.text.isEmpty
-                  ? null
-                  : IconButton(
-                      onPressed: () {
-                        _inputController.clear();
-                        _resetFilteredTasksList();
-                      },
-                      icon: const Icon(Icons.clear),
-                    ),
+            child: TextField(
+              toolbarOptions: const ToolbarOptions(
+                cut: true,
+                copy: true,
+                paste: true,
+                selectAll: true,
+              ),
+              controller: _inputController,
+              decoration: InputDecoration(
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                hintText: 'Filter tasks',
+                suffixIcon: _inputController.text.isEmpty
+                    ? null
+                    : IconButton(
+                        onPressed: () {
+                          _inputController.clear();
+                          _resetFilteredTasksList();
+                        },
+                        icon: const Icon(Icons.clear),
+                      ),
+              ),
+              onEditingComplete: _unfocusInputField,
+              onChanged: (text) {
+                _debouceFuzzySearch(
+                  text: text,
+                  context: context,
+                  activeTasks: activeTasks,
+                );
+              },
             ),
-            onChanged: (text) {
-              _debouceFuzzySearch(
-                text: text,
-                context: context,
-                activeTasks: activeTasks,
-              );
-            },
           ),
         );
       },
@@ -108,6 +116,8 @@ class _FilterActiveTasksState extends State<FilterActiveTasks> {
       },
     );
   }
+
+  void _unfocusInputField() => FocusManager.instance..primaryFocus?.unfocus();
 
   void _resetFilteredTasksList() {
     context.read<FilteredTasksCubit>().update([]);

@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../../users/presentation/cubit/profile_cubit.dart';
 import '../cubit/tasks_cubit.dart';
-import 'filter_active_tasks.dart';
+import 'filter_tasks_to_do.dart';
 import 'tasks_list_item.dart';
 
 class TasksList extends StatefulWidget {
@@ -38,7 +38,9 @@ class _TasksListState extends State<TasksList> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                if (profileState is ProfileLoaded) const FilterActiveTasks(),
+                if (profileState is ProfileLoaded &&
+                    tasksState.tasks.length > 10)
+                  const FilterTasksToDo(),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
