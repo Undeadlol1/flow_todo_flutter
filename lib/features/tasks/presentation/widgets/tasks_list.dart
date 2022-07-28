@@ -24,8 +24,8 @@ class _TasksListState extends State<TasksList> {
       create: (_) => _filteredTasksCubit,
       child: Builder(
         builder: (cx) {
-          final tasksState = cx.watch<TasksCubit>();
           final profileState = cx.watch<ProfileCubit>().state;
+          final TasksState tasksState = cx.watch<TasksCubit>().state;
           final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
 
           if (tasksState is TasksLoading) {
@@ -33,7 +33,7 @@ class _TasksListState extends State<TasksList> {
           }
 
           final tasksToDisplay =
-              filteredTasks.isEmpty ? tasksState.state.tasks : filteredTasks;
+              filteredTasks.isEmpty ? tasksState.tasks : filteredTasks;
 
           return SingleChildScrollView(
             child: Column(
