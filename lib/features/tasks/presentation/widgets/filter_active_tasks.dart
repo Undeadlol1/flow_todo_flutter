@@ -47,6 +47,8 @@ class _FilterActiveTasksState extends State<FilterActiveTasks> {
             ),
             controller: _inputController,
             decoration: InputDecoration(
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
               hintText: 'Filter tasks',
               suffixIcon: _inputController.text.isEmpty
                   ? null
