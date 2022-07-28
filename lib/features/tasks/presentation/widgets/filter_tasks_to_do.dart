@@ -11,14 +11,14 @@ import '../../domain/models/task.dart';
 // NOTE: https://github.com/SphericalKat/dart-fuzzywuzzy/issues/6#issuecomment-1177672619
 final _removeEmoji = RemoveEmoji().removemoji;
 
-class FilterActiveTasks extends StatefulWidget {
-  const FilterActiveTasks({Key? key}) : super(key: key);
+class FilterTasksToDo extends StatefulWidget {
+  const FilterTasksToDo({Key? key}) : super(key: key);
 
   @override
-  State<FilterActiveTasks> createState() => _FilterActiveTasksState();
+  State<FilterTasksToDo> createState() => _FilterTasksToDoState();
 }
 
-class _FilterActiveTasksState extends State<FilterActiveTasks> {
+class _FilterTasksToDoState extends State<FilterTasksToDo> {
   final _inputController = TextEditingController();
 
   @override
