@@ -19,7 +19,7 @@ class _TasksListState extends State<TasksList> {
   final _filteredTasksCubit = GetIt.I<FilteredTasksCubit>();
 
   @override
-  Widget build(BuildContext context) {
+  build(_) {
     return BlocProvider(
       create: (_) => _filteredTasksCubit,
       child: Builder(
