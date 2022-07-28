@@ -38,7 +38,9 @@ class _TasksListState extends State<TasksList> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                if (profileState is ProfileLoaded) const FilterActiveTasks(),
+                if (profileState is ProfileLoaded &&
+                    tasksState.tasks.length > 10)
+                  const FilterActiveTasks(),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
