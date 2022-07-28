@@ -2,6 +2,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtere
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list_item.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,6 +11,8 @@ import 'package:get_it/get_it.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 
 void main() {
+  setUpAll(() => GetIt.I.registerFactory(() => FilteredTasksCubit()));
+
   group('GIVEN TasksList', () {
     testWidgets(
       'WHEN there are no tasks '
@@ -64,7 +67,7 @@ extension on WidgetTester {
                 create: (context) => tasksCubit,
               ),
               BlocProvider(
-                create: (context) => FilteredTasksCubit(),
+                create: (context) => ProfileCubit(),
               ),
             ],
             child: child,

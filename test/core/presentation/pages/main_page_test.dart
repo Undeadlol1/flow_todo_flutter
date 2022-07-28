@@ -9,7 +9,6 @@ import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_d
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/filter_active_tasks.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_done_today.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
@@ -74,15 +73,6 @@ void main() {
 
     group("WHEN user is logged in THEN", () {
       setUp(() => _profileCubit.setProfile(profileFixture));
-
-      testWidgets(
-        "displays FilterActiveTasks",
-        (WidgetTester tester) async {
-          await tester.pumpWithDependencies();
-
-          expect(find.byType(FilterActiveTasks), findsOneWidget);
-        },
-      );
 
       testWidgets(
         "displays TasksDoneToday",
