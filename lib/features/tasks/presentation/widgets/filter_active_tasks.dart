@@ -33,48 +33,53 @@ class _FilterActiveTasksState extends State<FilterActiveTasks> {
       builder: (context) {
         final activeTasks = context.watch<TasksCubit>().state.tasks;
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 7,
-            horizontal: 10,
-          ),
-          child: TextField(
-            toolbarOptions: const ToolbarOptions(
-              cut: true,
-              copy: true,
-              paste: true,
-              selectAll: true,
+        return Focus(
+          onFocusChange: (hasFocus) {
+            if (hasFocus == false) {
+              _unfocusInputField();
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 7,
+              horizontal: 10,
             ),
-            controller: _inputController,
-            decoration: InputDecoration(
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              hintText: 'Filter tasks',
-              suffixIcon: _inputController.text.isEmpty
-                  ? null
-                  : IconButton(
-                      onPressed: () {
-                        _inputController.clear();
-                        _resetFilteredTasksList();
-                      },
-                      icon: const Icon(Icons.clear),
-                    ),
+            child: TextField(
+              toolbarOptions: const ToolbarOptions(
+                cut: true,
+                copy: true,
+                paste: true,
+                selectAll: true,
+              ),
+              controller: _inputController,
+              decoration: InputDecoration(
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                hintText: 'Filter tasks',
+                suffixIcon: _inputController.text.isEmpty
+                    ? null
+                    : IconButton(
+                        onPressed: () {
+                          _inputController.clear();
+                          _resetFilteredTasksList();
+                        },
+                        icon: const Icon(Icons.clear),
+                      ),
+              ),
+              onEditingComplete: _unfocusInputField,
+              onChanged: (text) {
+                _debouceFuzzySearch(
+                  text: text,
+                  context: context,
+                  activeTasks: activeTasks,
+                );
+              },
             ),
-            onEditingComplete: _unfocusInputField.primaryFocus?.unfocus,
-            onChanged: (text) {
-              _debouceFuzzySearch(
-                text: text,
-                context: context,
-                activeTasks: activeTasks,
-              );
-            },
           ),
         );
       },
     );
   }
-
-  FocusManager get _unfocusInputField => FocusManager.instance;
 
   void _debouceFuzzySearch({
     required String text,
@@ -111,6 +116,8 @@ class _FilterActiveTasksState extends State<FilterActiveTasks> {
       },
     );
   }
+
+  void _unfocusInputField() => FocusManager.instance..primaryFocus?.unfocus();
 
   void _resetFilteredTasksList() {
     context.read<FilteredTasksCubit>().update([]);
