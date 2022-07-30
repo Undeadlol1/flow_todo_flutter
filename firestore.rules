@@ -24,5 +24,9 @@ service cloud.firestore {
       allow read, write: if isAuthenticated() && request.auth.uid == resource.data.userId;
       allow create: if isAuthenticated();
     }
+    match /quests/{quest}/{document=**} {
+      allow read, write: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      allow create: if isAuthenticated();
+    }
   }
 }
