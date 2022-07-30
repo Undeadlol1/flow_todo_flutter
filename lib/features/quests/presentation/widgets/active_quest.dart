@@ -34,7 +34,8 @@ class ActiveQuest extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 15),
-                  Text('Quest: ${questsState.quests.first.type.name}'),
+                  if (questsState.quests.isNotEmpty)
+                    Text('Quest: ${questsState.quests.first.type.name}'),
                   Text('Quest: reach level ${level + 5}'),
                   const _ProgressBar(),
                 ],
