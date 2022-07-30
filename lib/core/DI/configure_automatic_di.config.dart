@@ -73,7 +73,7 @@ import '../services/use_case_exception_handler.dart'
 _i1.GetIt $initGetIt(_i1.GetIt get,
     {String? environment, _i2.EnvironmentFilter? environmentFilter}) {
   final gh = _i2.GetItHelper(get, environment, environmentFilter);
-  gh.factory<_i3.ActiveQuestsCubit>(() => _i3.ActiveQuestsCubit());
+  gh.singleton<_i3.ActiveQuestsCubit>(_i3.ActiveQuestsCubit());
   gh.singleton<_i4.AuthentificationCubit>(_i4.AuthentificationCubit());
   gh.lazySingleton<_i5.CreateGoalRepository>(
       () => _i5.CreateGoalRepository(firestore: get<_i6.FirebaseFirestore>()));
