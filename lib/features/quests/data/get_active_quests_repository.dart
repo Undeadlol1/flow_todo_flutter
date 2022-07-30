@@ -10,7 +10,7 @@ class GetActiveQuestsRepository {
     final questsSnapshot = await firestore
         .collection('quests')
         .where('userId', isEqualTo: userId)
-        .where('isActive', isEqualTo: false)
+        .where('isActive', isEqualTo: true)
         .limit(250)
         .get();
 
