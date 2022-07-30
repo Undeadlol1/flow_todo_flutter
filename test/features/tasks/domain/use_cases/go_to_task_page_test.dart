@@ -16,7 +16,7 @@ void main() {
       test(
         "redirects to task page",
         () {
-          GoToTaskPage(contextProvider: buildContextProvider)(
+          GoToTaskPage(provideContext: buildContextProvider)(
             task: taskFixture,
           );
 
