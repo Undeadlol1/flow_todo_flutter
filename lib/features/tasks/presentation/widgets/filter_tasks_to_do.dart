@@ -60,8 +60,10 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
                     ? null
                     : IconButton(
                         onPressed: () {
+                          _unfocusInputField();
                           _inputController.clear();
                           _resetFilteredTasksList();
+                          setState(() {});
                         },
                         icon: const Icon(Icons.clear),
                       ),
