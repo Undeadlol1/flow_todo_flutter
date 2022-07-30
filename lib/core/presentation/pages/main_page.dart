@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import '../../../features/authentification/presentation/cubit/authentification_cubit.dart';
 import '../../../features/authentification/presentation/widgets/google_sign_in_button.dart';
 import '../../../features/common/presentation/page_layout.dart';
+import '../../../features/quests/domain/use_cases/get_active_quests.dart';
 import '../../../features/tasks/domain/use_cases/get_tasks_done_today.dart';
 import '../../../features/tasks/domain/use_cases/get_tasks_to_do.dart';
 import '../../../features/tasks/presentation/widgets/tasks_list.dart';
@@ -32,9 +33,11 @@ class MainPage extends StatelessWidget {
           child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
             listener: (context, authState) async {
               if (authState is Authenticated) {
-                GetIt.I<GetProfile>()(userId: authState.user.id);
-                GetIt.I<GetTasksToDo>()(userId: authState.user.id);
-                GetIt.I<GetTasksDoneToday>()(userId: authState.user.id);
+                final userId = authState.user.id;
+                GetIt.I<GetProfile>()(userId: userId);
+                GetIt.I<GetTasksToDo>()(userId: userId);
+                GetIt.I<GetActiveQuests>()(userId: userId);
+                GetIt.I<GetTasksDoneToday>()(userId: userId);
               }
             },
             builder: (context, authState) {

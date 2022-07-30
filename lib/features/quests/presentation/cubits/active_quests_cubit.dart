@@ -11,4 +11,8 @@ class ActiveQuestsCubit extends Cubit<ActiveQuestsState> {
   void update(List<Quest> quests) {
     emit(ActiveQuestsState.loaded(quests));
   }
+
+  void setLoading() {
+    emit(ActiveQuestsState.loading());
+  }
 }
