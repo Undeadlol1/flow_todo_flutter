@@ -17,6 +17,6 @@ class GetTasksToDo {
       (first, second) => first.createdAt.compareTo(second.createdAt),
     );
 
-    tasksCubit.updateList(tasks..shuffle());
+    tasksCubit.updateList(tasks);
   }
 }
