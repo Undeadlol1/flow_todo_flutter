@@ -1,9 +1,9 @@
+import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../../users/presentation/cubit/profile_cubit.dart';
 import '../cubit/tasks_cubit.dart';
 import 'filter_tasks_to_do.dart';
 import 'tasks_list_item.dart';
@@ -24,27 +24,25 @@ class _TasksListState extends State<TasksList> {
       create: (_) => _filteredTasksCubit,
       child: Builder(
         builder: (cx) {
-          final profileState = cx.watch<ProfileCubit>().state;
           final TasksState tasksState = cx.watch<TasksCubit>().state;
           final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
+          final tasksToDisplay = _getTasksToDisplay(
+            filteredTasks: filteredTasks,
+            unfilteredTasks: tasksState.tasks,
+          );
 
           if (tasksState is TasksLoading) {
             return const _LoadingIndicator();
           }
 
-          final tasksToDisplay =
-              filteredTasks.isEmpty ? tasksState.tasks : filteredTasks;
-
           return SingleChildScrollView(
             child: Column(
               children: [
-                if (profileState is ProfileLoaded &&
-                    tasksState.tasks.length > 10)
-                  const FilterTasksToDo(),
+                if (tasksState.tasks.length > 10) const FilterTasksToDo(),
                 ListView.builder(
                   shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: tasksToDisplay.length,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (_, index) {
                     return TasksListItem(task: tasksToDisplay[index]);
                   },
@@ -55,6 +53,20 @@ class _TasksListState extends State<TasksList> {
         },
       ),
     );
+  }
+
+  List<Task> _getTasksToDisplay({
+    required List<Task> filteredTasks,
+    required List<Task> unfilteredTasks,
+  }) {
+    final List<String> filteredTasksIds =
+        filteredTasks.map((e) => e.id).toList();
+
+    return filteredTasksIds.isEmpty
+        ? unfilteredTasks
+        : unfilteredTasks
+            .where((e) => filteredTasksIds.contains(e.id))
+            .toList();
   }
 }
 

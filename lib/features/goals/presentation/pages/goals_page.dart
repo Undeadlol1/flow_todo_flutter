@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/get_goals.dart';
 import 'package:flow_todo_flutter_2022/features/goals/domain/use_cases/make_step_forward_on_a_goal.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/player_progress_summary.dart';
 import 'package:get_it/get_it.dart';
 
@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/presentation/page_layout.dart';
+import '../../../common/presentation/widgets/animated_numbers.dart';
 import '../widgets/create_goal_fab.dart';
 
 class GoalsPage extends StatefulWidget {
@@ -50,12 +51,17 @@ class _GoalsPageState extends State<GoalsPage> {
 
 class _GoalsList extends StatelessWidget {
   _GoalsList({Key? key}) : super(key: key);
+  final calculateLevel = GetIt.I<UserLevelCalculator>();
   final MakeStepForwardOnAGoal makeStepForwardOnAGoal = GetIt.I();
+
+  final _padding = const EdgeInsets.only(left: 10);
 
   @override
   Widget build(BuildContext context) {
+    final secondRowTextStyle = Theme.of(context).textTheme.caption;
+
     return BlocBuilder<GoalsCubit, GoalsState>(
-      buildWhen: _buildWhen,
+      buildWhen: _buildOnlyOnceOnChange,
       builder: (context, goalsState) {
         return goalsState.when(
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -64,17 +70,44 @@ class _GoalsList extends StatelessWidget {
               itemCount: goalsState.goals.length,
               itemBuilder: (BuildContext context, int index) {
                 final goal = goalsState.goals[index];
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                return Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Text(goal.title),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: _padding,
+                          child: Text(goal.title),
+                        ),
+                        IconButton(
+                          onPressed: () => makeStepForwardOnAGoal(goal),
+                          icon: const Icon(Icons.add),
+                        )
+                      ],
                     ),
-                    AnimatedNumbers(number: goal.points),
-                    IconButton(
-                      onPressed: () => makeStepForwardOnAGoal(goal),
-                      icon: const Icon(Icons.add),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: _padding,
+                          child: Text(
+                            'Level: ${calculateLevel(goal.points).value}',
+                            style: secondRowTextStyle,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Row(
+                          children: [
+                            Text('Points: ', style: secondRowTextStyle),
+                            AnimatedNumbers(
+                              number: goal.points,
+                              style: secondRowTextStyle,
+                            ),
+                          ],
+                        )
+                      ],
                     )
                   ],
                 );
@@ -87,7 +120,7 @@ class _GoalsList extends StatelessWidget {
   }
 
   // TODO https://github.com/felangel/bloc/issues/1144#issuecomment-625803682
-  bool _buildWhen(GoalsState previous, GoalsState current) {
+  bool _buildOnlyOnceOnChange(GoalsState previous, GoalsState current) {
     if (previous.goals.isEmpty || current.goals.isEmpty) return true;
 
     if (previous.goals.length != current.goals.length) return true;

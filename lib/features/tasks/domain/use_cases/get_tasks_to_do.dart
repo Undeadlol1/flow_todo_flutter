@@ -13,6 +13,10 @@ class GetTasksToDo {
 
     final tasks = await getTasks(userId: userId);
 
-    tasksCubit.updateList(tasks..shuffle());
+    tasks.sort(
+      (first, second) => first.createdAt.compareTo(second.createdAt),
+    );
+
+    tasksCubit.updateList(tasks);
   }
 }
