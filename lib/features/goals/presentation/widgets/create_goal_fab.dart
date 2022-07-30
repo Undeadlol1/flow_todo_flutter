@@ -13,7 +13,6 @@ class CreateGoalFAB extends StatelessWidget {
       onPressed: () {
         showModalBottomSheet(
           context: context,
-          barrierColor: Colors.transparent,
           builder: (_) => const UpsertGoalForm(),
         );
       },
