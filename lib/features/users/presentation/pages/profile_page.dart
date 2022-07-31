@@ -42,7 +42,7 @@ class ProfilePage extends StatelessWidget {
                       Text('Today is: $today'),
                       Text('Streak starts at: ${streak?.startsAt}'),
                       Text(
-                        'Streak was updated at: ${DateTime.fromMillisecondsSinceEpoch(state.profile?.dailyStreak.updatedAt ?? 0)}',
+                        'Streak was updated at: ${state.profile?.dailyStreak.updatedAt}',
                       ),
                     ],
                   );

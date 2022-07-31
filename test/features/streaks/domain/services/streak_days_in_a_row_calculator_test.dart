@@ -20,7 +20,7 @@ void main() {
       expect(
         const StreakDaysInARowCalculator()(
           startsAt: yesterday,
-          updatedAt: today.millisecondsSinceEpoch,
+          updatedAt: today,
         ),
         2,
       );

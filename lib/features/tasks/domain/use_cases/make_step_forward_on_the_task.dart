@@ -91,7 +91,7 @@ class MakeStepForwardOnTheTask {
       dailyStreak: streak.copyWith(
         startsAt: streak.isInterrupted() ? today : streak.startsAt,
         updatedAt: streak.shouldStreakIncrement(tasksDoneToday: tasksDoneToday)
-            ? today.millisecondsSinceEpoch
+            ? today
             : streak.updatedAt,
       ),
     );

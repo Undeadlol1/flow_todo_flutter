@@ -70,10 +70,7 @@ void main() {
             equals(_yesterday),
             reason: 'Reason: start date must not change',
           );
-          expect(
-            updatedStreak.updatedAt,
-            equals(_today.millisecondsSinceEpoch),
-          );
+          expect(updatedStreak.updatedAt, equals(_today));
         },
       );
 
@@ -83,7 +80,7 @@ void main() {
           _mockStatesAndRepos(
             tasksDoneToday: 3,
             startsAt: _yesterday,
-            updatedAt: DateTime.now().millisecondsSinceEpoch,
+            updatedAt: DateTime.now(),
           );
 
           await _getService()();
@@ -98,7 +95,7 @@ void main() {
 }
 
 void _mockStatesAndRepos({
-  int? updatedAt,
+  DateTime? updatedAt,
   required DateTime startsAt,
   required int tasksDoneToday,
 }) {

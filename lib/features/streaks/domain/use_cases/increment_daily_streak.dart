@@ -42,8 +42,8 @@ class IncrementDailyStreak {
 
     final updatedProfile = profileCubit.state.profile!.copyWith(
       dailyStreak: streak.copyWith(
+        updatedAt: today,
         startsAt: streak.isInterrupted() ? today : streak.startsAt,
-        updatedAt: today.millisecondsSinceEpoch,
       ),
     );
 
