@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/quests/domain/entities/quest_type_entity.dart';
 import 'package:flow_todo_flutter_2022/features/quests/presentation/cubits/active_quests_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,8 +36,9 @@ class ActiveQuest extends StatelessWidget {
                 children: [
                   const SizedBox(height: 15),
                   if (questsState.quests.isNotEmpty)
-                    Text('Quest: ${questsState.quests.first.type.name}'),
-                  Text('Quest: reach level ${level + 5}'),
+                    Text(
+                      'Quest: ${_mapQuestTypeToText(questsState.quests.first.type)} ',
+                    ),
                   const _ProgressBar(),
                 ],
               ),
@@ -48,6 +50,19 @@ class ActiveQuest extends StatelessWidget {
   }
 
   Widget _getLoadingWidget() => const SizedBox();
+
+  String _mapQuestTypeToText(QuestTypeEntity questType) {
+    switch (questType) {
+      case QuestTypeEntity.createTasks:
+        return 'Create Tasks';
+      case QuestTypeEntity.completeTasks:
+        return 'Complete Tasks';
+      case QuestTypeEntity.reachLevel:
+        return 'Reach Level';
+      default:
+        return 'Quest type not mapped';
+    }
+  }
 }
 
 class _ProgressBar extends StatelessWidget {
