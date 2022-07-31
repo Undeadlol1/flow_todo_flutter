@@ -1,7 +1,7 @@
 import 'package:flow_todo_flutter_2022/features/goals/data/update_goal_repository.dart';
 import 'package:flow_todo_flutter_2022/features/goals/domain/models/goal.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/users/data/update_profile_repository.dart';
+import 'package:flow_todo_flutter_2022/features/users/data/upsert_profile_repository.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:injectable/injectable.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -11,7 +11,7 @@ class MakeStepForwardOnAGoal {
   final GoalsCubit goalsCubit;
   final ProfileCubit profileCubit;
   final UpdateGoalRepository updateGoalRepo;
-  final UpdateProfileRepository updateProfileRepository;
+  final UpsertProfileRepository updateProfileRepository;
   MakeStepForwardOnAGoal({
     required this.goalsCubit,
     required this.profileCubit,

@@ -11,7 +11,7 @@ import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_done_today_cubit.dart';
-import '../../../../test_utilities/mocks/mock_update_profile_repository.dart';
+import '../../../../test_utilities/mocks/mock_upsert_profile_repository.dart';
 
 final _today = DateTime.now();
 final _yesterday = DateTime.now().subtract(const Duration(days: 1));
@@ -24,7 +24,7 @@ class _FakeGetTodaysDate extends Fake implements GetTodaysDate {
 final _mockProfileCubit = MockProfileCubit();
 final _fakeGetTodaysDate = _FakeGetTodaysDate();
 final _mockTasksDoneTodayCubit = MockTasksDoneTodayCubit();
-final _mockUpdateProfileRepository = MockUpdateProfileRepository();
+final _mockUpdateProfileRepository = MockUpsertProfileRepository();
 
 void main() {
   setUp(() {

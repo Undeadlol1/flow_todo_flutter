@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
 
-class UpdateProfileRepository {
+class UpsertProfileRepository {
   final FirebaseFirestore firestore;
-  const UpdateProfileRepository({required this.firestore});
+  const UpsertProfileRepository({required this.firestore});
 
   Future<void> call(Profile updatedProfile) async {
     return firestore

@@ -21,12 +21,14 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Profile {
   int? get updatedAt => throw _privateConstructorUsedError;
-  int? get experience => throw _privateConstructorUsedError;
-  int get points => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   int get createdAt => throw _privateConstructorUsedError;
   DailyStreak get dailyStreak => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: 0)
+  int get experience => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: 0)
+  int get points => throw _privateConstructorUsedError;
   @JsonKey(defaultValue: false)
   bool get areEcouragingMessagesDisabled => throw _privateConstructorUsedError;
 
@@ -41,12 +43,12 @@ abstract class $ProfileCopyWith<$Res> {
       _$ProfileCopyWithImpl<$Res>;
   $Res call(
       {int? updatedAt,
-      int? experience,
-      int points,
       String id,
       String userId,
       int createdAt,
       DailyStreak dailyStreak,
+      @JsonKey(defaultValue: 0) int experience,
+      @JsonKey(defaultValue: 0) int points,
       @JsonKey(defaultValue: false) bool areEcouragingMessagesDisabled});
 
   $DailyStreakCopyWith<$Res> get dailyStreak;
@@ -63,12 +65,12 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
   @override
   $Res call({
     Object? updatedAt = freezed,
-    Object? experience = freezed,
-    Object? points = freezed,
     Object? id = freezed,
     Object? userId = freezed,
     Object? createdAt = freezed,
     Object? dailyStreak = freezed,
+    Object? experience = freezed,
+    Object? points = freezed,
     Object? areEcouragingMessagesDisabled = freezed,
   }) {
     return _then(_value.copyWith(
@@ -76,14 +78,6 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as int?,
-      experience: experience == freezed
-          ? _value.experience
-          : experience // ignore: cast_nullable_to_non_nullable
-              as int?,
-      points: points == freezed
-          ? _value.points
-          : points // ignore: cast_nullable_to_non_nullable
-              as int,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -100,6 +94,14 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
           ? _value.dailyStreak
           : dailyStreak // ignore: cast_nullable_to_non_nullable
               as DailyStreak,
+      experience: experience == freezed
+          ? _value.experience
+          : experience // ignore: cast_nullable_to_non_nullable
+              as int,
+      points: points == freezed
+          ? _value.points
+          : points // ignore: cast_nullable_to_non_nullable
+              as int,
       areEcouragingMessagesDisabled: areEcouragingMessagesDisabled == freezed
           ? _value.areEcouragingMessagesDisabled
           : areEcouragingMessagesDisabled // ignore: cast_nullable_to_non_nullable
@@ -123,12 +125,12 @@ abstract class _$$_ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
   @override
   $Res call(
       {int? updatedAt,
-      int? experience,
-      int points,
       String id,
       String userId,
       int createdAt,
       DailyStreak dailyStreak,
+      @JsonKey(defaultValue: 0) int experience,
+      @JsonKey(defaultValue: 0) int points,
       @JsonKey(defaultValue: false) bool areEcouragingMessagesDisabled});
 
   @override
@@ -147,12 +149,12 @@ class __$$_ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
   @override
   $Res call({
     Object? updatedAt = freezed,
-    Object? experience = freezed,
-    Object? points = freezed,
     Object? id = freezed,
     Object? userId = freezed,
     Object? createdAt = freezed,
     Object? dailyStreak = freezed,
+    Object? experience = freezed,
+    Object? points = freezed,
     Object? areEcouragingMessagesDisabled = freezed,
   }) {
     return _then(_$_Profile(
@@ -160,14 +162,6 @@ class __$$_ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as int?,
-      experience: experience == freezed
-          ? _value.experience
-          : experience // ignore: cast_nullable_to_non_nullable
-              as int?,
-      points: points == freezed
-          ? _value.points
-          : points // ignore: cast_nullable_to_non_nullable
-              as int,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -184,6 +178,14 @@ class __$$_ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
           ? _value.dailyStreak
           : dailyStreak // ignore: cast_nullable_to_non_nullable
               as DailyStreak,
+      experience: experience == freezed
+          ? _value.experience
+          : experience // ignore: cast_nullable_to_non_nullable
+              as int,
+      points: points == freezed
+          ? _value.points
+          : points // ignore: cast_nullable_to_non_nullable
+              as int,
       areEcouragingMessagesDisabled: areEcouragingMessagesDisabled == freezed
           ? _value.areEcouragingMessagesDisabled
           : areEcouragingMessagesDisabled // ignore: cast_nullable_to_non_nullable
@@ -198,12 +200,14 @@ class __$$_ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
 class _$_Profile with DiagnosticableTreeMixin implements _Profile {
   const _$_Profile(
       {this.updatedAt,
-      this.experience,
-      required this.points,
       required this.id,
       required this.userId,
       required this.createdAt,
       required this.dailyStreak,
+      @JsonKey(defaultValue: 0)
+          required this.experience,
+      @JsonKey(defaultValue: 0)
+          required this.points,
       @JsonKey(defaultValue: false)
           required this.areEcouragingMessagesDisabled});
 
@@ -213,10 +217,6 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
   @override
   final int? updatedAt;
   @override
-  final int? experience;
-  @override
-  final int points;
-  @override
   final String id;
   @override
   final String userId;
@@ -225,12 +225,18 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
   @override
   final DailyStreak dailyStreak;
   @override
+  @JsonKey(defaultValue: 0)
+  final int experience;
+  @override
+  @JsonKey(defaultValue: 0)
+  final int points;
+  @override
   @JsonKey(defaultValue: false)
   final bool areEcouragingMessagesDisabled;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Profile(updatedAt: $updatedAt, experience: $experience, points: $points, id: $id, userId: $userId, createdAt: $createdAt, dailyStreak: $dailyStreak, areEcouragingMessagesDisabled: $areEcouragingMessagesDisabled)';
+    return 'Profile(updatedAt: $updatedAt, id: $id, userId: $userId, createdAt: $createdAt, dailyStreak: $dailyStreak, experience: $experience, points: $points, areEcouragingMessagesDisabled: $areEcouragingMessagesDisabled)';
   }
 
   @override
@@ -239,12 +245,12 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
     properties
       ..add(DiagnosticsProperty('type', 'Profile'))
       ..add(DiagnosticsProperty('updatedAt', updatedAt))
-      ..add(DiagnosticsProperty('experience', experience))
-      ..add(DiagnosticsProperty('points', points))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('dailyStreak', dailyStreak))
+      ..add(DiagnosticsProperty('experience', experience))
+      ..add(DiagnosticsProperty('points', points))
       ..add(DiagnosticsProperty(
           'areEcouragingMessagesDisabled', areEcouragingMessagesDisabled));
   }
@@ -255,14 +261,14 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
         (other.runtimeType == runtimeType &&
             other is _$_Profile &&
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
-            const DeepCollectionEquality()
-                .equals(other.experience, experience) &&
-            const DeepCollectionEquality().equals(other.points, points) &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality()
                 .equals(other.dailyStreak, dailyStreak) &&
+            const DeepCollectionEquality()
+                .equals(other.experience, experience) &&
+            const DeepCollectionEquality().equals(other.points, points) &&
             const DeepCollectionEquality().equals(
                 other.areEcouragingMessagesDisabled,
                 areEcouragingMessagesDisabled));
@@ -273,12 +279,12 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(updatedAt),
-      const DeepCollectionEquality().hash(experience),
-      const DeepCollectionEquality().hash(points),
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(dailyStreak),
+      const DeepCollectionEquality().hash(experience),
+      const DeepCollectionEquality().hash(points),
       const DeepCollectionEquality().hash(areEcouragingMessagesDisabled));
 
   @JsonKey(ignore: true)
@@ -295,12 +301,14 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
 abstract class _Profile implements Profile {
   const factory _Profile(
       {final int? updatedAt,
-      final int? experience,
-      required final int points,
       required final String id,
       required final String userId,
       required final int createdAt,
       required final DailyStreak dailyStreak,
+      @JsonKey(defaultValue: 0)
+          required final int experience,
+      @JsonKey(defaultValue: 0)
+          required final int points,
       @JsonKey(defaultValue: false)
           required final bool areEcouragingMessagesDisabled}) = _$_Profile;
 
@@ -309,10 +317,6 @@ abstract class _Profile implements Profile {
   @override
   int? get updatedAt => throw _privateConstructorUsedError;
   @override
-  int? get experience => throw _privateConstructorUsedError;
-  @override
-  int get points => throw _privateConstructorUsedError;
-  @override
   String get id => throw _privateConstructorUsedError;
   @override
   String get userId => throw _privateConstructorUsedError;
@@ -320,6 +324,12 @@ abstract class _Profile implements Profile {
   int get createdAt => throw _privateConstructorUsedError;
   @override
   DailyStreak get dailyStreak => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(defaultValue: 0)
+  int get experience => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(defaultValue: 0)
+  int get points => throw _privateConstructorUsedError;
   @override
   @JsonKey(defaultValue: false)
   bool get areEcouragingMessagesDisabled => throw _privateConstructorUsedError;
