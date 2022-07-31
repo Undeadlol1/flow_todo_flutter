@@ -46,7 +46,7 @@ class MainPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Please sign in to play the game:'),
+                      const Text('Please sign in to play start:'),
                       const SizedBox(height: 10),
                       GoogleSignInButton(),
                     ],

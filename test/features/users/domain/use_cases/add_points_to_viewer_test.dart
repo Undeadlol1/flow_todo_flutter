@@ -1,4 +1,4 @@
-import 'package:flow_todo_flutter_2022/features/users/data/update_profile_repository.dart';
+import 'package:flow_todo_flutter_2022/features/users/data/upsert_profile_repository.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
@@ -8,7 +8,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 
 class _MockUpdateProfileRepository extends Mock
-    implements UpdateProfileRepository {}
+    implements UpsertProfileRepository {}
 
 class _MockProfileCubit extends Mock implements ProfileCubit {}
 

@@ -22,7 +22,7 @@ import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
 import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_done_today_cubit.dart';
-import '../../../../test_utilities/mocks/mock_update_profile_repository.dart';
+import '../../../../test_utilities/mocks/mock_upsert_profile_repository.dart';
 import '../../../../test_utilities/mocks/mock_update_task_repository.dart';
 
 class _MockAddPointsToViewer extends Mock implements AddPointsToViewer {}
@@ -43,7 +43,7 @@ final _mockSnackbarService = MockSnackbarService();
 final _mockAddPointsToViewer = _MockAddPointsToViewer();
 final _mockTasksDoneTodayCubit = MockTasksDoneTodayCubit();
 final _mockUpdateTaskRepository = MockUpdateTaskRepository();
-final _mockUpdateProfileRepository = MockUpdateProfileRepository();
+final _mockUpdateProfileRepository = MockUpsertProfileRepository();
 final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
 final IncrementDailyStreak _mockIncrementDailyStreak =
     _MockIncrementDailyStreak();

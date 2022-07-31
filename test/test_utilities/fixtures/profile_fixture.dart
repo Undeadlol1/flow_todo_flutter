@@ -7,6 +7,7 @@ final profileFixture = Profile(
   id: 'id123',
   points: 0,
   createdAt: 0,
+  experience: 0,
   userId: _userId,
   areEcouragingMessagesDisabled: false,
   dailyStreak: DailyStreak(
