@@ -24,11 +24,14 @@ mixin _$Quest {
   bool get isDone => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   QuestTypeEntity get type => throw _privateConstructorUsedError;
-  @MillisecondsToDateTimePropertyConverter()
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  int get valueToAchieve => throw _privateConstructorUsedError;
+  int get achievementProgress => throw _privateConstructorUsedError;
+  int? get initialValue => throw _privateConstructorUsedError;
   int? get doneAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
   bool? get isPartOfTutorial => throw _privateConstructorUsedError;
+  @MillisecondsToDateTimePropertyConverter()
+  DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,10 +47,13 @@ abstract class $QuestCopyWith<$Res> {
       bool isDone,
       String userId,
       QuestTypeEntity type,
-      @MillisecondsToDateTimePropertyConverter() DateTime createdAt,
+      int valueToAchieve,
+      int achievementProgress,
+      int? initialValue,
       int? doneAt,
       int? updatedAt,
-      bool? isPartOfTutorial});
+      bool? isPartOfTutorial,
+      @MillisecondsToDateTimePropertyConverter() DateTime createdAt});
 }
 
 /// @nodoc
@@ -64,10 +70,13 @@ class _$QuestCopyWithImpl<$Res> implements $QuestCopyWith<$Res> {
     Object? isDone = freezed,
     Object? userId = freezed,
     Object? type = freezed,
-    Object? createdAt = freezed,
+    Object? valueToAchieve = freezed,
+    Object? achievementProgress = freezed,
+    Object? initialValue = freezed,
     Object? doneAt = freezed,
     Object? updatedAt = freezed,
     Object? isPartOfTutorial = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -86,10 +95,18 @@ class _$QuestCopyWithImpl<$Res> implements $QuestCopyWith<$Res> {
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as QuestTypeEntity,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      valueToAchieve: valueToAchieve == freezed
+          ? _value.valueToAchieve
+          : valueToAchieve // ignore: cast_nullable_to_non_nullable
+              as int,
+      achievementProgress: achievementProgress == freezed
+          ? _value.achievementProgress
+          : achievementProgress // ignore: cast_nullable_to_non_nullable
+              as int,
+      initialValue: initialValue == freezed
+          ? _value.initialValue
+          : initialValue // ignore: cast_nullable_to_non_nullable
+              as int?,
       doneAt: doneAt == freezed
           ? _value.doneAt
           : doneAt // ignore: cast_nullable_to_non_nullable
@@ -102,6 +119,10 @@ class _$QuestCopyWithImpl<$Res> implements $QuestCopyWith<$Res> {
           ? _value.isPartOfTutorial
           : isPartOfTutorial // ignore: cast_nullable_to_non_nullable
               as bool?,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -116,10 +137,13 @@ abstract class _$$_QuestCopyWith<$Res> implements $QuestCopyWith<$Res> {
       bool isDone,
       String userId,
       QuestTypeEntity type,
-      @MillisecondsToDateTimePropertyConverter() DateTime createdAt,
+      int valueToAchieve,
+      int achievementProgress,
+      int? initialValue,
       int? doneAt,
       int? updatedAt,
-      bool? isPartOfTutorial});
+      bool? isPartOfTutorial,
+      @MillisecondsToDateTimePropertyConverter() DateTime createdAt});
 }
 
 /// @nodoc
@@ -137,10 +161,13 @@ class __$$_QuestCopyWithImpl<$Res> extends _$QuestCopyWithImpl<$Res>
     Object? isDone = freezed,
     Object? userId = freezed,
     Object? type = freezed,
-    Object? createdAt = freezed,
+    Object? valueToAchieve = freezed,
+    Object? achievementProgress = freezed,
+    Object? initialValue = freezed,
     Object? doneAt = freezed,
     Object? updatedAt = freezed,
     Object? isPartOfTutorial = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_$_Quest(
       id: id == freezed
@@ -159,10 +186,18 @@ class __$$_QuestCopyWithImpl<$Res> extends _$QuestCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as QuestTypeEntity,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      valueToAchieve: valueToAchieve == freezed
+          ? _value.valueToAchieve
+          : valueToAchieve // ignore: cast_nullable_to_non_nullable
+              as int,
+      achievementProgress: achievementProgress == freezed
+          ? _value.achievementProgress
+          : achievementProgress // ignore: cast_nullable_to_non_nullable
+              as int,
+      initialValue: initialValue == freezed
+          ? _value.initialValue
+          : initialValue // ignore: cast_nullable_to_non_nullable
+              as int?,
       doneAt: doneAt == freezed
           ? _value.doneAt
           : doneAt // ignore: cast_nullable_to_non_nullable
@@ -175,6 +210,10 @@ class __$$_QuestCopyWithImpl<$Res> extends _$QuestCopyWithImpl<$Res>
           ? _value.isPartOfTutorial
           : isPartOfTutorial // ignore: cast_nullable_to_non_nullable
               as bool?,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -188,10 +227,13 @@ class _$_Quest implements _Quest {
       required this.isDone,
       required this.userId,
       required this.type,
-      @MillisecondsToDateTimePropertyConverter() required this.createdAt,
+      required this.valueToAchieve,
+      required this.achievementProgress,
+      this.initialValue,
       this.doneAt,
       this.updatedAt,
-      this.isPartOfTutorial});
+      this.isPartOfTutorial,
+      @MillisecondsToDateTimePropertyConverter() required this.createdAt});
 
   factory _$_Quest.fromJson(Map<String, dynamic> json) =>
       _$$_QuestFromJson(json);
@@ -205,18 +247,24 @@ class _$_Quest implements _Quest {
   @override
   final QuestTypeEntity type;
   @override
-  @MillisecondsToDateTimePropertyConverter()
-  final DateTime createdAt;
+  final int valueToAchieve;
+  @override
+  final int achievementProgress;
+  @override
+  final int? initialValue;
   @override
   final int? doneAt;
   @override
   final int? updatedAt;
   @override
   final bool? isPartOfTutorial;
+  @override
+  @MillisecondsToDateTimePropertyConverter()
+  final DateTime createdAt;
 
   @override
   String toString() {
-    return 'Quest(id: $id, isDone: $isDone, userId: $userId, type: $type, createdAt: $createdAt, doneAt: $doneAt, updatedAt: $updatedAt, isPartOfTutorial: $isPartOfTutorial)';
+    return 'Quest(id: $id, isDone: $isDone, userId: $userId, type: $type, valueToAchieve: $valueToAchieve, achievementProgress: $achievementProgress, initialValue: $initialValue, doneAt: $doneAt, updatedAt: $updatedAt, isPartOfTutorial: $isPartOfTutorial, createdAt: $createdAt)';
   }
 
   @override
@@ -228,11 +276,17 @@ class _$_Quest implements _Quest {
             const DeepCollectionEquality().equals(other.isDone, isDone) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality()
+                .equals(other.valueToAchieve, valueToAchieve) &&
+            const DeepCollectionEquality()
+                .equals(other.achievementProgress, achievementProgress) &&
+            const DeepCollectionEquality()
+                .equals(other.initialValue, initialValue) &&
             const DeepCollectionEquality().equals(other.doneAt, doneAt) &&
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
             const DeepCollectionEquality()
-                .equals(other.isPartOfTutorial, isPartOfTutorial));
+                .equals(other.isPartOfTutorial, isPartOfTutorial) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt));
   }
 
   @JsonKey(ignore: true)
@@ -243,10 +297,13 @@ class _$_Quest implements _Quest {
       const DeepCollectionEquality().hash(isDone),
       const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(valueToAchieve),
+      const DeepCollectionEquality().hash(achievementProgress),
+      const DeepCollectionEquality().hash(initialValue),
       const DeepCollectionEquality().hash(doneAt),
       const DeepCollectionEquality().hash(updatedAt),
-      const DeepCollectionEquality().hash(isPartOfTutorial));
+      const DeepCollectionEquality().hash(isPartOfTutorial),
+      const DeepCollectionEquality().hash(createdAt));
 
   @JsonKey(ignore: true)
   @override
@@ -265,11 +322,14 @@ abstract class _Quest implements Quest {
       required final bool isDone,
       required final String userId,
       required final QuestTypeEntity type,
-      @MillisecondsToDateTimePropertyConverter()
-          required final DateTime createdAt,
+      required final int valueToAchieve,
+      required final int achievementProgress,
+      final int? initialValue,
       final int? doneAt,
       final int? updatedAt,
-      final bool? isPartOfTutorial}) = _$_Quest;
+      final bool? isPartOfTutorial,
+      @MillisecondsToDateTimePropertyConverter()
+          required final DateTime createdAt}) = _$_Quest;
 
   factory _Quest.fromJson(Map<String, dynamic> json) = _$_Quest.fromJson;
 
@@ -282,14 +342,20 @@ abstract class _Quest implements Quest {
   @override
   QuestTypeEntity get type => throw _privateConstructorUsedError;
   @override
-  @MillisecondsToDateTimePropertyConverter()
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  int get valueToAchieve => throw _privateConstructorUsedError;
+  @override
+  int get achievementProgress => throw _privateConstructorUsedError;
+  @override
+  int? get initialValue => throw _privateConstructorUsedError;
   @override
   int? get doneAt => throw _privateConstructorUsedError;
   @override
   int? get updatedAt => throw _privateConstructorUsedError;
   @override
   bool? get isPartOfTutorial => throw _privateConstructorUsedError;
+  @override
+  @MillisecondsToDateTimePropertyConverter()
+  DateTime get createdAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_QuestCopyWith<_$_Quest> get copyWith =>

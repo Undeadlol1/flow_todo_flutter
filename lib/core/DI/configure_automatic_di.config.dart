@@ -151,7 +151,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i37.GetActiveQuests>(() => _i37.GetActiveQuests(
       getQuests: get<_i12.GetActiveQuestsRepository>(),
       uniqueIdGenerator: get<_i26.UniqueIdGenerator>(),
-      activeQuestsCubit: get<_i3.ActiveQuestsCubit>()));
+      activeQuestsCubit: get<_i3.ActiveQuestsCubit>(),
+      createQuestRepository: get<_i7.CreateQuestRepository>()));
   gh.singleton<_i38.GetGoals>(_i38.GetGoals(
       goalsCubit: get<_i20.GoalsCubit>(),
       getGoalsRepo: get<_i13.GetGoalsRepository>(),

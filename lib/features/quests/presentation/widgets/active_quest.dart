@@ -1,15 +1,11 @@
 import 'package:flow_todo_flutter_2022/features/quests/domain/entities/quest_type_entity.dart';
+import 'package:flow_todo_flutter_2022/features/quests/domain/models/quest.dart';
 import 'package:flow_todo_flutter_2022/features/quests/presentation/cubits/active_quests_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-
-import '../../../leveling/domain/services/user_level_calculator.dart';
-import '../../../users/presentation/cubit/profile_cubit.dart';
 
 class ActiveQuest extends StatelessWidget {
-  ActiveQuest({Key? key}) : super(key: key);
-  final _levelCalculator = GetIt.I<UserLevelCalculator>();
+  const ActiveQuest({Key? key}) : super(key: key);
 
   static const _padding = EdgeInsets.only(
     left: 16,
@@ -21,13 +17,15 @@ class ActiveQuest extends StatelessWidget {
   Widget build(context) {
     return Builder(
       builder: (context) {
-        final profileState = context.watch<ProfileCubit>().state;
         final questsState = context.watch<ActiveQuestsCubit>().state;
         return questsState.maybeMap(
           orElse: _getLoadingWidget,
           loaded: (_) {
-            final level =
-                _levelCalculator(profileState.profile?.experience ?? 0).value;
+            if (questsState.quests.isEmpty) {
+              return const SizedBox();
+            }
+
+            final Quest activeQuest = questsState.quests.first;
 
             return Padding(
               padding: _padding,
@@ -35,11 +33,8 @@ class ActiveQuest extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 15),
-                  if (questsState.quests.isNotEmpty)
-                    Text(
-                      'Quest: ${_mapQuestTypeToText(questsState.quests.first.type)} ',
-                    ),
-                  const _ProgressBar(),
+                  Text('Quest: ${_getQuestText(activeQuest)}'),
+                  // const _ProgressBar(),
                 ],
               ),
             );
@@ -51,28 +46,28 @@ class ActiveQuest extends StatelessWidget {
 
   Widget _getLoadingWidget() => const SizedBox();
 
-  String _mapQuestTypeToText(QuestTypeEntity questType) {
-    switch (questType) {
+  String _getQuestText(Quest quest) {
+    switch (quest.type) {
       case QuestTypeEntity.createTasks:
-        return 'Create Tasks';
+        return 'create ${quest.valueToAchieve} tasks';
       case QuestTypeEntity.completeTasks:
-        return 'Complete Tasks';
+        return 'complete ${quest.valueToAchieve} tasks';
       case QuestTypeEntity.reachLevel:
-        return 'Reach Level';
+        return 'reach level ${quest.valueToAchieve}';
       default:
         return 'Quest type not mapped';
     }
   }
 }
 
-class _ProgressBar extends StatelessWidget {
-  const _ProgressBar({Key? key}) : super(key: key);
+// class _ProgressBar extends StatelessWidget {
+//   const _ProgressBar({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 20),
-      child: LinearProgressIndicator(value: 0.5),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Padding(
+//       padding: EdgeInsets.symmetric(vertical: 20),
+//       child: LinearProgressIndicator(value: 0.5),
+//     );
+//   }
+// }

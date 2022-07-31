@@ -11,11 +11,14 @@ _$_Quest _$$_QuestFromJson(Map<String, dynamic> json) => _$_Quest(
       isDone: json['isDone'] as bool,
       userId: json['userId'] as String,
       type: $enumDecode(_$QuestTypeEntityEnumMap, json['type']),
-      createdAt: const MillisecondsToDateTimePropertyConverter()
-          .fromJson(json['createdAt'] as int),
+      valueToAchieve: json['valueToAchieve'] as int,
+      achievementProgress: json['achievementProgress'] as int,
+      initialValue: json['initialValue'] as int?,
       doneAt: json['doneAt'] as int?,
       updatedAt: json['updatedAt'] as int?,
       isPartOfTutorial: json['isPartOfTutorial'] as bool?,
+      createdAt: const MillisecondsToDateTimePropertyConverter()
+          .fromJson(json['createdAt'] as int),
     );
 
 Map<String, dynamic> _$$_QuestToJson(_$_Quest instance) => <String, dynamic>{
@@ -23,11 +26,14 @@ Map<String, dynamic> _$$_QuestToJson(_$_Quest instance) => <String, dynamic>{
       'isDone': instance.isDone,
       'userId': instance.userId,
       'type': _$QuestTypeEntityEnumMap[instance.type],
-      'createdAt': const MillisecondsToDateTimePropertyConverter()
-          .toJson(instance.createdAt),
+      'valueToAchieve': instance.valueToAchieve,
+      'achievementProgress': instance.achievementProgress,
+      'initialValue': instance.initialValue,
       'doneAt': instance.doneAt,
       'updatedAt': instance.updatedAt,
       'isPartOfTutorial': instance.isPartOfTutorial,
+      'createdAt': const MillisecondsToDateTimePropertyConverter()
+          .toJson(instance.createdAt),
     };
 
 const _$QuestTypeEntityEnumMap = {

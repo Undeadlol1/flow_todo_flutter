@@ -5,7 +5,3 @@ final tutorialQuests = <QuestTypeEntity, int>{
   QuestTypeEntity.completeTasks: 3,
   QuestTypeEntity.reachLevel: 3,
 };
-
-void main(List<String> args) {
-  tutorialQuests.entries.first;
-}

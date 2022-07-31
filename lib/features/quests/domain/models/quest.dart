@@ -16,10 +16,13 @@ class Quest with _$Quest {
     required bool isDone,
     required String userId,
     required QuestTypeEntity type,
-    @MillisecondsToDateTimePropertyConverter() required DateTime createdAt,
+    required int valueToAchieve,
+    required int achievementProgress,
+    int? initialValue,
     int? doneAt,
     int? updatedAt,
     bool? isPartOfTutorial,
+    @MillisecondsToDateTimePropertyConverter() required DateTime createdAt,
   }) = _Quest;
 
   factory Quest.fromJson(Map<String, dynamic> json) => _$QuestFromJson(json);
