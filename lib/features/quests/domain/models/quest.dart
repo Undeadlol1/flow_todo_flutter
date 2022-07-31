@@ -19,6 +19,7 @@ class Quest with _$Quest {
     @MillisecondsToDateTimePropertyConverter() required DateTime createdAt,
     int? doneAt,
     int? updatedAt,
+    bool? isPartOfTutorial,
   }) = _Quest;
 
   factory Quest.fromJson(Map<String, dynamic> json) => _$QuestFromJson(json);

@@ -32,6 +32,7 @@ class GetActiveQuests {
       Quest(
         isDone: false,
         userId: userId,
+        isPartOfTutorial: true,
         id: uniqueIdGenerator(),
         createdAt: DateTime.now(),
         type: tutorialQuests.entries.first.key,

@@ -28,6 +28,7 @@ mixin _$Quest {
   DateTime get createdAt => throw _privateConstructorUsedError;
   int? get doneAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
+  bool? get isPartOfTutorial => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +46,8 @@ abstract class $QuestCopyWith<$Res> {
       QuestTypeEntity type,
       @MillisecondsToDateTimePropertyConverter() DateTime createdAt,
       int? doneAt,
-      int? updatedAt});
+      int? updatedAt,
+      bool? isPartOfTutorial});
 }
 
 /// @nodoc
@@ -65,6 +67,7 @@ class _$QuestCopyWithImpl<$Res> implements $QuestCopyWith<$Res> {
     Object? createdAt = freezed,
     Object? doneAt = freezed,
     Object? updatedAt = freezed,
+    Object? isPartOfTutorial = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -95,6 +98,10 @@ class _$QuestCopyWithImpl<$Res> implements $QuestCopyWith<$Res> {
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as int?,
+      isPartOfTutorial: isPartOfTutorial == freezed
+          ? _value.isPartOfTutorial
+          : isPartOfTutorial // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -111,7 +118,8 @@ abstract class _$$_QuestCopyWith<$Res> implements $QuestCopyWith<$Res> {
       QuestTypeEntity type,
       @MillisecondsToDateTimePropertyConverter() DateTime createdAt,
       int? doneAt,
-      int? updatedAt});
+      int? updatedAt,
+      bool? isPartOfTutorial});
 }
 
 /// @nodoc
@@ -132,6 +140,7 @@ class __$$_QuestCopyWithImpl<$Res> extends _$QuestCopyWithImpl<$Res>
     Object? createdAt = freezed,
     Object? doneAt = freezed,
     Object? updatedAt = freezed,
+    Object? isPartOfTutorial = freezed,
   }) {
     return _then(_$_Quest(
       id: id == freezed
@@ -162,6 +171,10 @@ class __$$_QuestCopyWithImpl<$Res> extends _$QuestCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as int?,
+      isPartOfTutorial: isPartOfTutorial == freezed
+          ? _value.isPartOfTutorial
+          : isPartOfTutorial // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -177,7 +190,8 @@ class _$_Quest implements _Quest {
       required this.type,
       @MillisecondsToDateTimePropertyConverter() required this.createdAt,
       this.doneAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.isPartOfTutorial});
 
   factory _$_Quest.fromJson(Map<String, dynamic> json) =>
       _$$_QuestFromJson(json);
@@ -197,10 +211,12 @@ class _$_Quest implements _Quest {
   final int? doneAt;
   @override
   final int? updatedAt;
+  @override
+  final bool? isPartOfTutorial;
 
   @override
   String toString() {
-    return 'Quest(id: $id, isDone: $isDone, userId: $userId, type: $type, createdAt: $createdAt, doneAt: $doneAt, updatedAt: $updatedAt)';
+    return 'Quest(id: $id, isDone: $isDone, userId: $userId, type: $type, createdAt: $createdAt, doneAt: $doneAt, updatedAt: $updatedAt, isPartOfTutorial: $isPartOfTutorial)';
   }
 
   @override
@@ -214,7 +230,9 @@ class _$_Quest implements _Quest {
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.doneAt, doneAt) &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.isPartOfTutorial, isPartOfTutorial));
   }
 
   @JsonKey(ignore: true)
@@ -227,7 +245,8 @@ class _$_Quest implements _Quest {
       const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(doneAt),
-      const DeepCollectionEquality().hash(updatedAt));
+      const DeepCollectionEquality().hash(updatedAt),
+      const DeepCollectionEquality().hash(isPartOfTutorial));
 
   @JsonKey(ignore: true)
   @override
@@ -249,7 +268,8 @@ abstract class _Quest implements Quest {
       @MillisecondsToDateTimePropertyConverter()
           required final DateTime createdAt,
       final int? doneAt,
-      final int? updatedAt}) = _$_Quest;
+      final int? updatedAt,
+      final bool? isPartOfTutorial}) = _$_Quest;
 
   factory _Quest.fromJson(Map<String, dynamic> json) = _$_Quest.fromJson;
 
@@ -268,6 +288,8 @@ abstract class _Quest implements Quest {
   int? get doneAt => throw _privateConstructorUsedError;
   @override
   int? get updatedAt => throw _privateConstructorUsedError;
+  @override
+  bool? get isPartOfTutorial => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_QuestCopyWith<_$_Quest> get copyWith =>
