@@ -22,8 +22,6 @@ class GetActiveQuests {
 
     final fetchedQuests = await getQuests(userId: userId);
 
-    if (fetchedQuests.isEmpty) {}
-
     return activeQuestsCubit.update(
       fetchedQuests.isEmpty ? _getTutorialQuest(userId) : fetchedQuests,
     );
