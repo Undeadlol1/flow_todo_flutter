@@ -29,16 +29,6 @@ class DefaultFirebaseOptions {
           'DefaultFirebaseOptions have not been configured for macos - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
-      case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
-      case TargetPlatform.linux:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -73,6 +63,7 @@ class DefaultFirebaseOptions {
     projectId: 'flow-todo-5824b',
     databaseURL: 'https://flow-todo-5824b.firebaseio.com',
     storageBucket: 'flow-todo-5824b.appspot.com',
+    androidClientId: '772125171665-ekoukj1os5csga3c39i99vihun4k0d8m.apps.googleusercontent.com',
     iosClientId: '772125171665-ah47hpqle0gs3kj4redianlb7kdc1ps9.apps.googleusercontent.com',
     iosBundleId: 'com.example.flowTodoFlutter2022',
   );
