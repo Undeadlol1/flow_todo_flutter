@@ -11,11 +11,8 @@ class GetTasksToDo {
   Future<void> call({required String userId}) async {
     tasksCubit.setLoading();
 
-    final tasks = await getTasks(userId: userId);
-
-    tasks.sort(
-      (first, second) => first.createdAt.compareTo(second.createdAt),
-    );
+    final tasks = await getTasks(userId: userId)
+      ..shuffle();
 
     tasksCubit.updateList(tasks);
   }
