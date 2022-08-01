@@ -1,7 +1,7 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_done_today.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_worked_on_today.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,7 +37,7 @@ void main() {
             TasksDoneTodayState.loaded([taskFixture, taskFixture]),
           );
 
-          await tester.pumpWithDependencies(const TasksDoneToday());
+          await tester.pumpWithDependencies(const TasksWorkedOnToday());
 
           expect(find.textContaining('Wins today: '), findsOneWidget);
           expect(find.textContaining('2'), findsOneWidget);
@@ -49,7 +49,7 @@ void main() {
         (tester) async {
           _stubTasksDoneTodayState(TasksDoneTodayState.loaded([]));
 
-          await tester.pumpWithDependencies(const TasksDoneToday());
+          await tester.pumpWithDependencies(const TasksWorkedOnToday());
 
           expect(find.byType(LinearProgressIndicator), findsOneWidget);
         },
@@ -61,7 +61,7 @@ void main() {
           _stubProfileState(ProfileLoaded(profile: profileFixture));
           _stubTasksDoneTodayState(TasksDoneTodayState.loaded([]));
 
-          await tester.pumpWithDependencies(const TasksDoneToday());
+          await tester.pumpWithDependencies(const TasksWorkedOnToday());
 
           expect(
             find.textContaining(' / ${profileFixture.dailyStreak.perDay}'),

@@ -9,14 +9,14 @@ import 'package:get_it/get_it.dart';
 import '../../../users/presentation/cubit/profile_cubit.dart';
 import 'wins_today_text.dart';
 
-class TasksDoneToday extends StatefulWidget {
-  const TasksDoneToday({Key? key}) : super(key: key);
+class TasksWorkedOnToday extends StatefulWidget {
+  const TasksWorkedOnToday({Key? key}) : super(key: key);
 
   @override
-  State<TasksDoneToday> createState() => _TasksDoneTodayState();
+  State<TasksWorkedOnToday> createState() => _TasksWorkedOnTodayState();
 }
 
-class _TasksDoneTodayState extends State<TasksDoneToday>
+class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
     with TickerProviderStateMixin {
   bool _isAnimationListenerAdded = false;
   bool _hasFirstAnimationForcefullyRan = false;

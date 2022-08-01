@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../tasks/presentation/widgets/tasks_done_today.dart';
+import '../../../tasks/presentation/widgets/tasks_worked_on_today.dart';
 import 'avatar.dart';
 
 class PlayerProgressSummary extends StatelessWidget {
@@ -17,7 +17,7 @@ class PlayerProgressSummary extends StatelessWidget {
               margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               child: const Avatar(radius: 60),
             ),
-            const Flexible(child: TasksDoneToday()),
+            const Flexible(child: TasksWorkedOnToday()),
           ],
         ),
       ),
