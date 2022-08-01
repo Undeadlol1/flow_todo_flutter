@@ -227,7 +227,9 @@ class _$_DailyStreak extends _DailyStreak {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DailyStreakToJson(this);
+    return _$$_DailyStreakToJson(
+      this,
+    );
   }
 }
 
@@ -248,20 +250,20 @@ abstract class _DailyStreak extends DailyStreak {
       _$_DailyStreak.fromJson;
 
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  String get userId => throw _privateConstructorUsedError;
+  String get userId;
   @override
-  int get perDay => throw _privateConstructorUsedError;
+  int get perDay;
   @override
   @OptionalMillisecondsToDateTimePropertyConverter()
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
   @override
   @MillisecondsToDateTimePropertyConverter()
-  DateTime get startsAt => throw _privateConstructorUsedError;
+  DateTime get startsAt;
   @override
   @MillisecondsToDateTimePropertyConverter()
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$_DailyStreakCopyWith<_$_DailyStreak> get copyWith =>

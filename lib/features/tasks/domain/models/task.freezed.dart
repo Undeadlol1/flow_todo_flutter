@@ -348,7 +348,9 @@ class _$_Task implements _Task {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TaskToJson(this);
+    return _$$_TaskToJson(
+      this,
+    );
   }
 }
 
@@ -376,35 +378,35 @@ abstract class _Task implements Task {
   factory _Task.fromJson(Map<String, dynamic> json) = _$_Task.fromJson;
 
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  bool get isDone => throw _privateConstructorUsedError;
+  bool get isDone;
   @override
-  String get userId => throw _privateConstructorUsedError;
-  @override
-  @MillisecondsToDateTimePropertyConverter()
-  DateTime get dueAt => throw _privateConstructorUsedError;
+  String get userId;
   @override
   @MillisecondsToDateTimePropertyConverter()
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get dueAt;
+  @override
+  @MillisecondsToDateTimePropertyConverter()
+  DateTime get createdAt;
   @override
   @JsonKey(name: 'name')
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
   @JsonKey(defaultValue: '')
-  String get note => throw _privateConstructorUsedError;
+  String get note;
   @override
   @JsonKey(defaultValue: [])
-  List<String> get tags => throw _privateConstructorUsedError;
+  List<String> get tags;
   @override
   @JsonKey(defaultValue: [])
-  List<TaskHistory> get history => throw _privateConstructorUsedError;
+  List<TaskHistory> get history;
   @override
-  int? get doneAt => throw _privateConstructorUsedError;
+  int? get doneAt;
   @override
-  int? get updatedAt => throw _privateConstructorUsedError;
+  int? get updatedAt;
   @override
-  int? get repetitionLevel => throw _privateConstructorUsedError;
+  int? get repetitionLevel;
   @override
   @JsonKey(ignore: true)
   _$$_TaskCopyWith<_$_Task> get copyWith => throw _privateConstructorUsedError;

@@ -294,7 +294,9 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProfileToJson(this);
+    return _$$_ProfileToJson(
+      this,
+    );
   }
 }
 
@@ -315,24 +317,24 @@ abstract class _Profile implements Profile {
   factory _Profile.fromJson(Map<String, dynamic> json) = _$_Profile.fromJson;
 
   @override
-  int? get updatedAt => throw _privateConstructorUsedError;
+  int? get updatedAt;
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  String get userId => throw _privateConstructorUsedError;
+  String get userId;
   @override
-  int get createdAt => throw _privateConstructorUsedError;
+  int get createdAt;
   @override
-  DailyStreak get dailyStreak => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(defaultValue: 0)
-  int get experience => throw _privateConstructorUsedError;
+  DailyStreak get dailyStreak;
   @override
   @JsonKey(defaultValue: 0)
-  int get points => throw _privateConstructorUsedError;
+  int get experience;
+  @override
+  @JsonKey(defaultValue: 0)
+  int get points;
   @override
   @JsonKey(defaultValue: false)
-  bool get areEcouragingMessagesDisabled => throw _privateConstructorUsedError;
+  bool get areEcouragingMessagesDisabled;
   @override
   @JsonKey(ignore: true)
   _$$_ProfileCopyWith<_$_Profile> get copyWith =>

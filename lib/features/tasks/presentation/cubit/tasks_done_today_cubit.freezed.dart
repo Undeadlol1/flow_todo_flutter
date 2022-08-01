@@ -311,7 +311,7 @@ abstract class _loaded extends TasksDoneTodayState {
   factory _loaded(final List<Task> tasks) = _$_loaded;
   _loaded._() : super._();
 
-  List<Task> get tasks => throw _privateConstructorUsedError;
+  List<Task> get tasks;
   @JsonKey(ignore: true)
   _$$_loadedCopyWith<_$_loaded> get copyWith =>
       throw _privateConstructorUsedError;

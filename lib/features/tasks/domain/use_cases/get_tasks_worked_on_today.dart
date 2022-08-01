@@ -5,11 +5,11 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_d
 import 'package:injectable/injectable.dart';
 
 @singleton
-class GetTasksDoneToday {
+class GetTasksWorkedOnToday {
   final TasksDoneTodayCubit tasksDoneTodayCubit;
   final UseCaseExceptionHandler exceptionHandler;
-  final GetTasksDoneTodayRepository getTasksDoneTodayRepository;
-  const GetTasksDoneToday({
+  final GetTasksWorkedOnTodayRepository getTasksDoneTodayRepository;
+  const GetTasksWorkedOnToday({
     required this.tasksDoneTodayCubit,
     required this.exceptionHandler,
     required this.getTasksDoneTodayRepository,

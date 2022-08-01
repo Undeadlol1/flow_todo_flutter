@@ -4,6 +4,7 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
+// ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:build_context_provider/build_context_provider.dart' as _i15;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i5;
 import 'package:firebase_auth/firebase_auth.dart' as _i40;
@@ -42,14 +43,14 @@ import '../../features/streaks/domain/use_cases/increment_daily_streak.dart'
     as _i37;
 import '../../features/tasks/data/create_task_repository.dart' as _i6;
 import '../../features/tasks/data/delete_task_repository.dart' as _i7;
-import '../../features/tasks/data/get_task_done_today_repository.dart' as _i11;
-import '../../features/tasks/data/get_tasks_to_do_repository.dart' as _i12;
+import '../../features/tasks/data/get_task_done_today_repository.dart' as _i12;
+import '../../features/tasks/data/get_tasks_to_do_repository.dart' as _i11;
 import '../../features/tasks/data/update_task_repository.dart' as _i24;
 import '../../features/tasks/domain/actions/work_on_task_action.dart' as _i29;
 import '../../features/tasks/domain/use_cases/create_task.dart' as _i32;
-import '../../features/tasks/domain/use_cases/get_tasks_done_today.dart'
-    as _i35;
-import '../../features/tasks/domain/use_cases/get_tasks_to_do.dart' as _i36;
+import '../../features/tasks/domain/use_cases/get_tasks_to_do.dart' as _i35;
+import '../../features/tasks/domain/use_cases/get_tasks_worked_on_today.dart'
+    as _i36;
 import '../../features/tasks/domain/use_cases/go_to_task_page.dart' as _i14;
 import '../../features/tasks/domain/use_cases/make_step_forward_on_the_task.dart'
     as _i42;
@@ -87,11 +88,11 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       () => _i9.GetGoalsRepository(firestore: get<_i5.FirebaseFirestore>()));
   gh.singleton<_i10.GetProfileRepository>(
       _i10.GetProfileRepository(firestore: get<_i5.FirebaseFirestore>()));
-  gh.singleton<_i11.GetTasksDoneTodayRepository>(
-      _i11.GetTasksDoneTodayRepository(
+  gh.factory<_i11.GetTasksToDoRepository>(() =>
+      _i11.GetTasksToDoRepository(firestore: get<_i5.FirebaseFirestore>()));
+  gh.singleton<_i12.GetTasksWorkedOnTodayRepository>(
+      _i12.GetTasksWorkedOnTodayRepository(
           firestore: get<_i5.FirebaseFirestore>()));
-  gh.factory<_i12.GetTasksToDoRepository>(() =>
-      _i12.GetTasksToDoRepository(firestore: get<_i5.FirebaseFirestore>()));
   gh.singleton<_i13.GetTodaysDate>(_i13.GetTodaysDate());
   gh.factory<_i14.GoToTaskPage>(() =>
       _i14.GoToTaskPage(provideContext: get<_i15.BuildContextProvider>()));
@@ -142,13 +143,14 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i34.GetProfile>(_i34.GetProfile(
       profileCubit: get<_i17.ProfileCubit>(),
       getProfileRepository: get<_i10.GetProfileRepository>()));
-  gh.singleton<_i35.GetTasksDoneToday>(_i35.GetTasksDoneToday(
+  gh.singleton<_i35.GetTasksToDo>(_i35.GetTasksToDo(
+      getTasks: get<_i11.GetTasksToDoRepository>(),
+      tasksCubit: get<_i20.TasksCubit>()));
+  gh.singleton<_i36.GetTasksWorkedOnToday>(_i36.GetTasksWorkedOnToday(
       tasksDoneTodayCubit: get<_i21.TasksDoneTodayCubit>(),
       exceptionHandler: get<_i26.UseCaseExceptionHandler>(),
-      getTasksDoneTodayRepository: get<_i11.GetTasksDoneTodayRepository>()));
-  gh.singleton<_i36.GetTasksToDo>(_i36.GetTasksToDo(
-      getTasks: get<_i12.GetTasksToDoRepository>(),
-      tasksCubit: get<_i20.TasksCubit>()));
+      getTasksDoneTodayRepository:
+          get<_i12.GetTasksWorkedOnTodayRepository>()));
   gh.lazySingleton<_i37.IncrementDailyStreak>(() => _i37.IncrementDailyStreak(
       profileCubit: get<_i17.ProfileCubit>(),
       getTodaysDate: get<_i13.GetTodaysDate>(),

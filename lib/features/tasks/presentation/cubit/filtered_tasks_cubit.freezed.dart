@@ -124,7 +124,7 @@ abstract class _State implements FilteredTasksState {
   factory _State(final List<Task> tasks) = _$_State;
 
   @override
-  List<Task> get tasks => throw _privateConstructorUsedError;
+  List<Task> get tasks;
   @override
   @JsonKey(ignore: true)
   _$$_StateCopyWith<_$_State> get copyWith =>

@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 import '../../../features/authentification/presentation/cubit/authentification_cubit.dart';
 import '../../../features/authentification/presentation/widgets/google_sign_in_button.dart';
 import '../../../features/common/presentation/page_layout.dart';
-import '../../../features/tasks/domain/use_cases/get_tasks_done_today.dart';
+import '../../../features/tasks/domain/use_cases/get_tasks_worked_on_today.dart';
 import '../../../features/tasks/domain/use_cases/get_tasks_to_do.dart';
 import '../../../features/tasks/presentation/widgets/tasks_list.dart';
 import '../../../features/users/domain/use_cases/get_profile.dart';
@@ -33,7 +33,7 @@ class MainPage extends StatelessWidget {
               if (authState is Authenticated) {
                 GetIt.I<GetProfile>()(userId: authState.user.id);
                 GetIt.I<GetTasksToDo>()(userId: authState.user.id);
-                GetIt.I<GetTasksDoneToday>()(userId: authState.user.id);
+                GetIt.I<GetTasksWorkedOnToday>()(userId: authState.user.id);
               }
             },
             builder: (context, authState) {

@@ -232,7 +232,9 @@ class _$_Goal implements _Goal {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_GoalToJson(this);
+    return _$$_GoalToJson(
+      this,
+    );
   }
 }
 
@@ -249,19 +251,19 @@ abstract class _Goal implements Goal {
   factory _Goal.fromJson(Map<String, dynamic> json) = _$_Goal.fromJson;
 
   @override
-  int get steps => throw _privateConstructorUsedError;
+  int get steps;
   @override
-  int get points => throw _privateConstructorUsedError;
+  int get points;
   @override
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  String get userId => throw _privateConstructorUsedError;
+  String get userId;
   @override
-  int get createdAt => throw _privateConstructorUsedError;
+  int get createdAt;
   @override
-  int? get updatedAt => throw _privateConstructorUsedError;
+  int? get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$$_GoalCopyWith<_$_Goal> get copyWith => throw _privateConstructorUsedError;
