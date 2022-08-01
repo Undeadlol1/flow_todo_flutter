@@ -1,7 +1,7 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/models/daily_streak.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -55,7 +55,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
     return Builder(
       builder: (context) {
         final ProfileState profileState = context.watch<ProfileCubit>().state;
-        return BlocConsumer<TasksDoneTodayCubit, TasksDoneTodayState>(
+        return BlocConsumer<TasksWorkedOnTodayCubit, TasksWorkedOnTodayState>(
           listener: (context, tasksDoneState) {
             _runProgressAnimation(
               context: context,
@@ -107,7 +107,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
   void _runProgressAnimation({
     required BuildContext context,
     required DailyStreak? dailyStreak,
-    required TasksDoneTodayState tasksDoneTodayState,
+    required TasksWorkedOnTodayState tasksDoneTodayState,
   }) {
     final tasksDoneAmount = tasksDoneTodayState.tasks.length;
 

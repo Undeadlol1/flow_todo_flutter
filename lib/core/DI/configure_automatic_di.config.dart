@@ -43,7 +43,8 @@ import '../../features/streaks/domain/use_cases/increment_daily_streak.dart'
     as _i37;
 import '../../features/tasks/data/create_task_repository.dart' as _i6;
 import '../../features/tasks/data/delete_task_repository.dart' as _i7;
-import '../../features/tasks/data/get_task_done_today_repository.dart' as _i12;
+import '../../features/tasks/data/get_task_worked_on_today_repository.dart'
+    as _i12;
 import '../../features/tasks/data/get_tasks_to_do_repository.dart' as _i11;
 import '../../features/tasks/data/update_task_repository.dart' as _i24;
 import '../../features/tasks/domain/actions/work_on_task_action.dart' as _i29;
@@ -60,7 +61,7 @@ import '../../features/tasks/domain/use_cases/update_task_note.dart' as _i48;
 import '../../features/tasks/presentation/cubit/filtered_tasks_cubit.dart'
     as _i8;
 import '../../features/tasks/presentation/cubit/tasks_cubit.dart' as _i20;
-import '../../features/tasks/presentation/cubit/tasks_done_today_cubit.dart'
+import '../../features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart'
     as _i21;
 import '../../features/users/data/get_profile_repository.dart' as _i10;
 import '../../features/users/data/upsert_profile_repository.dart' as _i25;
@@ -103,7 +104,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i19.StreakDaysInARowCalculator>(
       () => _i19.StreakDaysInARowCalculator());
   gh.singleton<_i20.TasksCubit>(_i20.TasksCubit());
-  gh.singleton<_i21.TasksDoneTodayCubit>(_i21.TasksDoneTodayCubit());
+  gh.singleton<_i21.TasksWorkedOnTodayCubit>(_i21.TasksWorkedOnTodayCubit());
   gh.singleton<_i22.UniqueIdGenerator>(_i22.UniqueIdGenerator());
   gh.lazySingleton<_i23.UpdateGoalRepository>(
       () => _i23.UpdateGoalRepository(firestore: get<_i5.FirebaseFirestore>()));
@@ -117,7 +118,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       experienceToReachALevelCalculator:
           get<_i28.ExperienceToReachNextLevelCalculator>()));
   gh.factory<_i29.WorkOnTaskAction>(() => _i29.WorkOnTaskAction(
-      tasksDoneTodayCubit: get<_i21.TasksDoneTodayCubit>()));
+      tasksDoneTodayCubit: get<_i21.TasksWorkedOnTodayCubit>()));
   gh.singleton<_i30.AddPointsToViewer>(_i30.AddPointsToViewer(
       profileCubit: get<_i17.ProfileCubit>(),
       updateProfileRepository: get<_i25.UpsertProfileRepository>()));
@@ -147,14 +148,14 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       getTasks: get<_i11.GetTasksToDoRepository>(),
       tasksCubit: get<_i20.TasksCubit>()));
   gh.singleton<_i36.GetTasksWorkedOnToday>(_i36.GetTasksWorkedOnToday(
-      tasksDoneTodayCubit: get<_i21.TasksDoneTodayCubit>(),
+      tasksDoneTodayCubit: get<_i21.TasksWorkedOnTodayCubit>(),
       exceptionHandler: get<_i26.UseCaseExceptionHandler>(),
       getTasksDoneTodayRepository:
           get<_i12.GetTasksWorkedOnTodayRepository>()));
   gh.lazySingleton<_i37.IncrementDailyStreak>(() => _i37.IncrementDailyStreak(
       profileCubit: get<_i17.ProfileCubit>(),
       getTodaysDate: get<_i13.GetTodaysDate>(),
-      tasksDoneTodayCubit: get<_i21.TasksDoneTodayCubit>(),
+      tasksDoneTodayCubit: get<_i21.TasksWorkedOnTodayCubit>(),
       updateProfile: get<_i25.UpsertProfileRepository>()));
   gh.singleton<_i38.LevelProgressPercentageCalculator>(
       _i38.LevelProgressPercentageCalculator(
@@ -165,7 +166,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       tasksCubit: get<_i20.TasksCubit>(),
       profileCubit: get<_i17.ProfileCubit>(),
       firebaseAuth: get<_i40.FirebaseAuth>(),
-      tasksDoneTodayCubit: get<_i21.TasksDoneTodayCubit>(),
+      tasksDoneTodayCubit: get<_i21.TasksWorkedOnTodayCubit>(),
       authentificationCubit: get<_i3.AuthentificationCubit>()));
   gh.lazySingleton<_i41.MakeStepForwardOnAGoal>(() =>
       _i41.MakeStepForwardOnAGoal(
@@ -184,7 +185,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       snackbarService: get<_i18.SnackbarService>(),
       workOnTaskAction: get<_i29.WorkOnTaskAction>(),
       addPointsToViewer: get<_i30.AddPointsToViewer>(),
-      tasksDoneTodayCubit: get<_i21.TasksDoneTodayCubit>(),
+      tasksDoneTodayCubit: get<_i21.TasksWorkedOnTodayCubit>(),
       incrementDailyStreak: get<_i37.IncrementDailyStreak>(),
       nextRepetitionCalculator: get<_i44.NextRepetitionCalculator>()));
   gh.singleton<_i45.RejectTask>(_i45.RejectTask(

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:injectable/injectable.dart';
 
@@ -10,7 +10,7 @@ class Logout {
   final TasksCubit tasksCubit;
   final ProfileCubit profileCubit;
   final FirebaseAuth firebaseAuth;
-  final TasksDoneTodayCubit tasksDoneTodayCubit;
+  final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
   final AuthentificationCubit authentificationCubit;
 
   const Logout({

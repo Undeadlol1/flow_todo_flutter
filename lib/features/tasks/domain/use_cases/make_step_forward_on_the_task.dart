@@ -5,7 +5,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/actions/work_on_tas
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/data/upsert_profile_repository.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
@@ -33,7 +33,7 @@ class MakeStepForwardOnTheTask {
   final WorkOnTaskAction workOnTaskAction;
   final AddPointsToViewer addPointsToViewer;
   final UpsertProfileRepository updateProfile;
-  final TasksDoneTodayCubit tasksDoneTodayCubit;
+  final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
   final IncrementDailyStreak incrementDailyStreak;
   final NextRepetitionCalculator nextRepetitionCalculator;
   const MakeStepForwardOnTheTask({

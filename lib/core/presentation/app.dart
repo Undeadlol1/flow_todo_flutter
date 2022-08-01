@@ -14,7 +14,7 @@ import '../../features/authentification/presentation/cubit/authentification_cubi
 import '../../features/leveling/presentation/widgets/experience_progress_bar.dart';
 import 'pages/main_page.dart';
 import '../../features/tasks/presentation/cubit/tasks_cubit.dart';
-import '../../features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import '../../features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import '../../features/tasks/presentation/pages/task_page.dart';
 import '../../features/tasks/presentation/pages/work_on_task_page.dart';
 import '../../features/users/presentation/cubit/profile_cubit.dart';
@@ -34,7 +34,7 @@ class _AppState extends State<App> {
   final TasksCubit tasksCubit = GetIt.I();
   final GoalsCubit goalsCubit = GetIt.I();
   final ProfileCubit profileCubit = GetIt.I();
-  final TasksDoneTodayCubit tasksDoneTodayCubit = GetIt.I();
+  final TasksWorkedOnTodayCubit tasksDoneTodayCubit = GetIt.I();
   final AuthentificationCubit authentificationCubit = GetIt.I();
 
   final lightTheme = FlexThemeData.light(

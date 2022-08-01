@@ -6,12 +6,12 @@ import '../../../../../test_utilities/mocks/mock_autentification_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_firebase_auth.dart';
 import '../../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_tasks_cubit.dart';
-import '../../../../../test_utilities/mocks/mock_tasks_done_today_cubit.dart';
+import '../../../../../test_utilities/mocks/mock_tasks_worked_on_today_cubit.dart';
 
 final _tasksCubit = MockTasksCubit();
 final _firebaseAuth = MockFirebasAuth();
 final _profileCubit = MockProfileCubit();
-final _tasksDoneTodayCubit = MockTasksDoneTodayCubit();
+final _tasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
 final _authentificationCubit = MockAuthentificationCubit();
 
 void main() {

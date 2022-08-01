@@ -8,7 +8,7 @@ import 'package:flow_todo_flutter_2022/core/presentation/pages/main_page.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_worked_on_today.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
@@ -118,7 +118,7 @@ extension _PumpWithScaffold on WidgetTester {
           BlocProvider(create: (context) => _authCubit),
           BlocProvider(create: (context) => _tasksCuibit),
           BlocProvider(create: (context) => _profileCubit),
-          BlocProvider(create: (context) => TasksDoneTodayCubit()),
+          BlocProvider(create: (context) => TasksWorkedOnTodayCubit()),
         ],
         child: const MaterialApp(
           home: MainPage(),

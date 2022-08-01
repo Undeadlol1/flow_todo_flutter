@@ -1,7 +1,7 @@
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,7 +10,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
-import '../../../../test_utilities/mocks/mock_tasks_done_today_cubit.dart';
+import '../../../../test_utilities/mocks/mock_tasks_worked_on_today_cubit.dart';
 import '../../../../test_utilities/mocks/mock_upsert_profile_repository.dart';
 
 final _today = DateTime.now();
@@ -23,7 +23,7 @@ class _FakeGetTodaysDate extends Fake implements GetTodaysDate {
 
 final _mockProfileCubit = MockProfileCubit();
 final _fakeGetTodaysDate = _FakeGetTodaysDate();
-final _mockTasksDoneTodayCubit = MockTasksDoneTodayCubit();
+final _mockTasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
 final _mockUpdateProfileRepository = MockUpsertProfileRepository();
 
 void main() {
@@ -33,7 +33,7 @@ void main() {
 
     when(() => _mockTasksDoneTodayCubit.update(any())).thenReturn(null);
     when(() => _mockTasksDoneTodayCubit.state)
-        .thenReturn(TasksDoneTodayState.loaded([]));
+        .thenReturn(TasksWorkedOnTodayState.loaded([]));
     when(() => _mockProfileCubit.state)
         .thenReturn(ProfileLoaded(profile: profileFixture));
   });
@@ -129,6 +129,6 @@ void _mockTypicalCalls({
   when(() => _mockProfileCubit.state)
       .thenReturn(ProfileLoaded(profile: profile));
   when((() => _mockTasksDoneTodayCubit.state)).thenReturn(
-    TasksDoneTodayState.loaded(tasksDoneToday),
+    TasksWorkedOnTodayState.loaded(tasksDoneToday),
   );
 }

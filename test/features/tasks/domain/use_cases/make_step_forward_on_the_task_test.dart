@@ -7,7 +7,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_histo
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,7 +22,7 @@ import '../../../../test_utilities/mocks/mock_go_to_task_page.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
 import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
-import '../../../../test_utilities/mocks/mock_tasks_done_today_cubit.dart';
+import '../../../../test_utilities/mocks/mock_tasks_worked_on_today_cubit.dart';
 import '../../../../test_utilities/mocks/mock_upsert_profile_repository.dart';
 import '../../../../test_utilities/mocks/mock_update_task_repository.dart';
 
@@ -41,11 +41,11 @@ final _mockProfileCubit = MockProfileCubit();
 final _mockGoToMainPage = MockGoToMainPage();
 final _mockGoToTaskPage = MockGoToTaskPage();
 final _fakeGetTodaysDate = FakeGetTodaysDate();
-final _tasksDoneTodayCubit = TasksDoneTodayCubit();
+final _tasksDoneTodayCubit = TasksWorkedOnTodayCubit();
 final _mockSnackbarService = MockSnackbarService();
 final _mockWorkOnTaskAction = _MockWorkOnTaskAction();
 final _mockAddPointsToViewer = _MockAddPointsToViewer();
-final _mockTasksDoneTodayCubit = MockTasksDoneTodayCubit();
+final _mockTasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
 final _mockUpdateTaskRepository = MockUpdateTaskRepository();
 final _mockUpdateProfileRepository = MockUpsertProfileRepository();
 final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
@@ -64,7 +64,7 @@ void main() {
 
     when(() => _mockTasksDoneTodayCubit.update(any())).thenReturn(null);
     when(() => _mockTasksDoneTodayCubit.state)
-        .thenReturn(TasksDoneTodayState.loaded([]));
+        .thenReturn(TasksWorkedOnTodayState.loaded([]));
     when(() => _mockProfileCubit.state)
         .thenReturn(ProfileLoaded(profile: profileFixture));
 

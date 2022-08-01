@@ -1,12 +1,12 @@
 import 'package:flow_todo_flutter_2022/core/services/use_case_exception_handler.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/data/get_task_done_today_repository.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/data/get_task_worked_on_today_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
 class GetTasksWorkedOnToday {
-  final TasksDoneTodayCubit tasksDoneTodayCubit;
+  final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
   final UseCaseExceptionHandler exceptionHandler;
   final GetTasksWorkedOnTodayRepository getTasksDoneTodayRepository;
   const GetTasksWorkedOnToday({
