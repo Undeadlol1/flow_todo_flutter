@@ -80,10 +80,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    // TODO remove commented out lines if analytics work fine.
-    // // https://firebase.google.com/docs/analytics/get-started
-    // implementation platform('com.google.firebase:firebase-bom:30.3.1')
-    // implementation 'com.google.firebase:firebase-analytics-ktx'
     // https://firebase.flutter.dev/docs/manual-installation/android/
     implementation 'com.android.support:multidex:1.0.3'
 }
