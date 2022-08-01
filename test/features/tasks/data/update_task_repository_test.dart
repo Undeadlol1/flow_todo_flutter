@@ -35,7 +35,7 @@ void main() {
         final collection = mockFirestore.collection('tasks');
         final initialTask = taskFixture.copyWith(isDone: false);
         final updatedTask = taskFixture.copyWith(isDone: true);
-        await collection.add(initialTask.toJson());
+        await collection.doc(initialTask.id).set(initialTask.toJson());
 
         await UpdateTaskRepository(firestore: mockFirestore).call(updatedTask);
 

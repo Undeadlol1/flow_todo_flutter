@@ -6,6 +6,7 @@ import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_c
 import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/authentification/domain/entities/user.dart';
@@ -27,6 +28,9 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  static final FirebaseAnalyticsObserver _firebaseAnalyticsObserver =
+      FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance);
+
   final TasksCubit tasksCubit = GetIt.I();
   final GoalsCubit goalsCubit = GetIt.I();
   final ProfileCubit profileCubit = GetIt.I();
@@ -102,6 +106,7 @@ class _AppState extends State<App> {
               title: 'Flow TODO',
               darkTheme: darkTheme,
               initialRoute: MainPage.pathName,
+              navigatorObservers: [_firebaseAnalyticsObserver],
               routes: {
                 MainPage.pathName: (contex) => const MainPage(),
                 TaskPage.pathName: (contex) => const TaskPage(),
