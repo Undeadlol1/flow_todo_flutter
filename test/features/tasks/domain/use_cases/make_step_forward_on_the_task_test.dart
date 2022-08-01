@@ -2,6 +2,7 @@ import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entitie
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/repetition.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/actions/work_on_task_action.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
@@ -29,6 +30,8 @@ class _MockAddPointsToViewer extends Mock implements AddPointsToViewer {}
 
 class _MockIncrementDailyStreak extends Mock implements IncrementDailyStreak {}
 
+class _MockWorkOnTaskAction extends Mock implements WorkOnTaskAction {}
+
 class _MockNextRepetitionCalculator extends Mock
     implements NextRepetitionCalculator {}
 
@@ -40,6 +43,7 @@ final _mockGoToTaskPage = MockGoToTaskPage();
 final _fakeGetTodaysDate = FakeGetTodaysDate();
 final _tasksDoneTodayCubit = TasksDoneTodayCubit();
 final _mockSnackbarService = MockSnackbarService();
+final _mockWorkOnTaskAction = _MockWorkOnTaskAction();
 final _mockAddPointsToViewer = _MockAddPointsToViewer();
 final _mockTasksDoneTodayCubit = MockTasksDoneTodayCubit();
 final _mockUpdateTaskRepository = MockUpdateTaskRepository();
@@ -52,6 +56,7 @@ void main() {
   setUp(() {
     reset(_mockTasksCubit);
     reset(_mockGoToTaskPage);
+    reset(_mockWorkOnTaskAction);
     reset(_mockAddPointsToViewer);
     reset(_mockTasksDoneTodayCubit);
     reset(_mockIncrementDailyStreak);
@@ -112,7 +117,7 @@ void main() {
         );
 
         verify(() => _mockTasksCubit.undo()).called(1);
-        verify(() => _mockTasksDoneTodayCubit.undo()).called(1);
+        verify(() => _mockWorkOnTaskAction.undoState()).called(1);
       });
 
       test('THEN navigates back to task page', () async {
@@ -223,7 +228,7 @@ void main() {
 
     test(
       'WHEN called '
-      'THEN puts the task into tasks done today cubit',
+      'THEN calls WorkOnTaskAction',
       () async {
         _mockTypicalCalls(amountOfPointsToVerify: 30);
 
@@ -232,7 +237,7 @@ void main() {
           howBigWasTheStep: Confidence.good,
         );
 
-        expect(_tasksDoneTodayCubit.state.tasks, hasLength(1));
+        verify(() => _mockWorkOnTaskAction.updateState(taskFixture)).called(1);
       },
     );
 
@@ -322,6 +327,7 @@ Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument({
 
 void _mockTypicalCalls({required int amountOfPointsToVerify}) {
   when(() => _mockGoToMainPage()).thenAnswer((_) async {});
+  when(() => _mockWorkOnTaskAction.updateState(taskFixture)).thenReturn(null);
   when(() => _mockIncrementDailyStreak()).thenAnswer((_) async {});
   when(() => _mockUpdateTaskRepository(any())).thenAnswer((_) async {});
   when(() => _mockAddPointsToViewer(amountOfPointsToVerify))
@@ -343,6 +349,7 @@ MakeStepForwardOnTheTask _getUseCase() {
     getTodaysDate: _fakeGetTodaysDate,
     snackbarService: _mockSnackbarService,
     updateTask: _mockUpdateTaskRepository,
+    workOnTaskAction: _mockWorkOnTaskAction,
     addPointsToViewer: _mockAddPointsToViewer,
     tasksDoneTodayCubit: _tasksDoneTodayCubit,
     updateProfile: _mockUpdateProfileRepository,
@@ -360,6 +367,7 @@ MakeStepForwardOnTheTask _getUseCaseWithMockedStates() {
     getTodaysDate: _fakeGetTodaysDate,
     snackbarService: _mockSnackbarService,
     updateTask: _mockUpdateTaskRepository,
+    workOnTaskAction: _mockWorkOnTaskAction,
     addPointsToViewer: _mockAddPointsToViewer,
     updateProfile: _mockUpdateProfileRepository,
     tasksDoneTodayCubit: _mockTasksDoneTodayCubit,

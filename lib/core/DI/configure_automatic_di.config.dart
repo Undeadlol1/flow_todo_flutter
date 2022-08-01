@@ -6,55 +6,56 @@
 
 import 'package:build_context_provider/build_context_provider.dart' as _i15;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i5;
-import 'package:firebase_auth/firebase_auth.dart' as _i39;
+import 'package:firebase_auth/firebase_auth.dart' as _i40;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
 import '../../features/authentification/domain/entities/use_cases/logout.dart'
-    as _i38;
+    as _i39;
 import '../../features/authentification/domain/entities/use_cases/sign_in_with_google.dart'
-    as _i45;
+    as _i46;
 import '../../features/authentification/presentation/cubit/authentification_cubit.dart'
     as _i3;
-import '../../features/common/domain/use_cases/go_to_main_page.dart' as _i42;
+import '../../features/common/domain/use_cases/go_to_main_page.dart' as _i43;
 import '../../features/common/services/get_todays_date.dart' as _i13;
 import '../../features/common/services/snackbar_service.dart' as _i18;
 import '../../features/common/services/unique_id_generator.dart' as _i22;
 import '../../features/goals/data/create_goal_repository.dart' as _i4;
 import '../../features/goals/data/get_goals_repository.dart' as _i9;
 import '../../features/goals/data/update_goal_repository.dart' as _i23;
-import '../../features/goals/domain/use_cases/create_goal.dart' as _i30;
-import '../../features/goals/domain/use_cases/get_goals.dart' as _i32;
+import '../../features/goals/domain/use_cases/create_goal.dart' as _i31;
+import '../../features/goals/domain/use_cases/get_goals.dart' as _i33;
 import '../../features/goals/domain/use_cases/make_step_forward_on_a_goal.dart'
-    as _i40;
+    as _i41;
 import '../../features/goals/presentation/cubit/goals_cubit.dart' as _i16;
 import '../../features/leveling/domain/services/experience_to_reach_next_level_calculator.dart'
     as _i28;
 import '../../features/leveling/domain/services/level_progress_percentage_calculator.dart'
-    as _i37;
+    as _i38;
 import '../../features/leveling/domain/services/user_level_calculator.dart'
     as _i27;
 import '../../features/spaced_repetition/domain/services/next_repetition_calculator.dart'
-    as _i43;
+    as _i44;
 import '../../features/streaks/domain/services/streak_days_in_a_row_calculator.dart'
     as _i19;
 import '../../features/streaks/domain/use_cases/increment_daily_streak.dart'
-    as _i36;
+    as _i37;
 import '../../features/tasks/data/create_task_repository.dart' as _i6;
 import '../../features/tasks/data/delete_task_repository.dart' as _i7;
 import '../../features/tasks/data/get_task_done_today_repository.dart' as _i11;
 import '../../features/tasks/data/get_tasks_to_do_repository.dart' as _i12;
 import '../../features/tasks/data/update_task_repository.dart' as _i24;
-import '../../features/tasks/domain/use_cases/create_task.dart' as _i31;
+import '../../features/tasks/domain/actions/work_on_task_action.dart' as _i29;
+import '../../features/tasks/domain/use_cases/create_task.dart' as _i32;
 import '../../features/tasks/domain/use_cases/get_tasks_done_today.dart'
-    as _i34;
-import '../../features/tasks/domain/use_cases/get_tasks_to_do.dart' as _i35;
+    as _i35;
+import '../../features/tasks/domain/use_cases/get_tasks_to_do.dart' as _i36;
 import '../../features/tasks/domain/use_cases/go_to_task_page.dart' as _i14;
 import '../../features/tasks/domain/use_cases/make_step_forward_on_the_task.dart'
-    as _i41;
-import '../../features/tasks/domain/use_cases/reject_task.dart' as _i44;
-import '../../features/tasks/domain/use_cases/update_task.dart' as _i46;
-import '../../features/tasks/domain/use_cases/update_task_note.dart' as _i47;
+    as _i42;
+import '../../features/tasks/domain/use_cases/reject_task.dart' as _i45;
+import '../../features/tasks/domain/use_cases/update_task.dart' as _i47;
+import '../../features/tasks/domain/use_cases/update_task_note.dart' as _i48;
 import '../../features/tasks/presentation/cubit/filtered_tasks_cubit.dart'
     as _i8;
 import '../../features/tasks/presentation/cubit/tasks_cubit.dart' as _i20;
@@ -63,8 +64,8 @@ import '../../features/tasks/presentation/cubit/tasks_done_today_cubit.dart'
 import '../../features/users/data/get_profile_repository.dart' as _i10;
 import '../../features/users/data/upsert_profile_repository.dart' as _i25;
 import '../../features/users/domain/use_cases/add_points_to_viewer.dart'
-    as _i29;
-import '../../features/users/domain/use_cases/get_profile.dart' as _i33;
+    as _i30;
+import '../../features/users/domain/use_cases/get_profile.dart' as _i34;
 import '../../features/users/presentation/cubit/profile_cubit.dart' as _i17;
 import '../services/use_case_exception_handler.dart'
     as _i26; // ignore_for_file: unnecessary_lambdas
@@ -114,91 +115,94 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i27.UserLevelCalculator>(() => _i27.UserLevelCalculator(
       experienceToReachALevelCalculator:
           get<_i28.ExperienceToReachNextLevelCalculator>()));
-  gh.singleton<_i29.AddPointsToViewer>(_i29.AddPointsToViewer(
+  gh.factory<_i29.WorkOnTaskAction>(() => _i29.WorkOnTaskAction(
+      tasksDoneTodayCubit: get<_i21.TasksDoneTodayCubit>()));
+  gh.singleton<_i30.AddPointsToViewer>(_i30.AddPointsToViewer(
       profileCubit: get<_i17.ProfileCubit>(),
       updateProfileRepository: get<_i25.UpsertProfileRepository>()));
-  gh.singleton<_i30.CreateGoal>(_i30.CreateGoal(
+  gh.singleton<_i31.CreateGoal>(_i31.CreateGoal(
       goalsCubit: get<_i16.GoalsCubit>(),
       profileCubit: get<_i17.ProfileCubit>(),
       getTodaysDate: get<_i13.GetTodaysDate>(),
       createGoalRepo: get<_i4.CreateGoalRepository>(),
-      addPointsToUser: get<_i29.AddPointsToViewer>(),
+      addPointsToUser: get<_i30.AddPointsToViewer>(),
       uniqueIdGenerator: get<_i22.UniqueIdGenerator>(),
       useCaseExceptionHandler: get<_i26.UseCaseExceptionHandler>()));
-  gh.lazySingleton<_i31.CreateTask>(() => _i31.CreateTask(
+  gh.lazySingleton<_i32.CreateTask>(() => _i32.CreateTask(
       tasksCubit: get<_i20.TasksCubit>(),
       profileCubit: get<_i17.ProfileCubit>(),
       getTodaysDate: get<_i13.GetTodaysDate>(),
-      addPointsToUser: get<_i29.AddPointsToViewer>(),
+      addPointsToUser: get<_i30.AddPointsToViewer>(),
       uniqueIdGenerator: get<_i22.UniqueIdGenerator>(),
       createTaskRepository: get<_i6.CreateTaskRepository>()));
-  gh.singleton<_i32.GetGoals>(_i32.GetGoals(
+  gh.singleton<_i33.GetGoals>(_i33.GetGoals(
       goalsCubit: get<_i16.GoalsCubit>(),
       getGoalsRepo: get<_i9.GetGoalsRepository>(),
       useCaseExceptionHandler: get<_i26.UseCaseExceptionHandler>()));
-  gh.singleton<_i33.GetProfile>(_i33.GetProfile(
+  gh.singleton<_i34.GetProfile>(_i34.GetProfile(
       profileCubit: get<_i17.ProfileCubit>(),
       getProfileRepository: get<_i10.GetProfileRepository>()));
-  gh.singleton<_i34.GetTasksDoneToday>(_i34.GetTasksDoneToday(
+  gh.singleton<_i35.GetTasksDoneToday>(_i35.GetTasksDoneToday(
       tasksDoneTodayCubit: get<_i21.TasksDoneTodayCubit>(),
       exceptionHandler: get<_i26.UseCaseExceptionHandler>(),
       getTasksDoneTodayRepository: get<_i11.GetTasksDoneTodayRepository>()));
-  gh.singleton<_i35.GetTasksToDo>(_i35.GetTasksToDo(
+  gh.singleton<_i36.GetTasksToDo>(_i36.GetTasksToDo(
       getTasks: get<_i12.GetTasksToDoRepository>(),
       tasksCubit: get<_i20.TasksCubit>()));
-  gh.lazySingleton<_i36.IncrementDailyStreak>(() => _i36.IncrementDailyStreak(
+  gh.lazySingleton<_i37.IncrementDailyStreak>(() => _i37.IncrementDailyStreak(
       profileCubit: get<_i17.ProfileCubit>(),
       getTodaysDate: get<_i13.GetTodaysDate>(),
       tasksDoneTodayCubit: get<_i21.TasksDoneTodayCubit>(),
       updateProfile: get<_i25.UpsertProfileRepository>()));
-  gh.singleton<_i37.LevelProgressPercentageCalculator>(
-      _i37.LevelProgressPercentageCalculator(
+  gh.singleton<_i38.LevelProgressPercentageCalculator>(
+      _i38.LevelProgressPercentageCalculator(
           userLevelCalculator: get<_i27.UserLevelCalculator>(),
           experienceToReachALevelCalculator:
               get<_i28.ExperienceToReachNextLevelCalculator>()));
-  gh.singleton<_i38.Logout>(_i38.Logout(
+  gh.singleton<_i39.Logout>(_i39.Logout(
       tasksCubit: get<_i20.TasksCubit>(),
       profileCubit: get<_i17.ProfileCubit>(),
-      firebaseAuth: get<_i39.FirebaseAuth>(),
+      firebaseAuth: get<_i40.FirebaseAuth>(),
       tasksDoneTodayCubit: get<_i21.TasksDoneTodayCubit>(),
       authentificationCubit: get<_i3.AuthentificationCubit>()));
-  gh.lazySingleton<_i40.MakeStepForwardOnAGoal>(() =>
-      _i40.MakeStepForwardOnAGoal(
+  gh.lazySingleton<_i41.MakeStepForwardOnAGoal>(() =>
+      _i41.MakeStepForwardOnAGoal(
           goalsCubit: get<_i16.GoalsCubit>(),
           profileCubit: get<_i17.ProfileCubit>(),
           updateGoalRepo: get<_i23.UpdateGoalRepository>(),
           updateProfileRepository: get<_i25.UpsertProfileRepository>()));
-  gh.singleton<_i41.MakeStepForwardOnTheTask>(_i41.MakeStepForwardOnTheTask(
+  gh.singleton<_i42.MakeStepForwardOnTheTask>(_i42.MakeStepForwardOnTheTask(
       tasksCubit: get<_i20.TasksCubit>(),
       updateTask: get<_i24.UpdateTaskRepository>(),
       profileCubit: get<_i17.ProfileCubit>(),
-      goToMainPage: get<_i42.GoToMainPage>(),
+      goToMainPage: get<_i43.GoToMainPage>(),
       goToTaskPage: get<_i14.GoToTaskPage>(),
       getTodaysDate: get<_i13.GetTodaysDate>(),
       updateProfile: get<_i25.UpsertProfileRepository>(),
       snackbarService: get<_i18.SnackbarService>(),
-      addPointsToViewer: get<_i29.AddPointsToViewer>(),
+      workOnTaskAction: get<_i29.WorkOnTaskAction>(),
+      addPointsToViewer: get<_i30.AddPointsToViewer>(),
       tasksDoneTodayCubit: get<_i21.TasksDoneTodayCubit>(),
-      incrementDailyStreak: get<_i36.IncrementDailyStreak>(),
-      nextRepetitionCalculator: get<_i43.NextRepetitionCalculator>()));
-  gh.singleton<_i44.RejectTask>(_i44.RejectTask(
+      incrementDailyStreak: get<_i37.IncrementDailyStreak>(),
+      nextRepetitionCalculator: get<_i44.NextRepetitionCalculator>()));
+  gh.singleton<_i45.RejectTask>(_i45.RejectTask(
       tasksCubit: get<_i20.TasksCubit>(),
-      goToMainPage: get<_i42.GoToMainPage>(),
+      goToMainPage: get<_i43.GoToMainPage>(),
       goToTaskPage: get<_i14.GoToTaskPage>(),
       snackbarService: get<_i18.SnackbarService>(),
-      addPointsToUser: get<_i29.AddPointsToViewer>(),
+      addPointsToUser: get<_i30.AddPointsToViewer>(),
       deleteTaskRepository: get<_i7.DeleteTaskRepository>()));
-  gh.factory<_i45.SignInWithGoogle>(() => _i45.SignInWithGoogle(
+  gh.factory<_i46.SignInWithGoogle>(() => _i46.SignInWithGoogle(
       profileCubit: get<_i17.ProfileCubit>(),
-      firebaseAuth: get<_i39.FirebaseAuth>(),
+      firebaseAuth: get<_i40.FirebaseAuth>(),
       uniqueIdGenerator: get<_i22.UniqueIdGenerator>(),
       getProfileRepository: get<_i10.GetProfileRepository>(),
       upsertProfileRepository: get<_i25.UpsertProfileRepository>(),
       useCaseExceptionHandler: get<_i26.UseCaseExceptionHandler>()));
-  gh.singleton<_i46.UpdateTask>(_i46.UpdateTask(
+  gh.singleton<_i47.UpdateTask>(_i47.UpdateTask(
       tasksCubit: get<_i20.TasksCubit>(),
       updateTaskRepository: get<_i24.UpdateTaskRepository>()));
-  gh.singleton<_i47.UpdateTaskNote>(_i47.UpdateTaskNote(
+  gh.singleton<_i48.UpdateTaskNote>(_i48.UpdateTaskNote(
       tasksCubit: get<_i20.TasksCubit>(),
       updateTaskRepository: get<_i24.UpdateTaskRepository>()));
   return get;

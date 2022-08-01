@@ -1,6 +1,7 @@
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/actions/work_on_task_action.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
@@ -29,6 +30,7 @@ class MakeStepForwardOnTheTask {
   final GetTodaysDate getTodaysDate;
   final SnackbarService snackbarService;
   final UpdateTaskRepository updateTask;
+  final WorkOnTaskAction workOnTaskAction;
   final AddPointsToViewer addPointsToViewer;
   final UpsertProfileRepository updateProfile;
   final TasksDoneTodayCubit tasksDoneTodayCubit;
@@ -43,6 +45,7 @@ class MakeStepForwardOnTheTask {
     required this.getTodaysDate,
     required this.updateProfile,
     required this.snackbarService,
+    required this.workOnTaskAction,
     required this.addPointsToViewer,
     required this.tasksDoneTodayCubit,
     required this.incrementDailyStreak,
@@ -55,7 +58,7 @@ class MakeStepForwardOnTheTask {
     bool isTaskDone = false,
   }) async {
     tasksCubit.removeTask(task);
-    tasksDoneTodayCubit.update([...tasksDoneTodayCubit.state.tasks, task]);
+    workOnTaskAction.updateState(task);
     profileCubit.setProfile(_getUpdatedProfile());
 
     try {
@@ -77,7 +80,7 @@ class MakeStepForwardOnTheTask {
 
     tasksCubit.undo();
     profileCubit.undo();
-    tasksDoneTodayCubit.undo();
+    workOnTaskAction.undoState();
 
     return goToTaskPage.call(task: task);
   }
