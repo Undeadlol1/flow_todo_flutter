@@ -21,7 +21,7 @@ final _MockTasksDoneTodayCubit _mockTasksDoneTodayCubit =
     _MockTasksDoneTodayCubit();
 
 void main() {
-  group('GIVEN TasksDoneToday', () {
+  group('GIVEN TasksWorkedOnToday', () {
     setUpAll(() {
       GetIt.I.registerSingleton<StreakDaysInARowCalculator>(
         const StreakDaysInARowCalculator(),
