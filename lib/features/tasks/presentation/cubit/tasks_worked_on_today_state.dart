@@ -1,7 +1,7 @@
 part of 'tasks_worked_on_today_cubit.dart';
 
 @freezed
-class TasksWorkedOnTodayState with _$TasksDoneTodayState {
+class TasksWorkedOnTodayState with _$TasksWorkedOnTodayState {
   final List<Task> tasks = [];
   TasksWorkedOnTodayState._();
 
