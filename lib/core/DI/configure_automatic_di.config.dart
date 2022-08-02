@@ -56,8 +56,10 @@ import '../../features/tasks/domain/use_cases/go_to_task_page.dart' as _i14;
 import '../../features/tasks/domain/use_cases/make_step_forward_on_the_task.dart'
     as _i43;
 import '../../features/tasks/domain/use_cases/reject_task.dart' as _i46;
-import '../../features/tasks/domain/use_cases/update_task.dart' as _i48;
-import '../../features/tasks/domain/use_cases/update_task_note.dart' as _i49;
+import '../../features/tasks/domain/use_cases/toggle_task_selection.dart'
+    as _i48;
+import '../../features/tasks/domain/use_cases/update_task.dart' as _i49;
+import '../../features/tasks/domain/use_cases/update_task_note.dart' as _i50;
 import '../../features/tasks/presentation/cubit/filtered_tasks_cubit.dart'
     as _i8;
 import '../../features/tasks/presentation/cubit/selected_tasks_cubit.dart'
@@ -206,10 +208,13 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       getProfileRepository: get<_i10.GetProfileRepository>(),
       upsertProfileRepository: get<_i26.UpsertProfileRepository>(),
       useCaseExceptionHandler: get<_i27.UseCaseExceptionHandler>()));
-  gh.singleton<_i48.UpdateTask>(_i48.UpdateTask(
+  gh.factory<_i48.ToggleTaskSelection>(() => _i48.ToggleTaskSelection(
       tasksCubit: get<_i21.TasksCubit>(),
       updateTaskRepository: get<_i25.UpdateTaskRepository>()));
-  gh.singleton<_i49.UpdateTaskNote>(_i49.UpdateTaskNote(
+  gh.singleton<_i49.UpdateTask>(_i49.UpdateTask(
+      tasksCubit: get<_i21.TasksCubit>(),
+      updateTaskRepository: get<_i25.UpdateTaskRepository>()));
+  gh.singleton<_i50.UpdateTaskNote>(_i50.UpdateTaskNote(
       tasksCubit: get<_i21.TasksCubit>(),
       updateTaskRepository: get<_i25.UpdateTaskRepository>()));
   return get;

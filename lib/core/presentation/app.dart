@@ -35,9 +35,9 @@ class _AppState extends State<App> {
   final TasksCubit tasksCubit = GetIt.I();
   final GoalsCubit goalsCubit = GetIt.I();
   final ProfileCubit profileCubit = GetIt.I();
+  final SelectedTasksCubit selectedTasksCubit = GetIt.I();
   final TasksWorkedOnTodayCubit tasksDoneTodayCubit = GetIt.I();
   final AuthentificationCubit authentificationCubit = GetIt.I();
-  final SelectedTasksCubit selectedTasksCubit = GetIt.I<SelectedTasksCubit>();
 
   final lightTheme = FlexThemeData.light(
     scheme: FlexScheme.blue,

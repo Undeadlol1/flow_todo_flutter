@@ -26,6 +26,7 @@ _$_Task _$$_TaskFromJson(Map<String, dynamic> json) => _$_Task(
       doneAt: json['doneAt'] as int?,
       updatedAt: json['updatedAt'] as int?,
       repetitionLevel: json['repetitionLevel'] as int?,
+      isSelected: json['isSelected'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_TaskToJson(_$_Task instance) => <String, dynamic>{
@@ -43,4 +44,5 @@ Map<String, dynamic> _$$_TaskToJson(_$_Task instance) => <String, dynamic>{
       'doneAt': instance.doneAt,
       'updatedAt': instance.updatedAt,
       'repetitionLevel': instance.repetitionLevel,
+      'isSelected': instance.isSelected,
     };
