@@ -1,6 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
-import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak_action.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/actions/work_on_task_action.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
@@ -34,7 +34,7 @@ class MakeStepForwardOnTheTask {
   final AddPointsToViewer addPointsToViewer;
   final UpsertProfileRepository updateProfile;
   final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
-  final IncrementDailyStreak incrementDailyStreak;
+  final IncrementDailyStreakAction incrementDailyStreak;
   final NextRepetitionCalculator nextRepetitionCalculator;
   const MakeStepForwardOnTheTask({
     required this.tasksCubit,

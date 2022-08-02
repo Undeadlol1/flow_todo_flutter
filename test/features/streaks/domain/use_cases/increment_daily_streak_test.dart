@@ -1,5 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
-import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak_action.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
@@ -112,8 +112,8 @@ void _mockStatesAndRepos({
   _mockTypicalCalls(tasksDoneToday: tasksList, profile: profile);
 }
 
-IncrementDailyStreak _getService() {
-  return IncrementDailyStreak(
+IncrementDailyStreakAction _getService() {
+  return IncrementDailyStreakAction(
     profileCubit: _mockProfileCubit,
     getTodaysDate: _fakeGetTodaysDate,
     updateProfile: _mockUpdateProfileRepository,

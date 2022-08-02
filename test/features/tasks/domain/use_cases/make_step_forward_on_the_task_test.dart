@@ -1,7 +1,7 @@
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/repetition.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
-import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak_action.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/actions/work_on_task_action.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
@@ -28,7 +28,8 @@ import '../../../../test_utilities/mocks/mock_update_task_repository.dart';
 
 class _MockAddPointsToViewer extends Mock implements AddPointsToViewer {}
 
-class _MockIncrementDailyStreak extends Mock implements IncrementDailyStreak {}
+class _MockIncrementDailyStreak extends Mock
+    implements IncrementDailyStreakAction {}
 
 class _MockWorkOnTaskAction extends Mock implements WorkOnTaskAction {}
 
@@ -49,7 +50,7 @@ final _mockTasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
 final _mockUpdateTaskRepository = MockUpdateTaskRepository();
 final _mockUpdateProfileRepository = MockUpsertProfileRepository();
 final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
-final IncrementDailyStreak _mockIncrementDailyStreak =
+final IncrementDailyStreakAction _mockIncrementDailyStreak =
     _MockIncrementDailyStreak();
 
 void main() {

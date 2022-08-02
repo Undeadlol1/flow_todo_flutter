@@ -5,9 +5,9 @@ class WorkOnTaskAction {
   final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
   const WorkOnTaskAction({required this.tasksDoneTodayCubit});
 
-  void call(Task task) {
-    updateState(task);
-  }
+  void call(Task task) => updateState(task);
+
+  void undoState() => tasksDoneTodayCubit.undo();
 
   void updateState(Task task) {
     if (_taskWasNotAddedToCubitBefore(task)) {
@@ -15,9 +15,6 @@ class WorkOnTaskAction {
     }
   }
 
-  void undoState() {
-    tasksDoneTodayCubit.undo();
-  }
 
   bool _taskWasNotAddedToCubitBefore(Task task) {
     return !tasksDoneTodayCubit.state.tasks.any((i) => i.id == task.id);

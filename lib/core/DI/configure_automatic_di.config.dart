@@ -39,7 +39,7 @@ import '../../features/spaced_repetition/domain/services/next_repetition_calcula
     as _i44;
 import '../../features/streaks/domain/services/streak_days_in_a_row_calculator.dart'
     as _i19;
-import '../../features/streaks/domain/use_cases/increment_daily_streak.dart'
+import '../../features/streaks/domain/use_cases/increment_daily_streak_action.dart'
     as _i37;
 import '../../features/tasks/data/create_task_repository.dart' as _i6;
 import '../../features/tasks/data/delete_task_repository.dart' as _i7;
@@ -152,11 +152,12 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       exceptionHandler: get<_i26.UseCaseExceptionHandler>(),
       getTasksDoneTodayRepository:
           get<_i12.GetTasksWorkedOnTodayRepository>()));
-  gh.lazySingleton<_i37.IncrementDailyStreak>(() => _i37.IncrementDailyStreak(
-      profileCubit: get<_i17.ProfileCubit>(),
-      getTodaysDate: get<_i13.GetTodaysDate>(),
-      tasksDoneTodayCubit: get<_i21.TasksWorkedOnTodayCubit>(),
-      updateProfile: get<_i25.UpsertProfileRepository>()));
+  gh.lazySingleton<_i37.IncrementDailyStreakAction>(() =>
+      _i37.IncrementDailyStreakAction(
+          profileCubit: get<_i17.ProfileCubit>(),
+          getTodaysDate: get<_i13.GetTodaysDate>(),
+          tasksDoneTodayCubit: get<_i21.TasksWorkedOnTodayCubit>(),
+          updateProfile: get<_i25.UpsertProfileRepository>()));
   gh.singleton<_i38.LevelProgressPercentageCalculator>(
       _i38.LevelProgressPercentageCalculator(
           userLevelCalculator: get<_i27.UserLevelCalculator>(),
@@ -186,7 +187,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       workOnTaskAction: get<_i29.WorkOnTaskAction>(),
       addPointsToViewer: get<_i30.AddPointsToViewer>(),
       tasksDoneTodayCubit: get<_i21.TasksWorkedOnTodayCubit>(),
-      incrementDailyStreak: get<_i37.IncrementDailyStreak>(),
+      incrementDailyStreak: get<_i37.IncrementDailyStreakAction>(),
       nextRepetitionCalculator: get<_i44.NextRepetitionCalculator>()));
   gh.singleton<_i45.RejectTask>(_i45.RejectTask(
       tasksCubit: get<_i20.TasksCubit>(),

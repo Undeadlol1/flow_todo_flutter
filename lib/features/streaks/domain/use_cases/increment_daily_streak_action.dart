@@ -8,12 +8,12 @@ import '../../../users/domain/models/profile.dart';
 import '../../../users/presentation/cubit/profile_cubit.dart';
 
 @lazySingleton
-class IncrementDailyStreak {
+class IncrementDailyStreakAction {
   final ProfileCubit profileCubit;
   final GetTodaysDate getTodaysDate;
   final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
   final UpsertProfileRepository updateProfile;
-  const IncrementDailyStreak({
+  const IncrementDailyStreakAction({
     required this.profileCubit,
     required this.getTodaysDate,
     required this.tasksDoneTodayCubit,
