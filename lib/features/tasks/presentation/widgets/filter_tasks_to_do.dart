@@ -90,26 +90,29 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
   }) {
     EasyDebounce.debounce(
       'filter_active_tasks',
-      const Duration(milliseconds: 500),
+      const Duration(milliseconds: 200),
       () {
+        final input = _normalizeString(text);
+
         setState(() {});
 
-        if (text.trim().isEmpty) {
+        if (input.isEmpty) {
           _resetFilteredTasksList();
           return;
         }
 
-        final taskTitles =
-            activeTasks.map((e) => e.title).map(_removeEmoji).toList();
         final List<Task> matchedTitles = extractTop(
           limit: 3,
           cutoff: 65,
-          query: text,
-          choices: taskTitles,
+          query: input,
+          choices: activeTasks,
+          getter: (Task task) {
+            return _normalizeString(task.title).removemoji;
+          },
         )
             .map(
               (match) => activeTasks.firstWhere(
-                (task) => task.title.trim() == match.choice.trim(),
+                (task) => task.id == match.choice.id,
               ),
             )
             .toList();
@@ -124,4 +127,6 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
   void _resetFilteredTasksList() {
     context.read<FilteredTasksCubit>().update([]);
   }
+
+  String _normalizeString(String string) => string.toLowerCase().toLowerCase();
 }
