@@ -9,6 +9,7 @@ import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_d
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/selected_tasks.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_worked_on_today.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
@@ -68,6 +69,15 @@ void main() {
         await tester.pumpWithDependencies();
 
         expect(find.byType(TasksList), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      "SHOULD display SelectedTasks",
+      (WidgetTester tester) async {
+        await tester.pumpWithDependencies();
+
+        expect(find.byType(SelectedTasks), findsOneWidget);
       },
     );
 

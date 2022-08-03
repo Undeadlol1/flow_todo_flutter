@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/selected_tasks_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -34,6 +35,7 @@ class _AppState extends State<App> {
   final TasksCubit tasksCubit = GetIt.I();
   final GoalsCubit goalsCubit = GetIt.I();
   final ProfileCubit profileCubit = GetIt.I();
+  final SelectedTasksCubit selectedTasksCubit = GetIt.I();
   final TasksWorkedOnTodayCubit tasksDoneTodayCubit = GetIt.I();
   final AuthentificationCubit authentificationCubit = GetIt.I();
 
@@ -95,6 +97,7 @@ class _AppState extends State<App> {
           BlocProvider(create: (_) => tasksCubit),
           BlocProvider(create: (_) => goalsCubit),
           BlocProvider(create: (_) => profileCubit),
+          BlocProvider(create: (_) => selectedTasksCubit),
           BlocProvider(create: (_) => tasksDoneTodayCubit),
           BlocProvider(create: (_) => authentificationCubit),
         ],
@@ -131,7 +134,9 @@ class _AppState extends State<App> {
 
   void _syncFirebaseAuthWithAuthenticationCubit(firebase_auth.User? user) {
     if (user == null) {
+      goalsCubit.update([]);
       tasksCubit.updateList([]);
+      selectedTasksCubit.update([]);
       profileCubit.setProfileNotFoundOrUnloaded();
       authentificationCubit.setNotAuthenticated();
     } else {

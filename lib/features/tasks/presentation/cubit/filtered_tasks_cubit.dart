@@ -11,7 +11,5 @@ part 'filtered_tasks_cubit.freezed.dart';
 class FilteredTasksCubit extends Cubit<FilteredTasksState> {
   FilteredTasksCubit() : super(FilteredTasksState([]));
 
-  void update(List<Task> tasks) {
-    emit(FilteredTasksState(tasks));
-  }
+  void update(List<Task> tasks) => emit(FilteredTasksState(tasks));
 }
