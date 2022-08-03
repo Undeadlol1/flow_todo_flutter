@@ -1,7 +1,8 @@
-import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../data/update_task_repository.dart';
+import '../../presentation/cubit/tasks_cubit.dart';
+import '../models/task.dart';
 
 @injectable
 class ToggleTaskSelection {
