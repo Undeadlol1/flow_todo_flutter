@@ -21,19 +21,15 @@ class GetTasksToDo {
   }
 
   void _updateStateIfNecessary(List<Task> remoteTasks) {
-    if (_cachedTasksAreNotEqualToRemotetasks(
-      remoteTasks: remoteTasks,
-      localTasks: tasksCubit.state.tasks,
-    )) {
+    if (_cachedTasksAreNotEqualToRemotetasks(remoteTasks)) {
       remoteTasks.shuffle();
       tasksCubit.updateList(remoteTasks);
     }
   }
 
-  bool _cachedTasksAreNotEqualToRemotetasks({
-    required List<Task> remoteTasks,
-    required List<Task> localTasks,
-  }) {
+  bool _cachedTasksAreNotEqualToRemotetasks(List<Task> remoteTasks) {
+    final localTasks = tasksCubit.state.tasks;
+
     if (remoteTasks.length != localTasks.length) {
       return true;
     }
