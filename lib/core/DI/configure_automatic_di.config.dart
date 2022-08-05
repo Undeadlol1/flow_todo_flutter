@@ -172,6 +172,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       tasksCubit: get<_i21.TasksCubit>(),
       profileCubit: get<_i17.ProfileCubit>(),
       firebaseAuth: get<_i41.FirebaseAuth>(),
+      firebaseFirestore: get<_i5.FirebaseFirestore>(),
       tasksDoneTodayCubit: get<_i22.TasksWorkedOnTodayCubit>(),
       authentificationCubit: get<_i3.AuthentificationCubit>()));
   gh.lazySingleton<_i42.MakeStepForwardOnAGoal>(() =>
