@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -90,6 +91,7 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    log('current user: ${GetIt.I<firebase_auth.FirebaseAuth>().currentUser?.displayName}');
     return Directionality(
       textDirection: TextDirection.ltr,
       child: MultiBlocProvider(
@@ -133,6 +135,7 @@ class _AppState extends State<App> {
   }
 
   void _syncFirebaseAuthWithAuthenticationCubit(firebase_auth.User? user) {
+    log('user: ${user?.email.toString()}');
     if (user == null) {
       goalsCubit.update([]);
       tasksCubit.updateList([]);

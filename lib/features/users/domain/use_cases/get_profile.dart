@@ -12,14 +12,18 @@ class GetProfile {
   });
 
   Future<void> call({required String userId}) async {
-    profileCubit.setLoading();
+    if (profileCubit.state is! ProfileLoaded) {
+      profileCubit.setLoading();
+    }
 
     return getProfileRepository(userId: userId).then(
       (profile) {
         if (profile == null) {
           profileCubit.setProfileNotFoundOrUnloaded();
         } else {
-          profileCubit.setProfile(profile);
+          if (profileCubit.state.profile != profile) {
+            profileCubit.setProfile(profile);
+          }
         }
       },
     );

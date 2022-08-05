@@ -4,5 +4,10 @@ class User {
   final String displayName;
   String? avatar;
 
-  User({required this.id, required this.email, required this.displayName, this.avatar});
+  User({
+    required this.id,
+    required this.email,
+    required this.displayName,
+    this.avatar,
+  });
 }
