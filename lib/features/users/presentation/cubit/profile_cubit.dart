@@ -11,16 +11,25 @@ part 'profile_state.dart';
 class ProfileCubit extends HydratedCubit<ProfileState> with ReplayCubitMixin {
   ProfileCubit() : super(ProfileLoading());
 
-  void setProfile(Profile profile) {
-    emit(ProfileLoaded(profile: profile));
-  }
+  void setLoading() => emit(ProfileLoading());
 
-  void setLoading() {
-    emit(ProfileLoading());
-  }
+  void setProfile(Profile profile) => emit(ProfileLoaded(profile: profile));
 
-  void setProfileNotFoundOrUnloaded() {
-    emit(ProfileNotFound());
+  void setProfileNotFoundOrUnloaded() => emit(ProfileNotFound());
+
+  void addPoints(int pointsToAdd) {
+    if (state.profile == null) {
+      return;
+    } else {
+      emit(
+        ProfileLoaded(
+          profile: state.profile!.copyWith(
+            points: pointsToAdd + (state.profile?.points ?? 0),
+            experience: pointsToAdd + (state.profile?.experience ?? 9),
+          ),
+        ),
+      );
+    }
   }
 
   @override

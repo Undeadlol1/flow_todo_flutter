@@ -2,16 +2,20 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/selected_tasks_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/authentification/domain/entities/user.dart';
 import '../../features/authentification/presentation/cubit/authentification_cubit.dart';
 import '../../features/leveling/presentation/widgets/experience_progress_bar.dart';
-import '../../features/pages/presentation/main_page.dart';
+import 'pages/main_page.dart';
 import '../../features/tasks/presentation/cubit/tasks_cubit.dart';
-import '../../features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import '../../features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import '../../features/tasks/presentation/pages/task_page.dart';
 import '../../features/tasks/presentation/pages/work_on_task_page.dart';
 import '../../features/users/presentation/cubit/profile_cubit.dart';
@@ -25,9 +29,14 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  static final FirebaseAnalyticsObserver _firebaseAnalyticsObserver =
+      FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance);
+
   final TasksCubit tasksCubit = GetIt.I();
+  final GoalsCubit goalsCubit = GetIt.I();
   final ProfileCubit profileCubit = GetIt.I();
-  final TasksDoneTodayCubit tasksDoneTodayCubit = GetIt.I();
+  final SelectedTasksCubit selectedTasksCubit = GetIt.I();
+  final TasksWorkedOnTodayCubit tasksDoneTodayCubit = GetIt.I();
   final AuthentificationCubit authentificationCubit = GetIt.I();
 
   final lightTheme = FlexThemeData.light(
@@ -85,10 +94,12 @@ class _AppState extends State<App> {
       textDirection: TextDirection.ltr,
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => tasksCubit),
-          BlocProvider(create: (context) => profileCubit),
-          BlocProvider(create: (context) => tasksDoneTodayCubit),
-          BlocProvider(create: (context) => authentificationCubit),
+          BlocProvider(create: (_) => tasksCubit),
+          BlocProvider(create: (_) => goalsCubit),
+          BlocProvider(create: (_) => profileCubit),
+          BlocProvider(create: (_) => selectedTasksCubit),
+          BlocProvider(create: (_) => tasksDoneTodayCubit),
+          BlocProvider(create: (_) => authentificationCubit),
         ],
         child: Stack(
           alignment: Alignment.bottomCenter,
@@ -98,9 +109,11 @@ class _AppState extends State<App> {
               title: 'Flow TODO',
               darkTheme: darkTheme,
               initialRoute: MainPage.pathName,
+              navigatorObservers: [_firebaseAnalyticsObserver],
               routes: {
                 MainPage.pathName: (contex) => const MainPage(),
                 TaskPage.pathName: (contex) => const TaskPage(),
+                GoalsPage.pathName: (contex) => const GoalsPage(),
                 ProfilePage.pathName: (contex) => const ProfilePage(),
                 WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
               },
@@ -121,7 +134,9 @@ class _AppState extends State<App> {
 
   void _syncFirebaseAuthWithAuthenticationCubit(firebase_auth.User? user) {
     if (user == null) {
+      goalsCubit.update([]);
       tasksCubit.updateList([]);
+      selectedTasksCubit.update([]);
       profileCubit.setProfileNotFoundOrUnloaded();
       authentificationCubit.setNotAuthenticated();
     } else {

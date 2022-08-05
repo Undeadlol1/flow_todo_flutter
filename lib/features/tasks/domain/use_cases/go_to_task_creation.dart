@@ -12,7 +12,6 @@ class GoToTaskCreation {
     contextProvider.call((context) {
       showModalBottomSheet(
         context: context,
-        barrierColor: Colors.transparent,
         builder: (_) => const UpsertTaskForm(),
       );
     });

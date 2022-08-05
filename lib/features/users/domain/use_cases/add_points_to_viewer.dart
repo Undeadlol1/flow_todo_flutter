@@ -1,11 +1,11 @@
-import 'package:flow_todo_flutter_2022/features/users/data/update_profile_repository.dart';
+import 'package:flow_todo_flutter_2022/features/users/data/upsert_profile_repository.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
 class AddPointsToViewer {
   final ProfileCubit profileCubit;
-  final UpdateProfileRepository updateProfileRepository;
+  final UpsertProfileRepository updateProfileRepository;
   const AddPointsToViewer({
     required this.profileCubit,
     required this.updateProfileRepository,
@@ -19,7 +19,7 @@ class AddPointsToViewer {
         final currentProfile = profileState.profile;
         final updatedProfile = currentProfile?.copyWith(
           points: currentProfile.points + pointsToAdd,
-          experience: (currentProfile.experience ?? 0) + pointsToAdd,
+          experience: (currentProfile.experience) + pointsToAdd,
         );
 
         profileCubit.setProfile(updatedProfile!);

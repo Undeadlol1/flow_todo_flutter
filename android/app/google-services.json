@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "772125171665-qck8ul9vdcej89nsvkip2e390o5fcl25.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flow_todo_flutter_2022",
+            "certificate_hash": "d210d813a719b91a5e848865dd61626cb5c253dc"
+          }
+        },
+        {
           "client_id": "772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com",
           "client_type": 3
         }

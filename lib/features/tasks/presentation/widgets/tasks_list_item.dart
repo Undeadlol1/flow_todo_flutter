@@ -1,4 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/toggle_task_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -11,9 +12,8 @@ class TasksListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {
-        GetIt.instance<GoToTaskPage>()(task: task);
-      },
+      onPressed: () => GetIt.I<GoToTaskPage>()(task: task),
+      onLongPress: () => GetIt.I<ToggleTaskSelection>()(task),
       child: Row(
         children: [
           Flexible(

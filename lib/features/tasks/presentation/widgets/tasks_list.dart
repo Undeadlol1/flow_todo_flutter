@@ -1,9 +1,11 @@
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterfire_ui/auth.dart';
+import 'package:get_it/get_it.dart';
 
 import '../cubit/tasks_cubit.dart';
+import 'filter_tasks_to_do.dart';
 import 'tasks_list_item.dart';
 
 class TasksList extends StatefulWidget {
@@ -14,46 +16,57 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
-  final int _currentPage = 0;
-  final int _tasksPerPage = 20;
+  final _filteredTasksCubit = GetIt.I<FilteredTasksCubit>();
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<TasksCubit, TasksState>(
-      builder: (context, tasksState) {
-        final tasksToDisplay = _getPaginatedTasksSlice(tasksState);
+  build(_) {
+    return BlocProvider(
+      create: (_) => _filteredTasksCubit,
+      child: Builder(
+        builder: (cx) {
+          final TasksState tasksState = cx.watch<TasksCubit>().state;
+          final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
+          final tasksToDisplay = _getTasksToDisplay(
+            filteredTasks: filteredTasks,
+            unfilteredTasks: tasksState.tasks,
+          );
 
-        if (tasksState is TasksLoading) {
-          return const _LoadingIndicator();
-        }
+          if (tasksState is TasksLoading) {
+            return const _LoadingIndicator();
+          }
 
-        return ListView.builder(
-          itemCount: tasksState.tasks.length,
-          itemBuilder: (BuildContext context, int index) {
-            return TasksListItem(task: tasksState.tasks[index]);
-          },
-        );
-        // if (tasksState.tasks.isNotEmpty)
-        //   Pagination(
-        //     onPageChange: (newPageNumber) {
-        //       setState(() => _currentPage = newPageNumber);
-        //     },
-        //   ),
-        // );
-      },
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                if (tasksState.tasks.length > 10) const FilterTasksToDo(),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: tasksToDisplay.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (_, index) {
+                    return TasksListItem(task: tasksToDisplay[index]);
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
-  List<Task> _getPaginatedTasksSlice(TasksState tasksState) {
-    final sliceFrom = _currentPage * _tasksPerPage;
-    final sliceTo = (_currentPage + 1) * _tasksPerPage;
-    var totalAmountOfTasks = tasksState.tasks.length;
-    return tasksState.tasks
-        .getRange(
-          sliceFrom,
-          sliceTo > totalAmountOfTasks ? totalAmountOfTasks : sliceTo,
-        )
-        .toList();
+  List<Task> _getTasksToDisplay({
+    required List<Task> filteredTasks,
+    required List<Task> unfilteredTasks,
+  }) {
+    final List<String> filteredTasksIds =
+        filteredTasks.map((e) => e.id).toList();
+
+    return filteredTasksIds.isEmpty
+        ? unfilteredTasks
+        : unfilteredTasks
+            .where((e) => filteredTasksIds.contains(e.id))
+            .toList();
   }
 }
 
@@ -63,13 +76,7 @@ class _LoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: SizedBox(
-        height: 550,
-        child: LoadingIndicator(
-          size: 50,
-          borderWidth: 1,
-        ),
-      ),
+      child: CircularProgressIndicator(),
     );
   }
 }

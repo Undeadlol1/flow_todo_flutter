@@ -1,9 +1,16 @@
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak_action.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/actions/work_on_task_action.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/users/data/upsert_profile_repository.dart';
+import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
+import 'package:timeago/timeago.dart' as relativetime;
+
 import 'package:injectable/injectable.dart';
 
 import '../../../common/domain/use_cases/go_to_main_page.dart';
@@ -17,23 +24,31 @@ import '../models/task.dart';
 @singleton
 class MakeStepForwardOnTheTask {
   final TasksCubit tasksCubit;
+  final ProfileCubit profileCubit;
   final GoToMainPage goToMainPage;
   final GoToTaskPage goToTaskPage;
   final GetTodaysDate getTodaysDate;
   final SnackbarService snackbarService;
+  final UpdateTaskRepository updateTask;
+  final WorkOnTaskAction workOnTaskAction;
   final AddPointsToViewer addPointsToViewer;
-  final TasksDoneTodayCubit tasksDoneTodayCubit;
-  final UpdateTaskRepository updateTaskRepository;
+  final UpsertProfileRepository updateProfile;
+  final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
+  final IncrementDailyStreakAction incrementDailyStreak;
   final NextRepetitionCalculator nextRepetitionCalculator;
   const MakeStepForwardOnTheTask({
     required this.tasksCubit,
+    required this.updateTask,
+    required this.profileCubit,
     required this.goToMainPage,
     required this.goToTaskPage,
     required this.getTodaysDate,
+    required this.updateProfile,
     required this.snackbarService,
+    required this.workOnTaskAction,
     required this.addPointsToViewer,
     required this.tasksDoneTodayCubit,
-    required this.updateTaskRepository,
+    required this.incrementDailyStreak,
     required this.nextRepetitionCalculator,
   });
 
@@ -42,26 +57,49 @@ class MakeStepForwardOnTheTask {
     required Confidence howBigWasTheStep,
     bool isTaskDone = false,
   }) async {
-    final pointsToAdd =
-        _calculateAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
-    final updatedTask = _getUpdatedTask(task, isTaskDone, howBigWasTheStep);
-
     tasksCubit.removeTask(task);
-    tasksDoneTodayCubit
-        .update([updatedTask, ...tasksDoneTodayCubit.state.tasks]);
+    workOnTaskAction.updateState(task);
+    profileCubit.setProfile(_getUpdatedProfile());
 
     try {
+      final updatedTask = _getUpdatedTask(task, isTaskDone, howBigWasTheStep);
+      final pointsToAdd = _getAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
+
+      _displaySnackbar(isTaskDone, updatedTask);
       await goToMainPage();
+      await updateTask(updatedTask);
       await addPointsToViewer(pointsToAdd);
-      await updateTaskRepository.call(updatedTask);
+      await incrementDailyStreak();
     } catch (error) {
-      snackbarService.displaySnackbar(text: error.toString());
-
-      tasksCubit.undo();
-      tasksDoneTodayCubit.undo();
-
-      return goToTaskPage.call(task: task);
+      return _handleErrors(error: error, task: task);
     }
+  }
+
+  void _handleErrors({required Object error, required Task task}) {
+    snackbarService.displaySnackbar(text: error.toString());
+
+    tasksCubit.undo();
+    profileCubit.undo();
+    workOnTaskAction.undoState();
+
+    return goToTaskPage.call(task: task);
+  }
+
+  Profile _getUpdatedProfile() {
+    final today = getTodaysDate();
+    final streak = profileCubit.state.profile!.dailyStreak;
+    final tasksDoneToday = tasksDoneTodayCubit.state.tasks.length;
+
+    final updatedProfile = profileCubit.state.profile!.copyWith(
+      dailyStreak: streak.copyWith(
+        startsAt: streak.isInterrupted() ? today : streak.startsAt,
+        updatedAt: streak.shouldStreakIncrement(tasksDoneToday: tasksDoneToday)
+            ? today
+            : streak.updatedAt,
+      ),
+    );
+
+    return updatedProfile;
   }
 
   Task _getUpdatedTask(
@@ -76,13 +114,12 @@ class MakeStepForwardOnTheTask {
     );
 
     return task.copyWith(
-      isDone: isTaskDone,
-      doneAt: today,
       updatedAt: today,
-      dueAt: nextRepetition.dueAt,
+      isDone: isTaskDone,
+      doneAt: isTaskDone ? today : null,
+      dueAt: DateTime.fromMillisecondsSinceEpoch(nextRepetition.dueAt),
       repetitionLevel: nextRepetition.repetitionLevel,
       history: [
-        ...task.history,
         TaskHistory(
           createdAt: today,
           actionType: isTaskDone
@@ -91,11 +128,12 @@ class MakeStepForwardOnTheTask {
                   ? TaskHistoryActionType.leapForward
                   : TaskHistoryActionType.stepForward,
         ),
+        ...task.history,
       ],
     );
   }
 
-  int _calculateAmountOfPointsToAdd(
+  int _getAmountOfPointsToAdd(
     bool isTaskDone,
     Confidence howBigWasTheStep,
   ) {
@@ -105,64 +143,19 @@ class MakeStepForwardOnTheTask {
             ? 30
             : 20;
   }
+
+  void _displaySnackbar(bool isTaskDone, Task updatedTask) {
+    if (isTaskDone == false) {
+      snackbarService.displaySnackbar(
+        text: _getNumberOfDaysForNextIterationText(updatedTask),
+      );
+    }
+  }
+
+  String _getNumberOfDaysForNextIterationText(Task updatedTask) {
+    return 'You will see this task again in ${relativetime.format(
+      updatedTask.dueAt,
+      allowFromNow: true,
+    )}';
+  }
 }
-
-        // TaskService.deactivateActiveTasks(tasks),
-        // upsertTask({
-        //   ...task,
-        //   ...values,
-        //   history: [...get(task, 'history', []), historyToAdd],
-        // }),
-        // createTaskLog({
-        //   ...historyToAdd,
-        //   taskId,
-        //   userId,
-        //   createdAt: Date.now(),
-        // }),
-        // ViewerController.rewardUserForWorkingOnATask({
-        //   points,
-        //   snackbarMessage,
-        // }),
-        // TaskService.activateNextTask({
-        //   nextTaskId,
-        //   currentTasks: tasks,
-        // }),
-        // updateDailyStreak({
-        //   profile,
-        //   userId,
-        //   tasksDoneToday,
-        // }),
-
-  // function stepForward(confidence: Confidence, pointsToAdd?: number) {
-  //   const nextRepetition = calculateNextRepetition(
-  //     props.task,
-  //     confidence,
-  //   );
-  //   props
-  //     .updateTask({
-  //       values: {
-  //         isCurrent: false,
-  //         ...nextRepetition,
-  //       },
-  //       history: {
-  //         taskId: props.task.id,
-  //         userId: props.task.userId,
-  //         createdAt: Date.now(),
-  //         // @ts-ignore
-  //         actionType:
-  //           confidence === 'normal' ? 'stepForward' : 'leapForward',
-  //       },
-  //       pointsToAdd: confidence === 'normal' ? 10 : 20,
-  //       snackbarMessage: t('important to step forward'),
-  //     })
-  //     .then(() => {
-  //       Snackbar.addToQueue(
-  //         t('you will see task again in', {
-  //           date: distanceBetweenDates(
-  //             nextRepetition.dueAt,
-  //             new Date(),
-  //           ),
-  //         }),
-  //       );
-  //     });
-  // }

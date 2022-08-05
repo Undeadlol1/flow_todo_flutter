@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -122,6 +123,7 @@ class _UpsertNoteState extends State<UpsertNote> {
           note: inputText,
           task: widget.task,
         );
+        GetIt.I<SnackbarService>().displaySnackbar(text: 'Saved!');
       } catch (e) {
         noteFormControl.focus();
         noteFormControl.value = inputText;

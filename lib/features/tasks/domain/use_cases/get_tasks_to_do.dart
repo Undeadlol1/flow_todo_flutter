@@ -1,15 +1,19 @@
 import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
-import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
 
+@singleton
 class GetTasksToDo {
-  const GetTasksToDo();
-  Future<void> call({required String userId}) async {
-    final tasksCubit = GetIt.I<TasksCubit>();
-    final getTasks = GetIt.I<GetTasksToDoRepository>();
+  final TasksCubit tasksCubit;
+  final GetTasksToDoRepository getTasks;
+  GetTasksToDo({required this.getTasks, required this.tasksCubit});
 
-    final tasks = await getTasks(userId: userId);
-    tasks.shuffle();
-    tasksCubit.updateList(tasks.reversed.toList());
+  Future<void> call({required String userId}) async {
+    tasksCubit.setLoading();
+
+    final tasks = await getTasks(userId: userId)
+      ..shuffle();
+
+    tasksCubit.updateList(tasks);
   }
 }

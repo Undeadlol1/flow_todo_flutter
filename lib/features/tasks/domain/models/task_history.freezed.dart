@@ -221,7 +221,9 @@ class _$_TaskHistory implements _TaskHistory {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TaskHistoryToJson(this);
+    return _$$_TaskHistoryToJson(
+      this,
+    );
   }
 }
 
@@ -238,17 +240,17 @@ abstract class _TaskHistory implements TaskHistory {
       _$_TaskHistory.fromJson;
 
   @override
-  TaskHistoryActionType get actionType => throw _privateConstructorUsedError;
+  TaskHistoryActionType get actionType;
   @override
-  int get createdAt => throw _privateConstructorUsedError;
+  int get createdAt;
   @override
-  String? get taskId => throw _privateConstructorUsedError;
+  String? get taskId;
   @override
-  String? get userId => throw _privateConstructorUsedError;
+  String? get userId;
   @override
-  String? get comment => throw _privateConstructorUsedError;
+  String? get comment;
   @override
-  int? get updatedAt => throw _privateConstructorUsedError;
+  int? get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$$_TaskHistoryCopyWith<_$_TaskHistory> get copyWith =>

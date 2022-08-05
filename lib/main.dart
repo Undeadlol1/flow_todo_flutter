@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -17,7 +18,9 @@ void main() async {
 
   HydratedBlocOverrides.runZoned(
     () async {
-      await _setupFirebase();
+      _configureDeviceOrientation();
+
+      await _configureFirebase();
 
       configureManualDI();
 
@@ -25,7 +28,7 @@ void main() async {
 
       runApp(const App());
     },
-    blocObserver: _GlobalBlocObserver(),
+    // blocObserver: _GlobalBlocObserver(),
     createStorage: () async {
       return HydratedStorage.build(
         storageDirectory: kIsWeb
@@ -36,12 +39,17 @@ void main() async {
   );
 }
 
-Future<void> _setupFirebase() async {
+void _configureDeviceOrientation() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+}
+
+Future<void> _configureFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
 
   FlutterFireUIAuth.configureProviders([
     const GoogleProviderConfiguration(
@@ -51,36 +59,36 @@ Future<void> _setupFirebase() async {
   ]);
 }
 
-class _GlobalBlocObserver extends BlocObserver {
-  @override
-  void onCreate(BlocBase bloc) {
-    super.onCreate(bloc);
-    if (kDebugMode) {
-      print('onCreate -- ${bloc.runtimeType}');
-    }
-  }
+// class _GlobalBlocObserver extends BlocObserver {
+//   @override
+//   void onCreate(BlocBase bloc) {
+//     super.onCreate(bloc);
+//     if (kDebugMode) {
+//       print('onCreate -- ${bloc.runtimeType}');
+//     }
+//   }
 
-  @override
-  void onChange(BlocBase bloc, Change change) {
-    super.onChange(bloc, change);
-    if (kDebugMode) {
-      print('onChange -- ${bloc.runtimeType}, $change');
-    }
-  }
+//   @override
+//   void onChange(BlocBase bloc, Change change) {
+//     super.onChange(bloc, change);
+//     if (kDebugMode) {
+//       print('onChange -- ${bloc.runtimeType}, $change');
+//     }
+//   }
 
-  @override
-  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    if (kDebugMode) {
-      print('onError -- ${bloc.runtimeType}, $error');
-    }
-    super.onError(bloc, error, stackTrace);
-  }
+//   @override
+//   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+//     if (kDebugMode) {
+//       print('onError -- ${bloc.runtimeType}, $error');
+//     }
+//     super.onError(bloc, error, stackTrace);
+//   }
 
-  @override
-  void onClose(BlocBase bloc) {
-    super.onClose(bloc);
-    if (kDebugMode) {
-      print('onClose -- ${bloc.runtimeType}');
-    }
-  }
-}
+//   @override
+//   void onClose(BlocBase bloc) {
+//     super.onClose(bloc);
+//     if (kDebugMode) {
+//       print('onClose -- ${bloc.runtimeType}');
+//     }
+//   }
+// }

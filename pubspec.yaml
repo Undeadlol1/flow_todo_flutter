@@ -1,9 +1,6 @@
 name: flow_todo_flutter_2022
 description: A new Flutter project.
-
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: "none"
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -30,9 +27,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
   get_it: ^7.2.0
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1
@@ -59,6 +53,12 @@ dependencies:
   injectable: ^1.5.3
   countup: ^0.1.4
   flutter_hooks: ^0.18.5+1
+  memoize: ^3.0.0
+  timeago: ^3.2.2
+  easy_debounce: ^2.0.2+1
+  fuzzywuzzy: ^0.2.0
+  remove_emoji: ^0.0.7
+  firebase_analytics: ^9.3.0
 
 dev_dependencies:
   flutter_test:

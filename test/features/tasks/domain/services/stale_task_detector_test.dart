@@ -21,9 +21,8 @@ void main() {
       title: 'title',
       userId: 'userId',
       updatedAt: updatedAt?.millisecondsSinceEpoch,
-      dueAt: dueAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
-      createdAt:
-          createdAt?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch,
+      dueAt: dueAt ?? today,
+      createdAt: createdAt ?? today,
     );
   }
 

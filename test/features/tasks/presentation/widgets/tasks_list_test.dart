@@ -1,6 +1,8 @@
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list_item.dart';
+import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,6 +11,8 @@ import 'package:get_it/get_it.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 
 void main() {
+  setUpAll(() => GetIt.I.registerFactory(() => FilteredTasksCubit()));
+
   group('GIVEN TasksList', () {
     testWidgets(
       'WHEN there are no tasks '
@@ -39,20 +43,6 @@ void main() {
           expect(find.byType(TasksListItem), findsNWidgets(2));
         },
       );
-
-      // testWidgets(
-      //   "THEN displays pagination",
-      //   (WidgetTester tester) async {
-      //     final cubit = TasksCubit()..updateList([taskFixture, taskFixture]);
-
-      //     await tester.pumpWithDependencies(
-      //       tasksCubit: cubit,
-      //       child: const TasksList(),
-      //     );
-
-      //     expect(find.byType(Pagination), findsOneWidget);
-      //   },
-      // );
     });
   });
 }
@@ -71,12 +61,16 @@ extension on WidgetTester {
     return pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: BlocProvider(
-            create: (context) => tasksCubit,
-            child: Directionality(
-              textDirection: TextDirection.ltr,
-              child: child,
-            ),
+          body: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => tasksCubit,
+              ),
+              BlocProvider(
+                create: (context) => ProfileCubit(),
+              ),
+            ],
+            child: child,
           ),
         ),
       ),

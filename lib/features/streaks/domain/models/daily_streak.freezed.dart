@@ -20,12 +20,15 @@ DailyStreak _$DailyStreakFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$DailyStreak {
-  int? get updatedAt => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   int get perDay => throw _privateConstructorUsedError;
-  int get startsAt => throw _privateConstructorUsedError;
-  int get createdAt => throw _privateConstructorUsedError;
+  @OptionalMillisecondsToDateTimePropertyConverter()
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  @MillisecondsToDateTimePropertyConverter()
+  DateTime get startsAt => throw _privateConstructorUsedError;
+  @MillisecondsToDateTimePropertyConverter()
+  DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,12 +42,12 @@ abstract class $DailyStreakCopyWith<$Res> {
           DailyStreak value, $Res Function(DailyStreak) then) =
       _$DailyStreakCopyWithImpl<$Res>;
   $Res call(
-      {int? updatedAt,
-      String id,
+      {String id,
       String userId,
       int perDay,
-      int startsAt,
-      int createdAt});
+      @OptionalMillisecondsToDateTimePropertyConverter() DateTime? updatedAt,
+      @MillisecondsToDateTimePropertyConverter() DateTime startsAt,
+      @MillisecondsToDateTimePropertyConverter() DateTime createdAt});
 }
 
 /// @nodoc
@@ -57,18 +60,14 @@ class _$DailyStreakCopyWithImpl<$Res> implements $DailyStreakCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? updatedAt = freezed,
     Object? id = freezed,
     Object? userId = freezed,
     Object? perDay = freezed,
+    Object? updatedAt = freezed,
     Object? startsAt = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
-      updatedAt: updatedAt == freezed
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as int?,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -81,14 +80,18 @@ class _$DailyStreakCopyWithImpl<$Res> implements $DailyStreakCopyWith<$Res> {
           ? _value.perDay
           : perDay // ignore: cast_nullable_to_non_nullable
               as int,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       startsAt: startsAt == freezed
           ? _value.startsAt
           : startsAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
     ));
   }
 }
@@ -101,12 +104,12 @@ abstract class _$$_DailyStreakCopyWith<$Res>
       __$$_DailyStreakCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int? updatedAt,
-      String id,
+      {String id,
       String userId,
       int perDay,
-      int startsAt,
-      int createdAt});
+      @OptionalMillisecondsToDateTimePropertyConverter() DateTime? updatedAt,
+      @MillisecondsToDateTimePropertyConverter() DateTime startsAt,
+      @MillisecondsToDateTimePropertyConverter() DateTime createdAt});
 }
 
 /// @nodoc
@@ -121,18 +124,14 @@ class __$$_DailyStreakCopyWithImpl<$Res> extends _$DailyStreakCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? updatedAt = freezed,
     Object? id = freezed,
     Object? userId = freezed,
     Object? perDay = freezed,
+    Object? updatedAt = freezed,
     Object? startsAt = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_$_DailyStreak(
-      updatedAt: updatedAt == freezed
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as int?,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -145,14 +144,18 @@ class __$$_DailyStreakCopyWithImpl<$Res> extends _$DailyStreakCopyWithImpl<$Res>
           ? _value.perDay
           : perDay // ignore: cast_nullable_to_non_nullable
               as int,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       startsAt: startsAt == freezed
           ? _value.startsAt
           : startsAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
     ));
   }
 }
@@ -161,19 +164,17 @@ class __$$_DailyStreakCopyWithImpl<$Res> extends _$DailyStreakCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_DailyStreak extends _DailyStreak {
   const _$_DailyStreak(
-      {this.updatedAt,
-      required this.id,
+      {required this.id,
       required this.userId,
       required this.perDay,
-      required this.startsAt,
-      required this.createdAt})
+      @OptionalMillisecondsToDateTimePropertyConverter() this.updatedAt,
+      @MillisecondsToDateTimePropertyConverter() required this.startsAt,
+      @MillisecondsToDateTimePropertyConverter() required this.createdAt})
       : super._();
 
   factory _$_DailyStreak.fromJson(Map<String, dynamic> json) =>
       _$$_DailyStreakFromJson(json);
 
-  @override
-  final int? updatedAt;
   @override
   final String id;
   @override
@@ -181,13 +182,18 @@ class _$_DailyStreak extends _DailyStreak {
   @override
   final int perDay;
   @override
-  final int startsAt;
+  @OptionalMillisecondsToDateTimePropertyConverter()
+  final DateTime? updatedAt;
   @override
-  final int createdAt;
+  @MillisecondsToDateTimePropertyConverter()
+  final DateTime startsAt;
+  @override
+  @MillisecondsToDateTimePropertyConverter()
+  final DateTime createdAt;
 
   @override
   String toString() {
-    return 'DailyStreak(updatedAt: $updatedAt, id: $id, userId: $userId, perDay: $perDay, startsAt: $startsAt, createdAt: $createdAt)';
+    return 'DailyStreak(id: $id, userId: $userId, perDay: $perDay, updatedAt: $updatedAt, startsAt: $startsAt, createdAt: $createdAt)';
   }
 
   @override
@@ -195,10 +201,10 @@ class _$_DailyStreak extends _DailyStreak {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_DailyStreak &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality().equals(other.perDay, perDay) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
             const DeepCollectionEquality().equals(other.startsAt, startsAt) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt));
   }
@@ -207,10 +213,10 @@ class _$_DailyStreak extends _DailyStreak {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(updatedAt),
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(perDay),
+      const DeepCollectionEquality().hash(updatedAt),
       const DeepCollectionEquality().hash(startsAt),
       const DeepCollectionEquality().hash(createdAt));
 
@@ -221,35 +227,43 @@ class _$_DailyStreak extends _DailyStreak {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DailyStreakToJson(this);
+    return _$$_DailyStreakToJson(
+      this,
+    );
   }
 }
 
 abstract class _DailyStreak extends DailyStreak {
   const factory _DailyStreak(
-      {final int? updatedAt,
-      required final String id,
+      {required final String id,
       required final String userId,
       required final int perDay,
-      required final int startsAt,
-      required final int createdAt}) = _$_DailyStreak;
+      @OptionalMillisecondsToDateTimePropertyConverter()
+          final DateTime? updatedAt,
+      @MillisecondsToDateTimePropertyConverter()
+          required final DateTime startsAt,
+      @MillisecondsToDateTimePropertyConverter()
+          required final DateTime createdAt}) = _$_DailyStreak;
   const _DailyStreak._() : super._();
 
   factory _DailyStreak.fromJson(Map<String, dynamic> json) =
       _$_DailyStreak.fromJson;
 
   @override
-  int? get updatedAt => throw _privateConstructorUsedError;
+  String get id;
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get userId;
   @override
-  String get userId => throw _privateConstructorUsedError;
+  int get perDay;
   @override
-  int get perDay => throw _privateConstructorUsedError;
+  @OptionalMillisecondsToDateTimePropertyConverter()
+  DateTime? get updatedAt;
   @override
-  int get startsAt => throw _privateConstructorUsedError;
+  @MillisecondsToDateTimePropertyConverter()
+  DateTime get startsAt;
   @override
-  int get createdAt => throw _privateConstructorUsedError;
+  @MillisecondsToDateTimePropertyConverter()
+  DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$_DailyStreakCopyWith<_$_DailyStreak> get copyWith =>

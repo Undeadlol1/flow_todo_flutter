@@ -14,14 +14,15 @@ class Profile with _$Profile {
   @JsonSerializable(explicitToJson: true)
   const factory Profile({
     int? updatedAt,
-    int? experience,
-    required int points,
     required String id,
     required String userId,
     required int createdAt,
     required DailyStreak dailyStreak,
-    required bool areEcouragingMessagesDisabled,
+    @JsonKey(defaultValue: 0) required int experience,
+    @JsonKey(defaultValue: 0) required int points,
+    @JsonKey(defaultValue: false) required bool areEcouragingMessagesDisabled,
   }) = _Profile;
 
-  factory Profile.fromJson(Map<String, Object?> json) => _$ProfileFromJson(json);
+  factory Profile.fromJson(Map<String, Object?> json) =>
+      _$ProfileFromJson(json);
 }

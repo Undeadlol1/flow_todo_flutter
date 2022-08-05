@@ -11,19 +11,18 @@ import 'package:get_it/get_it.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
-import '../../tasks/domain/use_cases/go_to_task_creation.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
 
 class PageLayout extends StatelessWidget {
   final Widget child;
-  final bool isFABHidden;
   final bool isDrawerHidden;
   final bool isAppBarHidden;
+  final Widget? floatingActionButton;
   final bool isNumbersAnimationSuspended;
   const PageLayout({
     Key? key,
     required this.child,
-    this.isFABHidden = true,
+    this.floatingActionButton,
     this.isDrawerHidden = true,
     this.isAppBarHidden = false,
     this.isNumbersAnimationSuspended = true,
@@ -54,25 +53,30 @@ class PageLayout extends StatelessWidget {
                           ),
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Center(child: Avatar(radius: 16)),
+                            child: Center(
+                              child: Avatar(
+                                radius: 16,
+                                isLevelHidden: true,
+                              ),
+                            ),
                           ),
                         ],
                       ),
                 body: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.only(
+                      top: 6,
+                      left: 6,
+                      right: 6,
+                      bottom: 12.0,
+                    ),
                     child: child,
                   ),
                 ),
-                floatingActionButton: isFABHidden == true
-                    ? null
-                    : Container(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: FloatingActionButton(
-                          onPressed: () => GetIt.I<GoToTaskCreation>()(),
-                          child: const Icon(Icons.add),
-                        ),
-                      ),
+                floatingActionButton: Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: floatingActionButton,
+                ),
                 bottomNavigationBar: const _BottomNavigation(),
               ),
             ],

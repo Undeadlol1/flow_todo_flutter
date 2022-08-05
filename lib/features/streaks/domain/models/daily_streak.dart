@@ -1,3 +1,5 @@
+import 'package:flow_todo_flutter_2022/core/services/milliseconds_to_datetime_property_converter.dart';
+import 'package:flow_todo_flutter_2022/core/services/optional_milliseconds_to_datetime_property_converter.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/entities/daily_streak_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,56 +12,48 @@ class DailyStreak with _$DailyStreak {
   const DailyStreak._();
 
   const factory DailyStreak({
-    int? updatedAt,
     required String id,
     required String userId,
     required int perDay,
-    required int startsAt,
-    required int createdAt,
+    @OptionalMillisecondsToDateTimePropertyConverter() DateTime? updatedAt,
+    @MillisecondsToDateTimePropertyConverter() required DateTime startsAt,
+    @MillisecondsToDateTimePropertyConverter() required DateTime createdAt,
   }) = _DailyStreak;
 
   factory DailyStreak.fromJson(Map<String, Object?> json) =>
       _$DailyStreakFromJson(json);
 
-  int getDaysInARow() {
-    if (updatedAt == null) return 0;
+  bool isInterrupted() {
+    final streakStartedDaysAgo =
+        DateTime.now().difference(updatedAt ?? DateTime.now()).inDays;
 
-    final today = DateTime.now().millisecondsSinceEpoch;
-    final differenceInDaysBetweenUpdateAndCreation =
-        DateTime.fromMillisecondsSinceEpoch(updatedAt ?? today)
-            .difference(DateTime.fromMillisecondsSinceEpoch(createdAt))
-            .inDays;
-
-    return differenceInDaysBetweenUpdateAndCreation + 1;
+    if (streakStartedDaysAgo <= 1) return false;
+    return !_wasStreakUpdatedToday();
   }
 
-  bool isBroken() {
-    final int updatedDaysAgo = _getStreakUpdatedDaysAgo();
-
-    if (updatedDaysAgo == 1) return false;
-    return updatedDaysAgo > 1;
-  }
-
-  bool shouldUpdate({required final int tasksDoneToday}) {
+  bool shouldStreakIncrement({required final int tasksDoneToday}) {
     final bool isTaskGoalReached = tasksDoneToday >= perDay;
-    final bool wasStreakUpdatedToday = _getStreakUpdatedDaysAgo() == 0;
-    0;
 
-    if (!isTaskGoalReached) {
-      return false;
-    } else {
-      return isTaskGoalReached && !wasStreakUpdatedToday;
+    if (isTaskGoalReached) {
+      if (updatedAt == null) {
+        return true;
+      }
+
+      return !_wasStreakUpdatedToday();
     }
+
+    return false;
   }
 
-  int _getStreakUpdatedDaysAgo() {
-    final today = DateTime.now();
-    return today
-        .difference(
-          DateTime.fromMillisecondsSinceEpoch(
-            updatedAt ?? today.millisecondsSinceEpoch,
-          ),
-        )
-        .inDays;
+  bool _wasStreakUpdatedToday() {
+    if (updatedAt == null) return false;
+
+    return updatedAt!.difference(_getBeginningOfToday()).inHours.sign >= 0;
+  }
+
+  DateTime _getBeginningOfToday() {
+    final now = DateTime.now();
+    final yesterdayMidnight = DateTime(now.year, now.month, now.day);
+    return yesterdayMidnight;
   }
 }

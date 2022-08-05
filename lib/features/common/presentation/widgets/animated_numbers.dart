@@ -6,9 +6,11 @@ class AnimatedNumbers extends HookWidget {
   final int number;
   final Duration duration;
   final bool areNumberAnimationsSuspended;
+  final TextStyle? style;
   const AnimatedNumbers({
     Key? key,
     required this.number,
+    this.style,
     this.areNumberAnimationsSuspended = false,
     this.duration = const Duration(seconds: 3),
   }) : super(key: key);
@@ -21,6 +23,7 @@ class AnimatedNumbers extends HookWidget {
       return Text(number.toString());
     }
     return Countup(
+      style: style,
       duration: duration,
       end: number.toDouble(),
       begin: previousNumber?.toDouble() ?? 0,

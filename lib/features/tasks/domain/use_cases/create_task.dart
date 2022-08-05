@@ -7,7 +7,7 @@ import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_point
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:injectable/injectable.dart';
 
-@singleton
+@lazySingleton
 class CreateTask {
   final TasksCubit tasksCubit;
   final ProfileCubit profileCubit;
@@ -35,14 +35,14 @@ class CreateTask {
       // NOTE .trim is not tested.
       title: title.trim(),
       id: uniqueIdGenerator(),
-      dueAt: getTodaysDate().millisecondsSinceEpoch,
-      createdAt: getTodaysDate().millisecondsSinceEpoch,
+      dueAt: getTodaysDate(),
+      createdAt: getTodaysDate(),
     );
 
     if (profileState is ProfileLoaded) {
       addPointsToUser(10);
     }
-    tasksCubit.state.tasks.add(taskToCreate);
+    tasksCubit.state.tasks.insert(0, taskToCreate);
     tasksCubit.updateList(tasksCubit.state.tasks);
 
     return createTaskRepository(taskToCreate);

@@ -19,7 +19,7 @@ _$_TaskHistory _$$_TaskHistoryFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_TaskHistoryToJson(_$_TaskHistory instance) =>
     <String, dynamic>{
-      'actionType': _$TaskHistoryActionTypeEnumMap[instance.actionType],
+      'actionType': _$TaskHistoryActionTypeEnumMap[instance.actionType]!,
       'createdAt': instance.createdAt,
       'taskId': instance.taskId,
       'userId': instance.userId,

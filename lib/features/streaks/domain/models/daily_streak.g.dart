@@ -8,20 +8,26 @@ part of 'daily_streak.dart';
 
 _$_DailyStreak _$$_DailyStreakFromJson(Map<String, dynamic> json) =>
     _$_DailyStreak(
-      updatedAt: json['updatedAt'] as int?,
       id: json['id'] as String,
       userId: json['userId'] as String,
       perDay: json['perDay'] as int,
-      startsAt: json['startsAt'] as int,
-      createdAt: json['createdAt'] as int,
+      updatedAt: const OptionalMillisecondsToDateTimePropertyConverter()
+          .fromJson(json['updatedAt'] as int?),
+      startsAt: const MillisecondsToDateTimePropertyConverter()
+          .fromJson(json['startsAt'] as int),
+      createdAt: const MillisecondsToDateTimePropertyConverter()
+          .fromJson(json['createdAt'] as int),
     );
 
 Map<String, dynamic> _$$_DailyStreakToJson(_$_DailyStreak instance) =>
     <String, dynamic>{
-      'updatedAt': instance.updatedAt,
       'id': instance.id,
       'userId': instance.userId,
       'perDay': instance.perDay,
-      'startsAt': instance.startsAt,
-      'createdAt': instance.createdAt,
+      'updatedAt': const OptionalMillisecondsToDateTimePropertyConverter()
+          .toJson(instance.updatedAt),
+      'startsAt': const MillisecondsToDateTimePropertyConverter()
+          .toJson(instance.startsAt),
+      'createdAt': const MillisecondsToDateTimePropertyConverter()
+          .toJson(instance.createdAt),
     };
