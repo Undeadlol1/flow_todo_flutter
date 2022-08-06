@@ -104,25 +104,22 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
     required DailyStreak? dailyStreak,
     required TasksWorkedOnTodayState tasksDoneTodayState,
   }) {
-    final tasksDoneAmount = tasksDoneTodayState.tasks.length;
-
     if (!mounted) return;
 
-    final double progressValue = _getProgressValue(
+    final tasksDoneAmount = tasksDoneTodayState.tasks.length;
+    final progressValue = _getProgressValue(
       tasksDoneAmount: tasksDoneAmount,
       requiredTasksPerDay: dailyStreak?.perDay ?? 1,
     );
+    _animation = Tween<double>(
+      end: progressValue,
+      begin: previousProgressValue,
+    ).animate(_animationController);
 
-    tasksDoneTodayState.when(
-      loading: () {},
+    tasksDoneTodayState.whenOrNull(
       loaded: (_) {
         Future.microtask(() {
           _hasFirstAnimationForcefullyRan = true;
-
-          _animation = Tween<double>(
-            end: progressValue,
-            begin: previousProgressValue,
-          ).animate(_animationController);
 
           if (_isAnimationListenerAdded == false) {
             _animation.addListener(() => setState(() {}));
@@ -142,7 +139,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
     required int requiredTasksPerDay,
   }) {
     final remainder = tasksDoneAmount.remainder(requiredTasksPerDay);
-    return remainder == 0 ? 0.0 : remainder / requiredTasksPerDay;
+    return remainder == 0 ? 1 : remainder / requiredTasksPerDay;
   }
 }
 
