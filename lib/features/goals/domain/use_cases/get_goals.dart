@@ -23,6 +23,6 @@ class GetGoals {
   }
 
   void _handleException(error, _) {
-    useCaseExceptionHandler.handleException(error!);
+    useCaseExceptionHandler.call(error!);
   }
 }

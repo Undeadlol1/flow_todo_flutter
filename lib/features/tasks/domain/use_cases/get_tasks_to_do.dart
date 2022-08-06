@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/core/services/use_case_exception_handler.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:injectable/injectable.dart';
@@ -8,16 +9,21 @@ import '../models/task.dart';
 class GetTasksToDo {
   final TasksCubit tasksCubit;
   final GetTasksToDoRepository getTasks;
-  GetTasksToDo({required this.getTasks, required this.tasksCubit});
+  final UseCaseExceptionHandler exceptionHandler;
+  GetTasksToDo({
+    required this.getTasks,
+    required this.tasksCubit,
+    required this.exceptionHandler,
+  });
 
   Future<void> call({required String userId}) async {
     if (tasksCubit.state is! TasksUpdated) {
       tasksCubit.setLoading();
     }
 
-    final remoteTasks = await getTasks(userId: userId);
-
-    _updateStateIfNecessary(remoteTasks);
+    await getTasks(userId: userId)
+        .then(_updateStateIfNecessary)
+        .catchError(exceptionHandler);
   }
 
   void _updateStateIfNecessary(List<Task> remoteTasks) {

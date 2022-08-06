@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_get_tasks_repository.dart';
+import '../../../../test_utilities/mocks/mock_use_case_exception_handler.dart';
 
 void main() {
   const userId = '123';
@@ -21,6 +22,7 @@ void main() {
       await GetTasksToDo(
         tasksCubit: tasksCubit,
         getTasks: mockGetTasksRepository,
+        exceptionHandler: MockUseCaseExceptionHandler(),
       )(userId: userId);
 
       verify(() => mockGetTasksRepository(userId: userId)).called(1);
@@ -30,6 +32,7 @@ void main() {
       await GetTasksToDo(
         tasksCubit: tasksCubit,
         getTasks: mockGetTasksRepository,
+        exceptionHandler: MockUseCaseExceptionHandler(),
       )(userId: userId);
 
       expect(tasksCubit.state.tasks, equals([taskFixture, taskFixture]));

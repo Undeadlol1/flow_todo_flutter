@@ -148,10 +148,12 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       useCaseExceptionHandler: get<_i27.UseCaseExceptionHandler>()));
   gh.singleton<_i35.GetProfile>(_i35.GetProfile(
       profileCubit: get<_i17.ProfileCubit>(),
-      getProfileRepository: get<_i10.GetProfileRepository>()));
+      getProfileRepository: get<_i10.GetProfileRepository>(),
+      useCaseExceptionHandler: get<_i27.UseCaseExceptionHandler>()));
   gh.singleton<_i36.GetTasksToDo>(_i36.GetTasksToDo(
       getTasks: get<_i11.GetTasksToDoRepository>(),
-      tasksCubit: get<_i21.TasksCubit>()));
+      tasksCubit: get<_i21.TasksCubit>(),
+      exceptionHandler: get<_i27.UseCaseExceptionHandler>()));
   gh.singleton<_i37.GetTasksWorkedOnToday>(_i37.GetTasksWorkedOnToday(
       tasksDoneTodayCubit: get<_i22.TasksWorkedOnTodayCubit>(),
       exceptionHandler: get<_i27.UseCaseExceptionHandler>(),

@@ -35,7 +35,7 @@ class SignInWithGoogle {
           .then(_signInToFirebaseAuthViaGoogleCredentials)
           .then(_createProfileIfUserDoesntHaveOne);
     } catch (e) {
-      useCaseExceptionHandler.handleException(e);
+      useCaseExceptionHandler.call(e);
     }
     return null;
   }

@@ -40,7 +40,7 @@ class GetTasksWorkedOnToday {
       });
       tasksDoneTodayCubit.update(tasks.reversed.toList());
     } catch (error) {
-      exceptionHandler.handleException(error);
+      exceptionHandler.call(error);
     }
   }
 }

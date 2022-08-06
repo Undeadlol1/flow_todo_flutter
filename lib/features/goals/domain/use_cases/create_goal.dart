@@ -46,7 +46,7 @@ class CreateGoal {
       return createGoalRepo(goalToCreate);
     } on Exception catch (error) {
       goalsCubit.undo();
-      useCaseExceptionHandler.handleException(error);
+      useCaseExceptionHandler.call(error);
       rethrow;
     }
   }

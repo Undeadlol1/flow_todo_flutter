@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/logout.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -13,6 +14,8 @@ final _firebaseAuth = MockFirebasAuth();
 final _profileCubit = MockProfileCubit();
 final _tasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
 final _authentificationCubit = MockAuthentificationCubit();
+
+class _MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
 void main() {
   setUp(() {
@@ -62,6 +65,7 @@ Logout _buildUseCase() {
     profileCubit: _profileCubit,
     firebaseAuth: _firebaseAuth,
     tasksDoneTodayCubit: _tasksDoneTodayCubit,
+    firebaseFirestore: _MockFirebaseFirestore(),
     authentificationCubit: _authentificationCubit,
   );
 }
