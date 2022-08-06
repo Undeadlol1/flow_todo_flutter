@@ -36,6 +36,9 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 10),
                       const Text('Debug information for developers:'),
+                      SelectableText(
+                        'Your user ID is: ${state.profile?.userId}',
+                      ),
                       Text(
                         'Is streak interrupted: ${streak?.isInterrupted().toString() ?? 'null value'}',
                       ),
