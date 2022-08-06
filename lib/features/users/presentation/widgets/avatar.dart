@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/presentation/floating_experience_points_animation.dart';
@@ -190,7 +188,6 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
   }
 
   void _runAnimation(context, profileState) {
-    log('profileState: ${profileState.toString()}');
     if (!mounted) return;
     if (profileState is! ProfileLoaded) return;
 
