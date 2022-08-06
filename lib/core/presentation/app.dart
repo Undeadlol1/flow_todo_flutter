@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/selected_tasks_cubit.dart';
@@ -78,9 +79,13 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    firebaseAuthStream = GetIt.I<firebase_auth.FirebaseAuth>()
-        .userChanges()
-        .listen(_syncFirebaseAuthWithAuthenticationCubit);
+    firebaseAuthStream =
+        GetIt.I<firebase_auth.FirebaseAuth>().userChanges().listen(
+      (user) {
+        if (user == null) GetIt.I<GoToMainPage>()();
+        _syncFirebaseAuthWithAuthenticationCubit(user);
+      },
+    );
   }
 
   @override
