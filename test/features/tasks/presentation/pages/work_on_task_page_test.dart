@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../test_utilities/fakes/fake_user_level_calculator.dart';
+import '../../../../test_utilities/mocks/mock_hydrated_storage.dart';
 import '../../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
 
 void main() {
@@ -33,15 +34,19 @@ void main() {
 }
 
 Future<void> _pumpWidget(WidgetTester tester) async {
-  await tester.pumpWidget(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => AuthentificationCubit()),
-        BlocProvider(create: (context) => ProfileCubit()),
-      ],
-      child: const MaterialApp(
-        home: WorkOnTaskPage(),
-      ),
-    ),
+  return mockHydratedStorage(
+    () {
+      return tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => AuthentificationCubit()),
+            BlocProvider(create: (context) => ProfileCubit()),
+          ],
+          child: const MaterialApp(
+            home: WorkOnTaskPage(),
+          ),
+        ),
+      );
+    },
   );
 }
