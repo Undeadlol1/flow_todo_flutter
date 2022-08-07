@@ -151,9 +151,9 @@ class _AppState extends State<App> {
       authentificationCubit.setUser(
         User(
           id: user.uid,
-          avatar: user.photoURL,
           email: user.email ?? '',
           displayName: user.displayName ?? '',
+          avatar: user.photoURL ?? user.providerData.first.photoURL ?? '',
         ),
       );
     }
