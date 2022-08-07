@@ -12,6 +12,10 @@ class TasksListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
+      // onPressed: () {
+      //   final cubit = GetIt.I<TasksWorkedOnTodayCubit>();
+      //   cubit.update([...cubit.state.tasks, task]);
+      // },
       onPressed: () => GetIt.I<GoToTaskPage>()(task: task),
       onLongPress: () => GetIt.I<ToggleTaskSelection>()(task),
       child: Row(

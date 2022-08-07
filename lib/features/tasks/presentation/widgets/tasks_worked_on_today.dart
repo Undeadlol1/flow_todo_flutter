@@ -138,6 +138,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
     required int tasksDoneAmount,
     required int requiredTasksPerDay,
   }) {
+    if (tasksDoneAmount == requiredTasksPerDay) return 0;
     final remainder = tasksDoneAmount.remainder(requiredTasksPerDay);
     return remainder == 0 ? 1 : remainder / requiredTasksPerDay;
   }
