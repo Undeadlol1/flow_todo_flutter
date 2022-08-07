@@ -11,7 +11,7 @@ class UseCaseExceptionHandler {
   const UseCaseExceptionHandler({required this.snackbarService});
 
   void call(Object error) {
-    log('error: ${error.toString()}');
+    log('error: ${error.toString()}', stackTrace: StackTrace.current);
     snackbarService.displaySnackbar(text: error.toString());
   }
 }

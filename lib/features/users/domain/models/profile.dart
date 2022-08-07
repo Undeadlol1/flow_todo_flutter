@@ -18,8 +18,8 @@ class Profile with _$Profile {
     required String userId,
     required int createdAt,
     required DailyStreak dailyStreak,
-    @JsonKey(defaultValue: 0) required int experience,
     @JsonKey(defaultValue: 0) required int points,
+    @JsonKey(defaultValue: 0) required int experience,
     @JsonKey(defaultValue: false) required bool areEcouragingMessagesDisabled,
   }) = _Profile;
 
