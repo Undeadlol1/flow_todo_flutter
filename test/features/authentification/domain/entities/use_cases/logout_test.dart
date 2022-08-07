@@ -15,7 +15,12 @@ final _profileCubit = MockProfileCubit();
 final _tasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
 final _authentificationCubit = MockAuthentificationCubit();
 
-class _MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
+class _MockFirebaseFirestore extends Mock implements FirebaseFirestore {
+  @override
+  Future<void> clearPersistence() {
+    return Future.value(null);
+  }
+}
 
 void main() {
   setUp(() {
