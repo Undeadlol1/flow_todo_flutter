@@ -25,10 +25,13 @@ class _TasksListState extends State<TasksList> {
       child: Builder(
         builder: (cx) {
           final TasksState tasksState = cx.watch<TasksCubit>().state;
+          final selectedTasks =
+              tasksState.tasks.where((i) => i.isSelected).toList();
           final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
           final tasksToDisplay = _getTasksToDisplay(
+            allTasks: tasksState.tasks,
+            focusedOnTasks: selectedTasks,
             filteredTasks: filteredTasks,
-            unfilteredTasks: tasksState.tasks,
           );
 
           if (tasksState is TasksLoading) {
@@ -56,17 +59,20 @@ class _TasksListState extends State<TasksList> {
   }
 
   List<Task> _getTasksToDisplay({
+    required List<Task> allTasks,
+    required List<Task> focusedOnTasks,
     required List<Task> filteredTasks,
-    required List<Task> unfilteredTasks,
   }) {
-    final List<String> filteredTasksIds =
-        filteredTasks.map((e) => e.id).toList();
+    final allTasksWitouthFilteredTasks = filteredTasks.isEmpty
+        ? allTasks
+        : allTasks.where((task) => !filteredTasks.contains(task)).toList();
 
-    return filteredTasksIds.isEmpty
-        ? unfilteredTasks
-        : unfilteredTasks
-            .where((e) => filteredTasksIds.contains(e.id))
+    final allTasksListWithoutSelectedAndFilteredTasks =
+        allTasksWitouthFilteredTasks
+            .where((task) => !focusedOnTasks.contains(task))
             .toList();
+
+    return allTasksListWithoutSelectedAndFilteredTasks;
   }
 }
 
