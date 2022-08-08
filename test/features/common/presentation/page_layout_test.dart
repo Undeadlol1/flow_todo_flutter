@@ -9,8 +9,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../test_utilities/fakes/fake_user_level_calculator.dart';
+import '../../../test_utilities/mocks/mock_hydrated_storage.dart';
 import '../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
-
 
 void main() {
   setUpAll(() {
@@ -50,22 +50,24 @@ Future<void> _pumpWidget({
   required WidgetTester tester,
   bool isDrawerHidden = false,
 }) async {
-  await tester.pumpWidget(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => AuthentificationCubit(),
-        ),
-        BlocProvider(
-          create: (context) => ProfileCubit(),
-        ),
-      ],
-      child: MaterialApp(
-        home: PageLayout(
-          isDrawerHidden: isDrawerHidden,
-          child: Container(),
+  await mockHydratedStorage(() async {
+    return await tester.pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => AuthentificationCubit(),
+          ),
+          BlocProvider(
+            create: (context) => ProfileCubit(),
+          ),
+        ],
+        child: MaterialApp(
+          home: PageLayout(
+            isDrawerHidden: isDrawerHidden,
+            child: Container(),
+          ),
         ),
       ),
-    ),
-  );
+    );
+  });
 }
