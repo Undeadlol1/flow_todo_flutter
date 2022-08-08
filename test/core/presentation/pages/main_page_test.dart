@@ -22,26 +22,20 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../test_utilities/fakes/fake_user_level_calculator.dart';
 import '../../../test_utilities/fixtures/profile_fixture.dart';
+import '../../../test_utilities/mocks/mock_hydrated_storage.dart';
 import '../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
 
 class _MockSignInWithGoogle extends Mock implements SignInWithGoogle {}
 
-final _tasksCuibit = TasksCubit();
-ProfileCubit _profileCubit = ProfileCubit();
-AuthentificationCubit _authCubit = AuthentificationCubit();
-final _filteredTasksCubit = FilteredTasksCubit();
+late ProfileCubit _profileCubit;
+late AuthentificationCubit _authCubit;
 
 void main() {
   group('GIVEN MainPage', () {
-    setUp(() {
-      _profileCubit = ProfileCubit();
-      _authCubit = AuthentificationCubit();
-    });
-
     setUpAll(() {
-      GetIt.I.registerSingleton(_authCubit);
-      GetIt.I.registerSingleton(_tasksCuibit);
-      GetIt.I.registerSingleton(_filteredTasksCubit);
+      mockHydratedStorage(() {
+        GetIt.I.registerSingleton(FilteredTasksCubit());
+      });
       GetIt.I.registerSingleton<SignInWithGoogle>(_MockSignInWithGoogle());
       GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
       GetIt.I.registerSingleton<StreakDaysInARowCalculator>(
@@ -50,6 +44,13 @@ void main() {
       GetIt.I.registerSingleton<LevelProgressPercentageCalculator>(
         MockLevelProgressPercentageCalculator(),
       );
+    });
+
+    setUp(() {
+      mockHydratedStorage(() {
+        _profileCubit = ProfileCubit();
+        _authCubit = AuthentificationCubit();
+      });
     });
 
     tearDownAll(GetIt.I.reset);
@@ -122,18 +123,20 @@ void main() {
 
 extension _PumpWithScaffold on WidgetTester {
   Future<void> pumpWithDependencies() async {
-    await pumpWidget(
-      MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => _authCubit),
-          BlocProvider(create: (context) => _tasksCuibit),
-          BlocProvider(create: (context) => _profileCubit),
-          BlocProvider(create: (context) => TasksWorkedOnTodayCubit()),
-        ],
-        child: const MaterialApp(
-          home: MainPage(),
+    await mockHydratedStorage(() async {
+      return await pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => _authCubit),
+            BlocProvider(create: (context) => TasksCubit()),
+            BlocProvider(create: (context) => _profileCubit),
+            BlocProvider(create: (context) => TasksWorkedOnTodayCubit()),
+          ],
+          child: const MaterialApp(
+            home: MainPage(),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
