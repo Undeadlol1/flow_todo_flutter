@@ -8,9 +8,6 @@ import 'package:remove_emoji/remove_emoji.dart';
 
 import '../../domain/models/task.dart';
 
-// NOTE: https://github.com/SphericalKat/dart-fuzzywuzzy/issues/6#issuecomment-1177672619
-final _removeEmoji = RemoveEmoji().removemoji;
-
 class FilterTasksToDo extends StatefulWidget {
   const FilterTasksToDo({Key? key}) : super(key: key);
 
@@ -107,6 +104,7 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
           query: input,
           choices: activeTasks,
           getter: (Task task) {
+            // NOTE: https://github.com/SphericalKat/dart-fuzzywuzzy/issues/6#issuecomment-1177672619
             return _normalizeString(task.title).removemoji;
           },
         )
