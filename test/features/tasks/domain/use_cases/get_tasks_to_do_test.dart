@@ -1,3 +1,4 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/get_tasks_to_do.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -5,11 +6,12 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_get_tasks_repository.dart';
+import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 import '../../../../test_utilities/mocks/mock_use_case_exception_handler.dart';
 
 void main() {
   const userId = '123';
-  final tasksCubit = TasksCubit();
+  final mockTasksCubit = MockTasksCubit();
   final mockGetTasksRepository = MockGetTasksToDoRepository();
 
   setUpAll(() {
@@ -17,10 +19,21 @@ void main() {
         .thenAnswer((_) async => [taskFixture, taskFixture]);
   });
 
+  setUp(() {
+    reset(mockTasksCubit);
+
+    final tasksState = TasksUpdated(tasks: []);
+    whenListen(
+      mockTasksCubit,
+      Stream.fromIterable([tasksState]),
+      initialState: tasksState,
+    );
+  });
+
   group('GIVEN GetTasksToDo use case', () {
     test('WHEN called THEN calls repository', () async {
       await GetTasksToDo(
-        tasksCubit: tasksCubit,
+        tasksCubit: mockTasksCubit,
         getTasks: mockGetTasksRepository,
         exceptionHandler: MockUseCaseExceptionHandler(),
       )(userId: userId);
@@ -30,12 +43,13 @@ void main() {
 
     test('WHEN tasks are fetched THEN updates tasks state', () async {
       await GetTasksToDo(
-        tasksCubit: tasksCubit,
+        tasksCubit: mockTasksCubit,
         getTasks: mockGetTasksRepository,
         exceptionHandler: MockUseCaseExceptionHandler(),
       )(userId: userId);
 
-      expect(tasksCubit.state.tasks, equals([taskFixture, taskFixture]));
+      verify(() => mockTasksCubit.updateList([taskFixture, taskFixture]))
+          .called(1);
     });
   });
 }
