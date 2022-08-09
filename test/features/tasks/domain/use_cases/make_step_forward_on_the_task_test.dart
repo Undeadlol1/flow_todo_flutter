@@ -1,3 +1,4 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/repetition.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
@@ -34,23 +35,37 @@ class _MockWorkOnTaskAction extends Mock implements WorkOnTaskAction {}
 class _MockNextRepetitionCalculator extends Mock
     implements NextRepetitionCalculator {}
 
+class _MockTasksWorkedOnTodayCubit extends Mock
+    implements TasksWorkedOnTodayCubit {}
+
 final _mockTasksCubit = MockTasksCubit();
 final _mockProfileCubit = MockProfileCubit();
 final _mockGoToMainPage = MockGoToMainPage();
 final _mockGoToTaskPage = MockGoToTaskPage();
 final _fakeGetTodaysDate = FakeGetTodaysDate();
-final _tasksDoneTodayCubit = TasksWorkedOnTodayCubit();
 final _mockSnackbarService = MockSnackbarService();
 final _mockWorkOnTaskAction = _MockWorkOnTaskAction();
 final _mockAddPointsToViewer = _MockAddPointsToViewer();
 final _mockTasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
 final _mockUpdateTaskRepository = MockUpdateTaskRepository();
+final _mockTasksWorkedOnTodayCubit = _MockTasksWorkedOnTodayCubit();
 final _mockUpdateProfileRepository = MockUpsertProfileRepository();
 final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
 final IncrementDailyStreakAction _mockIncrementDailyStreak =
     _MockIncrementDailyStreak();
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(taskFixture);
+    registerFallbackValue(Confidence.normal);
+
+    whenListen(
+      _mockTasksWorkedOnTodayCubit,
+      Stream.fromIterable([TasksWorkedOnTodayState.loaded([])]),
+      initialState: TasksWorkedOnTodayState.loaded([]),
+    );
+  });
+
   setUp(() {
     reset(_mockTasksCubit);
     reset(_mockGoToTaskPage);
@@ -65,17 +80,6 @@ void main() {
         .thenReturn(TasksWorkedOnTodayState.loaded([]));
     when(() => _mockProfileCubit.state)
         .thenReturn(ProfileLoaded(profile: profileFixture));
-
-    _tasksDoneTodayCubit.update([]);
-  });
-
-  setUpAll(() {
-    registerFallbackValue(taskFixture);
-    registerFallbackValue(Confidence.normal);
-  });
-
-  tearDownAll(() {
-    _tasksDoneTodayCubit.close();
   });
 
   group('GIVEN MakeStepForwardOnTheTask', () {
@@ -91,7 +95,7 @@ void main() {
         when(() => _mockUpdateTaskRepository(any()))
             .thenThrow(Exception(errorText));
 
-        await _getUseCaseWithMockedStates()(
+        await _getUseCase()(
           task: taskFixture,
           isTaskDone: false,
           howBigWasTheStep: Confidence.normal,
@@ -107,7 +111,7 @@ void main() {
         when(() => _mockUpdateTaskRepository(any()))
             .thenThrow(Exception(errorText));
 
-        await _getUseCaseWithMockedStates()(
+        await _getUseCase()(
           task: taskFixture,
           isTaskDone: false,
           howBigWasTheStep: Confidence.normal,
@@ -122,7 +126,7 @@ void main() {
         when(() => _mockUpdateTaskRepository(any()))
             .thenThrow(Exception('An error'));
 
-        await _getUseCaseWithMockedStates()(
+        await _getUseCase()(
           task: taskFixture,
           isTaskDone: false,
           howBigWasTheStep: Confidence.normal,
@@ -349,26 +353,8 @@ MakeStepForwardOnTheTask _getUseCase() {
     updateTask: _mockUpdateTaskRepository,
     workOnTaskAction: _mockWorkOnTaskAction,
     addPointsToViewer: _mockAddPointsToViewer,
-    tasksDoneTodayCubit: _tasksDoneTodayCubit,
+    tasksDoneTodayCubit: _mockTasksWorkedOnTodayCubit,
     updateProfile: _mockUpdateProfileRepository,
-    incrementDailyStreak: _mockIncrementDailyStreak,
-    nextRepetitionCalculator: _mockNextRepetitionCalculator,
-  );
-}
-
-MakeStepForwardOnTheTask _getUseCaseWithMockedStates() {
-  return MakeStepForwardOnTheTask(
-    tasksCubit: _mockTasksCubit,
-    profileCubit: _mockProfileCubit,
-    goToMainPage: _mockGoToMainPage,
-    goToTaskPage: _mockGoToTaskPage,
-    getTodaysDate: _fakeGetTodaysDate,
-    snackbarService: _mockSnackbarService,
-    updateTask: _mockUpdateTaskRepository,
-    workOnTaskAction: _mockWorkOnTaskAction,
-    addPointsToViewer: _mockAddPointsToViewer,
-    updateProfile: _mockUpdateProfileRepository,
-    tasksDoneTodayCubit: _mockTasksDoneTodayCubit,
     incrementDailyStreak: _mockIncrementDailyStreak,
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );
