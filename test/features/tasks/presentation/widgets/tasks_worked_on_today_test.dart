@@ -1,7 +1,7 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_done_today.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_worked_on_today.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,14 +14,15 @@ import '../../../../test_utilities/fixtures/task_fixture.dart';
 
 class _MockProfileCubit extends Mock implements ProfileCubit {}
 
-class _MockTasksDoneTodayCubit extends Mock implements TasksDoneTodayCubit {}
+class _MockTasksDoneTodayCubit extends Mock implements TasksWorkedOnTodayCubit {
+}
 
 final _MockProfileCubit _mockProfileCubit = _MockProfileCubit();
 final _MockTasksDoneTodayCubit _mockTasksDoneTodayCubit =
     _MockTasksDoneTodayCubit();
 
 void main() {
-  group('GIVEN TasksDoneToday', () {
+  group('GIVEN TasksWorkedOnToday', () {
     setUpAll(() {
       GetIt.I.registerSingleton<StreakDaysInARowCalculator>(
         const StreakDaysInARowCalculator(),
@@ -34,10 +35,10 @@ void main() {
         'THEN displays how many tasks are done today',
         (tester) async {
           _stubTasksDoneTodayState(
-            TasksDoneTodayState.loaded([taskFixture, taskFixture]),
+            TasksWorkedOnTodayState.loaded([taskFixture, taskFixture]),
           );
 
-          await tester.pumpWithDependencies(const TasksDoneToday());
+          await tester.pumpWithDependencies(const TasksWorkedOnToday());
 
           expect(find.textContaining('Wins today: '), findsOneWidget);
           expect(find.textContaining('2'), findsOneWidget);
@@ -47,9 +48,9 @@ void main() {
       testWidgets(
         'THEN displays progress indicator',
         (tester) async {
-          _stubTasksDoneTodayState(TasksDoneTodayState.loaded([]));
+          _stubTasksDoneTodayState(TasksWorkedOnTodayState.loaded([]));
 
-          await tester.pumpWithDependencies(const TasksDoneToday());
+          await tester.pumpWithDependencies(const TasksWorkedOnToday());
 
           expect(find.byType(LinearProgressIndicator), findsOneWidget);
         },
@@ -59,9 +60,9 @@ void main() {
         'THEN how many tasks are required per day',
         (tester) async {
           _stubProfileState(ProfileLoaded(profile: profileFixture));
-          _stubTasksDoneTodayState(TasksDoneTodayState.loaded([]));
+          _stubTasksDoneTodayState(TasksWorkedOnTodayState.loaded([]));
 
-          await tester.pumpWithDependencies(const TasksDoneToday());
+          await tester.pumpWithDependencies(const TasksWorkedOnToday());
 
           expect(
             find.textContaining(' / ${profileFixture.dailyStreak.perDay}'),
@@ -86,7 +87,7 @@ void _stubProfileState(ProfileState state) {
   when(() => _mockProfileCubit.stream).thenAnswer((_) => Stream.value(state));
 }
 
-void _stubTasksDoneTodayState(TasksDoneTodayState state) {
+void _stubTasksDoneTodayState(TasksWorkedOnTodayState state) {
   when(() => _mockTasksDoneTodayCubit.close()).thenAnswer((_) async {});
   when(() => _mockTasksDoneTodayCubit.state).thenAnswer((_) => state);
   when(() => _mockTasksDoneTodayCubit.stream)
@@ -101,7 +102,7 @@ extension _PumpWithScaffold on WidgetTester {
           BlocProvider<ProfileCubit>(
             create: (context) => _mockProfileCubit,
           ),
-          BlocProvider<TasksDoneTodayCubit>(
+          BlocProvider<TasksWorkedOnTodayCubit>(
             create: (context) => _mockTasksDoneTodayCubit,
           ),
         ],

@@ -38,6 +38,7 @@ mixin _$Task {
   int? get doneAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
   int? get repetitionLevel => throw _privateConstructorUsedError;
+  bool get isSelected => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -60,7 +61,8 @@ abstract class $TaskCopyWith<$Res> {
       @JsonKey(defaultValue: []) List<TaskHistory> history,
       int? doneAt,
       int? updatedAt,
-      int? repetitionLevel});
+      int? repetitionLevel,
+      bool isSelected});
 }
 
 /// @nodoc
@@ -85,6 +87,7 @@ class _$TaskCopyWithImpl<$Res> implements $TaskCopyWith<$Res> {
     Object? doneAt = freezed,
     Object? updatedAt = freezed,
     Object? repetitionLevel = freezed,
+    Object? isSelected = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -135,6 +138,10 @@ class _$TaskCopyWithImpl<$Res> implements $TaskCopyWith<$Res> {
           ? _value.repetitionLevel
           : repetitionLevel // ignore: cast_nullable_to_non_nullable
               as int?,
+      isSelected: isSelected == freezed
+          ? _value.isSelected
+          : isSelected // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -156,7 +163,8 @@ abstract class _$$_TaskCopyWith<$Res> implements $TaskCopyWith<$Res> {
       @JsonKey(defaultValue: []) List<TaskHistory> history,
       int? doneAt,
       int? updatedAt,
-      int? repetitionLevel});
+      int? repetitionLevel,
+      bool isSelected});
 }
 
 /// @nodoc
@@ -182,6 +190,7 @@ class __$$_TaskCopyWithImpl<$Res> extends _$TaskCopyWithImpl<$Res>
     Object? doneAt = freezed,
     Object? updatedAt = freezed,
     Object? repetitionLevel = freezed,
+    Object? isSelected = freezed,
   }) {
     return _then(_$_Task(
       id: id == freezed
@@ -232,6 +241,10 @@ class __$$_TaskCopyWithImpl<$Res> extends _$TaskCopyWithImpl<$Res>
           ? _value.repetitionLevel
           : repetitionLevel // ignore: cast_nullable_to_non_nullable
               as int?,
+      isSelected: isSelected == freezed
+          ? _value.isSelected
+          : isSelected // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -252,7 +265,8 @@ class _$_Task implements _Task {
       @JsonKey(defaultValue: []) required final List<TaskHistory> history,
       this.doneAt,
       this.updatedAt,
-      this.repetitionLevel})
+      this.repetitionLevel,
+      this.isSelected = false})
       : _tags = tags,
         _history = history;
 
@@ -298,10 +312,13 @@ class _$_Task implements _Task {
   final int? updatedAt;
   @override
   final int? repetitionLevel;
+  @override
+  @JsonKey()
+  final bool isSelected;
 
   @override
   String toString() {
-    return 'Task(id: $id, isDone: $isDone, userId: $userId, dueAt: $dueAt, createdAt: $createdAt, title: $title, note: $note, tags: $tags, history: $history, doneAt: $doneAt, updatedAt: $updatedAt, repetitionLevel: $repetitionLevel)';
+    return 'Task(id: $id, isDone: $isDone, userId: $userId, dueAt: $dueAt, createdAt: $createdAt, title: $title, note: $note, tags: $tags, history: $history, doneAt: $doneAt, updatedAt: $updatedAt, repetitionLevel: $repetitionLevel, isSelected: $isSelected)';
   }
 
   @override
@@ -321,7 +338,9 @@ class _$_Task implements _Task {
             const DeepCollectionEquality().equals(other.doneAt, doneAt) &&
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
             const DeepCollectionEquality()
-                .equals(other.repetitionLevel, repetitionLevel));
+                .equals(other.repetitionLevel, repetitionLevel) &&
+            const DeepCollectionEquality()
+                .equals(other.isSelected, isSelected));
   }
 
   @JsonKey(ignore: true)
@@ -339,7 +358,8 @@ class _$_Task implements _Task {
       const DeepCollectionEquality().hash(_history),
       const DeepCollectionEquality().hash(doneAt),
       const DeepCollectionEquality().hash(updatedAt),
-      const DeepCollectionEquality().hash(repetitionLevel));
+      const DeepCollectionEquality().hash(repetitionLevel),
+      const DeepCollectionEquality().hash(isSelected));
 
   @JsonKey(ignore: true)
   @override
@@ -348,7 +368,9 @@ class _$_Task implements _Task {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TaskToJson(this);
+    return _$$_TaskToJson(
+      this,
+    );
   }
 }
 
@@ -371,40 +393,43 @@ abstract class _Task implements Task {
           required final List<TaskHistory> history,
       final int? doneAt,
       final int? updatedAt,
-      final int? repetitionLevel}) = _$_Task;
+      final int? repetitionLevel,
+      final bool isSelected}) = _$_Task;
 
   factory _Task.fromJson(Map<String, dynamic> json) = _$_Task.fromJson;
 
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  bool get isDone => throw _privateConstructorUsedError;
+  bool get isDone;
   @override
-  String get userId => throw _privateConstructorUsedError;
-  @override
-  @MillisecondsToDateTimePropertyConverter()
-  DateTime get dueAt => throw _privateConstructorUsedError;
+  String get userId;
   @override
   @MillisecondsToDateTimePropertyConverter()
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get dueAt;
+  @override
+  @MillisecondsToDateTimePropertyConverter()
+  DateTime get createdAt;
   @override
   @JsonKey(name: 'name')
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
   @JsonKey(defaultValue: '')
-  String get note => throw _privateConstructorUsedError;
+  String get note;
   @override
   @JsonKey(defaultValue: [])
-  List<String> get tags => throw _privateConstructorUsedError;
+  List<String> get tags;
   @override
   @JsonKey(defaultValue: [])
-  List<TaskHistory> get history => throw _privateConstructorUsedError;
+  List<TaskHistory> get history;
   @override
-  int? get doneAt => throw _privateConstructorUsedError;
+  int? get doneAt;
   @override
-  int? get updatedAt => throw _privateConstructorUsedError;
+  int? get updatedAt;
   @override
-  int? get repetitionLevel => throw _privateConstructorUsedError;
+  int? get repetitionLevel;
+  @override
+  bool get isSelected;
   @override
   @JsonKey(ignore: true)
   _$$_TaskCopyWith<_$_Task> get copyWith => throw _privateConstructorUsedError;

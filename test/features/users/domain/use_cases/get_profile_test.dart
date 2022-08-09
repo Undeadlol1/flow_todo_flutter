@@ -5,21 +5,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
+import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
+import '../../../../test_utilities/mocks/mock_use_case_exception_handler.dart';
 
 class _MockGetProfileRepository extends Mock implements GetProfileRepository {}
 
-class _MockProfileCubit extends Mock implements ProfileCubit {}
-
 const _userId = '123';
-final _mockProfileCubit = _MockProfileCubit();
+final _mockProfileCubit = MockProfileCubit();
 final _mockGetProfileRepository = _MockGetProfileRepository();
 
 void main() {
   setUp(() {
-    when(() => _mockProfileCubit.setProfile(profileFixture)).thenReturn(null);
-
     reset(_mockProfileCubit);
     reset(_mockGetProfileRepository);
+
+    _mockCubitWithLoadedProfile();
   });
 
   group('GIVEN GetProfile use case', () {
@@ -87,10 +87,23 @@ GetProfile _getUseCase() {
   return GetProfile(
     profileCubit: _mockProfileCubit,
     getProfileRepository: _mockGetProfileRepository,
+    useCaseExceptionHandler: MockUseCaseExceptionHandler(),
   );
 }
 
 void _mockProfileRepository() {
   when(() => _mockGetProfileRepository(userId: _userId))
       .thenAnswer((_) async => profileFixture);
+}
+
+void _mockCubitWithLoadedProfile() {
+  final profileLoadedState = ProfileLoaded(
+    profile: profileFixture.copyWith(
+      updatedAt: DateTime.now().millisecondsSinceEpoch,
+    ),
+  );
+  when(() => _mockProfileCubit.state).thenReturn(profileLoadedState);
+  when(() => _mockProfileCubit.stream)
+      .thenAnswer((_) => Stream.fromIterable([profileLoadedState]));
+  when(() => _mockProfileCubit.close()).thenAnswer((_) async => {});
 }

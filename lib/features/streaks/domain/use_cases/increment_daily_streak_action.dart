@@ -2,18 +2,18 @@ import 'package:flow_todo_flutter_2022/features/streaks/domain/models/daily_stre
 import 'package:injectable/injectable.dart';
 
 import '../../../common/services/get_todays_date.dart';
-import '../../../tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import '../../../tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import '../../../users/data/upsert_profile_repository.dart';
 import '../../../users/domain/models/profile.dart';
 import '../../../users/presentation/cubit/profile_cubit.dart';
 
 @lazySingleton
-class IncrementDailyStreak {
+class IncrementDailyStreakAction {
   final ProfileCubit profileCubit;
   final GetTodaysDate getTodaysDate;
-  final TasksDoneTodayCubit tasksDoneTodayCubit;
+  final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
   final UpsertProfileRepository updateProfile;
-  const IncrementDailyStreak({
+  const IncrementDailyStreakAction({
     required this.profileCubit,
     required this.getTodaysDate,
     required this.tasksDoneTodayCubit,
@@ -42,8 +42,8 @@ class IncrementDailyStreak {
 
     final updatedProfile = profileCubit.state.profile!.copyWith(
       dailyStreak: streak.copyWith(
+        updatedAt: today,
         startsAt: streak.isInterrupted() ? today : streak.startsAt,
-        updatedAt: today.millisecondsSinceEpoch,
       ),
     );
 

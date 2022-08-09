@@ -24,6 +24,7 @@ class Task with _$Task {
     int? doneAt,
     int? updatedAt,
     int? repetitionLevel,
+    @Default(false) bool isSelected,
   }) = _Task;
 
   factory Task.fromJson(Map<String, Object?> json) => _$TaskFromJson(json);

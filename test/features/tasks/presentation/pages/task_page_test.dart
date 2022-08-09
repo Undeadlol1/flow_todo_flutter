@@ -17,13 +17,18 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fakes/fake_user_level_calculator.dart';
+import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
-
-final _binding = TestWidgetsFlutterBinding.ensureInitialized();
+import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 
 class _MockMakeStepForwardOnATask extends Mock
     implements MakeStepForwardOnTheTask {}
+
+final _binding = TestWidgetsFlutterBinding.ensureInitialized();
+final MockProfileCubit _mockProfileCubit = MockProfileCubit();
+final _mockLevelProgressPercentageCalculator =
+    MockLevelProgressPercentageCalculator();
 
 void main() {
   setUpAll(() {
@@ -36,8 +41,15 @@ void main() {
     setUpAll(() {
       GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
       GetIt.I.registerSingleton<LevelProgressPercentageCalculator>(
-        MockLevelProgressPercentageCalculator(),
+        _mockLevelProgressPercentageCalculator,
       );
+
+      final profileLoaded = ProfileLoaded(profile: profileFixture);
+      when(() => _mockProfileCubit.close()).thenAnswer((_) async => {});
+      when(() => _mockProfileCubit.state).thenReturn(profileLoaded);
+      when(() => _mockProfileCubit.stream)
+          .thenAnswer((_) => Stream.fromIterable([profileLoaded]));
+      when(() => _mockLevelProgressPercentageCalculator(any())).thenReturn(1.0);
     });
 
     testWidgets(
@@ -155,8 +167,8 @@ extension on WidgetTester {
           BlocProvider(
             create: (_) => AuthentificationCubit(),
           ),
-          BlocProvider(
-            create: (context) => ProfileCubit(),
+          BlocProvider<ProfileCubit>(
+            create: (_) => _mockProfileCubit,
           ),
         ],
         child: MaterialApp(

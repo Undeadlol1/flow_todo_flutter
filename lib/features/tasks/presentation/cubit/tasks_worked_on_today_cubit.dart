@@ -3,15 +3,15 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:replay_bloc/replay_bloc.dart';
 
-part 'tasks_done_today_state.dart';
-part 'tasks_done_today_cubit.freezed.dart';
+part 'tasks_worked_on_today_state.dart';
+part 'tasks_worked_on_today_cubit.freezed.dart';
 
 @singleton
-class TasksDoneTodayCubit extends Cubit<TasksDoneTodayState>
+class TasksWorkedOnTodayCubit extends Cubit<TasksWorkedOnTodayState>
     with ReplayCubitMixin {
-  TasksDoneTodayCubit() : super(TasksDoneTodayState.loading());
+  TasksWorkedOnTodayCubit() : super(TasksWorkedOnTodayState.loading());
 
   void update(List<Task> tasks) {
-    emit(TasksDoneTodayState.loaded(tasks));
+    emit(TasksWorkedOnTodayState.loaded(tasks));
   }
 }

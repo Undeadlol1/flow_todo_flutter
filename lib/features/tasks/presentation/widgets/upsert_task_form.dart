@@ -89,13 +89,16 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
       setState(() => _formError = null);
 
       try {
+        final navigator = Navigator.of(context);
+        if (mounted && navigator.canPop()) {
+          navigator.pop();
+        }
+
         if (widget.taskToUpdate == null) {
           await GetIt.I<CreateTask>()(
             title: inputText,
             userId: authState.user.id,
           );
-
-          if (mounted) Navigator.of(context).pop();
         } else {
           await GetIt.I<UpdateTask>()(
             widget.taskToUpdate!.copyWith(title: inputText),

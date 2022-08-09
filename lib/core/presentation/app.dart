@@ -1,13 +1,16 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flow_todo_flutter_2022/core/presentation/pages/main_page.dart';
+import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/selected_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/quests/presentation/cubits/active_quests_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get_it/get_it.dart';
 
 import 'pages/main_page.dart';
@@ -15,7 +18,7 @@ import '../../features/authentification/domain/entities/user.dart';
 import '../../features/authentification/presentation/cubit/authentification_cubit.dart';
 import '../../features/leveling/presentation/widgets/experience_progress_bar.dart';
 import '../../features/tasks/presentation/cubit/tasks_cubit.dart';
-import '../../features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import '../../features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import '../../features/tasks/presentation/pages/task_page.dart';
 import '../../features/tasks/presentation/pages/work_on_task_page.dart';
 import '../../features/users/presentation/cubit/profile_cubit.dart';
@@ -29,11 +32,15 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  static final FirebaseAnalyticsObserver _firebaseAnalyticsObserver =
+      FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance);
+
   final TasksCubit tasksCubit = GetIt.I();
   final GoalsCubit goalsCubit = GetIt.I();
   final ProfileCubit profileCubit = GetIt.I();
   final ActiveQuestsCubit activeQuestsCubit = GetIt.I();
-  final TasksDoneTodayCubit tasksDoneTodayCubit = GetIt.I();
+  final SelectedTasksCubit selectedTasksCubit = GetIt.I();
+  final TasksWorkedOnTodayCubit tasksDoneTodayCubit = GetIt.I();
   final AuthentificationCubit authentificationCubit = GetIt.I();
 
   final lightTheme = FlexThemeData.light(
@@ -74,9 +81,13 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    firebaseAuthStream = GetIt.I<firebase_auth.FirebaseAuth>()
-        .userChanges()
-        .listen(_syncFirebaseAuthWithAuthenticationCubit);
+    firebaseAuthStream =
+        GetIt.I<firebase_auth.FirebaseAuth>().userChanges().listen(
+      (user) {
+        if (user == null) GetIt.I<GoToMainPage>()();
+        _syncFirebaseAuthWithAuthenticationCubit(user);
+      },
+    );
   }
 
   @override
@@ -87,6 +98,7 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    log('current user: ${GetIt.I<firebase_auth.FirebaseAuth>().currentUser?.displayName}');
     return Directionality(
       textDirection: TextDirection.ltr,
       child: MultiBlocProvider(
@@ -95,6 +107,7 @@ class _AppState extends State<App> {
           BlocProvider(create: (_) => goalsCubit),
           BlocProvider(create: (_) => profileCubit),
           BlocProvider(create: (_) => activeQuestsCubit),
+          BlocProvider(create: (_) => selectedTasksCubit),
           BlocProvider(create: (_) => tasksDoneTodayCubit),
           BlocProvider(create: (_) => authentificationCubit),
         ],
@@ -106,6 +119,7 @@ class _AppState extends State<App> {
               title: 'Flow TODO',
               darkTheme: darkTheme,
               initialRoute: MainPage.pathName,
+              navigatorObservers: [_firebaseAnalyticsObserver],
               routes: {
                 MainPage.pathName: (contex) => const MainPage(),
                 TaskPage.pathName: (contex) => const TaskPage(),
@@ -129,17 +143,20 @@ class _AppState extends State<App> {
   }
 
   void _syncFirebaseAuthWithAuthenticationCubit(firebase_auth.User? user) {
+    log('user: ${user?.email.toString()}');
     if (user == null) {
+      goalsCubit.update([]);
       tasksCubit.updateList([]);
+      selectedTasksCubit.update([]);
       profileCubit.setProfileNotFoundOrUnloaded();
       authentificationCubit.setNotAuthenticated();
     } else {
       authentificationCubit.setUser(
         User(
           id: user.uid,
-          avatar: user.photoURL,
           email: user.email ?? '',
           displayName: user.displayName ?? '',
+          avatar: user.photoURL ?? user.providerData.first.photoURL ?? '',
         ),
       );
     }

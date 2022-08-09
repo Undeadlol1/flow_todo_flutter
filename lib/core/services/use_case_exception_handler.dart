@@ -10,8 +10,8 @@ class UseCaseExceptionHandler {
 
   const UseCaseExceptionHandler({required this.snackbarService});
 
-  void handleException(Object error) {
-    log('error: ${error.toString()}');
+  void call(Object error) {
+    log('error: ${error.toString()}', stackTrace: StackTrace.current);
     snackbarService.displaySnackbar(text: error.toString());
   }
 }

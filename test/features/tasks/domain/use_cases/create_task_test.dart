@@ -1,3 +1,4 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/create_task_repository.dart';
@@ -11,6 +12,8 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
+import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 
 class _MockAddPointsToUser extends Mock implements AddPointsToViewer {}
 
@@ -27,8 +30,8 @@ class _FakeGetTodaysDate extends Fake implements GetTodaysDate {
 }
 
 const _uniqueId = 'unique id 123';
-final _tasksCubit = TasksCubit();
-final _profileCubit = ProfileCubit();
+final _mockTasksCubit = MockTasksCubit();
+final _mockProfileCubit = MockProfileCubit();
 final _mockAddPointsToUser = _MockAddPointsToUser();
 final _fakecUniqueIdGenerator = _FakecUniqueIdGenerator();
 final _mockCreateTaskRepository = _MockCreateTaskRepository();
@@ -39,15 +42,32 @@ void main() {
   const userId = '12313231';
   const taskTitle = 'A title';
 
-  setUp(() {
-    reset(_mockCreateTaskRepository);
-    registerFallbackValue(taskFixture);
-    when((() => _mockCreateTaskRepository(any()))).thenAnswer((_) async {});
+  callToAddPointsMock() => _mockAddPointsToUser(10);
+
+  setUpAll(() {
+    final profileState = ProfileLoaded(profile: profileFixture);
+    whenListen(
+      _mockProfileCubit,
+      Stream.fromIterable([profileState]),
+      initialState: profileState,
+    );
+
+    final tasksState = TasksUpdated(tasks: []);
+    whenListen(
+      _mockTasksCubit,
+      Stream.fromIterable([tasksState]),
+      initialState: tasksState,
+    );
   });
 
-  tearDownAll(() {
-    _tasksCubit.close();
-    _profileCubit.close();
+  setUp(() {
+    reset(_mockAddPointsToUser);
+    reset(_mockCreateTaskRepository);
+
+    registerFallbackValue(taskFixture);
+
+    when(() => callToAddPointsMock()).thenAnswer((_) async {});
+    when((() => _mockCreateTaskRepository(any()))).thenAnswer((_) async {});
   });
 
   group('GIVEN CrateTask WHEN called THEN', () {
@@ -58,16 +78,14 @@ void main() {
 
         await useCase(title: taskTitle, userId: userId);
 
-        expect(_tasksCubit.state.tasks, hasLength(1));
+        expect(_mockTasksCubit.state.tasks, hasLength(1));
       },
     );
 
     test(
       'adds points to user',
       () async {
-        _profileCubit.setProfile(profileFixture);
-        callToAddPointsMock() => _mockAddPointsToUser(10);
-        when(() => callToAddPointsMock()).thenAnswer((_) async {});
+        _mockProfileCubit.setProfile(profileFixture);
 
         await _buildUseCase()(title: taskTitle, userId: userId);
 
@@ -110,8 +128,8 @@ void main() {
 
 CreateTask _buildUseCase() {
   return CreateTask(
-    tasksCubit: _tasksCubit,
-    profileCubit: _profileCubit,
+    tasksCubit: _mockTasksCubit,
+    profileCubit: _mockProfileCubit,
     getTodaysDate: _FakeGetTodaysDate(),
     addPointsToUser: _mockAddPointsToUser,
     uniqueIdGenerator: _fakecUniqueIdGenerator,

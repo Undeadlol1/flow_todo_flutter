@@ -1,16 +1,32 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture_2.dart';
+import '../../../../test_utilities/mocks/mock_hydrated_storage.dart';
+
+class _MockStorage extends Mock implements Storage {}
 
 void main() {
+  late TasksCubit tasksCubit;
+  late Storage hydratedStorage;
+
+  setUp(() async {
+    tasksCubit = await mockHydratedStorage(() => TasksCubit());
+
+    hydratedStorage = _MockStorage();
+    when(() => hydratedStorage.write(any(), any<dynamic>()))
+        .thenAnswer((_) async {});
+  });
+
   group('GIVEN TasksCubit', () {
     blocTest<TasksCubit, TasksState>(
       'WHEN is loaded initially '
       'THEN contains empty tasks list',
-      build: () => TasksCubit(),
+      build: () => tasksCubit,
       verify: (cubit) {
         expect(cubit.state, isA<TasksLoading>());
         expect(cubit.state.tasks, equals([]));
@@ -20,7 +36,7 @@ void main() {
     blocTest<TasksCubit, TasksState>(
       'WHEN updateList is called '
       'THEN contains updated tasks list',
-      build: () => TasksCubit(),
+      build: () => tasksCubit,
       act: (cubit) => cubit.updateList([taskFixture, taskFixture]),
       verify: (cubit) {
         expect(cubit.state, isA<TasksUpdated>());
@@ -31,7 +47,7 @@ void main() {
     blocTest<TasksCubit, TasksState>(
       'WHEN is updateTask is called '
       'THEN updates the task in the list',
-      build: () => TasksCubit()..updateList([taskFixture, taskFixture2]),
+      build: () => tasksCubit..updateList([taskFixture, taskFixture2]),
       act: (cubit) =>
           cubit.updateTask(taskFixture.copyWith(title: 'a new title')),
       verify: (cubit) {
@@ -44,7 +60,7 @@ void main() {
     blocTest<TasksCubit, TasksState>(
       'WHEN removeTask method is called'
       'THEN removes the task from the state',
-      build: () => TasksCubit()..updateList([taskFixture2, taskFixture]),
+      build: () => tasksCubit..updateList([taskFixture2, taskFixture]),
       act: (cubit) => cubit.removeTask(taskFixture2),
       verify: (cubit) {
         expect(cubit.state, isA<TasksUpdated>());

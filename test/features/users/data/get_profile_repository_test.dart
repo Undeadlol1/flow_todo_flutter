@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flow_todo_flutter_2022/features/users/data/get_profile_repository.dart';
@@ -72,9 +70,6 @@ void main() {
         final result = await GetProfileRepository(firestore: instance).call(
           userId: _userId,
         );
-
-        log('RESULT: $result');
-        log('RESULT: ${result?.dailyStreak}');
 
         expect(result, isA<Profile>());
         expect(result?.id, _userId);

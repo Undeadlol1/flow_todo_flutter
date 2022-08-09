@@ -26,9 +26,9 @@ mixin _$Profile {
   int get createdAt => throw _privateConstructorUsedError;
   DailyStreak get dailyStreak => throw _privateConstructorUsedError;
   @JsonKey(defaultValue: 0)
-  int get experience => throw _privateConstructorUsedError;
-  @JsonKey(defaultValue: 0)
   int get points => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: 0)
+  int get experience => throw _privateConstructorUsedError;
   @JsonKey(defaultValue: false)
   bool get areEcouragingMessagesDisabled => throw _privateConstructorUsedError;
 
@@ -47,8 +47,8 @@ abstract class $ProfileCopyWith<$Res> {
       String userId,
       int createdAt,
       DailyStreak dailyStreak,
-      @JsonKey(defaultValue: 0) int experience,
       @JsonKey(defaultValue: 0) int points,
+      @JsonKey(defaultValue: 0) int experience,
       @JsonKey(defaultValue: false) bool areEcouragingMessagesDisabled});
 
   $DailyStreakCopyWith<$Res> get dailyStreak;
@@ -69,8 +69,8 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
     Object? userId = freezed,
     Object? createdAt = freezed,
     Object? dailyStreak = freezed,
-    Object? experience = freezed,
     Object? points = freezed,
+    Object? experience = freezed,
     Object? areEcouragingMessagesDisabled = freezed,
   }) {
     return _then(_value.copyWith(
@@ -94,13 +94,13 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
           ? _value.dailyStreak
           : dailyStreak // ignore: cast_nullable_to_non_nullable
               as DailyStreak,
-      experience: experience == freezed
-          ? _value.experience
-          : experience // ignore: cast_nullable_to_non_nullable
-              as int,
       points: points == freezed
           ? _value.points
           : points // ignore: cast_nullable_to_non_nullable
+              as int,
+      experience: experience == freezed
+          ? _value.experience
+          : experience // ignore: cast_nullable_to_non_nullable
               as int,
       areEcouragingMessagesDisabled: areEcouragingMessagesDisabled == freezed
           ? _value.areEcouragingMessagesDisabled
@@ -129,8 +129,8 @@ abstract class _$$_ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       String userId,
       int createdAt,
       DailyStreak dailyStreak,
-      @JsonKey(defaultValue: 0) int experience,
       @JsonKey(defaultValue: 0) int points,
+      @JsonKey(defaultValue: 0) int experience,
       @JsonKey(defaultValue: false) bool areEcouragingMessagesDisabled});
 
   @override
@@ -153,8 +153,8 @@ class __$$_ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
     Object? userId = freezed,
     Object? createdAt = freezed,
     Object? dailyStreak = freezed,
-    Object? experience = freezed,
     Object? points = freezed,
+    Object? experience = freezed,
     Object? areEcouragingMessagesDisabled = freezed,
   }) {
     return _then(_$_Profile(
@@ -178,13 +178,13 @@ class __$$_ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
           ? _value.dailyStreak
           : dailyStreak // ignore: cast_nullable_to_non_nullable
               as DailyStreak,
-      experience: experience == freezed
-          ? _value.experience
-          : experience // ignore: cast_nullable_to_non_nullable
-              as int,
       points: points == freezed
           ? _value.points
           : points // ignore: cast_nullable_to_non_nullable
+              as int,
+      experience: experience == freezed
+          ? _value.experience
+          : experience // ignore: cast_nullable_to_non_nullable
               as int,
       areEcouragingMessagesDisabled: areEcouragingMessagesDisabled == freezed
           ? _value.areEcouragingMessagesDisabled
@@ -205,9 +205,9 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
       required this.createdAt,
       required this.dailyStreak,
       @JsonKey(defaultValue: 0)
-          required this.experience,
-      @JsonKey(defaultValue: 0)
           required this.points,
+      @JsonKey(defaultValue: 0)
+          required this.experience,
       @JsonKey(defaultValue: false)
           required this.areEcouragingMessagesDisabled});
 
@@ -226,17 +226,17 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
   final DailyStreak dailyStreak;
   @override
   @JsonKey(defaultValue: 0)
-  final int experience;
+  final int points;
   @override
   @JsonKey(defaultValue: 0)
-  final int points;
+  final int experience;
   @override
   @JsonKey(defaultValue: false)
   final bool areEcouragingMessagesDisabled;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Profile(updatedAt: $updatedAt, id: $id, userId: $userId, createdAt: $createdAt, dailyStreak: $dailyStreak, experience: $experience, points: $points, areEcouragingMessagesDisabled: $areEcouragingMessagesDisabled)';
+    return 'Profile(updatedAt: $updatedAt, id: $id, userId: $userId, createdAt: $createdAt, dailyStreak: $dailyStreak, points: $points, experience: $experience, areEcouragingMessagesDisabled: $areEcouragingMessagesDisabled)';
   }
 
   @override
@@ -249,8 +249,8 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('dailyStreak', dailyStreak))
-      ..add(DiagnosticsProperty('experience', experience))
       ..add(DiagnosticsProperty('points', points))
+      ..add(DiagnosticsProperty('experience', experience))
       ..add(DiagnosticsProperty(
           'areEcouragingMessagesDisabled', areEcouragingMessagesDisabled));
   }
@@ -266,9 +266,9 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality()
                 .equals(other.dailyStreak, dailyStreak) &&
+            const DeepCollectionEquality().equals(other.points, points) &&
             const DeepCollectionEquality()
                 .equals(other.experience, experience) &&
-            const DeepCollectionEquality().equals(other.points, points) &&
             const DeepCollectionEquality().equals(
                 other.areEcouragingMessagesDisabled,
                 areEcouragingMessagesDisabled));
@@ -283,8 +283,8 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
       const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(dailyStreak),
-      const DeepCollectionEquality().hash(experience),
       const DeepCollectionEquality().hash(points),
+      const DeepCollectionEquality().hash(experience),
       const DeepCollectionEquality().hash(areEcouragingMessagesDisabled));
 
   @JsonKey(ignore: true)
@@ -294,7 +294,9 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProfileToJson(this);
+    return _$$_ProfileToJson(
+      this,
+    );
   }
 }
 
@@ -306,33 +308,33 @@ abstract class _Profile implements Profile {
       required final int createdAt,
       required final DailyStreak dailyStreak,
       @JsonKey(defaultValue: 0)
-          required final int experience,
-      @JsonKey(defaultValue: 0)
           required final int points,
+      @JsonKey(defaultValue: 0)
+          required final int experience,
       @JsonKey(defaultValue: false)
           required final bool areEcouragingMessagesDisabled}) = _$_Profile;
 
   factory _Profile.fromJson(Map<String, dynamic> json) = _$_Profile.fromJson;
 
   @override
-  int? get updatedAt => throw _privateConstructorUsedError;
+  int? get updatedAt;
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  String get userId => throw _privateConstructorUsedError;
+  String get userId;
   @override
-  int get createdAt => throw _privateConstructorUsedError;
+  int get createdAt;
   @override
-  DailyStreak get dailyStreak => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(defaultValue: 0)
-  int get experience => throw _privateConstructorUsedError;
+  DailyStreak get dailyStreak;
   @override
   @JsonKey(defaultValue: 0)
-  int get points => throw _privateConstructorUsedError;
+  int get points;
+  @override
+  @JsonKey(defaultValue: 0)
+  int get experience;
   @override
   @JsonKey(defaultValue: false)
-  bool get areEcouragingMessagesDisabled => throw _privateConstructorUsedError;
+  bool get areEcouragingMessagesDisabled;
   @override
   @JsonKey(ignore: true)
   _$$_ProfileCopyWith<_$_Profile> get copyWith =>

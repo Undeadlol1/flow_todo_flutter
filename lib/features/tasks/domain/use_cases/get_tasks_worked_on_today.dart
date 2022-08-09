@@ -1,15 +1,15 @@
 import 'package:flow_todo_flutter_2022/core/services/use_case_exception_handler.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/data/get_task_done_today_repository.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/data/get_task_worked_on_today_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
-class GetTasksDoneToday {
-  final TasksDoneTodayCubit tasksDoneTodayCubit;
+class GetTasksWorkedOnToday {
+  final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
   final UseCaseExceptionHandler exceptionHandler;
-  final GetTasksDoneTodayRepository getTasksDoneTodayRepository;
-  const GetTasksDoneToday({
+  final GetTasksWorkedOnTodayRepository getTasksDoneTodayRepository;
+  const GetTasksWorkedOnToday({
     required this.tasksDoneTodayCubit,
     required this.exceptionHandler,
     required this.getTasksDoneTodayRepository,
@@ -40,7 +40,7 @@ class GetTasksDoneToday {
       });
       tasksDoneTodayCubit.update(tasks.reversed.toList());
     } catch (error) {
-      exceptionHandler.handleException(error);
+      exceptionHandler.call(error);
     }
   }
 }

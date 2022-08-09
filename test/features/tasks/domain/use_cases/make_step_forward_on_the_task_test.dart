@@ -1,12 +1,13 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/repetition.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/services/next_repetition_calculator.dart';
-import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak.dart';
+import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak_action.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/actions/work_on_task_action.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_done_today_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,43 +16,60 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../test_utilities/fakes/fake_get_todays_date.dart';
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
-import '../../../../test_utilities/fixtures/task_fixture_2.dart';
 import '../../../../test_utilities/mocks/mock_go_to_main_page.dart';
 import '../../../../test_utilities/mocks/mock_go_to_task_page.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
 import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
-import '../../../../test_utilities/mocks/mock_tasks_done_today_cubit.dart';
+import '../../../../test_utilities/mocks/mock_tasks_worked_on_today_cubit.dart';
 import '../../../../test_utilities/mocks/mock_upsert_profile_repository.dart';
 import '../../../../test_utilities/mocks/mock_update_task_repository.dart';
 
 class _MockAddPointsToViewer extends Mock implements AddPointsToViewer {}
 
-class _MockIncrementDailyStreak extends Mock implements IncrementDailyStreak {}
+class _MockIncrementDailyStreak extends Mock
+    implements IncrementDailyStreakAction {}
+
+class _MockWorkOnTaskAction extends Mock implements WorkOnTaskAction {}
 
 class _MockNextRepetitionCalculator extends Mock
     implements NextRepetitionCalculator {}
 
-final _tasksCubit = TasksCubit();
+class _MockTasksWorkedOnTodayCubit extends Mock
+    implements TasksWorkedOnTodayCubit {}
+
 final _mockTasksCubit = MockTasksCubit();
 final _mockProfileCubit = MockProfileCubit();
 final _mockGoToMainPage = MockGoToMainPage();
 final _mockGoToTaskPage = MockGoToTaskPage();
 final _fakeGetTodaysDate = FakeGetTodaysDate();
-final _tasksDoneTodayCubit = TasksDoneTodayCubit();
 final _mockSnackbarService = MockSnackbarService();
+final _mockWorkOnTaskAction = _MockWorkOnTaskAction();
 final _mockAddPointsToViewer = _MockAddPointsToViewer();
-final _mockTasksDoneTodayCubit = MockTasksDoneTodayCubit();
+final _mockTasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
 final _mockUpdateTaskRepository = MockUpdateTaskRepository();
+final _mockTasksWorkedOnTodayCubit = _MockTasksWorkedOnTodayCubit();
 final _mockUpdateProfileRepository = MockUpsertProfileRepository();
 final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
-final IncrementDailyStreak _mockIncrementDailyStreak =
+final IncrementDailyStreakAction _mockIncrementDailyStreak =
     _MockIncrementDailyStreak();
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(taskFixture);
+    registerFallbackValue(Confidence.normal);
+
+    whenListen(
+      _mockTasksWorkedOnTodayCubit,
+      Stream.fromIterable([TasksWorkedOnTodayState.loaded([])]),
+      initialState: TasksWorkedOnTodayState.loaded([]),
+    );
+  });
+
   setUp(() {
     reset(_mockTasksCubit);
     reset(_mockGoToTaskPage);
+    reset(_mockWorkOnTaskAction);
     reset(_mockAddPointsToViewer);
     reset(_mockTasksDoneTodayCubit);
     reset(_mockIncrementDailyStreak);
@@ -59,21 +77,9 @@ void main() {
 
     when(() => _mockTasksDoneTodayCubit.update(any())).thenReturn(null);
     when(() => _mockTasksDoneTodayCubit.state)
-        .thenReturn(TasksDoneTodayState.loaded([]));
+        .thenReturn(TasksWorkedOnTodayState.loaded([]));
     when(() => _mockProfileCubit.state)
         .thenReturn(ProfileLoaded(profile: profileFixture));
-
-    _tasksDoneTodayCubit.update([]);
-  });
-
-  setUpAll(() {
-    registerFallbackValue(taskFixture);
-    registerFallbackValue(Confidence.normal);
-  });
-
-  tearDownAll(() {
-    _tasksCubit.close();
-    _tasksDoneTodayCubit.close();
   });
 
   group('GIVEN MakeStepForwardOnTheTask', () {
@@ -89,7 +95,7 @@ void main() {
         when(() => _mockUpdateTaskRepository(any()))
             .thenThrow(Exception(errorText));
 
-        await _getUseCaseWithMockedStates()(
+        await _getUseCase()(
           task: taskFixture,
           isTaskDone: false,
           howBigWasTheStep: Confidence.normal,
@@ -105,14 +111,14 @@ void main() {
         when(() => _mockUpdateTaskRepository(any()))
             .thenThrow(Exception(errorText));
 
-        await _getUseCaseWithMockedStates()(
+        await _getUseCase()(
           task: taskFixture,
           isTaskDone: false,
           howBigWasTheStep: Confidence.normal,
         );
 
         verify(() => _mockTasksCubit.undo()).called(1);
-        verify(() => _mockTasksDoneTodayCubit.undo()).called(1);
+        verify(() => _mockWorkOnTaskAction.undoState()).called(1);
       });
 
       test('THEN navigates back to task page', () async {
@@ -120,7 +126,7 @@ void main() {
         when(() => _mockUpdateTaskRepository(any()))
             .thenThrow(Exception('An error'));
 
-        await _getUseCaseWithMockedStates()(
+        await _getUseCase()(
           task: taskFixture,
           isTaskDone: false,
           howBigWasTheStep: Confidence.normal,
@@ -223,7 +229,7 @@ void main() {
 
     test(
       'WHEN called '
-      'THEN puts the task into tasks done today cubit',
+      'THEN calls WorkOnTaskAction',
       () async {
         _mockTypicalCalls(amountOfPointsToVerify: 30);
 
@@ -232,7 +238,7 @@ void main() {
           howBigWasTheStep: Confidence.good,
         );
 
-        expect(_tasksDoneTodayCubit.state.tasks, hasLength(1));
+        verify(() => _mockWorkOnTaskAction.updateState(taskFixture)).called(1);
       },
     );
 
@@ -240,7 +246,8 @@ void main() {
       'WHEN called '
       'THEN removes task from state',
       () async {
-        _tasksCubit.updateList([taskFixture, taskFixture2]);
+        void callTaskRemoverMethod() => _mockTasksCubit.removeTask(taskFixture);
+        when(callTaskRemoverMethod).thenReturn(null);
         _mockTypicalCalls(amountOfPointsToVerify: 30);
 
         await _getUseCase()(
@@ -248,7 +255,7 @@ void main() {
           howBigWasTheStep: Confidence.good,
         );
 
-        expect(_tasksCubit.state.tasks, hasLength(1));
+        verify(callTaskRemoverMethod).called(1);
       },
     );
 
@@ -322,6 +329,7 @@ Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument({
 
 void _mockTypicalCalls({required int amountOfPointsToVerify}) {
   when(() => _mockGoToMainPage()).thenAnswer((_) async {});
+  when(() => _mockWorkOnTaskAction.updateState(taskFixture)).thenReturn(null);
   when(() => _mockIncrementDailyStreak()).thenAnswer((_) async {});
   when(() => _mockUpdateTaskRepository(any())).thenAnswer((_) async {});
   when(() => _mockAddPointsToViewer(amountOfPointsToVerify))
@@ -336,23 +344,6 @@ void _mockTypicalCalls({required int amountOfPointsToVerify}) {
 
 MakeStepForwardOnTheTask _getUseCase() {
   return MakeStepForwardOnTheTask(
-    tasksCubit: _tasksCubit,
-    profileCubit: _mockProfileCubit,
-    goToMainPage: _mockGoToMainPage,
-    goToTaskPage: _mockGoToTaskPage,
-    getTodaysDate: _fakeGetTodaysDate,
-    snackbarService: _mockSnackbarService,
-    updateTask: _mockUpdateTaskRepository,
-    addPointsToViewer: _mockAddPointsToViewer,
-    tasksDoneTodayCubit: _tasksDoneTodayCubit,
-    updateProfile: _mockUpdateProfileRepository,
-    incrementDailyStreak: _mockIncrementDailyStreak,
-    nextRepetitionCalculator: _mockNextRepetitionCalculator,
-  );
-}
-
-MakeStepForwardOnTheTask _getUseCaseWithMockedStates() {
-  return MakeStepForwardOnTheTask(
     tasksCubit: _mockTasksCubit,
     profileCubit: _mockProfileCubit,
     goToMainPage: _mockGoToMainPage,
@@ -360,9 +351,10 @@ MakeStepForwardOnTheTask _getUseCaseWithMockedStates() {
     getTodaysDate: _fakeGetTodaysDate,
     snackbarService: _mockSnackbarService,
     updateTask: _mockUpdateTaskRepository,
+    workOnTaskAction: _mockWorkOnTaskAction,
     addPointsToViewer: _mockAddPointsToViewer,
+    tasksDoneTodayCubit: _mockTasksWorkedOnTodayCubit,
     updateProfile: _mockUpdateProfileRepository,
-    tasksDoneTodayCubit: _mockTasksDoneTodayCubit,
     incrementDailyStreak: _mockIncrementDailyStreak,
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );

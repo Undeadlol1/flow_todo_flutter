@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
-class GetTasksDoneTodayRepository {
+class GetTasksWorkedOnTodayRepository {
   final FirebaseFirestore firestore;
-  const GetTasksDoneTodayRepository({required this.firestore});
+  const GetTasksWorkedOnTodayRepository({required this.firestore});
 
   Future<List<Task>> call({required String userId}) async {
     final tasksSnapshot = await firestore

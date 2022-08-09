@@ -122,10 +122,11 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final authState = BlocProvider.of<AuthentificationCubit>(context).state;
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: _runAnimation,
       builder: (BuildContext context, profileState) {
+        final authState = context.watch<AuthentificationCubit>().state;
+
         if (profileState is! ProfileLoaded || authState is! Authenticated) {
           return const SizedBox();
         }

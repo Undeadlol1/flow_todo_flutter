@@ -308,7 +308,7 @@ abstract class _loaded extends GoalsState {
   factory _loaded(final List<Goal> goals) = _$_loaded;
   _loaded._() : super._();
 
-  List<Goal> get goals => throw _privateConstructorUsedError;
+  List<Goal> get goals;
   @JsonKey(ignore: true)
   _$$_loadedCopyWith<_$_loaded> get copyWith =>
       throw _privateConstructorUsedError;

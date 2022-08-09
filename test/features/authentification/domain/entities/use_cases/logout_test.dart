@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/logout.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -6,13 +7,20 @@ import '../../../../../test_utilities/mocks/mock_autentification_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_firebase_auth.dart';
 import '../../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_tasks_cubit.dart';
-import '../../../../../test_utilities/mocks/mock_tasks_done_today_cubit.dart';
+import '../../../../../test_utilities/mocks/mock_tasks_worked_on_today_cubit.dart';
 
 final _tasksCubit = MockTasksCubit();
 final _firebaseAuth = MockFirebasAuth();
 final _profileCubit = MockProfileCubit();
-final _tasksDoneTodayCubit = MockTasksDoneTodayCubit();
+final _tasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
 final _authentificationCubit = MockAuthentificationCubit();
+
+class _MockFirebaseFirestore extends Mock implements FirebaseFirestore {
+  @override
+  Future<void> clearPersistence() {
+    return Future.value(null);
+  }
+}
 
 void main() {
   setUp(() {
@@ -62,6 +70,7 @@ Logout _buildUseCase() {
     profileCubit: _profileCubit,
     firebaseAuth: _firebaseAuth,
     tasksDoneTodayCubit: _tasksDoneTodayCubit,
+    firebaseFirestore: _MockFirebaseFirestore(),
     authentificationCubit: _authentificationCubit,
   );
 }

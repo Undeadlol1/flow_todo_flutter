@@ -17,6 +17,8 @@ class _MockCreateTask extends Mock implements CreateTask {}
 
 class _MockUpdateTask extends Mock implements UpdateTask {}
 
+class _MockNavigatorObserver extends Mock implements NavigatorObserver {}
+
 const _userId = '12332randomid';
 const taskName = 'A random task name';
 final _mockCreateTask = _MockCreateTask();
@@ -82,6 +84,7 @@ Future<void> _pumpWidget(WidgetTester tester, {bool shouldUpdateTask = false}) {
     BlocProvider<AuthentificationCubit>(
       create: (context) => _fakeAuthenticatedCubit,
       child: MaterialApp(
+        navigatorObservers: [_MockNavigatorObserver()],
         home: Scaffold(
           body: SingleChildScrollView(
             child: UpsertTaskForm(

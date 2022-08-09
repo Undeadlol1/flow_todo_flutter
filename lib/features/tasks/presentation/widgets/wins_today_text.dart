@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/presentation/widgets/animated_numbers.dart';
-import '../cubit/tasks_done_today_cubit.dart';
+import '../cubit/tasks_worked_on_today_cubit.dart';
 
 class WinsTodayText extends StatelessWidget {
   const WinsTodayText({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class WinsTodayText extends StatelessWidget {
     return Builder(
       builder: (context) {
         final profileState = context.watch<ProfileCubit>().state;
-        final tasksDoneState = context.watch<TasksDoneTodayCubit>().state;
+        final tasksDoneState = context.watch<TasksWorkedOnTodayCubit>().state;
 
         final tasksDoneAmount = tasksDoneState.tasks.length;
         final requiredTasksPerDay =

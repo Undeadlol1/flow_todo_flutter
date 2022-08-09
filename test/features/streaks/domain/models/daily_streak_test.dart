@@ -29,7 +29,7 @@ void main() {
             .copyWith(
               perDay: 3,
               startsAt: twoDaysAgo,
-              updatedAt: today.millisecondsSinceEpoch,
+              updatedAt: today,
             )
             .shouldStreakIncrement(tasksDoneToday: 5);
 
@@ -62,7 +62,7 @@ void main() {
               .copyWith(
                 perDay: 3,
                 startsAt: twoDaysAgo,
-                updatedAt: yesterday.millisecondsSinceEpoch,
+                updatedAt: yesterday,
               )
               .shouldStreakIncrement(tasksDoneToday: 5);
 
@@ -133,7 +133,7 @@ _verifyIsStreakInterrupted({
     final result = dailyStreakFixture
         .copyWith(
           startsAt: startsAt,
-          updatedAt: updatedAt.millisecondsSinceEpoch,
+          updatedAt: updatedAt,
         )
         .isInterrupted();
 

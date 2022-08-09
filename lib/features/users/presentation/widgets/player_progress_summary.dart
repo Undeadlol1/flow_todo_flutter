@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../quests/presentation/widgets/active_quest.dart';
-import '../../../tasks/presentation/widgets/tasks_done_today.dart';
+import '../../../tasks/presentation/widgets/tasks_worked_on_today.dart';
 import 'avatar.dart';
 
 class PlayerProgressSummary extends StatelessWidget {
@@ -21,11 +21,11 @@ class PlayerProgressSummary extends StatelessWidget {
             children: [
               ConstrainedBox(
                 constraints: contraints,
-                child: ActiveQuest(),
+                child: const ActiveQuest(),
               ),
               ConstrainedBox(
                 constraints: contraints,
-                child: const TasksDoneToday(),
+                child: const TasksWorkedOnToday(),
               ),
             ],
           ),

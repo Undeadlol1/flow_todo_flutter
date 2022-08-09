@@ -36,13 +36,16 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 10),
                       const Text('Debug information for developers:'),
+                      SelectableText(
+                        'Your user ID is: ${state.profile?.userId}',
+                      ),
                       Text(
                         'Is streak interrupted: ${streak?.isInterrupted().toString() ?? 'null value'}',
                       ),
                       Text('Today is: $today'),
                       Text('Streak starts at: ${streak?.startsAt}'),
                       Text(
-                        'Streak was updated at: ${DateTime.fromMillisecondsSinceEpoch(state.profile?.dailyStreak.updatedAt ?? 0)}',
+                        'Streak was updated at: ${state.profile?.dailyStreak.updatedAt}',
                       ),
                     ],
                   );
