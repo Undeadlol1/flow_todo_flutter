@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:developer';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +31,7 @@ void main() async {
       runApp(const App());
     },
     createStorage: () async {
+      log('kReleaseMode: ${kReleaseMode.toString()}');
       return HydratedStorage.build(
         storageDirectory: kIsWeb
             ? HydratedStorage.webStorageDirectory
@@ -56,4 +59,7 @@ Future<void> _configureFirebase() async {
           '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
     ),
   ]);
+
+  FirebaseAnalytics.instance.app
+      .setAutomaticDataCollectionEnabled(kReleaseMode);
 }
