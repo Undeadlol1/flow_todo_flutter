@@ -38,20 +38,18 @@ class _TasksListState extends State<TasksList> {
             return const _LoadingIndicator();
           }
 
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                if (tasksState.tasks.length > 10) const FilterTasksToDo(),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: tasksToDisplay.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (_, index) {
-                    return TasksListItem(task: tasksToDisplay[index]);
-                  },
-                ),
-              ],
-            ),
+          return Column(
+            children: [
+              if (tasksState.tasks.length > 10) const FilterTasksToDo(),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: tasksToDisplay.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (_, index) {
+                  return TasksListItem(task: tasksToDisplay[index]);
+                },
+              ),
+            ],
           );
         },
       ),

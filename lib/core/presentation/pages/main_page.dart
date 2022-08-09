@@ -55,8 +55,16 @@ class MainPage extends StatelessWidget {
                 children: [
                   if (profileState is ProfileLoaded)
                     const PlayerProgressSummary(),
-                  const SelectedTasks(),
-                  const Expanded(child: TasksList()),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: const [
+                          SelectedTasks(),
+                          TasksList(),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               );
             },
