@@ -6,7 +6,6 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/actions/work_on_tas
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
@@ -16,7 +15,6 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../test_utilities/fakes/fake_get_todays_date.dart';
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
-import '../../../../test_utilities/fixtures/task_fixture_2.dart';
 import '../../../../test_utilities/mocks/mock_go_to_main_page.dart';
 import '../../../../test_utilities/mocks/mock_go_to_task_page.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
@@ -36,7 +34,6 @@ class _MockWorkOnTaskAction extends Mock implements WorkOnTaskAction {}
 class _MockNextRepetitionCalculator extends Mock
     implements NextRepetitionCalculator {}
 
-final _tasksCubit = TasksCubit();
 final _mockTasksCubit = MockTasksCubit();
 final _mockProfileCubit = MockProfileCubit();
 final _mockGoToMainPage = MockGoToMainPage();
@@ -78,7 +75,6 @@ void main() {
   });
 
   tearDownAll(() {
-    _tasksCubit.close();
     _tasksDoneTodayCubit.close();
   });
 
@@ -246,7 +242,8 @@ void main() {
       'WHEN called '
       'THEN removes task from state',
       () async {
-        _tasksCubit.updateList([taskFixture, taskFixture2]);
+        void callTaskRemoverMethod() => _mockTasksCubit.removeTask(taskFixture);
+        when(callTaskRemoverMethod).thenReturn(null);
         _mockTypicalCalls(amountOfPointsToVerify: 30);
 
         await _getUseCase()(
@@ -254,7 +251,7 @@ void main() {
           howBigWasTheStep: Confidence.good,
         );
 
-        expect(_tasksCubit.state.tasks, hasLength(1));
+        verify(callTaskRemoverMethod).called(1);
       },
     );
 
@@ -343,7 +340,7 @@ void _mockTypicalCalls({required int amountOfPointsToVerify}) {
 
 MakeStepForwardOnTheTask _getUseCase() {
   return MakeStepForwardOnTheTask(
-    tasksCubit: _tasksCubit,
+    tasksCubit: _mockTasksCubit,
     profileCubit: _mockProfileCubit,
     goToMainPage: _mockGoToMainPage,
     goToTaskPage: _mockGoToTaskPage,
