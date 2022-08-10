@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,7 @@ class _TasksListState extends State<TasksList> {
           final selectedTasks =
               tasksState.tasks.where((i) => i.isSelected).toList();
           final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
+          log('filteredTasks: ${filteredTasks.toString()}');
           final tasksToDisplay = _getTasksToDisplay(
             allTasks: tasksState.tasks,
             focusedOnTasks: selectedTasks,
@@ -63,7 +66,7 @@ class _TasksListState extends State<TasksList> {
   }) {
     final allTasksWitouthFilteredTasks = filteredTasks.isEmpty
         ? allTasks
-        : allTasks.where((task) => !filteredTasks.contains(task)).toList();
+        : allTasks.where((task) => filteredTasks.contains(task)).toList();
 
     final allTasksListWithoutSelectedAndFilteredTasks =
         allTasksWitouthFilteredTasks
