@@ -98,26 +98,26 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
           return;
         }
 
-        final List<Task> matchedTitles = extractTop(
-          limit: 3,
-          cutoff: 65,
-          query: input,
-          choices: activeTasks,
-          getter: (Task task) {
-            // NOTE: https://github.com/SphericalKat/dart-fuzzywuzzy/issues/6#issuecomment-1177672619
-            return _normalizeString(task.title).removemoji;
-          },
-        )
-            .map(
-              (match) => activeTasks.firstWhere(
-                (task) => task.id == match.choice.id,
-              ),
-            )
-            .toList();
+        List<Task> filteredTasks = _getFilteredTasks(input, activeTasks);
 
-        context.read<FilteredTasksCubit>().update(matchedTitles);
+        context.read<FilteredTasksCubit>().update(filteredTasks);
       },
     );
+  }
+
+  List<Task> _getFilteredTasks(String input, List<Task> activeTasks) {
+    final List<Task> filteredTasks = [];
+
+    for (final task in activeTasks) {
+      final textToFilterBy = _normalizeString(task.title).removemoji;
+      final similarityRatio = partialRatio(textToFilterBy, input);
+
+      if (similarityRatio > 75) {
+        filteredTasks.add(task);
+      }
+    }
+
+    return filteredTasks;
   }
 
   void _unfocusInputField() => FocusManager.instance..primaryFocus?.unfocus();
@@ -126,5 +126,6 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
     context.read<FilteredTasksCubit>().update([]);
   }
 
-  String _normalizeString(String string) => string.toLowerCase().toLowerCase();
+  String _normalizeString(String string) =>
+      string.toLowerCase().replaceAll(' ', '');
 }
