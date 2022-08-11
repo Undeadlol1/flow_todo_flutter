@@ -1,3 +1,6 @@
+import 'package:flow_todo_flutter_2022/features/leveling/domain/entities/user_level.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_up_animation.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/users/data/upsert_profile_repository.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/models/profile.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
@@ -7,15 +10,30 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 
+class _MockLevelUpAnimation extends Mock implements LevelUpAnimation {}
+
+class _MockUserLevelCalculator extends Mock implements UserLevelCalculator {}
+
 class _MockUpdateProfileRepository extends Mock
     implements UpsertProfileRepository {}
 
 class _MockProfileCubit extends Mock implements ProfileCubit {}
 
 final _mockProfileCubit = _MockProfileCubit();
+final _mockUserLevelCalculator = _MockUserLevelCalculator();
 final _mockUpdateProfileRepository = _MockUpdateProfileRepository();
 
 void main() {
+  setUpAll(() {
+    when(() => _mockUserLevelCalculator(any())).thenReturn(
+      const UserLevel(
+        value: 10,
+        totalExperienceToNextLevel: 100,
+        totalExperienceForCurrentLevel: 90,
+      ),
+    );
+  });
+
   setUp(() {
     registerFallbackValue(profileFixture);
 
@@ -120,6 +138,8 @@ void _mockLoadedProfile() {
 AddPointsToViewer _getUseCase() {
   return AddPointsToViewer(
     profileCubit: _mockProfileCubit,
+    levelUpAnimation: _MockLevelUpAnimation(),
+    userLevelCalculator: _mockUserLevelCalculator,
     updateProfileRepository: _mockUpdateProfileRepository,
   );
 }

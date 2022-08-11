@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,25 +18,25 @@ class LevelUpAnimation {
   final UserLevelCalculator userLevelCalculator;
   final BuildContextProvider buildContextProvider;
 
-  void show() {
+  Future<void> show() {
     buildContextProvider(
       (context) {
-        Timer(const Duration(seconds: 3), () => Navigator.of(context).pop());
-
+        final theme = Theme.of(context);
         showGeneralDialog(
           context: context,
-          barrierLabel: "Barrier",
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
           barrierDismissible: false,
-          barrierColor: Colors.black.withOpacity(0.5),
+          barrierColor: Colors.black.withOpacity(0.8),
           transitionDuration: const Duration(milliseconds: 700),
           pageBuilder: (_, __, ___) {
-            return Theme(
-              data: Theme.of(context),
-              child: Center(
-                child: BlocSelector<ProfileCubit, ProfileState, int>(
-                  selector: (state) => state.profile?.experience ?? 0,
-                  builder: (_, experience) => Text(
-                    'Level: ${userLevelCalculator(experience).value + 1}!',
+            return Center(
+              child: BlocSelector<ProfileCubit, ProfileState, int>(
+                selector: (state) => state.profile?.experience ?? 0,
+                builder: (_, experience) => CardView(
+                  child: Text(
+                    'Level ${userLevelCalculator(experience).value}!',
+                    style: theme.textTheme.headline2,
                   ),
                 ),
               ),
@@ -49,6 +50,11 @@ class LevelUpAnimation {
           },
         );
       },
+    );
+
+    return Future.delayed(
+      const Duration(seconds: 3),
+      () => buildContextProvider(Navigator.pop),
     );
   }
 }
