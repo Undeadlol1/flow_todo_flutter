@@ -22,7 +22,7 @@ void main() async {
     () async {
       _configureDeviceOrientation();
 
-      await _configureFirebase();
+      await _configureFirebaseServices();
 
       configureManualDI();
 
@@ -48,7 +48,7 @@ void _configureDeviceOrientation() {
   ]);
 }
 
-Future<void> _configureFirebase() async {
+Future<void> _configureFirebaseServices() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

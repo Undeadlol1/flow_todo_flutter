@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../users/presentation/cubit/profile_cubit.dart';
+import '../../../users/presentation/cubit/profile_cubit.dart';
 
 class FloatingExperiencePointsAnimation extends StatefulWidget {
   const FloatingExperiencePointsAnimation({Key? key}) : super(key: key);

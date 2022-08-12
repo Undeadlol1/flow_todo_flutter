@@ -34,6 +34,7 @@ class UserLevelCalculator {
     }
 
     return UserLevel(
+      // TODO rename to "level";
       value: functionCalledCount - 1,
       totalExperienceToNextLevel: totalExpToNextLevel,
       totalExperienceForCurrentLevel: totalExpForCurrentLevel,

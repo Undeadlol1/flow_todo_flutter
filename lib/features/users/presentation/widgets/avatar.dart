@@ -1,6 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/leveling/presentation/floating_experience_points_animation.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/presentation/widgets/floating_experience_points_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
