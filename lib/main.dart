@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -18,11 +18,15 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  if (kDebugMode) {
+    debugRepaintRainbowEnabled = true;
+  }
+
   HydratedBlocOverrides.runZoned(
     () async {
       _configureDeviceOrientation();
 
-      await _configureFirebaseServices();
+      await _configureFirebase();
 
       configureManualDI();
 
@@ -31,7 +35,6 @@ void main() async {
       runApp(const App());
     },
     createStorage: () async {
-      log('kReleaseMode: ${kReleaseMode.toString()}');
       return HydratedStorage.build(
         storageDirectory: kIsWeb
             ? HydratedStorage.webStorageDirectory
@@ -48,7 +51,7 @@ void _configureDeviceOrientation() {
   ]);
 }
 
-Future<void> _configureFirebaseServices() async {
+Future<void> _configureFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
