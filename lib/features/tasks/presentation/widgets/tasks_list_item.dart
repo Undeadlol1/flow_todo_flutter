@@ -11,20 +11,14 @@ class TasksListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      // onPressed: () {
-      //   final cubit = GetIt.I<TasksWorkedOnTodayCubit>();
-      //   cubit.update([...cubit.state.tasks, task]);
-      // },
-      onPressed: () => GetIt.I<GoToTaskPage>()(task: task),
+    return ListTile(
+      dense: false,
+      enableFeedback: true,
+      title: Text(task.title),
+      selected: task.isSelected,
+      subtitle: const Text('Reward: 50 experience'),
+      onTap: () => GetIt.I<GoToTaskPage>()(task: task),
       onLongPress: () => GetIt.I<ToggleTaskSelection>()(task),
-      child: Row(
-        children: [
-          Flexible(
-            child: Text(task.title),
-          ),
-        ],
-      ),
     );
   }
 }

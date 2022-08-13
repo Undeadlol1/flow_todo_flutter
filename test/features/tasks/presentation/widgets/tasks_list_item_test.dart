@@ -47,11 +47,9 @@ void main() {
 
 extension _PumpWithScaffold on WidgetTester {
   Future<void> pumpWithDependencies(Widget child) {
-    // ignore: unnecessary_this
-    return this.pumpWidget(
-      Directionality(
-        textDirection: TextDirection.ltr,
-        child: child,
+    return pumpWidget(
+      MaterialApp(
+        home: Scaffold(body: child),
       ),
     );
   }
