@@ -1,9 +1,8 @@
-import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/logout.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
+import '../../../authentification/presentation/widgets/sign_out_button.dart';
 import '../../../common/presentation/page_layout.dart';
 import '../../../goals/presentation/pages/goals_page.dart';
 import '../widgets/avatar.dart';
@@ -48,11 +47,8 @@ class ProfilePage extends StatelessWidget {
                 'Streak was updated at: ${state.profile?.dailyStreak.updatedAt}',
               ),
               const SizedBox(height: 10),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () => GetIt.I<Logout>()(),
-                  child: const Text('Logout'),
-                ),
+              const Center(
+                child: SignOutButton(),
               ),
             ],
           );

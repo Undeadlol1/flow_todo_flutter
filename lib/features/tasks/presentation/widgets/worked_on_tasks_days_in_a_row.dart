@@ -38,7 +38,7 @@ class WorkedOnTasksDaysInARow extends StatelessWidget {
                 AnimatedNumbers(
                   number: daysInARow,
                   duration: const Duration(milliseconds: 200),
-                  areNumberAnimationsSuspended: !areAnimationsEnabled,
+                  isAnimationSuspended: !areAnimationsEnabled,
                 ),
             ],
           ),

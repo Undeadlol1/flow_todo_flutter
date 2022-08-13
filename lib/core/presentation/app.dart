@@ -97,7 +97,6 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    log('current user: ${GetIt.I<firebase_auth.FirebaseAuth>().currentUser?.displayName}');
     return Directionality(
       textDirection: TextDirection.ltr,
       child: MultiBlocProvider(
@@ -113,6 +112,7 @@ class _AppState extends State<App> {
           alignment: Alignment.bottomCenter,
           children: [
             MaterialApp(
+              checkerboardOffscreenLayers: false,
               checkerboardRasterCacheImages: kDebugMode,
               theme: lightTheme,
               title: 'Flow TODO',

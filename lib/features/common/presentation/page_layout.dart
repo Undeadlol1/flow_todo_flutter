@@ -1,12 +1,12 @@
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
+import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/sign_out_button.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterfire_ui/auth.dart' show SignOutButton;
 import 'package:get_it/get_it.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
@@ -95,27 +95,23 @@ class _UserLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileCubit, ProfileState>(
-      builder: (context, profileState) {
-        if (profileState is ProfileLoaded) {
-          return Container(
-            padding: const EdgeInsets.only(right: 7),
-            child: Chip(
-              label: Row(
-                children: [
-                  const Text('Level: '),
-                  AnimatedNumbers(
-                    number: _userLevelCalculator(
-                      profileState.profile?.experience ?? 0,
-                    ).value,
-                    areNumberAnimationsSuspended: isNumbersAnimationSuspended,
-                  ),
-                ],
-              ),
+    return BlocSelector<ProfileCubit, ProfileState, int>(
+      selector: (state) => state.profile?.experience ?? 0,
+      builder: (_, experience) {
+        return Container(
+          padding: const EdgeInsets.only(right: 7),
+          child: Chip(
+            label: Row(
+              children: [
+                const Text('Level: '),
+                AnimatedNumbers(
+                  number: _userLevelCalculator(experience).value,
+                  isAnimationSuspended: isNumbersAnimationSuspended,
+                ),
+              ],
             ),
-          );
-        }
-        return Container();
+          ),
+        );
       },
     );
   }
@@ -160,6 +156,7 @@ class _BottomNavigation extends StatelessWidget {
   }
 }
 
+// TODO remove drawer
 class _Drawer extends StatelessWidget {
   const _Drawer({Key? key}) : super(key: key);
 
