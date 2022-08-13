@@ -7,6 +7,7 @@ import 'tasks_list_item.dart';
 
 class SelectedTasks extends StatelessWidget {
   const SelectedTasks({Key? key}) : super(key: key);
+  static const _textPadding = EdgeInsets.symmetric(horizontal: 14);
 
   @override
   build(context) {
@@ -23,10 +24,17 @@ class SelectedTasks extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
+                padding: _textPadding,
                 child: Text(
                   'Selected tasks:',
                   style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              Padding(
+                padding: _textPadding,
+                child: Text(
+                  '(${tasks.length * 50} total points)',
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
               ),
               const Divider(thickness: 0),

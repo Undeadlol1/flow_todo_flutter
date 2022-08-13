@@ -7,7 +7,6 @@ import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_ma
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/selected_tasks_cubit.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -112,8 +111,6 @@ class _AppState extends State<App> {
           alignment: Alignment.bottomCenter,
           children: [
             MaterialApp(
-              checkerboardOffscreenLayers: false,
-              checkerboardRasterCacheImages: kDebugMode,
               theme: lightTheme,
               title: 'Flow TODO',
               darkTheme: darkTheme,
