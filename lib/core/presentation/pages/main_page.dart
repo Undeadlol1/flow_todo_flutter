@@ -23,38 +23,29 @@ class MainPage extends StatelessWidget {
   build(context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, profileState) {
+        final isProfileLoaded = profileState is ProfileLoaded;
         return PageLayout(
           isAppBarHidden: true,
-          isDrawerHidden: false,
+          isDrawerHidden: true,
           isNumbersAnimationSuspended: false,
-          floatingActionButton:
-              profileState is ProfileLoaded ? const CreateTaskFAB() : null,
+          floatingActionButton: isProfileLoaded ? const CreateTaskFAB() : null,
           child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
-            listener: (context, authState) async {
+            listener: (context, authState) {
               if (authState is Authenticated) {
-                GetIt.I<GetProfile>()(userId: authState.user.id);
-                GetIt.I<GetTasksToDo>()(userId: authState.user.id);
-                GetIt.I<GetTasksWorkedOnToday>()(userId: authState.user.id);
+                final userId = authState.user.id;
+                GetIt.I<GetProfile>()(userId: userId);
+                GetIt.I<GetTasksToDo>()(userId: userId);
+                GetIt.I<GetTasksWorkedOnToday>()(userId: userId);
               }
             },
             builder: (context, authState) {
               if (authState is NotAuthenticated) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Please sign in to start:'),
-                      const SizedBox(height: 10),
-                      GoogleSignInButton(),
-                    ],
-                  ),
-                );
+                return const _LoginScreen();
               }
 
               return Column(
                 children: [
-                  if (profileState is ProfileLoaded)
-                    const PlayerProgressSummary(),
+                  if (isProfileLoaded) const PlayerProgressSummary(),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
@@ -71,6 +62,24 @@ class MainPage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _LoginScreen extends StatelessWidget {
+  const _LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Please sign in to start:'),
+          const SizedBox(height: 10),
+          GoogleSignInButton(),
+        ],
+      ),
     );
   }
 }
