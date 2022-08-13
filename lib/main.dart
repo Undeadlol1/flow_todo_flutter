@@ -50,13 +50,6 @@ Future<void> _configureFirebase() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FlutterFireUIAuth.configureProviders([
-    const GoogleProviderConfiguration(
-      clientId:
-          '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
-    ),
-  ]);
-
   FirebaseAnalytics.instance.app
       .setAutomaticDataCollectionEnabled(kReleaseMode);
 }
