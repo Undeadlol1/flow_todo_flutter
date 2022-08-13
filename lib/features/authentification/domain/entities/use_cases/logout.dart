@@ -33,8 +33,6 @@ class Logout {
 
     await firebaseAuth.signOut();
 
-    await firebaseFirestore.clearPersistence();
-
     await HydratedBlocOverrides.current?.storage.clear();
   }
 }
