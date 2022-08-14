@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -15,6 +16,7 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  _enableSmoothScrollingOnScreensWithHighRefreshRate();
 
   HydratedBlocOverrides.runZoned(
     () async {
@@ -36,6 +38,11 @@ void main() async {
       );
     },
   );
+}
+
+void _enableSmoothScrollingOnScreensWithHighRefreshRate() {
+// https://medium.com/flutter/announcing-flutter-1-22-44f146009e5f
+  GestureBinding.instance.resamplingEnabled = true;
 }
 
 void _configureDeviceOrientation() {

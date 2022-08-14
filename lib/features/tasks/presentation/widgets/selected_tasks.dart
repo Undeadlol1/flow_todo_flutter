@@ -33,7 +33,7 @@ class SelectedTasks extends StatelessWidget {
               Padding(
                 padding: _textPadding,
                 child: Text(
-                  '(${tasks.length * 50} total points)',
+                  '(${tasks.length * 50} total experience)',
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
               ),
