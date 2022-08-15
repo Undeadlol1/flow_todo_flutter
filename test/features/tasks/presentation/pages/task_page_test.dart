@@ -8,7 +8,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/positive_choices.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_task_form.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_note.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/edit_note_form.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -98,7 +98,7 @@ void main() {
       (tester) async {
         await tester.pumpWithDependencies(task: taskFixture.copyWith(note: ''));
 
-        expect(find.byType(UpsertNote), findsNothing);
+        expect(find.byType(EditNoteForm), findsNothing);
         expect(find.byType(UpsertTaskForm), findsNothing);
       },
     );
@@ -108,7 +108,8 @@ void main() {
       _pumpAndRunCallback(
         () => expect(
           find.byWidgetPredicate(
-            (widget) => widget is UpsertNote && widget.note == taskFixture.note,
+            (widget) =>
+                widget is EditNoteForm && widget.note == taskFixture.note,
           ),
           findsOneWidget,
         ),

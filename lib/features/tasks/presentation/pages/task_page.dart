@@ -1,12 +1,12 @@
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/positive_choices.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/presentation/page_layout.dart';
 import '../../../common/presentation/widgets/countdown.dart';
 import '../../domain/models/task.dart';
 import '../widgets/negative_choices.dart';
+import '../widgets/positive_choices.dart';
 import '../widgets/upsert_task_form.dart';
-import '../widgets/upsert_note.dart';
+import '../widgets/edit_note_form.dart';
 
 class TaskPageArguments {
   final Task task;
@@ -46,41 +46,52 @@ class TaskPage extends StatelessWidget {
               icon: const Icon(Icons.more_vert),
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20),
-              if (!args.isTitleEditingVisible)
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: SelectableText(task.title),
-                  ),
-                ),
-              if (args.isTitleEditingVisible)
-                UpsertTaskForm(taskToUpdate: task),
-              if (args.isNoteEditingVisible || task.note.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Card(
-                    elevation: 10,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: UpsertNote(
-                        task: task,
-                        note: task.note,
-                        autoFocus: args.isNoteEditingVisible,
-                      ),
-                    ),
-                  ),
-                ),
-              const SizedBox(height: 20),
-              PositiveChoices(task: task),
-              const SizedBox(height: 20),
-            ],
-          ),
+          args.isNoteEditingVisible || task.note.isNotEmpty
+              ? SingleChildScrollView(
+                  child: _PageBody(pageArguments: args, task: task),
+                )
+              : _PageBody(pageArguments: args, task: task)
         ],
       ),
+    );
+  }
+}
+
+class _PageBody extends StatelessWidget {
+  const _PageBody({
+    Key? key,
+    required this.pageArguments,
+    required this.task,
+  }) : super(key: key);
+
+  final TaskPageArguments pageArguments;
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(height: 20),
+        if (!pageArguments.isTitleEditingVisible)
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: SelectableText(task.title),
+            ),
+          ),
+        if (pageArguments.isTitleEditingVisible)
+          UpsertTaskForm(taskToUpdate: task),
+        if (pageArguments.isNoteEditingVisible || task.note.isNotEmpty)
+          EditNoteForm(
+            task: task,
+            note: task.note,
+            autoFocus: pageArguments.isNoteEditingVisible,
+          ),
+        const SizedBox(height: 20),
+        PositiveChoices(task: task),
+        const SizedBox(height: 20),
+      ],
     );
   }
 }
