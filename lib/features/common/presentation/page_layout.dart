@@ -41,7 +41,7 @@ class PageLayout extends StatelessWidget {
             children: [
               const ListenerThatRunsFunctionsWithBuildContext(),
               Scaffold(
-                resizeToAvoidBottomInset: true,
+                resizeToAvoidBottomInset: false,
                 drawer: isDrawerHidden == true ? null : const _Drawer(),
                 appBar: isAppBarHidden
                     ? null
