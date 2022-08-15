@@ -29,6 +29,7 @@ class PositiveChoices extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.favorite),
           title: _buildText('Made step forward'),
+          subtitle: const _Subtitle(reward: 20),
           onTap: () {
             _makeStepForward(
               task: task,
@@ -39,6 +40,7 @@ class PositiveChoices extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.emoji_emotions),
           title: _buildText('Advanced a lot'),
+          subtitle: const _Subtitle(reward: 30),
           onTap: () {
             _makeStepForward(
               task: task,
@@ -49,10 +51,7 @@ class PositiveChoices extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.check),
           title: _buildText('Done'),
-          subtitle: Text(
-            'Reward: ${_rewardCalculator(task)} experience',
-            textAlign: TextAlign.center,
-          ),
+          subtitle: _Subtitle(reward: _rewardCalculator(task)),
           onTap: () {
             _makeStepForward(
               task: task,
@@ -68,5 +67,18 @@ class PositiveChoices extends StatelessWidget {
 
   Widget _buildText(String text) {
     return Text(text, textAlign: TextAlign.center);
+  }
+}
+
+class _Subtitle extends StatelessWidget {
+  const _Subtitle({Key? key, required this.reward});
+  final int reward;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Reward: $reward experience',
+      textAlign: TextAlign.center,
+    );
   }
 }
