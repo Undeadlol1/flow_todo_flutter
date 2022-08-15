@@ -13,8 +13,8 @@ import '../pages/profile_page.dart';
 
 class Avatar extends StatelessWidget {
   final double radius;
-  final bool areNumberAnimationsSuspended;
   final bool isLevelHidden;
+  final bool areNumberAnimationsSuspended;
   const Avatar({
     Key? key,
     this.isLevelHidden = false,
@@ -28,11 +28,11 @@ class Avatar extends StatelessWidget {
       constraints: BoxConstraints.tightFor(width: radius * 2),
       child: Stack(
         children: [
-          InkWell(
+          GestureDetector(
+            onTap: _navigateToProfilePage(context),
             child: Center(
               child: _Image(radius: radius),
             ),
-            onTap: () => Navigator.of(context).pushNamed(ProfilePage.pathName),
           ),
           isLevelHidden
               ? const SizedBox()
@@ -46,6 +46,12 @@ class Avatar extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void Function()? _navigateToProfilePage(BuildContext context) {
+    return ModalRoute.of(context)?.settings.name == ProfilePage.pathName
+        ? null
+        : () => Navigator.of(context).pushNamed(ProfilePage.pathName);
   }
 }
 
