@@ -1,13 +1,17 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import 'tasks_list_item.dart';
 
 class SelectedTasks extends StatelessWidget {
-  const SelectedTasks({Key? key}) : super(key: key);
+  SelectedTasks({Key? key}) : super(key: key);
   static const _textPadding = EdgeInsets.symmetric(horizontal: 14);
+  final TaskRewardCalculator taskRewardCalculator = GetIt.I();
 
   @override
   build(context) {
@@ -33,7 +37,7 @@ class SelectedTasks extends StatelessWidget {
               Padding(
                 padding: _textPadding,
                 child: Text(
-                  '(${tasks.length * 50} total experience)',
+                  '(${_getTotalExperience(tasks)} total experience)',
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
               ),
@@ -49,5 +53,13 @@ class SelectedTasks extends StatelessWidget {
         );
       },
     );
+  }
+
+  int _getTotalExperience(List<Task> tasks) {
+    final totalExperience = tasks.map(taskRewardCalculator).toList().fold(
+          0,
+          (int previous, int current) => previous + current,
+        );
+    return totalExperience;
   }
 }

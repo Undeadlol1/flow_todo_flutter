@@ -49,9 +49,9 @@ class MainPage extends StatelessWidget {
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
-                        children: const [
+                        children: [
                           SelectedTasks(),
-                          TasksList(),
+                          const TasksList(),
                         ],
                       ),
                     ),
