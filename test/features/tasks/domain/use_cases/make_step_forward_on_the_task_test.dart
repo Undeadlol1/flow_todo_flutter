@@ -20,6 +20,7 @@ import '../../../../test_utilities/mocks/mock_go_to_main_page.dart';
 import '../../../../test_utilities/mocks/mock_go_to_task_page.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
+import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_worked_on_today_cubit.dart';
 import '../../../../test_utilities/mocks/mock_upsert_profile_repository.dart';
@@ -44,6 +45,7 @@ final _mockGoToMainPage = MockGoToMainPage();
 final _mockGoToTaskPage = MockGoToTaskPage();
 final _fakeGetTodaysDate = FakeGetTodaysDate();
 final _mockSnackbarService = MockSnackbarService();
+final _mockRewardCalculator = MockTaskRewardCalculator();
 final _mockWorkOnTaskAction = _MockWorkOnTaskAction();
 final _mockAddPointsToViewer = _MockAddPointsToViewer();
 final _mockTasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
@@ -75,6 +77,7 @@ void main() {
     reset(_mockIncrementDailyStreak);
     reset(_mockUpdateProfileRepository);
 
+    when(() => _mockRewardCalculator(any())).thenReturn(50);
     when(() => _mockTasksDoneTodayCubit.update(any())).thenReturn(null);
     when(() => _mockTasksDoneTodayCubit.state)
         .thenReturn(TasksWorkedOnTodayState.loaded([]));
@@ -352,10 +355,11 @@ MakeStepForwardOnTheTask _getUseCase() {
     snackbarService: _mockSnackbarService,
     updateTask: _mockUpdateTaskRepository,
     workOnTaskAction: _mockWorkOnTaskAction,
+    rewardCalculator: _mockRewardCalculator,
     addPointsToViewer: _mockAddPointsToViewer,
-    tasksDoneTodayCubit: _mockTasksWorkedOnTodayCubit,
     updateProfile: _mockUpdateProfileRepository,
     incrementDailyStreak: _mockIncrementDailyStreak,
+    tasksDoneTodayCubit: _mockTasksWorkedOnTodayCubit,
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );
 }

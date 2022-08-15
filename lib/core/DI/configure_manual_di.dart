@@ -6,7 +6,6 @@ import 'package:get_it/get_it.dart';
 import '../../features/leveling/domain/entities/default_leveling_config.dart';
 import '../../features/leveling/domain/services/experience_to_reach_next_level_calculator.dart';
 import '../../features/spaced_repetition/domain/services/next_repetition_calculator.dart';
-import '../../features/tasks/domain/services/stale_task_detector.dart';
 import '../../features/tasks/domain/use_cases/go_to_task_creation.dart';
 
 void configureManualDI() {
@@ -24,5 +23,4 @@ void configureManualDI() {
   );
   injector.registerSingleton(NextRepetitionCalculator());
   injector.registerSingleton(GoToTaskCreation(contextProvider: injector.get()));
-  injector.registerSingleton(StaleTaskDetector());
 }

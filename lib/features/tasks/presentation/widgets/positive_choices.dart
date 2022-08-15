@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -7,6 +8,7 @@ import '../../domain/use_cases/make_step_forward_on_the_task.dart';
 
 class PositiveChoices extends StatelessWidget {
   final Task task;
+  final _rewardCalculator = GetIt.I<TaskRewardCalculator>();
   final _makeStepForward = GetIt.I<MakeStepForwardOnTheTask>();
   final _textPadding =
       const EdgeInsets.only(right: 20.0, left: 20, top: 20, bottom: 10);
@@ -47,6 +49,10 @@ class PositiveChoices extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.check),
           title: _buildText('Done'),
+          subtitle: Text(
+            'Reward: ${_rewardCalculator(task)} experience',
+            textAlign: TextAlign.center,
+          ),
           onTap: () {
             _makeStepForward(
               task: task,

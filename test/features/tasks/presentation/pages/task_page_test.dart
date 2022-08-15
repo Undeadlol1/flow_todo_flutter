@@ -4,6 +4,7 @@ import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/coun
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/positive_choices.dart';
@@ -21,6 +22,7 @@ import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
+import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 
 class _MockMakeStepForwardOnATask extends Mock
     implements MakeStepForwardOnTheTask {}
@@ -32,6 +34,12 @@ final _mockLevelProgressPercentageCalculator =
 
 void main() {
   setUpAll(() {
+    registerFallbackValue(taskFixture);
+
+    final mockTaskRewardCalculator = MockTaskRewardCalculator();
+    when(() => mockTaskRewardCalculator(any())).thenReturn(50);
+
+    GetIt.I.registerSingleton<TaskRewardCalculator>(mockTaskRewardCalculator);
     GetIt.I.registerSingleton<MakeStepForwardOnTheTask>(
       _MockMakeStepForwardOnATask(),
     );

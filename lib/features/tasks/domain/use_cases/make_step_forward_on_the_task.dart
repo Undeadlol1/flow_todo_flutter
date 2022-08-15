@@ -4,6 +4,7 @@ import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increme
 import 'package:flow_todo_flutter_2022/features/tasks/domain/actions/work_on_task_action.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/data/upsert_profile_repository.dart';
@@ -32,6 +33,7 @@ class MakeStepForwardOnTheTask {
   final UpdateTaskRepository updateTask;
   final WorkOnTaskAction workOnTaskAction;
   final AddPointsToViewer addPointsToViewer;
+  final TaskRewardCalculator rewardCalculator;
   final UpsertProfileRepository updateProfile;
   final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
   final IncrementDailyStreakAction incrementDailyStreak;
@@ -45,6 +47,7 @@ class MakeStepForwardOnTheTask {
     required this.getTodaysDate,
     required this.updateProfile,
     required this.snackbarService,
+    required this.rewardCalculator,
     required this.workOnTaskAction,
     required this.addPointsToViewer,
     required this.tasksDoneTodayCubit,
@@ -63,7 +66,8 @@ class MakeStepForwardOnTheTask {
 
     try {
       final updatedTask = _getUpdatedTask(task, isTaskDone, howBigWasTheStep);
-      final pointsToAdd = _getAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
+      final pointsToAdd =
+          _getAmountOfPointsToAdd(isTaskDone, howBigWasTheStep, task);
 
       _displaySnackbar(isTaskDone, updatedTask);
       await goToMainPage();
@@ -136,9 +140,10 @@ class MakeStepForwardOnTheTask {
   int _getAmountOfPointsToAdd(
     bool isTaskDone,
     Confidence howBigWasTheStep,
+    Task task,
   ) {
     return isTaskDone
-        ? 50
+        ? rewardCalculator(task)
         : howBigWasTheStep == Confidence.good
             ? 30
             : 20;

@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
@@ -7,12 +8,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_hydrated_storage.dart';
+import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 
 void main() {
-  setUpAll(() => GetIt.I.registerFactory(() => FilteredTasksCubit()));
+  setUpAll(() {
+    registerFallbackValue(taskFixture);
+
+    final mockTaskRewardCalculator = MockTaskRewardCalculator();
+    when(() => mockTaskRewardCalculator(any())).thenReturn(50);
+
+    GetIt.I.registerSingleton<TaskRewardCalculator>(mockTaskRewardCalculator);
+    GetIt.I.registerFactory(() => FilteredTasksCubit());
+  });
 
   group('GIVEN TasksList', () {
     testWidgets(
