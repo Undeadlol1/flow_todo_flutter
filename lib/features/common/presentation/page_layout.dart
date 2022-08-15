@@ -47,7 +47,7 @@ class PageLayout extends StatelessWidget {
                     ? null
                     : AppBar(
                         actions: [
-                          _UserLevel(
+                          _UserLevelBadge(
                             isNumbersAnimationSuspended:
                                 isNumbersAnimationSuspended,
                           ),
@@ -87,10 +87,10 @@ class PageLayout extends StatelessWidget {
   }
 }
 
-class _UserLevel extends StatelessWidget {
+class _UserLevelBadge extends StatelessWidget {
   final bool isNumbersAnimationSuspended;
   final UserLevelCalculator _userLevelCalculator = GetIt.I();
-  _UserLevel({Key? key, required this.isNumbersAnimationSuspended})
+  _UserLevelBadge({Key? key, required this.isNumbersAnimationSuspended})
       : super(key: key);
 
   @override
