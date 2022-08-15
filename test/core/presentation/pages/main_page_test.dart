@@ -6,6 +6,7 @@ import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_p
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/core/presentation/pages/main_page.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
@@ -22,8 +23,10 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../test_utilities/fakes/fake_user_level_calculator.dart';
 import '../../../test_utilities/fixtures/profile_fixture.dart';
+import '../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../test_utilities/mocks/mock_hydrated_storage.dart';
 import '../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
+import '../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 
 class _MockSignInWithGoogle extends Mock implements SignInWithGoogle {}
 
@@ -33,6 +36,8 @@ late AuthentificationCubit _authCubit;
 void main() {
   group('GIVEN MainPage', () {
     setUpAll(() {
+      _setupTaskRewardCalculatorMock();
+
       mockHydratedStorage(() {
         GetIt.I.registerSingleton(FilteredTasksCubit());
       });
@@ -119,6 +124,15 @@ void main() {
       },
     );
   });
+}
+
+void _setupTaskRewardCalculatorMock() {
+  registerFallbackValue(taskFixture);
+
+  final mockTaskRewardCalculator = MockTaskRewardCalculator();
+  when(() => mockTaskRewardCalculator(any())).thenReturn(50);
+
+  GetIt.I.registerSingleton<TaskRewardCalculator>(mockTaskRewardCalculator);
 }
 
 extension _PumpWithScaffold on WidgetTester {
