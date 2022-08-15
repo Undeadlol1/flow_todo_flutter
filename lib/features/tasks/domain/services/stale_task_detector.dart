@@ -1,5 +1,8 @@
+import 'package:injectable/injectable.dart';
+
 import '../models/task.dart';
 
+@injectable
 class StaleTaskDetector {
   StaleTaskDetector();
 
@@ -12,12 +15,7 @@ class StaleTaskDetector {
         _differenceInDaysWithToday(task.dueAt) > 3;
     final bool hasTaskBeenUpdatedRecently = task.updatedAt == null
         ? false
-        : _differenceInDaysWithToday(
-              DateTime.fromMillisecondsSinceEpoch(
-                task.updatedAt!,
-              ),
-            ) <
-            5;
+        : _differenceInDaysWithToday(task.updatedAt!) < 5;
 
     if (hasTaskBeenUpdatedRecently) {
       return false;

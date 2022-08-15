@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/core/services/optional_milliseconds_to_datetime_property_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../core/services/milliseconds_to_datetime_property_converter.dart';
@@ -21,8 +22,8 @@ class Task with _$Task {
     @JsonKey(defaultValue: '') required String note,
     @JsonKey(defaultValue: []) required List<String> tags,
     @JsonKey(defaultValue: []) required List<TaskHistory> history,
-    int? doneAt,
-    int? updatedAt,
+    @OptionalMillisecondsToDateTimePropertyConverter() DateTime? doneAt,
+    @OptionalMillisecondsToDateTimePropertyConverter() DateTime? updatedAt,
     int? repetitionLevel,
     @Default(false) bool isSelected,
   }) = _Task;

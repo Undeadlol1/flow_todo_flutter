@@ -107,7 +107,7 @@ class MakeStepForwardOnTheTask {
     bool isTaskDone,
     Confidence howBigWasTheStep,
   ) {
-    final today = getTodaysDate().millisecondsSinceEpoch;
+    final today = getTodaysDate();
     final nextRepetition = nextRepetitionCalculator(
       task: task,
       confidence: howBigWasTheStep,
@@ -121,7 +121,7 @@ class MakeStepForwardOnTheTask {
       repetitionLevel: nextRepetition.repetitionLevel,
       history: [
         TaskHistory(
-          createdAt: today,
+          createdAt: today.millisecondsSinceEpoch,
           actionType: isTaskDone
               ? TaskHistoryActionType.doneTask
               : howBigWasTheStep == Confidence.good

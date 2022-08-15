@@ -20,7 +20,7 @@ void main() {
       isDone: false,
       title: 'title',
       userId: 'userId',
-      updatedAt: updatedAt?.millisecondsSinceEpoch,
+      updatedAt: updatedAt,
       dueAt: dueAt ?? today,
       createdAt: createdAt ?? today,
     );

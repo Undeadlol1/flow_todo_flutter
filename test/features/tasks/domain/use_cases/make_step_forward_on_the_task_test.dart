@@ -313,7 +313,7 @@ Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument({
     howBigWasTheStep: confidence,
   );
 
-  final dateToVerify = _fakeGetTodaysDate.returnedValue.millisecondsSinceEpoch;
+  final dateToVerify = _fakeGetTodaysDate.returnedValue;
   final repositoryTaskArgument =
       (verify(() => _mockUpdateTaskRepository(captureAny())).captured[0]
           as Task);

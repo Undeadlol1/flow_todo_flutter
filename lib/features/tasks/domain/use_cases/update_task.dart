@@ -15,7 +15,7 @@ class UpdateTask {
   Future<void> call(Task updatedTask) async {
     tasksCubit.updateTask(updatedTask);
     return updateTaskRepository(
-      updatedTask.copyWith(updatedAt: DateTime.now().millisecondsSinceEpoch),
+      updatedTask.copyWith(updatedAt: DateTime.now()),
     );
   }
 }
