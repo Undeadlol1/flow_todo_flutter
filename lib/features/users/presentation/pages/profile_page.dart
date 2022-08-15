@@ -1,3 +1,5 @@
+import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,43 +16,60 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageLayout(
-      child: BlocBuilder<ProfileCubit, ProfileState>(
-        builder: (context, state) {
-          final today = DateTime.now();
-          final streak = state.profile?.dailyStreak;
+      child: BlocBuilder<AuthentificationCubit, AuthentificationState>(
+        builder: (context, authState) {
+          return BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, profileState) {
+              final today = DateTime.now();
+              final streak = profileState.profile?.dailyStreak;
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(10),
-                child: Center(child: Avatar(radius: 60)),
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, GoalsPage.pathName),
-                  child: const Text('Go to Goals'),
-                ),
-              ),
-              const SizedBox(height: 10),
-              const Text('Debug information for developers:'),
-              SelectableText(
-                'Your user ID is: ${state.profile?.userId}',
-              ),
-              Text(
-                'Is streak interrupted: ${streak?.isInterrupted().toString() ?? 'null value'}',
-              ),
-              Text('Today is: $today'),
-              Text('Streak starts at: ${streak?.startsAt}'),
-              Text(
-                'Streak was updated at: ${state.profile?.dailyStreak.updatedAt}',
-              ),
-              const SizedBox(height: 10),
-              const Center(
-                child: SignOutButton(),
-              ),
-            ],
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CardView(
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Center(child: Avatar(radius: 60)),
+                        ),
+                        if (authState is Authenticated)
+                          Text(authState.user.displayName),
+                      ],
+                    ),
+                  ),
+                  ExpansionTile(
+                    expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                    title: const Text('Debug information for developers'),
+                    children: [
+                      SelectableText(
+                        'Your user ID is: ${profileState.profile?.userId}',
+                      ),
+                      Text('Today is: $today'),
+                      Text(
+                        'Is streak interrupted: ${streak?.isInterrupted().toString() ?? 'null value'}',
+                      ),
+                      Text('Streak starts at: ${streak?.startsAt}'),
+                      Text(
+                        'Streak was updated at: ${profileState.profile?.dailyStreak.updatedAt}',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () =>
+                          Navigator.pushNamed(context, GoalsPage.pathName),
+                      child: const Text('Go to Goals'),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Center(
+                    child: SignOutButton(),
+                  ),
+                ],
+              );
+            },
           );
         },
       ),

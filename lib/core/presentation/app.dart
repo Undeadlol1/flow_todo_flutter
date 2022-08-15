@@ -151,8 +151,9 @@ class _AppState extends State<App> {
         User(
           id: user.uid,
           email: user.email ?? '',
-          displayName: user.displayName ?? '',
           avatar: user.photoURL ?? user.providerData.first.photoURL ?? '',
+          displayName:
+              user.displayName ?? user.providerData.first.displayName ?? '',
         ),
       );
     }
