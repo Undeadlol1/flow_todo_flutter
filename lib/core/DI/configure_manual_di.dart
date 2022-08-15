@@ -13,8 +13,10 @@ import '../../features/tasks/domain/use_cases/go_to_task_creation.dart';
 void configureManualDI() {
   final injector = GetIt.I;
 
-  injector.registerFactory(() => FirebaseFirestore.instance);
-  injector.registerFactory(() => firebase_auth.FirebaseAuth.instance);
+  injector.registerFactory<FirebaseFirestore>(() => FirebaseFirestore.instance);
+  injector.registerFactory<firebase_auth.FirebaseAuth>(
+    () => firebase_auth.FirebaseAuth.instance,
+  );
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(
     ExperienceToReachNextLevelCalculator(
