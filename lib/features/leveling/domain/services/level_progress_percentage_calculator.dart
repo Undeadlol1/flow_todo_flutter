@@ -15,6 +15,8 @@ class LevelProgressPercentageCalculator {
   double call(int experience) {
     final level = userLevelCalculator(experience);
 
+    if (level.totalExperienceForCurrentLevel <= 0) return 0;
+
     final userProgressInExpNumbers =
         experience - level.totalExperienceForCurrentLevel;
 

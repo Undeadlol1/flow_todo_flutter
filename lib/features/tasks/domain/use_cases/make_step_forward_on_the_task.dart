@@ -86,7 +86,7 @@ class MakeStepForwardOnTheTask {
     profileCubit.undo();
     workOnTaskAction.undoState();
 
-    return goToTaskPage.call(task: task);
+    return goToTaskPage(task: task);
   }
 
   Profile _getUpdatedProfile() {

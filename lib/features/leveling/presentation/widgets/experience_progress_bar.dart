@@ -49,7 +49,7 @@ class _ExperienceProgressBarState extends State<ExperienceProgressBar>
           return const SizedBox();
         }
 
-        final experience = (state.profile?.experience ?? 0);
+        final experience = state.profile?.experience ?? 0;
         final progressPercent =
             _progressPercentageCalculator(experience).floor();
         final widgetProgress = double.parse('${progressPercent / 100}');

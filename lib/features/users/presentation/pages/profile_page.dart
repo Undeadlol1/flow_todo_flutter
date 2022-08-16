@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
+import 'package:flow_todo_flutter_2022/features/leveling/presentation/widgets/reset_experience_button.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,7 @@ class ProfilePage extends StatelessWidget {
               final streak = profileState.profile?.dailyStreak;
 
               return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CardView(
                     child: Column(
@@ -55,18 +56,26 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () =>
-                          Navigator.pushNamed(context, GoalsPage.pathName),
-                      child: const Text('Go to Goals'),
-                    ),
+                  const _Padding(),
+                  ElevatedButton(
+                    onPressed: () =>
+                        Navigator.pushNamed(context, GoalsPage.pathName),
+                    child: const Text('Go to Goals'),
                   ),
-                  const SizedBox(height: 10),
-                  const Center(
-                    child: SignOutButton(),
+                  const _Padding(),
+                  const SignOutButton(),
+                  const _Padding(),
+                  const Divider(),
+                  const _Padding(),
+                  Text(
+                    'DANGER ZONE',
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.error),
                   ),
+                  const _Padding(),
+                  const Divider(),
+                  const _Padding(),
+                  const ResetExpereinceButton()
                 ],
               );
             },
@@ -74,5 +83,16 @@ class ProfilePage extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class _Padding extends StatelessWidget {
+  const _Padding({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(height: 10);
   }
 }
