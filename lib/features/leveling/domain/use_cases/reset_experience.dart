@@ -7,10 +7,12 @@ import 'package:injectable/injectable.dart';
 @injectable
 class ResetExperience {
   final ProfileCubit profileCubit;
+  final FirebaseAnalytics firebaseAnalytics;
   final UseCaseExceptionHandler useCaseExceptionHandler;
   final UpsertProfileRepository upsertProfileRepository;
   const ResetExperience({
     required this.profileCubit,
+    required this.firebaseAnalytics,
     required this.useCaseExceptionHandler,
     required this.upsertProfileRepository,
   });
@@ -25,7 +27,7 @@ class ResetExperience {
       await upsertProfileRepository(updatedProfile);
 
       // TODO analytics abstraction.
-      return FirebaseAnalytics.instance.logEvent(name: "experience_reset");
+      return firebaseAnalytics.logEvent(name: "experience_reset");
     } catch (e) {
       profileCubit.undo();
       useCaseExceptionHandler.call(e);

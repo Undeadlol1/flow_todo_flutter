@@ -1,5 +1,6 @@
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:get_it/get_it.dart';
 
@@ -15,6 +16,7 @@ void configureManualDI() {
   injector.registerFactory<firebase_auth.FirebaseAuth>(
     () => firebase_auth.FirebaseAuth.instance,
   );
+  injector.registerFactory<FirebaseAnalytics>(() => FirebaseAnalytics.instance);
   injector.registerSingleton(BuildContextProvider());
   injector.registerSingleton(
     ExperienceToReachNextLevelCalculator(
