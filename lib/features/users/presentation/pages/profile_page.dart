@@ -2,6 +2,7 @@ import 'package:flow_todo_flutter_2022/features/authentification/presentation/cu
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/presentation/widgets/reset_experience_button.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,6 +54,10 @@ class ProfilePage extends StatelessWidget {
                       Text('Streak starts at: ${streak?.startsAt}'),
                       Text(
                         'Streak was updated at: ${profileState.profile?.dailyStreak.updatedAt}',
+                      ),
+                      const Text('Is app running in debug mode? $kDebugMode'),
+                      const Text(
+                        'Is app running in release mode? $kReleaseMode',
                       ),
                     ],
                   ),
