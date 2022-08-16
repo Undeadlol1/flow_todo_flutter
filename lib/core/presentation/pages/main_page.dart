@@ -75,6 +75,10 @@ class _LoginScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Image.network(
+            'https://media.giphy.com/media/dzaUX7CAG0Ihi/giphy.gif',
+          ),
+          const SizedBox(height: 10),
           const Text('Please sign in to start:'),
           const SizedBox(height: 10),
           GoogleSignInButton(),
