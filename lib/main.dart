@@ -50,6 +50,6 @@ Future<void> _configureFirebase() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FirebaseAnalytics.instance.app
+  await FirebaseAnalytics.instance.app
       .setAutomaticDataCollectionEnabled(kReleaseMode);
 }
