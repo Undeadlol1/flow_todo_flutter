@@ -220,6 +220,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       profileCubit: get<_i18.ProfileCubit>(),
       getTodaysDate: get<_i13.GetTodaysDate>(),
       addPointsToUser: get<_i50.AddPointsToViewer>(),
+      firebaseAnalytics: get<_i45.FirebaseAnalytics>(),
       uniqueIdGenerator: get<_i26.UniqueIdGenerator>(),
       createTaskRepository: get<_i6.CreateTaskRepository>()));
   gh.singleton<_i53.MakeStepForwardOnTheTask>(_i53.MakeStepForwardOnTheTask(
@@ -234,6 +235,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       rewardCalculator: get<_i23.TaskRewardCalculator>(),
       workOnTaskAction: get<_i33.WorkOnTaskAction>(),
       addPointsToViewer: get<_i50.AddPointsToViewer>(),
+      firebaseAnalytics: get<_i45.FirebaseAnalytics>(),
       tasksDoneTodayCubit: get<_i25.TasksWorkedOnTodayCubit>(),
       incrementDailyStreak: get<_i38.IncrementDailyStreakAction>(),
       nextRepetitionCalculator: get<_i54.NextRepetitionCalculator>()));

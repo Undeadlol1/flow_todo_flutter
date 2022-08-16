@@ -12,6 +12,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/mocks/mock_firebase_analytics.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 
@@ -33,6 +34,7 @@ const _uniqueId = 'unique id 123';
 final _mockTasksCubit = MockTasksCubit();
 final _mockProfileCubit = MockProfileCubit();
 final _mockAddPointsToUser = _MockAddPointsToUser();
+final _mockFirebaseAnalytics = MockFirebaseAnalytics();
 final _fakecUniqueIdGenerator = _FakecUniqueIdGenerator();
 final _mockCreateTaskRepository = _MockCreateTaskRepository();
 final _dateToReturn = DateTime.now().subtract(const Duration(days: 10));
@@ -58,6 +60,9 @@ void main() {
       Stream.fromIterable([tasksState]),
       initialState: tasksState,
     );
+
+    when(() => _mockFirebaseAnalytics.logEvent(name: any(named: 'name')))
+        .thenAnswer((_) async {});
   });
 
   setUp(() {
@@ -132,6 +137,7 @@ CreateTask _buildUseCase() {
     profileCubit: _mockProfileCubit,
     getTodaysDate: _FakeGetTodaysDate(),
     addPointsToUser: _mockAddPointsToUser,
+    firebaseAnalytics: _mockFirebaseAnalytics,
     uniqueIdGenerator: _fakecUniqueIdGenerator,
     createTaskRepository: _mockCreateTaskRepository,
   );

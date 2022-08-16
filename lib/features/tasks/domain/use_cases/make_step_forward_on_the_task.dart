@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak_action.dart';
@@ -32,6 +33,7 @@ class MakeStepForwardOnTheTask {
   final SnackbarService snackbarService;
   final UpdateTaskRepository updateTask;
   final WorkOnTaskAction workOnTaskAction;
+  final FirebaseAnalytics firebaseAnalytics;
   final AddPointsToViewer addPointsToViewer;
   final TaskRewardCalculator rewardCalculator;
   final UpsertProfileRepository updateProfile;
@@ -50,6 +52,7 @@ class MakeStepForwardOnTheTask {
     required this.rewardCalculator,
     required this.workOnTaskAction,
     required this.addPointsToViewer,
+    required this.firebaseAnalytics,
     required this.tasksDoneTodayCubit,
     required this.incrementDailyStreak,
     required this.nextRepetitionCalculator,
@@ -74,6 +77,7 @@ class MakeStepForwardOnTheTask {
       await updateTask(updatedTask);
       await addPointsToViewer(pointsToAdd);
       await incrementDailyStreak();
+      await _trackAnalytics(isTaskDone, howBigWasTheStep);
     } catch (error) {
       return _handleErrors(error: error, task: task);
     }
@@ -162,5 +166,15 @@ class MakeStepForwardOnTheTask {
       updatedTask.dueAt,
       allowFromNow: true,
     )}';
+  }
+
+  Future<void> _trackAnalytics(bool isTaskDone, Confidence howBigWasTheStep) {
+    return firebaseAnalytics.logEvent(
+      name: isTaskDone
+          ? 'done_task'
+          : howBigWasTheStep == Confidence.good
+              ? 'leap_forward'
+              : 'step_forward',
+    );
   }
 }

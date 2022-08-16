@@ -71,7 +71,7 @@ class PositiveChoices extends StatelessWidget {
 }
 
 class _Subtitle extends StatelessWidget {
-  const _Subtitle({Key? key, required this.reward});
+  const _Subtitle({Key? key, required this.reward}) : super(key: key);
   final int reward;
 
   @override

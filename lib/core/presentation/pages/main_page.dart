@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/selected_tasks.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -75,9 +76,10 @@ class _LoginScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.network(
-            'https://media.giphy.com/media/dzaUX7CAG0Ihi/giphy.gif',
-          ),
+          if (kReleaseMode)
+            Image.network(
+              'https://media.giphy.com/media/dzaUX7CAG0Ihi/giphy.gif',
+            ),
           const SizedBox(height: 10),
           const Text('Please sign in to start:'),
           const SizedBox(height: 10),

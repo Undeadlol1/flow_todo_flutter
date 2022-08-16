@@ -16,6 +16,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../test_utilities/fakes/fake_get_todays_date.dart';
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/mocks/mock_firebase_analytics.dart';
 import '../../../../test_utilities/mocks/mock_go_to_main_page.dart';
 import '../../../../test_utilities/mocks/mock_go_to_task_page.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
@@ -45,13 +46,14 @@ final _mockGoToMainPage = MockGoToMainPage();
 final _mockGoToTaskPage = MockGoToTaskPage();
 final _fakeGetTodaysDate = FakeGetTodaysDate();
 final _mockSnackbarService = MockSnackbarService();
-final _mockRewardCalculator = MockTaskRewardCalculator();
 final _mockWorkOnTaskAction = _MockWorkOnTaskAction();
+final _mockFirebaseAnalytics = MockFirebaseAnalytics();
 final _mockAddPointsToViewer = _MockAddPointsToViewer();
-final _mockTasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
+final _mockRewardCalculator = MockTaskRewardCalculator();
 final _mockUpdateTaskRepository = MockUpdateTaskRepository();
-final _mockTasksWorkedOnTodayCubit = _MockTasksWorkedOnTodayCubit();
+final _mockTasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
 final _mockUpdateProfileRepository = MockUpsertProfileRepository();
+final _mockTasksWorkedOnTodayCubit = _MockTasksWorkedOnTodayCubit();
 final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
 final IncrementDailyStreakAction _mockIncrementDailyStreak =
     _MockIncrementDailyStreak();
@@ -66,6 +68,9 @@ void main() {
       Stream.fromIterable([TasksWorkedOnTodayState.loaded([])]),
       initialState: TasksWorkedOnTodayState.loaded([]),
     );
+
+    when(() => _mockFirebaseAnalytics.logEvent(name: any(named: 'name')))
+        .thenAnswer((_) async {});
   });
 
   setUp(() {
@@ -356,6 +361,7 @@ MakeStepForwardOnTheTask _getUseCase() {
     updateTask: _mockUpdateTaskRepository,
     workOnTaskAction: _mockWorkOnTaskAction,
     rewardCalculator: _mockRewardCalculator,
+    firebaseAnalytics: _mockFirebaseAnalytics,
     addPointsToViewer: _mockAddPointsToViewer,
     updateProfile: _mockUpdateProfileRepository,
     incrementDailyStreak: _mockIncrementDailyStreak,
