@@ -58,6 +58,7 @@ dependencies:
   fuzzywuzzy: ^0.2.0
   remove_emoji: ^0.0.7
   firebase_analytics: ^9.3.0
+  firebase_crashlytics: ^2.8.7
 
 dev_dependencies:
   flutter_test:
