@@ -6,6 +6,7 @@ class TaskRewardCalculator {
   const TaskRewardCalculator();
 
   int call(Task task) {
-    return 50 + DateTime.now().difference(task.createdAt).inDays;
+    return (50 + DateTime.now().difference(task.createdAt).inDays) *
+        (task.isSelected ? 2 : 1);
   }
 }
