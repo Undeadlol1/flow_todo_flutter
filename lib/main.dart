@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -11,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'core/DI/configure_automatic_di.dart';
 import 'core/DI/configure_manual_di.dart';
+import 'core/presentation/app.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -25,6 +24,8 @@ void main() async {
       _configureCrashlytics();
 
       _configureDI();
+
+      runApp(const App());
     },
     createStorage: () async {
       return HydratedStorage.build(
