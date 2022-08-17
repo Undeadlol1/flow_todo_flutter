@@ -26,6 +26,7 @@ import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_worked_on_today_cubit.dart';
 import '../../../../test_utilities/mocks/mock_upsert_profile_repository.dart';
 import '../../../../test_utilities/mocks/mock_update_task_repository.dart';
+import '../../../../test_utilities/mocks/mock_use_case_exception_handler.dart';
 
 class _MockAddPointsToViewer extends Mock implements AddPointsToViewer {}
 
@@ -366,6 +367,7 @@ MakeStepForwardOnTheTask _getUseCase() {
     updateProfile: _mockUpdateProfileRepository,
     incrementDailyStreak: _mockIncrementDailyStreak,
     tasksDoneTodayCubit: _mockTasksWorkedOnTodayCubit,
+    useCaseExceptionHandler: MockUseCaseExceptionHandler(),
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );
 }

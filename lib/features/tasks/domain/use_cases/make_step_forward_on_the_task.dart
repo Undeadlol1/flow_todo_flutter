@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flow_todo_flutter_2022/core/services/use_case_exception_handler.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak_action.dart';
@@ -38,6 +39,7 @@ class MakeStepForwardOnTheTask {
   final TaskRewardCalculator rewardCalculator;
   final UpsertProfileRepository updateProfile;
   final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
+  final UseCaseExceptionHandler useCaseExceptionHandler;
   final IncrementDailyStreakAction incrementDailyStreak;
   final NextRepetitionCalculator nextRepetitionCalculator;
   const MakeStepForwardOnTheTask({
@@ -55,6 +57,7 @@ class MakeStepForwardOnTheTask {
     required this.firebaseAnalytics,
     required this.tasksDoneTodayCubit,
     required this.incrementDailyStreak,
+    required this.useCaseExceptionHandler,
     required this.nextRepetitionCalculator,
   });
 
@@ -78,17 +81,23 @@ class MakeStepForwardOnTheTask {
       await addPointsToViewer(pointsToAdd);
       await incrementDailyStreak();
       await _trackAnalytics(isTaskDone, howBigWasTheStep);
-    } catch (error) {
-      return _handleErrors(error: error, task: task);
+    } catch (error, stackTrace) {
+      return _handleErrors(error: error, task: task, stackTrace: stackTrace);
     }
   }
 
-  void _handleErrors({required Object error, required Task task}) {
+  void _handleErrors({
+    required Task task,
+    required Object error,
+    required StackTrace stackTrace,
+  }) {
     snackbarService.displaySnackbar(text: error.toString());
 
     tasksCubit.undo();
     profileCubit.undo();
     workOnTaskAction.undoState();
+
+    useCaseExceptionHandler(error, stackTrace);
 
     return goToTaskPage(task: task);
   }

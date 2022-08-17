@@ -28,9 +28,9 @@ class ResetExperience {
 
       // TODO analytics abstraction.
       return firebaseAnalytics.logEvent(name: "experience_reset");
-    } catch (e) {
+    } catch (error, stack) {
       profileCubit.undo();
-      useCaseExceptionHandler.call(e);
+      useCaseExceptionHandler(error, stack);
     }
   }
 }

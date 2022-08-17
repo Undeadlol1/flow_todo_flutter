@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -62,5 +64,17 @@ Future<void> _configureFirebase() async {
 void _configureCrashlytics() {
   if (kReleaseMode) {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+    // https://firebase.google.com/docs/crashlytics/customize-crash-reports?platform=flutter#errors-outside-flutter
+    Isolate.current.addErrorListener(
+      RawReceivePort((pair) async {
+        final List<dynamic> errorAndStacktrace = pair;
+        await FirebaseCrashlytics.instance.recordError(
+          errorAndStacktrace.first,
+          errorAndStacktrace.last,
+          fatal: true,
+        );
+      }).sendPort,
+    );
   }
 }

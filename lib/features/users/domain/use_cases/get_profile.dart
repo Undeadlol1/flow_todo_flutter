@@ -30,8 +30,8 @@ class GetProfile {
           }
         }
       },
-    ).catchError((error) {
-      useCaseExceptionHandler(error);
+    ).catchError((error, stack) {
+      useCaseExceptionHandler(error, stack);
       return Future.value(null);
     });
   }
