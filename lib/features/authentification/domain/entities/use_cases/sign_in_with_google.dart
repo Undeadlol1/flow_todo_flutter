@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flow_todo_flutter_2022/core/services/use_case_exception_handler.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/models/daily_streak.dart';
@@ -18,6 +19,7 @@ class SignInWithGoogle {
   final ProfileCubit profileCubit;
   final UniqueIdGenerator uniqueIdGenerator;
   final FirebaseAnalytics firebaseAnalytics;
+  final FirebaseCrashlytics firebaseCrashlytics;
   final GetProfileRepository getProfileRepository;
   final UpsertProfileRepository upsertProfileRepository;
   final UseCaseExceptionHandler useCaseExceptionHandler;
@@ -26,6 +28,7 @@ class SignInWithGoogle {
     required this.firebaseAuth,
     required this.firebaseAnalytics,
     required this.uniqueIdGenerator,
+    required this.firebaseCrashlytics,
     required this.getProfileRepository,
     required this.upsertProfileRepository,
     required this.useCaseExceptionHandler,
@@ -37,9 +40,9 @@ class SignInWithGoogle {
           .then(_getGoogleAuthDetails)
           .then(_signInToFirebaseAuthViaGoogleCredentials)
           .then(_createProfileIfUserDoesntHaveOne)
-          .then(_assignUserIdInGoogleAnalytics);
-    } catch (e) {
-      useCaseExceptionHandler(e);
+          .then(_assignUserIdInVariousAnalytics);
+    } catch (error, stack) {
+      useCaseExceptionHandler(error, stack);
     }
   }
 
@@ -103,7 +106,9 @@ class SignInWithGoogle {
     return profileToCreate;
   }
 
-  FutureOr<void> _assignUserIdInGoogleAnalytics(Profile profile) {
+  FutureOr<void> _assignUserIdInVariousAnalytics(Profile profile) async {
+    // TODO abstraction
+    await firebaseCrashlytics.setUserIdentifier(profile.userId);
     // TODO analytics abstraction.
     return firebaseAnalytics.setUserId(id: profile.userId);
   }
