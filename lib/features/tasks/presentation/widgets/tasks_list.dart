@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flutter/material.dart';
@@ -38,18 +39,30 @@ class _TasksListState extends State<TasksList> {
             return const _LoadingIndicator();
           }
 
-          return Column(
-            children: [
-              if (tasksState.tasks.length > 10) const FilterTasksToDo(),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: tasksToDisplay.length,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (_, index) {
-                  return TasksListItem(task: tasksToDisplay[index]);
-                },
-              ),
-            ],
+          return CardView(
+            child: Column(
+              children: [
+                if (tasksState.tasks.length > 10) const FilterTasksToDo(),
+                Container(
+                  padding: const EdgeInsets.only(left: 15),
+                  alignment: Alignment.center,
+                  child: Chip(
+                    label: Text(
+                      'Tasks left: ${tasksState.tasks.length}',
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: tasksToDisplay.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (_, index) {
+                    return TasksListItem(task: tasksToDisplay[index]);
+                  },
+                ),
+              ],
+            ),
           );
         },
       ),
