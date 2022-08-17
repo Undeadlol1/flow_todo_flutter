@@ -43,16 +43,17 @@ class _TasksListState extends State<TasksList> {
             child: Column(
               children: [
                 if (tasksState.tasks.length > 10) const FilterTasksToDo(),
-                Container(
-                  padding: const EdgeInsets.only(left: 15),
-                  alignment: Alignment.center,
-                  child: Chip(
-                    label: Text(
-                      'Tasks left: ${tasksState.tasks.length}',
-                      style: const TextStyle(fontStyle: FontStyle.italic),
+                if (tasksState.tasks.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.only(left: 15),
+                    alignment: Alignment.center,
+                    child: Chip(
+                      label: Text(
+                        'Tasks left: ${tasksState.tasks.length}',
+                        style: const TextStyle(fontStyle: FontStyle.italic),
+                      ),
                     ),
                   ),
-                ),
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: tasksToDisplay.length,
