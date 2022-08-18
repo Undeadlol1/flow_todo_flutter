@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/delete_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
@@ -15,14 +16,15 @@ class RejectTask {
   final GoToTaskPage goToTaskPage;
   final SnackbarService snackbarService;
   final AddPointsToViewer addPointsToUser;
+  final FirebaseAnalytics firebaseAnalytics;
   final DeleteTaskRepository deleteTaskRepository;
-
   RejectTask({
     required this.tasksCubit,
     required this.goToMainPage,
     required this.goToTaskPage,
     required this.snackbarService,
     required this.addPointsToUser,
+    required this.firebaseAnalytics,
     required this.deleteTaskRepository,
   });
 
@@ -38,7 +40,9 @@ class RejectTask {
       snackbarService.displaySnackbar(text: _encouragingText);
 
       await deleteTaskRepository(task);
-      return addPointsToUser(10);
+      await addPointsToUser(10);
+
+      return firebaseAnalytics.logEvent(name: 'rejected_task');
     } catch (error) {
       snackbarService.displaySnackbar(text: error.toString());
 

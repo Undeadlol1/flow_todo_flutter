@@ -250,6 +250,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       goToTaskPage: get<_i16.GoToTaskPage>(),
       snackbarService: get<_i20.SnackbarService>(),
       addPointsToUser: get<_i51.AddPointsToViewer>(),
+      firebaseAnalytics: get<_i46.FirebaseAnalytics>(),
       deleteTaskRepository: get<_i7.DeleteTaskRepository>()));
   return get;
 }
