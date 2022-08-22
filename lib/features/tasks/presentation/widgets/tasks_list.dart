@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../cubit/tasks_cubit.dart';
+import '../pages/filter_tasks_page.dart';
 import 'filter_tasks_to_do.dart';
 import 'tasks_list_item.dart';
 
@@ -42,7 +43,9 @@ class _TasksListState extends State<TasksList> {
           return CardView(
             child: Column(
               children: [
-                if (tasksState.tasks.length > 10) const FilterTasksToDo(),
+                if (tasksState.tasks.length > 10 &&
+                    _isViewerOnFilterPage(context))
+                  const FilterTasksToDo(),
                 if (tasksState.tasks.isNotEmpty)
                   Container(
                     padding: const EdgeInsets.only(left: 15),
@@ -98,3 +101,6 @@ class _LoadingIndicator extends StatelessWidget {
     );
   }
 }
+
+bool _isViewerOnFilterPage(BuildContext context) =>
+    ModalRoute.of(context)?.settings.name == FilterTasksPage.pathName;

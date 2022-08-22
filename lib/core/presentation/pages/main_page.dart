@@ -10,6 +10,7 @@ import '../../../features/authentification/presentation/widgets/google_sign_in_b
 import '../../../features/common/presentation/page_layout.dart';
 import '../../../features/tasks/domain/use_cases/get_tasks_worked_on_today.dart';
 import '../../../features/tasks/domain/use_cases/get_tasks_to_do.dart';
+import '../../../features/tasks/presentation/pages/filter_tasks_page.dart';
 import '../../../features/tasks/presentation/widgets/tasks_list.dart';
 import '../../../features/users/domain/use_cases/get_profile.dart';
 import '../../../features/users/presentation/cubit/profile_cubit.dart';
@@ -52,6 +53,17 @@ class MainPage extends StatelessWidget {
                       child: Column(
                         children: [
                           SelectedTasks(),
+                          TextButton(
+                            onPressed: () => Navigator.of(context)
+                                .pushNamed(FilterTasksPage.pathName),
+                            child: Row(
+                              children: const [
+                                Icon(Icons.manage_search),
+                                SizedBox(width: 10),
+                                Text('Filter tasks'),
+                              ],
+                            ),
+                          ),
                           const TasksList(),
                         ],
                       ),
