@@ -60,6 +60,7 @@ class _TasksListState extends State<TasksList> {
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: tasksToDisplay.length,
+                  prototypeItem: TasksListItem(task: tasksToDisplay.first),
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (_, index) {
                     return TasksListItem(task: tasksToDisplay[index]);
