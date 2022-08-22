@@ -30,7 +30,7 @@ class _TasksListState extends State<TasksList> {
           final selectedTasks =
               tasksState.tasks.where((i) => i.isSelected).toList();
           final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
-          final tasksToDisplay = _getTasksToDisplay(
+          final List<Task> tasksToDisplay = _getTasksToDisplay(
             allTasks: tasksState.tasks,
             focusedOnTasks: selectedTasks,
             filteredTasks: filteredTasks,
@@ -60,7 +60,9 @@ class _TasksListState extends State<TasksList> {
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: tasksToDisplay.length,
-                  prototypeItem: TasksListItem(task: tasksToDisplay.first),
+                  prototypeItem: tasksToDisplay.isEmpty
+                      ? const SizedBox()
+                      : TasksListItem(task: tasksToDisplay.first),
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (_, index) {
                     return TasksListItem(task: tasksToDisplay[index]);
