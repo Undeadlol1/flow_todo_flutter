@@ -58,8 +58,7 @@ class _FloatingExperiencePointsAnimationState
   bool _buildWhenUserIsRewardedWithExp(previous, current) {
     if (previous is ProfileLoaded && current is ProfileLoaded) {
       final expDifference = _expPointsToDisplay =
-          (current.profile?.experience ?? 0) -
-              (previous.profile?.experience ?? 0);
+          (current.profile.experience) - (previous.profile.experience);
 
       _expPointsToDisplay = expDifference;
 

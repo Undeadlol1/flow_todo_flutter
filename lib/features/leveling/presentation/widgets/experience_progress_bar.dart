@@ -28,7 +28,7 @@ class _ExperienceProgressBarState extends State<ExperienceProgressBar>
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: (context, state) {
-        final currentExperience = state.profile?.experience ?? 0;
+        final currentExperience = state.profile.experience;
 
         _previousExperienceAmount = currentExperience;
 
@@ -49,7 +49,7 @@ class _ExperienceProgressBarState extends State<ExperienceProgressBar>
           return const SizedBox();
         }
 
-        final experience = state.profile?.experience ?? 0;
+        final experience = state.profile.experience;
         final progressPercent =
             _progressPercentageCalculator(experience).floor();
         final widgetProgress = double.parse('${progressPercent / 100}');

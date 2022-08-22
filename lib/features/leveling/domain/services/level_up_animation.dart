@@ -32,7 +32,7 @@ class LevelUpAnimation {
           pageBuilder: (_, __, ___) {
             return Center(
               child: BlocSelector<ProfileCubit, ProfileState, int>(
-                selector: (state) => state.profile?.experience ?? 0,
+                selector: (state) => state.profile.experience,
                 builder: (_, experience) => CardView(
                   child: Text(
                     'Level ${userLevelCalculator(experience).value}!',

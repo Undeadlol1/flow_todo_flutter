@@ -20,7 +20,7 @@ class ResetExperience {
   Future<void> call() async {
     try {
       final updatedProfile =
-          profileCubit.state.profile!.copyWith(experience: 0);
+          profileCubit.state.profile.copyWith(experience: 0);
 
       profileCubit.setProfile(updatedProfile);
 

@@ -36,7 +36,7 @@ class MakeStepForwardOnAGoal {
       const Duration(milliseconds: 2500),
       () {
         updateGoalRepo(updatedGoal);
-        updateProfileRepository(profileCubit.state.profile!);
+        updateProfileRepository(profileCubit.state.profile);
       },
     );
   }
