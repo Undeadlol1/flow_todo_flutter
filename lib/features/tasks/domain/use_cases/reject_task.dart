@@ -28,19 +28,18 @@ class RejectTask {
     required this.deleteTaskRepository,
   });
 
-  static const _encouragingText =
-      "Don't be afraid to get rid of unimportant tasks. You have been awarded with experience";
+  static const _encouragingText = "Don't be afraid to get rid of unimportant "
+      "tasks. You have been awarded with experience";
 
   Future<void> call(Task task) async {
     try {
       goToMainPage();
 
-      tasksCubit.state.tasks.remove(task);
-      tasksCubit.updateList(tasksCubit.state.tasks);
+      tasksCubit.removeTask(task);
       snackbarService.displaySnackbar(text: _encouragingText);
 
-      await deleteTaskRepository(task);
-      await addPointsToUser(10);
+      addPointsToUser(10);
+      deleteTaskRepository(task);
 
       return firebaseAnalytics.logEvent(name: 'rejected_task');
     } catch (error) {
@@ -48,7 +47,7 @@ class RejectTask {
 
       tasksCubit.undo();
 
-      return goToTaskPage.call(task: task);
+      return goToTaskPage(task: task);
     }
   }
 }
