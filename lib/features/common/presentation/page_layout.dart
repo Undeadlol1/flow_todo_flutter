@@ -28,6 +28,13 @@ class PageLayout extends StatelessWidget {
     this.isNumbersAnimationSuspended = true,
   }) : super(key: key);
 
+  static const _padding = EdgeInsets.only(
+    top: 6,
+    left: 6,
+    right: 6,
+    bottom: 12.0,
+  );
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -64,12 +71,7 @@ class PageLayout extends StatelessWidget {
                       ),
                 body: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 6,
-                      left: 6,
-                      right: 6,
-                      bottom: 12.0,
-                    ),
+                    padding: _padding,
                     child: child,
                   ),
                 ),
