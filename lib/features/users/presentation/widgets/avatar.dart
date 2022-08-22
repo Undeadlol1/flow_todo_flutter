@@ -198,7 +198,7 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
     if (profileState is! ProfileLoaded) return;
 
     Future.microtask(() {
-      _hasFirstAnimationForcefullyRan = true;
+      setState(() => _hasFirstAnimationForcefullyRan = true);
 
       _animation = Tween<double>(
         end: _getLevelProgress(profileState),

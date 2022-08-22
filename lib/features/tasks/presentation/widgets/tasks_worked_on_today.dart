@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flow_todo_flutter_2022/features/streaks/domain/models/daily_streak.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/worked_on_tasks_days_in_a_row.dart';
@@ -83,10 +85,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
               child: Column(
                 children: [
                   const WinsTodayText(),
-                  _ProgressBar(
-                    animation: _animation,
-                    animationController: _animationController,
-                  ),
+                  _ProgressBar(animation: _animation),
                   WorkedOnTasksDaysInARow(
                     areAnimationsEnabled: _hasFirstAnimationForcefullyRan,
                   ),
@@ -119,7 +118,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
     tasksDoneTodayState.whenOrNull(
       loaded: (_) {
         Future.microtask(() {
-          _hasFirstAnimationForcefullyRan = true;
+          setState(() => _hasFirstAnimationForcefullyRan = true);
 
           if (_isAnimationListenerAdded == false) {
             _animation.addListener(() => setState(() {}));
@@ -145,13 +144,8 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
 }
 
 class _ProgressBar extends StatelessWidget {
-  const _ProgressBar({
-    Key? key,
-    required this.animation,
-    required this.animationController,
-  }) : super(key: key);
+  const _ProgressBar({Key? key, required this.animation}) : super(key: key);
 
-  final AnimationController animationController;
   final Animation<double> animation;
 
   @override
