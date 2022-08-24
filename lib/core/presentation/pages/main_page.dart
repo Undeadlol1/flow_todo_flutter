@@ -1,3 +1,4 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/selected_tasks.dart';
 import 'package:flutter/foundation.dart';
@@ -33,6 +34,8 @@ class MainPage extends StatelessWidget {
           floatingActionButton: isProfileLoaded ? const CreateTaskFAB() : null,
           child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
             listener: (context, authState) {
+              FirebaseRemoteConfig.instance.fetchAndActivate();
+
               if (authState is Authenticated) {
                 final userId = authState.user.id;
                 GetIt.I<GetProfile>()(userId: userId);
