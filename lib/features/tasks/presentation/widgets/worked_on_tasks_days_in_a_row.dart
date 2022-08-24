@@ -20,12 +20,12 @@ class WorkedOnTasksDaysInARow extends StatelessWidget {
       builder: (context) {
         final ProfileState profileState = context.watch<ProfileCubit>().state;
 
-        final dailyStreak = profileState.profile?.dailyStreak;
-        final int daysInARow = dailyStreak?.isInterrupted() ?? true
+        final dailyStreak = profileState.profile.dailyStreak;
+        final int daysInARow = dailyStreak.isInterrupted()
             ? 0
             : streakDaysInARowCalculator(
-                updatedAt: dailyStreak?.updatedAt,
-                startsAt: dailyStreak?.startsAt ?? DateTime.now(),
+                updatedAt: dailyStreak.updatedAt,
+                startsAt: dailyStreak.startsAt,
               );
 
         return Visibility(

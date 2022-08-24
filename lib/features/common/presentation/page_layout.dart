@@ -92,7 +92,7 @@ class _UserLevelBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<ProfileCubit, ProfileState, int>(
-      selector: (state) => state.profile?.experience ?? 0,
+      selector: (state) => state.profile.experience,
       builder: (_, experience) {
         final level = _userLevelCalculator(experience).value.toString();
         return Container(

@@ -23,7 +23,7 @@ class ProfilePage extends StatelessWidget {
           return BlocBuilder<ProfileCubit, ProfileState>(
             builder: (context, profileState) {
               final today = DateTime.now();
-              final streak = profileState.profile?.dailyStreak;
+              final streak = profileState.profile.dailyStreak;
 
               return SingleChildScrollView(
                 child: Column(
@@ -46,15 +46,15 @@ class ProfilePage extends StatelessWidget {
                       title: const Text('Debug information for developers'),
                       children: [
                         SelectableText(
-                          'Your user ID is: ${profileState.profile?.userId}',
+                          'Your user ID is: ${profileState.profile.userId}',
                         ),
                         Text('Today is: $today'),
                         Text(
-                          'Is streak interrupted: ${streak?.isInterrupted().toString() ?? 'null value'}',
+                          'Is streak interrupted: ${streak.isInterrupted().toString()}',
                         ),
-                        Text('Streak starts at: ${streak?.startsAt}'),
+                        Text('Streak starts at: ${streak.startsAt}'),
                         Text(
-                          'Streak was updated at: ${profileState.profile?.dailyStreak.updatedAt}',
+                          'Streak was updated at: ${profileState.profile.dailyStreak.updatedAt}',
                         ),
                         const Text('Is app running in debug mode? $kDebugMode'),
                         const Text(

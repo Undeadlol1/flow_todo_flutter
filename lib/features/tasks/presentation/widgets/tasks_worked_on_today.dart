@@ -61,12 +61,11 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
             _runProgressAnimation(
               context: context,
               tasksDoneTodayState: tasksDoneState,
-              dailyStreak: profileState.profile?.dailyStreak,
+              dailyStreak: profileState.profile.dailyStreak,
             );
             previousProgressValue = _getProgressValue(
               tasksDoneAmount: tasksDoneState.tasks.length,
-              requiredTasksPerDay:
-                  profileState.profile?.dailyStreak.perDay ?? 1,
+              requiredTasksPerDay: profileState.profile.dailyStreak.perDay,
             );
           },
           builder: (context, tasksDoneState) {
@@ -74,7 +73,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
               _runProgressAnimation(
                 context: context,
                 tasksDoneTodayState: tasksDoneState,
-                dailyStreak: profileState.profile?.dailyStreak,
+                dailyStreak: profileState.profile.dailyStreak,
               );
             }
 

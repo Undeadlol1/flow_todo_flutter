@@ -104,10 +104,10 @@ class MakeStepForwardOnTheTask {
 
   Profile _getUpdatedProfile() {
     final today = getTodaysDate();
-    final streak = profileCubit.state.profile!.dailyStreak;
+    final streak = profileCubit.state.profile.dailyStreak;
     final tasksDoneToday = tasksDoneTodayCubit.state.tasks.length;
 
-    final updatedProfile = profileCubit.state.profile!.copyWith(
+    final updatedProfile = profileCubit.state.profile.copyWith(
       dailyStreak: streak.copyWith(
         startsAt: streak.isInterrupted() ? today : streak.startsAt,
         updatedAt: streak.shouldStreakIncrement(tasksDoneToday: tasksDoneToday)
