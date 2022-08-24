@@ -25,63 +25,65 @@ class ProfilePage extends StatelessWidget {
               final today = DateTime.now();
               final streak = profileState.profile?.dailyStreak;
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CardView(
-                    child: Column(
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CardView(
+                      child: Column(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Center(child: Avatar(radius: 60)),
+                          ),
+                          if (authState is Authenticated)
+                            Text(authState.user.displayName),
+                        ],
+                      ),
+                    ),
+                    ExpansionTile(
+                      expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                      title: const Text('Debug information for developers'),
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Center(child: Avatar(radius: 60)),
+                        SelectableText(
+                          'Your user ID is: ${profileState.profile?.userId}',
                         ),
-                        if (authState is Authenticated)
-                          Text(authState.user.displayName),
+                        Text('Today is: $today'),
+                        Text(
+                          'Is streak interrupted: ${streak?.isInterrupted().toString() ?? 'null value'}',
+                        ),
+                        Text('Streak starts at: ${streak?.startsAt}'),
+                        Text(
+                          'Streak was updated at: ${profileState.profile?.dailyStreak.updatedAt}',
+                        ),
+                        const Text('Is app running in debug mode? $kDebugMode'),
+                        const Text(
+                          'Is app running in release mode? $kReleaseMode',
+                        ),
                       ],
                     ),
-                  ),
-                  ExpansionTile(
-                    expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                    title: const Text('Debug information for developers'),
-                    children: [
-                      SelectableText(
-                        'Your user ID is: ${profileState.profile?.userId}',
-                      ),
-                      Text('Today is: $today'),
-                      Text(
-                        'Is streak interrupted: ${streak?.isInterrupted().toString() ?? 'null value'}',
-                      ),
-                      Text('Streak starts at: ${streak?.startsAt}'),
-                      Text(
-                        'Streak was updated at: ${profileState.profile?.dailyStreak.updatedAt}',
-                      ),
-                      const Text('Is app running in debug mode? $kDebugMode'),
-                      const Text(
-                        'Is app running in release mode? $kReleaseMode',
-                      ),
-                    ],
-                  ),
-                  const _Padding(),
-                  ElevatedButton(
-                    onPressed: () =>
-                        Navigator.pushNamed(context, GoalsPage.pathName),
-                    child: const Text('Go to Goals'),
-                  ),
-                  const _Padding(),
-                  const SignOutButton(),
-                  const _Padding(),
-                  const Divider(),
-                  const _Padding(),
-                  Text(
-                    'DANGER ZONE',
-                    style:
-                        TextStyle(color: Theme.of(context).colorScheme.error),
-                  ),
-                  const _Padding(),
-                  const Divider(),
-                  const _Padding(),
-                  const ResetExpereinceButton()
-                ],
+                    const _Padding(),
+                    ElevatedButton(
+                      onPressed: () =>
+                          Navigator.pushNamed(context, GoalsPage.pathName),
+                      child: const Text('Go to Goals'),
+                    ),
+                    const _Padding(),
+                    const SignOutButton(),
+                    const _Padding(),
+                    const Divider(),
+                    const _Padding(),
+                    Text(
+                      'DANGER ZONE',
+                      style:
+                          TextStyle(color: Theme.of(context).colorScheme.error),
+                    ),
+                    const _Padding(),
+                    const Divider(),
+                    const _Padding(),
+                    const ResetExpereinceButton()
+                  ],
+                ),
               );
             },
           );
