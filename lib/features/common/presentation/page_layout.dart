@@ -1,7 +1,6 @@
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/sign_out_button.dart';
-import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/avatar.dart';
 import 'package:flutter/material.dart';
@@ -53,12 +52,9 @@ class PageLayout extends StatelessWidget {
                 appBar: isAppBarHidden
                     ? null
                     : AppBar(
-                        actions: [
-                          _UserLevelBadge(
-                            isNumbersAnimationSuspended:
-                                isNumbersAnimationSuspended,
-                          ),
-                          const Padding(
+                        actions: const [
+                          _UserLevelBadge(),
+                          Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                             child: Center(
                               child: Avatar(
@@ -90,28 +86,19 @@ class PageLayout extends StatelessWidget {
 }
 
 class _UserLevelBadge extends StatelessWidget {
-  final bool isNumbersAnimationSuspended;
-  final UserLevelCalculator _userLevelCalculator = GetIt.I();
-  _UserLevelBadge({Key? key, required this.isNumbersAnimationSuspended})
-      : super(key: key);
+  static final UserLevelCalculator _userLevelCalculator = GetIt.I();
+  const _UserLevelBadge({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocSelector<ProfileCubit, ProfileState, int>(
       selector: (state) => state.profile?.experience ?? 0,
       builder: (_, experience) {
+        final level = _userLevelCalculator(experience).value.toString();
         return Container(
           padding: const EdgeInsets.only(right: 7),
           child: Chip(
-            label: Row(
-              children: [
-                const Text('Level: '),
-                AnimatedNumbers(
-                  number: _userLevelCalculator(experience).value,
-                  isAnimationSuspended: isNumbersAnimationSuspended,
-                ),
-              ],
-            ),
+            label: Text('Level: $level'),
           ),
         );
       },
