@@ -57,16 +57,12 @@ class _TasksListState extends State<TasksList> {
                       ),
                     ),
                   ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: tasksToDisplay.length,
-                  prototypeItem: tasksToDisplay.isEmpty
-                      ? const SizedBox()
-                      : TasksListItem(task: tasksToDisplay.first),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (_, index) {
-                    return TasksListItem(task: tasksToDisplay[index]);
-                  },
+                Column(
+                  children: tasksToDisplay
+                      .map(
+                        (e) => TasksListItem(task: e),
+                      )
+                      .toList(),
                 ),
               ],
             ),
