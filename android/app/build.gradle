@@ -80,7 +80,8 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // https://stackoverflow.com/a/71362765
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     // https://firebase.flutter.dev/docs/manual-installation/android/
     implementation 'com.android.support:multidex:1.0.3'
 }
