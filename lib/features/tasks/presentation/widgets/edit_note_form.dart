@@ -69,7 +69,7 @@ class _EditNoteFormState extends State<EditNoteForm> {
                       maxLines: 10,
                       autofocus: widget.autoFocus,
                       formControlName: _formControlName,
-                      validationMessages: _getValidationMessages,
+                      validationMessages: _validationMessages,
                       decoration: InputDecoration(
                         labelText: 'Note',
                         errorText: _formError,
@@ -126,12 +126,10 @@ class _EditNoteFormState extends State<EditNoteForm> {
     }
   }
 
-  Map<String, String> _getValidationMessages(_) {
-    return {
-      ValidationMessage.maxLength: 'Too long',
-      ValidationMessage.minLength: 'Too short',
-      ValidationMessage.any: 'Something went wrong',
-      ValidationMessage.required: 'Should not be empty',
-    };
-  }
+  final _validationMessages = {
+    ValidationMessage.maxLength: (_) => 'Too long',
+    ValidationMessage.minLength: (_) => 'Too short',
+    ValidationMessage.any: (_) => 'Something went wrong',
+    ValidationMessage.required: (_) => 'Should not be empty',
+  };
 }

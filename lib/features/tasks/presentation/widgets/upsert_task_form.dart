@@ -57,9 +57,9 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
                     ReactiveTextField(
                       autofocus: true,
                       formControlName: _formControlName,
-                      validationMessages: _getValidationMessages,
+                      validationMessages: _validationMessages,
                       textCapitalization: TextCapitalization.sentences,
-                      onSubmitted: () => _handleSubmit(authState: authState),
+                      onSubmitted: (_) => _handleSubmit(authState: authState),
                       decoration: InputDecoration(
                         errorText: _formError,
                         labelText: 'Enter your task',
@@ -114,14 +114,12 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
     }
   }
 
-  Map<String, String> _getValidationMessages(_) {
-    return {
-      ValidationMessage.maxLength: 'Too long',
-      ValidationMessage.minLength: 'Too short',
-      ValidationMessage.any: 'Something went wrong',
-      ValidationMessage.required: 'Should not be empty',
-    };
-  }
+  final _validationMessages = {
+    ValidationMessage.maxLength: (_) => 'Too long',
+    ValidationMessage.minLength: (_) => 'Too short',
+    ValidationMessage.any: (_) => 'Something went wrong',
+    ValidationMessage.required: (_) => 'Should not be empty',
+  };
 
   EdgeInsets _getPadding() {
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;

@@ -29,13 +29,11 @@ void main() async {
 
       runApp(const App());
     },
-    createStorage: () async {
-      return HydratedStorage.build(
-        storageDirectory: kIsWeb
-            ? HydratedStorage.webStorageDirectory
-            : await getTemporaryDirectory(),
-      );
-    },
+    storage: await HydratedStorage.build(
+      storageDirectory: kIsWeb
+          ? HydratedStorage.webStorageDirectory
+          : await getTemporaryDirectory(),
+    ),
   );
 }
 
