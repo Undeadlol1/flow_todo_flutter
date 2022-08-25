@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/presentation/page_layout.dart';
@@ -60,8 +61,8 @@ class TaskPage extends StatelessWidget {
 class _PageBody extends StatelessWidget {
   const _PageBody({
     Key? key,
-    required this.pageArguments,
     required this.task,
+    required this.pageArguments,
   }) : super(key: key);
 
   final TaskPageArguments pageArguments;
@@ -89,7 +90,9 @@ class _PageBody extends StatelessWidget {
             autoFocus: pageArguments.isNoteEditingVisible,
           ),
         const SizedBox(height: 20),
-        PositiveChoices(task: task),
+        CardView(
+          child: PositiveChoices(task: task),
+        ),
         const SizedBox(height: 20),
       ],
     );
