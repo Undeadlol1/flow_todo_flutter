@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
@@ -12,15 +13,19 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_hydrated_storage.dart';
+import '../../../../test_utilities/mocks/mock_stale_task_detector.dart';
 import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 
 void main() {
   setUpAll(() {
     registerFallbackValue(taskFixture);
 
+    final mockStaleTaskDetector = MockStaleTaskDetector();
     final mockTaskRewardCalculator = MockTaskRewardCalculator();
     when(() => mockTaskRewardCalculator(any())).thenReturn(50);
+    when(() => mockStaleTaskDetector.isStale(any())).thenReturn(false);
 
+    GetIt.I.registerSingleton<StaleTaskDetector>(mockStaleTaskDetector);
     GetIt.I.registerSingleton<TaskRewardCalculator>(mockTaskRewardCalculator);
     GetIt.I.registerFactory(() => FilteredTasksCubit());
   });

@@ -8,15 +8,13 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/mocks/mock_go_to_task_page.dart';
+import '../../../../test_utilities/mocks/mock_stale_task_detector.dart';
 import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 
-class _MockGoToTaskpage extends Mock implements GoToTaskPage {}
-
-class _MockStaleTaskDetector extends Mock implements StaleTaskDetector {}
-
 void main() {
-  final mockGoToTaskpage = _MockGoToTaskpage();
-  final mockStaleTaskDetector = _MockStaleTaskDetector();
+  final mockGoToTaskpage = MockGoToTaskPage();
+  final mockStaleTaskDetector = MockStaleTaskDetector();
   final mockTaskRewardCalculator = MockTaskRewardCalculator();
 
   setUpAll(() {
