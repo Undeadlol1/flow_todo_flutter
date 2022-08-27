@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/analytics/data/traces/navigation_to_filter_page_trace.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/selected_tasks.dart';
 import 'package:flutter/foundation.dart';
@@ -54,8 +55,14 @@ class MainPage extends StatelessWidget {
                         children: [
                           SelectedTasks(),
                           TextButton(
-                            onPressed: () => Navigator.of(context)
-                                .pushNamed(FilterTasksPage.pathName),
+                            onPressed: () async {
+                              await GetIt.I<NavigationToFilterPageTrace>()
+                                  .start();
+
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context)
+                                  .pushNamed(FilterTasksPage.pathName);
+                            },
                             child: Row(
                               children: const [
                                 Icon(Icons.manage_search),

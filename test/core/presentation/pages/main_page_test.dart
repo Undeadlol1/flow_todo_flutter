@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/analytics/data/traces/navigation_to_filter_page_trace.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/sign_in_with_google.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
@@ -30,6 +31,9 @@ import '../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 
 class _MockSignInWithGoogle extends Mock implements SignInWithGoogle {}
 
+class _MockNavigateToFilterPageTrace extends Mock
+    implements NavigationToFilterPageTrace {}
+
 late ProfileCubit _profileCubit;
 late AuthentificationCubit _authCubit;
 
@@ -42,6 +46,8 @@ void main() {
         GetIt.I.registerSingleton(FilteredTasksCubit());
       });
       GetIt.I.registerSingleton<SignInWithGoogle>(_MockSignInWithGoogle());
+      GetIt.I.registerSingleton<NavigationToFilterPageTrace>(
+          _MockNavigateToFilterPageTrace());
       GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
       GetIt.I.registerSingleton<StreakDaysInARowCalculator>(
         const StreakDaysInARowCalculator(),
