@@ -32,12 +32,12 @@ class TasksListItem extends StatelessWidget {
       child: ListTile(
         dense: false,
         enableFeedback: true,
-        title: Text(task.title),
+        title: Text(
+          _staleTaskDetector.isStale(task) ? '💩💩💩' : task.title,
+        ),
         selected: task.isSelected,
         subtitle: Text(
-          _staleTaskDetector.isStale(task)
-              ? '💩'
-              : 'Reward: ${_rewardCalculator(task)} experience',
+          'Reward: ${_staleTaskDetector.isStale(task) ? '🤑' : _rewardCalculator(task)} experience',
         ),
         onTap: () => GetIt.I<GoToTaskPage>()(task: task),
         onLongPress: () => GetIt.I<ToggleTaskSelection>()(task),

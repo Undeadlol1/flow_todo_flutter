@@ -8,7 +8,6 @@ class StaleTaskDetector {
 
   get now => DateTime.now();
 
-  // TODO rename
   bool isStale(Task task) {
     final bool isTaskCreatedLongAgo =
         _differenceInDaysWithToday(task.createdAt) > 3;
