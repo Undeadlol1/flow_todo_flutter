@@ -36,7 +36,9 @@ class _FilterTasksPageState extends State<FilterTasksPage> {
             child: SingleChildScrollView(
               child: Column(
                 children: const [
-                  TasksList(),
+                  TasksList(
+                    shouldIgnoreStaleCondition: true,
+                  ),
                 ],
               ),
             ),

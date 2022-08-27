@@ -11,13 +11,20 @@ import '../../domain/use_cases/go_to_task_page.dart';
 
 class TasksListItem extends StatelessWidget {
   final Task task;
-  const TasksListItem({Key? key, required this.task}) : super(key: key);
+  final bool shouldIgnoreStaleCondition;
+  const TasksListItem({
+    Key? key,
+    required this.task,
+    this.shouldIgnoreStaleCondition = false,
+  }) : super(key: key);
 
   static final StaleTaskDetector _staleTaskDetector = GetIt.I();
   static final TaskRewardCalculator _rewardCalculator = GetIt.I();
 
   @override
   Widget build(BuildContext context) {
+    final isTaskStale =
+        shouldIgnoreStaleCondition ? false : _staleTaskDetector.isStale(task);
     return Dismissible(
       key: ValueKey<String>(task.id),
       direction: DismissDirection.startToEnd,
@@ -32,12 +39,10 @@ class TasksListItem extends StatelessWidget {
       child: ListTile(
         dense: false,
         enableFeedback: true,
-        title: Text(
-          _staleTaskDetector.isStale(task) ? '💩💩💩' : task.title,
-        ),
         selected: task.isSelected,
+        title: Text(isTaskStale ? '💩💩💩' : task.title),
         subtitle: Text(
-          'Reward: ${_staleTaskDetector.isStale(task) ? '🤑' : _rewardCalculator(task)} experience',
+          'Reward: ${isTaskStale ? '🤑' : _rewardCalculator(task)} experience',
         ),
         onTap: () => GetIt.I<GoToTaskPage>()(task: task),
         onLongPress: () => GetIt.I<ToggleTaskSelection>()(task),

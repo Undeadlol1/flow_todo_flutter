@@ -11,7 +11,9 @@ import 'filter_tasks_to_do.dart';
 import 'tasks_list_item.dart';
 
 class TasksList extends StatefulWidget {
-  const TasksList({Key? key}) : super(key: key);
+  final bool shouldIgnoreStaleCondition;
+  const TasksList({Key? key, this.shouldIgnoreStaleCondition = false})
+      : super(key: key);
 
   @override
   State<TasksList> createState() => _TasksListState();
@@ -65,7 +67,7 @@ class _TasksListState extends State<TasksList> {
                       : TasksListItem(task: tasksToDisplay.first),
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (_, index) {
-                    return TasksListItem(task: tasksToDisplay[index]);
+                    return TasksListItem(task: tasksToDisplay[index], shouldIgnoreStaleCondition: widget.shouldIgnoreStaleCondition);
                   },
                 ),
               ],
