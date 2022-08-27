@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list_item.dart';
@@ -11,18 +12,23 @@ import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 
 class _MockGoToTaskpage extends Mock implements GoToTaskPage {}
 
+class _MockStaleTaskDetector extends Mock implements StaleTaskDetector {}
+
 void main() {
   final mockGoToTaskpage = _MockGoToTaskpage();
+  final mockStaleTaskDetector = _MockStaleTaskDetector();
   final mockTaskRewardCalculator = MockTaskRewardCalculator();
 
   setUpAll(() {
     registerFallbackValue(taskFixture);
 
     when(() => mockTaskRewardCalculator(any())).thenReturn(50);
+    when(() => mockStaleTaskDetector.isTale(any())).thenReturn(false);
     when(() => mockGoToTaskpage(task: taskFixture)).thenAnswer((_) async {});
 
-    GetIt.I.registerSingleton<TaskRewardCalculator>(mockTaskRewardCalculator);
     GetIt.I.registerFactory<GoToTaskPage>(() => mockGoToTaskpage);
+    GetIt.I.registerSingleton<StaleTaskDetector>(mockStaleTaskDetector);
+    GetIt.I.registerSingleton<TaskRewardCalculator>(mockTaskRewardCalculator);
   });
 
   group('GIVEN TasksListItem', () {

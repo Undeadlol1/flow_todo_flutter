@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/toggle_task_selection.dart';
@@ -12,9 +13,11 @@ class TasksListItem extends StatelessWidget {
   final Task task;
   const TasksListItem({Key? key, required this.task}) : super(key: key);
 
+  static final StaleTaskDetector _staleTaskDetector = GetIt.I();
+  static final TaskRewardCalculator _rewardCalculator = GetIt.I();
+
   @override
   Widget build(BuildContext context) {
-    final TaskRewardCalculator rewardCalculator = GetIt.I();
     return Dismissible(
       key: ValueKey<String>(task.id),
       direction: DismissDirection.startToEnd,
@@ -32,7 +35,9 @@ class TasksListItem extends StatelessWidget {
         title: Text(task.title),
         selected: task.isSelected,
         subtitle: Text(
-          'Reward: ${rewardCalculator(task)} experience',
+          _staleTaskDetector.isTale(task)
+              ? '💩'
+              : 'Reward: ${_rewardCalculator(task)} experience',
         ),
         onTap: () => GetIt.I<GoToTaskPage>()(task: task),
         onLongPress: () => GetIt.I<ToggleTaskSelection>()(task),
