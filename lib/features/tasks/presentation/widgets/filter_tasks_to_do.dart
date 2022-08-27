@@ -131,12 +131,6 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
   String _normalizeString(String string) =>
       string.toLowerCase().replaceAll(' ', '');
 
-  void Function()? _navigateToFilterPageIfNecessary(BuildContext context) {
-    return _isViewerOnFilterPage(context)
-        ? null
-        : () => Navigator.of(context).pushNamed(FilterTasksPage.pathName);
-  }
-
   bool _isViewerOnFilterPage(BuildContext context) =>
       ModalRoute.of(context)?.settings.name == FilterTasksPage.pathName;
 }

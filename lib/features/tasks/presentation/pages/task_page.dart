@@ -90,11 +90,30 @@ class _PageBody extends StatelessWidget {
             autoFocus: pageArguments.isNoteEditingVisible,
           ),
         const SizedBox(height: 20),
+        const _StaleTaskExplanation(),
+        const SizedBox(height: 20),
         CardView(
           child: PositiveChoices(task: task),
         ),
         const SizedBox(height: 20),
       ],
+    );
+  }
+}
+
+class _StaleTaskExplanation extends StatelessWidget {
+  const _StaleTaskExplanation({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: const Text(
+        '💩 '
+        'Your task is stale. It\'s title is going to be hidden from tasks list in order to prompt you to come back to it more often.',
+        style: TextStyle(fontStyle: FontStyle.italic),
+      ),
     );
   }
 }
