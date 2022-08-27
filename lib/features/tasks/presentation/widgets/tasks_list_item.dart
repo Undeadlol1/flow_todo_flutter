@@ -35,7 +35,7 @@ class TasksListItem extends StatelessWidget {
         title: Text(task.title),
         selected: task.isSelected,
         subtitle: Text(
-          _staleTaskDetector.isTale(task)
+          _staleTaskDetector.isStale(task)
               ? '💩'
               : 'Reward: ${_rewardCalculator(task)} experience',
         ),

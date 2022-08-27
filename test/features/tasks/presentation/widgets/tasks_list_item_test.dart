@@ -23,7 +23,7 @@ void main() {
     registerFallbackValue(taskFixture);
 
     when(() => mockTaskRewardCalculator(any())).thenReturn(50);
-    when(() => mockStaleTaskDetector.isTale(any())).thenReturn(false);
+    when(() => mockStaleTaskDetector.isStale(any())).thenReturn(false);
     when(() => mockGoToTaskpage(task: taskFixture)).thenAnswer((_) async {});
 
     GetIt.I.registerFactory<GoToTaskPage>(() => mockGoToTaskpage);
