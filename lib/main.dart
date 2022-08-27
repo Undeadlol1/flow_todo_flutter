@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:isolate';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,17 +27,13 @@ void main() async {
 
       _configureCrashlytics();
 
+      _configurePerformanceMonitoring();
+
       _configureDI();
 
       runApp(const App());
     },
-    createStorage: () async {
-      return HydratedStorage.build(
-        storageDirectory: kIsWeb
-            ? HydratedStorage.webStorageDirectory
-            : await getTemporaryDirectory(),
-      );
-    },
+    createStorage: _createStateStorage,
   );
 }
 
@@ -77,4 +75,16 @@ void _configureCrashlytics() {
       }).sendPort,
     );
   }
+}
+
+void _configurePerformanceMonitoring() {
+  FirebasePerformance.instance.setPerformanceCollectionEnabled(kReleaseMode);
+}
+
+FutureOr<Storage> _createStateStorage() async {
+  return HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getTemporaryDirectory(),
+  );
 }

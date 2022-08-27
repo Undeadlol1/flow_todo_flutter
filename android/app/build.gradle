@@ -31,6 +31,7 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 // https://firebase.flutter.dev/docs/manual-installation/android/
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
