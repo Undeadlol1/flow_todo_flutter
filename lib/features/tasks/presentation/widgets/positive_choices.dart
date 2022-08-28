@@ -29,7 +29,7 @@ class PositiveChoices extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.favorite),
           title: _buildText('Made step forward'),
-          subtitle: const _Subtitle(reward: 20),
+          subtitle: _Subtitle(reward: _rewardCalculator.stepForward(task)),
           onTap: () {
             _makeStepForward(
               task: task,
@@ -40,7 +40,7 @@ class PositiveChoices extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.emoji_emotions),
           title: _buildText('Advanced a lot'),
-          subtitle: const _Subtitle(reward: 30),
+          subtitle: _Subtitle(reward: _rewardCalculator.leapForward(task)),
           onTap: () {
             _makeStepForward(
               task: task,
@@ -51,7 +51,7 @@ class PositiveChoices extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.check),
           title: _buildText('Done'),
-          subtitle: _Subtitle(reward: _rewardCalculator(task)),
+          subtitle: _Subtitle(reward: _rewardCalculator.taskCompletion(task)),
           onTap: () {
             _makeStepForward(
               task: task,

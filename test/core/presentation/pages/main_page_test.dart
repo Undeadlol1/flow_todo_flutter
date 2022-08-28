@@ -47,7 +47,8 @@ void main() {
       });
       GetIt.I.registerSingleton<SignInWithGoogle>(_MockSignInWithGoogle());
       GetIt.I.registerSingleton<NavigationToFilterPageTrace>(
-          _MockNavigateToFilterPageTrace());
+        _MockNavigateToFilterPageTrace(),
+      );
       GetIt.I.registerSingleton<UserLevelCalculator>(FakeUserLevelCalculator());
       GetIt.I.registerSingleton<StreakDaysInARowCalculator>(
         const StreakDaysInARowCalculator(),
@@ -136,7 +137,7 @@ void _setupTaskRewardCalculatorMock() {
   registerFallbackValue(taskFixture);
 
   final mockTaskRewardCalculator = MockTaskRewardCalculator();
-  when(() => mockTaskRewardCalculator(any())).thenReturn(50);
+  when(() => mockTaskRewardCalculator.taskCompletion(any())).thenReturn(50);
 
   GetIt.I.registerSingleton<TaskRewardCalculator>(mockTaskRewardCalculator);
 }

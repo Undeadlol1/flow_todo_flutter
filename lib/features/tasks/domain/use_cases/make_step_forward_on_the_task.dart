@@ -156,10 +156,10 @@ class MakeStepForwardOnTheTask {
     Task task,
   ) {
     return isTaskDone
-        ? rewardCalculator(task)
+        ? rewardCalculator.taskCompletion(task)
         : howBigWasTheStep == Confidence.good
-            ? 30
-            : 20;
+            ? rewardCalculator.leapForward(task)
+            : rewardCalculator.stepForward(task);
   }
 
   void _displaySnackbar(bool isTaskDone, Task updatedTask) {

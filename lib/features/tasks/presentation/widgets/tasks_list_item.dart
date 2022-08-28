@@ -46,7 +46,7 @@ class TasksListItem extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
-          'Reward: ${isTaskStale ? '🤑' : _rewardCalculator(task)} experience',
+          'Reward: ${isTaskStale ? '🤑' : _rewardCalculator.taskCompletion(task)} experience',
         ),
         onTap: () => GetIt.I<GoToTaskPage>()(task: task),
         onLongPress: () => GetIt.I<ToggleTaskSelection>()(task),

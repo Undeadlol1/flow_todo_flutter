@@ -21,7 +21,9 @@ void main() {
       registerFallbackValue(taskFixture);
 
       final mockTaskRewardCalculator = MockTaskRewardCalculator();
-      when(() => mockTaskRewardCalculator(any())).thenReturn(50);
+      when(() => mockTaskRewardCalculator.taskCompletion(any())).thenReturn(50);
+      when(() => mockTaskRewardCalculator.stepForward(any())).thenReturn(50);
+      when(() => mockTaskRewardCalculator.leapForward(any())).thenReturn(50);
 
       GetIt.I.registerSingleton<TaskRewardCalculator>(mockTaskRewardCalculator);
       GetIt.I.registerSingleton<MakeStepForwardOnTheTask>(

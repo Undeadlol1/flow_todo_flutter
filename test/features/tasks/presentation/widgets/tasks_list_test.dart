@@ -27,7 +27,7 @@ void main() {
 
     registerFallbackValue(taskFixture);
 
-    when(() => mockTaskRewardCalculator(any())).thenReturn(50);
+    when(() => mockTaskRewardCalculator.taskCompletion(any())).thenReturn(50);
     when(() => mockStaleTaskDetector.isStale(any())).thenReturn(false);
     when(() => mockFirebaseRemoteConfig.getBool(any())).thenReturn(false);
 

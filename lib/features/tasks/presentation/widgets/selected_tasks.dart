@@ -56,11 +56,13 @@ class SelectedTasks extends StatelessWidget {
   }
 
   int _getTotalExperience(List<Task> tasks) {
-    final totalExperience =
-        tasks.map((task) => taskRewardCalculator(task)).toList().fold(
-              0,
-              (int previous, int current) => previous + current,
-            );
+    final totalExperience = tasks
+        .map((task) => taskRewardCalculator.taskCompletion(task))
+        .toList()
+        .fold(
+          0,
+          (int previous, int current) => previous + current,
+        );
     return totalExperience;
   }
 }

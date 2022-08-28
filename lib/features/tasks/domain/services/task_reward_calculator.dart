@@ -5,11 +5,22 @@ import 'package:injectable/injectable.dart';
 class TaskRewardCalculator {
   const TaskRewardCalculator();
 
-  int call(Task task) {
-    final taskPlusDaysSinceCreation =
+  int taskCompletion(Task task) {
+    final completionRewardPlusDaysSinceCreation =
         50 + DateTime.now().difference(task.createdAt).inDays;
 
-    return (taskPlusDaysSinceCreation * (task.isSelected ? 2 : 1)) *
+    return _addMultiplicationBonuses(
+      completionRewardPlusDaysSinceCreation,
+      task,
+    );
+  }
+
+  int stepForward(Task task) => _addMultiplicationBonuses(20, task);
+
+  int leapForward(Task task) => _addMultiplicationBonuses(30, task);
+
+  int _addMultiplicationBonuses(int rewardAmountBase, Task task) {
+    return (rewardAmountBase * (task.isSelected ? 2 : 1)) *
         (task.isStale ? 2 : 1);
   }
 }
