@@ -89,8 +89,11 @@ class _PageBody extends StatelessWidget {
             note: task.note,
             autoFocus: pageArguments.isNoteEditingVisible,
           ),
-        const SizedBox(height: 20),
-        const _StaleTaskExplanation(),
+        if (task.isStale)
+          const Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: _StaleTaskExplanation(),
+          ),
         const SizedBox(height: 20),
         CardView(
           child: PositiveChoices(task: task),
