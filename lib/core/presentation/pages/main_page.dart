@@ -54,6 +54,8 @@ class MainPage extends StatelessWidget {
                   if (isProfileLoaded) const PlayerProgressSummary(),
                   Expanded(
                     child: SingleChildScrollView(
+                      primary: true,
+                      physics: const ClampingScrollPhysics(),
                       child: Column(
                         children: [
                           SelectedTasks(),
