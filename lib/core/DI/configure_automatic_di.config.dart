@@ -118,11 +118,10 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i19.SelectedTasksCubit>(_i19.SelectedTasksCubit());
   gh.factory<_i20.SnackbarService>(() => _i20.SnackbarService(
       buildContextProvider: get<_i15.BuildContextProvider>()));
-  gh.factory<_i21.StaleTaskDetector>(() => _i21.StaleTaskDetector());
+  gh.lazySingleton<_i21.StaleTaskDetector>(() => _i21.StaleTaskDetector());
   gh.lazySingleton<_i22.StreakDaysInARowCalculator>(
       () => _i22.StreakDaysInARowCalculator());
-  gh.lazySingleton<_i23.TaskRewardCalculator>(
-      () => _i23.TaskRewardCalculator());
+  gh.factory<_i23.TaskRewardCalculator>(() => _i23.TaskRewardCalculator());
   gh.singleton<_i24.TasksCubit>(_i24.TasksCubit());
   gh.singleton<_i25.TasksWorkedOnTodayCubit>(_i25.TasksWorkedOnTodayCubit());
   gh.singleton<_i26.UniqueIdGenerator>(_i26.UniqueIdGenerator());

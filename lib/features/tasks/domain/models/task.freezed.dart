@@ -254,7 +254,7 @@ class __$$_TaskCopyWithImpl<$Res> extends _$TaskCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$_Task implements _Task {
+class _$_Task extends _Task {
   const _$_Task(
       {required this.id,
       required this.isDone,
@@ -270,7 +270,8 @@ class _$_Task implements _Task {
       this.repetitionLevel,
       this.isSelected = false})
       : _tags = tags,
-        _history = history;
+        _history = history,
+        super._();
 
   factory _$_Task.fromJson(Map<String, dynamic> json) => _$$_TaskFromJson(json);
 
@@ -378,7 +379,7 @@ class _$_Task implements _Task {
   }
 }
 
-abstract class _Task implements Task {
+abstract class _Task extends Task {
   const factory _Task(
       {required final String id,
       required final bool isDone,
@@ -401,6 +402,7 @@ abstract class _Task implements Task {
           final DateTime? updatedAt,
       final int? repetitionLevel,
       final bool isSelected}) = _$_Task;
+  const _Task._() : super._();
 
   factory _Task.fromJson(Map<String, dynamic> json) = _$_Task.fromJson;
 

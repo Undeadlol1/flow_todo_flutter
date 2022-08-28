@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 
 import '../models/task.dart';
 
-@injectable
+@lazySingleton
 class StaleTaskDetector {
   StaleTaskDetector();
 
