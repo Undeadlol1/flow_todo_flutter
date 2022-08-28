@@ -40,7 +40,11 @@ class TasksListItem extends StatelessWidget {
         dense: false,
         enableFeedback: true,
         selected: task.isSelected,
-        title: Text(isTaskStale ? '💩💩💩' : task.title),
+        title: Text(
+          isTaskStale ? '💩💩💩' : task.title,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
         subtitle: Text(
           'Reward: ${isTaskStale ? '🤑' : _rewardCalculator(task)} experience',
         ),
