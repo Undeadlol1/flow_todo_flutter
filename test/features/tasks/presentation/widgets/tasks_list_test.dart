@@ -21,13 +21,12 @@ class _MockFirebaseRemoteConfig extends Mock implements FirebaseRemoteConfig {}
 
 void main() {
   setUpAll(() {
+    final mockStaleTaskDetector = MockStaleTaskDetector();
     final mockTaskRewardCalculator = MockTaskRewardCalculator();
     final mockFirebaseRemoteConfig = _MockFirebaseRemoteConfig();
 
     registerFallbackValue(taskFixture);
 
-    final mockStaleTaskDetector = MockStaleTaskDetector();
-    final mockTaskRewardCalculator = MockTaskRewardCalculator();
     when(() => mockTaskRewardCalculator(any())).thenReturn(50);
     when(() => mockStaleTaskDetector.isStale(any())).thenReturn(false);
     when(() => mockFirebaseRemoteConfig.getBool(any())).thenReturn(false);
