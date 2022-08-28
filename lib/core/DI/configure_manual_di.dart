@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/leveling/domain/entities/default_leveling_config.dart';
@@ -18,6 +19,8 @@ void configureManualDI() {
     () => firebase_auth.FirebaseAuth.instance,
   );
   injector.registerFactory<FirebaseAnalytics>(() => FirebaseAnalytics.instance);
+  injector.registerFactory<FirebaseRemoteConfig>(
+      () => FirebaseRemoteConfig.instance);
   injector
       .registerFactory<FirebaseCrashlytics>(() => FirebaseCrashlytics.instance);
   injector.registerSingleton(BuildContextProvider());

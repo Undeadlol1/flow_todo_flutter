@@ -1,29 +1,36 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../cubit/tasks_cubit.dart';
 
 class TagsList extends StatelessWidget {
   const TagsList({Key? key}) : super(key: key);
+  static final _remoteConfig = GetIt.I<FirebaseRemoteConfig>();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TasksCubit, TasksState>(
       buildWhen: _haveTagsChanged,
       builder: (context, tasksState) {
-        return Wrap(
-          children: _getTags(tasksState)
-              .map(
-                (tag) => Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Chip(
-                    label: Text(tag),
+        if (_remoteConfig.getBool('are_tags_enabled')) {
+          return Wrap(
+            children: _getTags(tasksState)
+                .map(
+                  (tag) => Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Chip(
+                      label: Text(tag),
+                    ),
                   ),
-                ),
-              )
-              .toList(),
-        );
+                )
+                .toList(),
+          );
+        } else {
+          return const SizedBox();
+        }
       },
     );
   }

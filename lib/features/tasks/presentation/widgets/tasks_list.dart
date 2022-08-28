@@ -1,6 +1,7 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tags_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -59,6 +60,7 @@ class _TasksListState extends State<TasksList> {
                       ),
                     ),
                   ),
+                const TagsList(),
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: tasksToDisplay.length,
