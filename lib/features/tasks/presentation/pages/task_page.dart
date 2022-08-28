@@ -40,18 +40,16 @@ class TaskPage extends StatelessWidget {
             right: 0,
             child: IconButton(
               key: const Key('edit menu'),
+              icon: const Icon(Icons.more_vert),
               onPressed: () => showModalBottomSheet(
                 context: context,
                 builder: (_) => NegativeChoices(task: task),
               ),
-              icon: const Icon(Icons.more_vert),
             ),
           ),
           args.isNoteEditingVisible || task.note.isNotEmpty
-              ? SingleChildScrollView(
-                  child: _PageBody(pageArguments: args, task: task),
-                )
-              : _PageBody(pageArguments: args, task: task)
+              ? const SingleChildScrollView(child: _PageBody())
+              : const _PageBody()
         ],
       ),
     );
@@ -59,17 +57,13 @@ class TaskPage extends StatelessWidget {
 }
 
 class _PageBody extends StatelessWidget {
-  const _PageBody({
-    Key? key,
-    required this.task,
-    required this.pageArguments,
-  }) : super(key: key);
-
-  final TaskPageArguments pageArguments;
-  final Task task;
+  const _PageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final pageArguments =
+        ModalRoute.of(context)!.settings.arguments as TaskPageArguments;
+    final task = pageArguments.task;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
