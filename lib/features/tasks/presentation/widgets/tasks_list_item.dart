@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
@@ -30,6 +31,8 @@ class TasksListItem extends StatelessWidget {
       direction: DismissDirection.startToEnd,
       background: const _DismissibleBackground(),
       onDismissed: (DismissDirection direction) {
+        GetIt.I<FirebaseAnalytics>()
+            .logEvent(name: 'swiped to complete the task');
         GetIt.I<MakeStepForwardOnTheTask>()(
           task: task,
           isTaskDone: true,
