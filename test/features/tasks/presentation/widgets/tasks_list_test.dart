@@ -26,12 +26,12 @@ void main() {
 
     registerFallbackValue(taskFixture);
 
-    when(() => mockTaskRewardCalculator.taskCompletion(any())).thenReturn(50);
     when(() => mockStaleTaskDetector.isStale(any())).thenReturn(false);
     when(() => mockFirebaseRemoteConfig.getBool(any())).thenReturn(false);
+    when(() => mockTaskRewardCalculator.taskCompletion(any())).thenReturn(50);
 
-    GetIt.I.registerSingleton<StaleTaskDetector>(mockStaleTaskDetector);
     GetIt.I.registerFactory(() => FilteredTasksCubit());
+    GetIt.I.registerSingleton<StaleTaskDetector>(mockStaleTaskDetector);
     GetIt.I.registerSingleton<TaskRewardCalculator>(mockTaskRewardCalculator);
     GetIt.I.registerSingleton<FirebaseRemoteConfig>(mockFirebaseRemoteConfig);
   });
