@@ -20,7 +20,8 @@ void configureManualDI() {
   );
   injector.registerFactory<FirebaseAnalytics>(() => FirebaseAnalytics.instance);
   injector.registerFactory<FirebaseRemoteConfig>(
-      () => FirebaseRemoteConfig.instance);
+    () => FirebaseRemoteConfig.instance,
+  );
   injector
       .registerFactory<FirebaseCrashlytics>(() => FirebaseCrashlytics.instance);
   injector.registerSingleton(BuildContextProvider());

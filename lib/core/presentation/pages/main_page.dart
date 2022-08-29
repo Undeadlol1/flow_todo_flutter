@@ -58,7 +58,7 @@ class MainPage extends StatelessWidget {
                       physics: const ClampingScrollPhysics(),
                       child: Column(
                         children: [
-                          SelectedTasks(),
+                          const SelectedTasks(),
                           TextButton(
                             onPressed: () async {
                               await GetIt.I<NavigationToFilterPageTrace>()

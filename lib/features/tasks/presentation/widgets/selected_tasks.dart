@@ -1,3 +1,4 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
@@ -9,15 +10,19 @@ import 'package:get_it/get_it.dart';
 import 'tasks_list_item.dart';
 
 class SelectedTasks extends StatelessWidget {
-  SelectedTasks({Key? key}) : super(key: key);
+  const SelectedTasks({Key? key}) : super(key: key);
   static const _textPadding = EdgeInsets.symmetric(horizontal: 14);
-  final TaskRewardCalculator taskRewardCalculator = GetIt.I();
+  static final FirebaseRemoteConfig firebaseRemoteConfig = GetIt.I();
+  static final TaskRewardCalculator taskRewardCalculator = GetIt.I();
 
   @override
   build(context) {
     return BlocBuilder<TasksCubit, TasksState>(
       builder: (context, tasksState) {
         final tasks = tasksState.tasks.where((i) => i.isSelected).toList();
+        final totalExperience = _getTotalExperience(tasks);
+        final isOnlyASingleTaskAllowed = firebaseRemoteConfig
+            .getBool('is_only_single_selected_task_allowed');
 
         if (tasks.isEmpty) {
           return const SizedBox();
@@ -30,14 +35,14 @@ class SelectedTasks extends StatelessWidget {
               Padding(
                 padding: _textPadding,
                 child: Text(
-                  'Selected tasks:',
+                  'Selected task${isOnlyASingleTaskAllowed ? '' : 's'}:',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
               Padding(
                 padding: _textPadding,
                 child: Text(
-                  '(${_getTotalExperience(tasks)} total experience) (rewards are doubled)',
+                  '${isOnlyASingleTaskAllowed ? '' : '($totalExperience total experience) '}(rewards are doubled)',
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
               ),
