@@ -7,6 +7,7 @@ import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_ma
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/selected_tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/filter_tasks_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,6 +36,7 @@ class _AppState extends State<App> {
   static final FirebaseAnalyticsObserver _firebaseAnalyticsObserver =
       FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance);
 
+  final TagsCubit tagsCubit = GetIt.I();
   final TasksCubit tasksCubit = GetIt.I();
   final GoalsCubit goalsCubit = GetIt.I();
   final ProfileCubit profileCubit = GetIt.I();
@@ -101,6 +103,7 @@ class _AppState extends State<App> {
       textDirection: TextDirection.ltr,
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(create: (_) => tagsCubit),
           BlocProvider(create: (_) => tasksCubit),
           BlocProvider(create: (_) => goalsCubit),
           BlocProvider(create: (_) => profileCubit),
@@ -143,6 +146,7 @@ class _AppState extends State<App> {
   void _syncFirebaseAuthWithAuthenticationCubit(firebase_auth.User? user) {
     log('user: ${user?.email.toString()}');
     if (user == null) {
+      tagsCubit.update({});
       goalsCubit.update([]);
       tasksCubit.updateList([]);
       selectedTasksCubit.update([]);

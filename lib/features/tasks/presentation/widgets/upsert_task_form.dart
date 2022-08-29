@@ -137,10 +137,11 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
   Map<String, dynamic>? _extractTagsToDisplayThem(
     AbstractControl<dynamic> control,
   ) {
+    final String text = control.value ?? '';
     final tagsRegExp =
         RegExp(r'#([^\s]+)+', caseSensitive: false, multiLine: true);
     final Set<String> extractedTags = tagsRegExp
-        .allMatches(control.value)
+        .allMatches(text)
         .map((e) => e[1] ?? '')
         .map((e) => e.toLowerCase())
         .toSet();
