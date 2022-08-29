@@ -8,9 +8,7 @@ class CreateTaskFAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {
-        GetIt.I<GoToTaskCreation>()();
-      },
+      onPressed: () => GetIt.I<GoToTaskCreation>()(),
       child: const Icon(Icons.add),
     );
   }

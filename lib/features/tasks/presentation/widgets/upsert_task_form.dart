@@ -30,7 +30,7 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
           Validators.required,
           Validators.minLength(3),
           Validators.maxLength(100)
-        ], // custom validator
+        ],
       ),
     },
   );
