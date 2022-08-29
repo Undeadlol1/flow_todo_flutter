@@ -33,14 +33,15 @@ void main() {
     GetIt.I.registerSingleton<CreateTask>(_mockCreateTask);
     GetIt.I.registerSingleton<UpdateTask>(_mockUpdateTask);
     GetIt.I.registerSingleton<SnackbarService>(MockSnackbarService());
+
+    when(_typicaTaskUpdateCall).thenAnswer(Future.value);
+    when(_typicalTaskCreateCall).thenAnswer(Future.value);
   });
 
   group('GIVEN UpsertTaskForm', () {
     testWidgets(
       'WHEN text input is submitted THEN creates task',
       (tester) async {
-        when(_typicalTaskCreateCall).thenAnswer((_) async {});
-
         await tester.pumpAndSumbitSomeText();
 
         verify(_typicalTaskCreateCall).called(1);
@@ -52,11 +53,7 @@ void main() {
       'AND taskToUpdate argument is provided '
       'THEN updates the task',
       (tester) async {
-        when(_typicaTaskUpdateCall).thenAnswer((_) async {});
-        when(_typicalTaskCreateCall).thenAnswer((_) async {});
-
-        await tester.pumpWithDependencies(shouldUpdateTask: true);
-        await _submitSomeText(tester);
+        await tester.pumpAndSumbitSomeText(shouldUpdateTask: true);
 
         verify(_typicaTaskUpdateCall).called(1);
         verifyNever(_typicalTaskCreateCall);
@@ -98,10 +95,16 @@ extension on WidgetTester {
 }
 
 extension on WidgetTester {
-  Future<void> pumpAndSumbitSomeText() async {
-    await pumpWithDependencies();
+  Future<void> pumpAndSumbitSomeText({bool shouldUpdateTask = false}) async {
+    await pumpWithDependencies(shouldUpdateTask: shouldUpdateTask);
     await _submitSomeText(this);
   }
+}
+
+Future<void> _submitSomeText(WidgetTester tester) async {
+  await tester.enterText(find.byType(TextField), taskName);
+  await tester.testTextInput.receiveAction(TextInputAction.done);
+  await tester.pumpAndSettle();
 }
 
 Future<void> _typicalTaskCreateCall() =>
@@ -109,9 +112,3 @@ Future<void> _typicalTaskCreateCall() =>
 
 Future<void> _typicaTaskUpdateCall() =>
     _mockUpdateTask(taskFixture.copyWith(title: taskName));
-
-Future<void> _submitSomeText(WidgetTester tester) async {
-  await tester.enterText(find.byType(TextField), taskName);
-  await tester.testTextInput.receiveAction(TextInputAction.done);
-  await tester.pumpAndSettle();
-}
