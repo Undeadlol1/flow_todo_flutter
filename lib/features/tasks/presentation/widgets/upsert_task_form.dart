@@ -1,5 +1,7 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/update_task.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -20,7 +22,11 @@ class UpsertTaskForm extends StatefulWidget {
 class _UpsertTaskFormState extends State<UpsertTaskForm> {
   static const _formControlName = 'title';
 
+  static final _remoteConfig = GetIt.I<FirebaseRemoteConfig>();
+
   String? _formError;
+
+  List<String> tags = [];
 
   late final _form = FormGroup(
     {
@@ -29,7 +35,8 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
         validators: [
           Validators.required,
           Validators.minLength(3),
-          Validators.maxLength(100)
+          Validators.maxLength(100),
+          _extractTagsToDisplayThem,
         ],
       ),
     },
@@ -69,6 +76,10 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
                   ],
                 ),
               ),
+              if (_remoteConfig.getBool('are_tags_enabled') && tags.isNotEmpty)
+                Column(
+                  children: tags.map((tag) => Text(tag)).toList(),
+                )
             ],
           ),
         );
@@ -121,6 +132,22 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
       ValidationMessage.any: 'Something went wrong',
       ValidationMessage.required: 'Should not be empty',
     };
+  }
+
+  Map<String, dynamic>? _extractTagsToDisplayThem(
+    AbstractControl<dynamic> control,
+  ) {
+    final String text = control.value ?? '';
+    final tagsRegExp =
+        RegExp(r'#([^\s]+)+', caseSensitive: false, multiLine: true);
+    final List<String> extractedTags =
+        tagsRegExp.allMatches(text).map((e) => e[1] ?? '').toList();
+
+    if (!listEquals(tags, extractedTags)) {
+      setState(() => tags = extractedTags);
+    }
+
+    return null;
   }
 
   EdgeInsets _getPadding() {
