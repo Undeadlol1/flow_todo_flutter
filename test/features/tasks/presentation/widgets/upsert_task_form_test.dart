@@ -41,8 +41,7 @@ void main() {
       (tester) async {
         when(_typicalTaskCreateCall).thenAnswer((_) async {});
 
-        await _pumpWidget(tester);
-        await _submitSomeText(tester);
+        await tester.pumpAndSumbitSomeText();
 
         verify(_typicalTaskCreateCall).called(1);
       },
@@ -56,7 +55,7 @@ void main() {
         when(_typicaTaskUpdateCall).thenAnswer((_) async {});
         when(_typicalTaskCreateCall).thenAnswer((_) async {});
 
-        await _pumpWidget(tester, shouldUpdateTask: true);
+        await tester.pumpWithDependencies(shouldUpdateTask: true);
         await _submitSomeText(tester);
 
         verify(_typicaTaskUpdateCall).called(1);
@@ -70,8 +69,7 @@ void main() {
         final exception = Exception('Any error string');
         when(_typicalTaskCreateCall).thenThrow(exception);
 
-        await _pumpWidget(tester);
-        await _submitSomeText(tester);
+        await tester.pumpAndSumbitSomeText();
 
         expect(find.text(exception.toString()), findsOneWidget);
       },
@@ -79,22 +77,31 @@ void main() {
   });
 }
 
-Future<void> _pumpWidget(WidgetTester tester, {bool shouldUpdateTask = false}) {
-  return tester.pumpWidget(
-    BlocProvider<AuthentificationCubit>(
-      create: (context) => _fakeAuthenticatedCubit,
-      child: MaterialApp(
-        navigatorObservers: [_MockNavigatorObserver()],
-        home: Scaffold(
-          body: SingleChildScrollView(
-            child: UpsertTaskForm(
-              taskToUpdate: shouldUpdateTask ? taskFixture : null,
+extension on WidgetTester {
+  Future<void> pumpWithDependencies({bool shouldUpdateTask = false}) async {
+    return pumpWidget(
+      BlocProvider<AuthentificationCubit>(
+        create: (context) => _fakeAuthenticatedCubit,
+        child: MaterialApp(
+          navigatorObservers: [_MockNavigatorObserver()],
+          home: Scaffold(
+            body: SingleChildScrollView(
+              child: UpsertTaskForm(
+                taskToUpdate: shouldUpdateTask ? taskFixture : null,
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
+}
+
+extension on WidgetTester {
+  Future<void> pumpAndSumbitSomeText() async {
+    await pumpWithDependencies();
+    await _submitSomeText(this);
+  }
 }
 
 Future<void> _typicalTaskCreateCall() =>
