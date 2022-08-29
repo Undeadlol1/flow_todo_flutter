@@ -26,7 +26,7 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
 
   String? _formError;
 
-  List<String> tags = [];
+  Set<String> tags = {};
 
   late final _form = FormGroup(
     {
@@ -137,13 +137,15 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
   Map<String, dynamic>? _extractTagsToDisplayThem(
     AbstractControl<dynamic> control,
   ) {
-    final String text = control.value ?? '';
     final tagsRegExp =
         RegExp(r'#([^\s]+)+', caseSensitive: false, multiLine: true);
-    final List<String> extractedTags =
-        tagsRegExp.allMatches(text).map((e) => e[1] ?? '').toList();
+    final Set<String> extractedTags = tagsRegExp
+        .allMatches(control.value)
+        .map((e) => e[1] ?? '')
+        .map((e) => e.toLowerCase())
+        .toSet();
 
-    if (!listEquals(tags, extractedTags)) {
+    if (!setEquals(tags, extractedTags)) {
       setState(() => tags = extractedTags);
     }
 
