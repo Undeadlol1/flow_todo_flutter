@@ -1,3 +1,4 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flow_todo_flutter_2022/features/analytics/data/traces/navigation_to_filter_page_trace.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/sign_in_with_google.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
@@ -25,6 +26,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../test_utilities/fakes/fake_user_level_calculator.dart';
 import '../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../test_utilities/mocks/mock_hydrated_storage.dart';
 import '../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
 import '../../../test_utilities/mocks/mock_task_reward_calculator.dart';
@@ -41,6 +43,10 @@ void main() {
   group('GIVEN MainPage', () {
     setUpAll(() {
       _setupTaskRewardCalculatorMock();
+
+      final mockFirebaseRemoteConfig = MockFirebaseRemoteConfig();
+      when(() => mockFirebaseRemoteConfig.getBool(any())).thenReturn(false);
+      GetIt.I.registerSingleton<FirebaseRemoteConfig>(mockFirebaseRemoteConfig);
 
       mockHydratedStorage(() {
         GetIt.I.registerSingleton(FilteredTasksCubit());

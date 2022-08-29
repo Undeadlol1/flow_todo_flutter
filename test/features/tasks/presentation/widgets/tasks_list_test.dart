@@ -13,17 +13,16 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../../test_utilities/mocks/mock_hydrated_storage.dart';
 import '../../../../test_utilities/mocks/mock_stale_task_detector.dart';
 import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
-
-class _MockFirebaseRemoteConfig extends Mock implements FirebaseRemoteConfig {}
 
 void main() {
   setUpAll(() {
     final mockStaleTaskDetector = MockStaleTaskDetector();
     final mockTaskRewardCalculator = MockTaskRewardCalculator();
-    final mockFirebaseRemoteConfig = _MockFirebaseRemoteConfig();
+    final mockFirebaseRemoteConfig = MockFirebaseRemoteConfig();
 
     registerFallbackValue(taskFixture);
 
