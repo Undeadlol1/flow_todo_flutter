@@ -27,15 +27,18 @@ class CreateTask {
     required this.createTaskRepository,
   });
 
-  Future<void> call({required String title, required String userId}) async {
+  Future<void> call({
+    required String title,
+    required String userId,
+    required List<String> tags,
+  }) async {
     final profileState = profileCubit.state;
     final taskToCreate = Task(
-      tags: [],
       note: '',
+      tags: tags,
       history: [],
       isDone: false,
       userId: userId,
-      // NOTE .trim is not tested.
       title: title.trim(),
       id: uniqueIdGenerator(),
       dueAt: getTodaysDate(),
