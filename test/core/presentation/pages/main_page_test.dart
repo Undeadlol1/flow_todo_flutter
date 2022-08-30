@@ -1,3 +1,4 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flow_todo_flutter_2022/features/analytics/data/traces/navigation_to_filter_page_trace.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/sign_in_with_google.dart';
@@ -10,6 +11,7 @@ import 'package:flow_todo_flutter_2022/core/presentation/pages/main_page.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/selected_tasks.dart';
@@ -29,6 +31,7 @@ import '../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../test_utilities/mocks/mock_hydrated_storage.dart';
 import '../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
+import '../../../test_utilities/mocks/mock_tags_cubit.dart';
 import '../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 
 class _MockSignInWithGoogle extends Mock implements SignInWithGoogle {}
@@ -38,15 +41,16 @@ class _MockNavigateToFilterPageTrace extends Mock
 
 late ProfileCubit _profileCubit;
 late AuthentificationCubit _authCubit;
+final _tagsCubit = MockTagsCubit();
 
 void main() {
   group('GIVEN MainPage', () {
     setUpAll(() {
       _setupTaskRewardCalculatorMock();
 
-      final mockFirebaseRemoteConfig = MockFirebaseRemoteConfig();
-      when(() => mockFirebaseRemoteConfig.getBool(any())).thenReturn(false);
-      GetIt.I.registerSingleton<FirebaseRemoteConfig>(mockFirebaseRemoteConfig);
+      _setupRemoteConfigMock();
+
+      _setupTagsCubitMock();
 
       mockHydratedStorage(() {
         GetIt.I.registerSingleton(FilteredTasksCubit());
@@ -139,6 +143,21 @@ void main() {
   });
 }
 
+void _setupRemoteConfigMock() {
+  final mockFirebaseRemoteConfig = MockFirebaseRemoteConfig();
+  when(() => mockFirebaseRemoteConfig.getBool(any())).thenReturn(false);
+  GetIt.I.registerSingleton<FirebaseRemoteConfig>(mockFirebaseRemoteConfig);
+}
+
+void _setupTagsCubitMock() {
+  whenListen(
+    _tagsCubit,
+    Stream.value(TagsState({})),
+    initialState: TagsState({}),
+  );
+  when(() => _tagsCubit.close()).thenAnswer((_) async {});
+}
+
 void _setupTaskRewardCalculatorMock() {
   registerFallbackValue(taskFixture);
 
@@ -154,10 +173,11 @@ extension _PumpWithScaffold on WidgetTester {
       return await pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider(create: (context) => _authCubit),
-            BlocProvider(create: (context) => TasksCubit()),
-            BlocProvider(create: (context) => _profileCubit),
-            BlocProvider(create: (context) => TasksWorkedOnTodayCubit()),
+            BlocProvider(create: (_) => _authCubit),
+            BlocProvider(create: (_) => TasksCubit()),
+            BlocProvider(create: (_) => _profileCubit),
+            BlocProvider<TagsCubit>(create: (_) => _tagsCubit),
+            BlocProvider(create: (_) => TasksWorkedOnTodayCubit()),
           ],
           child: const MaterialApp(
             home: MainPage(),

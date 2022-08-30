@@ -25,15 +25,15 @@ class TagsList extends StatelessWidget {
                       (tag) => Container(
                         margin: const EdgeInsets.symmetric(horizontal: 5),
                         child: ChoiceChip(
+                          selected: tagsState.tags.contains(tag),
+                          // TODO extract into a use case
                           onSelected: (_) {
-                            // TODO extract into a use case
                             tagsState.tags.contains(tag)
                                 ? tagsState.tags.remove(tag)
                                 : tagsState.tags.add(tag);
                             BlocProvider.of<TagsCubit>(context, listen: false)
                                 .update(tagsState.tags);
                           },
-                          selected: tagsState.tags.contains(tag),
                           label: Text(tag),
                         ),
                       ),

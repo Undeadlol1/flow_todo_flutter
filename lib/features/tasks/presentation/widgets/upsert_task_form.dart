@@ -78,9 +78,18 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
                   ],
                 ),
               ),
-              if (_remoteConfig.getBool('are_tags_enabled') && _tags.isNotEmpty)
+              if (_remoteConfig.getBool('are_tags_enabled'))
                 Column(
-                  children: _tags.map((tag) => Text(tag)).toList(),
+                  children: [
+                    const SizedBox(height: 20),
+                    Text(
+                      'Hint: you can add tags via hashtags. '
+                      'Enter space, hashtag and your tag. '
+                      'Like so: "My task text #first #second".',
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                    _Tags(tags: _tags)
+                  ],
                 )
             ],
           ),
@@ -165,7 +174,43 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
       top: 10,
       left: 15,
       right: 15,
-      bottom: keyboardHeight + 20,
+      bottom: keyboardHeight,
+    );
+  }
+}
+
+class _Tags extends StatelessWidget {
+  const _Tags({
+    Key? key,
+    required List<String> tags,
+  })  : _tags = tags,
+        super(key: key);
+
+  final List<String> _tags;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 500),
+      child: _tags.isNotEmpty
+          ? Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 5),
+              child: Wrap(
+                children: _tags
+                    .map(
+                      (tag) => Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                        ),
+                        child: Chip(
+                          label: Text(tag),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            )
+          : const SizedBox(),
     );
   }
 }

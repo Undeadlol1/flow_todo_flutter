@@ -1,6 +1,7 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tags_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,9 +13,13 @@ import 'filter_tasks_to_do.dart';
 import 'tasks_list_item.dart';
 
 class TasksList extends StatefulWidget {
+  final bool shouldIgnoreTagsFiltering;
   final bool shouldIgnoreStaleCondition;
-  const TasksList({Key? key, this.shouldIgnoreStaleCondition = false})
-      : super(key: key);
+  const TasksList({
+    Key? key,
+    this.shouldIgnoreStaleCondition = false,
+    this.shouldIgnoreTagsFiltering = false,
+  }) : super(key: key);
 
   @override
   State<TasksList> createState() => _TasksListState();
@@ -29,14 +34,16 @@ class _TasksListState extends State<TasksList> {
       create: (_) => _filteredTasksCubit,
       child: Builder(
         builder: (cx) {
+          final TagsState tagsState = cx.watch<TagsCubit>().state;
           final TasksState tasksState = cx.watch<TasksCubit>().state;
           final selectedTasks =
               tasksState.tasks.where((i) => i.isSelected).toList();
           final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
           final List<Task> tasksToDisplay = _getTasksToDisplay(
             allTasks: tasksState.tasks,
-            focusedOnTasks: selectedTasks,
             filteredTasks: filteredTasks,
+            tags: tagsState.tags.toList(),
+            focusedOnTasks: selectedTasks,
           );
 
           if (tasksState is TasksLoading) {
@@ -60,7 +67,7 @@ class _TasksListState extends State<TasksList> {
                       ),
                     ),
                   ),
-                const TagsList(),
+                if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: tasksToDisplay.length,
@@ -69,7 +76,11 @@ class _TasksListState extends State<TasksList> {
                       : TasksListItem(task: tasksToDisplay.first),
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (_, index) {
-                    return TasksListItem(task: tasksToDisplay[index], shouldIgnoreStaleCondition: widget.shouldIgnoreStaleCondition);
+                    return TasksListItem(
+                      task: tasksToDisplay[index],
+                      shouldIgnoreStaleCondition:
+                          widget.shouldIgnoreStaleCondition,
+                    );
                   },
                 ),
               ],
@@ -81,10 +92,15 @@ class _TasksListState extends State<TasksList> {
   }
 
   List<Task> _getTasksToDisplay({
+    required List<String> tags,
     required List<Task> allTasks,
     required List<Task> focusedOnTasks,
     required List<Task> filteredTasks,
   }) {
+    if (widget.shouldIgnoreTagsFiltering == false && tags.isNotEmpty) {
+      return _filterTasksByTag(tags: tags, tasks: allTasks);
+    }
+
     final allTasksWitouthFilteredTasks = filteredTasks.isEmpty
         ? allTasks
         : allTasks.where((task) => filteredTasks.contains(task)).toList();
@@ -93,8 +109,24 @@ class _TasksListState extends State<TasksList> {
         allTasksWitouthFilteredTasks
             .where((task) => !focusedOnTasks.contains(task))
             .toList();
-
     return allTasksListWithoutSelectedAndFilteredTasks;
+  }
+
+  List<Task> _filterTasksByTag({
+    required List<String> tags,
+    required List<Task> tasks,
+  }) {
+    final List<Task> filteredTasks = [];
+
+    for (final tag in tags) {
+      for (final task in tasks) {
+        if (task.tags.map((e) => e.toLowerCase()).contains(tag)) {
+          filteredTasks.add(task);
+        }
+      }
+    }
+
+    return filteredTasks;
   }
 }
 

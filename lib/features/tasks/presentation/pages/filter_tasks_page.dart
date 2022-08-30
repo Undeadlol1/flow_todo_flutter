@@ -37,6 +37,7 @@ class _FilterTasksPageState extends State<FilterTasksPage> {
               child: Column(
                 children: const [
                   TasksList(
+                    shouldIgnoreTagsFiltering: true,
                     shouldIgnoreStaleCondition: true,
                   ),
                 ],
