@@ -23,10 +23,7 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
   static const _formControlName = 'title';
 
   static final _remoteConfig = GetIt.I<FirebaseRemoteConfig>();
-
   String? _formError;
-
-  Set<String> tags = {};
 
   late final _form = FormGroup(
     {
@@ -41,6 +38,11 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
       ),
     },
   );
+
+  static final _tagsRegExp =
+      RegExp(r'#([^\s]+)+', caseSensitive: false, multiLine: true);
+
+  List<String> _tags = [];
 
   @override
   void dispose() {
@@ -76,9 +78,9 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
                   ],
                 ),
               ),
-              if (_remoteConfig.getBool('are_tags_enabled') && tags.isNotEmpty)
+              if (_remoteConfig.getBool('are_tags_enabled') && _tags.isNotEmpty)
                 Column(
-                  children: tags.map((tag) => Text(tag)).toList(),
+                  children: _tags.map((tag) => Text(tag)).toList(),
                 )
             ],
           ),
@@ -107,8 +109,9 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
 
         if (widget.taskToUpdate == null) {
           await GetIt.I<CreateTask>()(
-            title: inputText,
             userId: authState.user.id,
+            tags: _extractTagsFromText(inputText),
+            title: inputText.replaceAll(_tagsRegExp, '').trim(),
           );
         } else {
           await GetIt.I<UpdateTask>()(
@@ -138,19 +141,22 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
     AbstractControl<dynamic> control,
   ) {
     final String text = control.value ?? '';
-    final tagsRegExp =
-        RegExp(r'#([^\s]+)+', caseSensitive: false, multiLine: true);
-    final Set<String> extractedTags = tagsRegExp
-        .allMatches(text)
-        .map((e) => e[1] ?? '')
-        .map((e) => e.toLowerCase())
-        .toSet();
+    List<String> extractedTags = _extractTagsFromText(text);
 
-    if (!setEquals(tags, extractedTags)) {
-      setState(() => tags = extractedTags);
+    if (!listEquals(_tags, extractedTags)) {
+      setState(() => _tags = extractedTags);
     }
 
     return null;
+  }
+
+  List<String> _extractTagsFromText(String text) {
+    return _tagsRegExp
+        .allMatches(text)
+        .map((e) => e[1] ?? '')
+        .map((e) => e.toLowerCase())
+        .toSet()
+        .toList();
   }
 
   EdgeInsets _getPadding() {

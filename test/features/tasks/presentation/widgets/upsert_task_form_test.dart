@@ -55,11 +55,24 @@ void main() {
     );
 
     testWidgets(
-      'WHEN text submitted with tags THEN calls use case with proper arguments',
+      'WHEN text submitted with tags '
+      'THEN calls use case with proper arguments',
       (tester) async {
-        await tester.pumpAndSumbitSomeText();
+        const firstTag = 'FirstTag';
+        const secondTag = 'SecondTag';
+        final tags = [firstTag.toLowerCase(), secondTag.toLowerCase()];
 
-        verify(_typicalTaskCreateCall).called(1);
+        await tester.pumpAndSumbitSomeText(
+          text: '$taskName #$firstTag #$secondTag',
+        );
+
+        verify(
+          () => _mockCreateTask.call(
+            tags: tags,
+            title: taskName,
+            userId: _userId,
+          ),
+        ).called(1);
       },
     );
 
@@ -129,7 +142,7 @@ Future<void> _submitSomeText({
 }
 
 Future<void> _typicalTaskCreateCall() =>
-    _mockCreateTask(title: taskName, userId: _userId);
+    _mockCreateTask(title: taskName, userId: _userId, tags: []);
 
 Future<void> _typicaTaskUpdateCall() =>
     _mockUpdateTask(taskFixture.copyWith(title: taskName));
