@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
@@ -57,16 +58,7 @@ class _TasksListState extends State<TasksList> {
                     _isViewerOnFilterPage(context))
                   const FilterTasksToDo(),
                 if (tasksState.tasks.isNotEmpty)
-                  Container(
-                    padding: const EdgeInsets.only(left: 15),
-                    alignment: Alignment.center,
-                    child: Chip(
-                      label: Text(
-                        'Tasks left: ${tasksState.tasks.length}',
-                        style: const TextStyle(fontStyle: FontStyle.italic),
-                      ),
-                    ),
-                  ),
+                  _TasksLeftText(amount: tasksToDisplay.length),
                 if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
                 ListView.builder(
                   shrinkWrap: true,
@@ -98,7 +90,12 @@ class _TasksListState extends State<TasksList> {
     required List<Task> filteredTasks,
   }) {
     if (widget.shouldIgnoreTagsFiltering == false && tags.isNotEmpty) {
-      return _filterTasksByTag(tags: tags, tasks: allTasks);
+      final allTasksWithouthSelectedTasks =
+          allTasks.where((task) => !focusedOnTasks.contains(task)).toList();
+      return _filterTasksByTag(
+        tags: tags,
+        tasks: allTasksWithouthSelectedTasks,
+      );
     }
 
     final allTasksWitouthFilteredTasks = filteredTasks.isEmpty
@@ -120,6 +117,14 @@ class _TasksListState extends State<TasksList> {
 
     for (final tag in tags) {
       for (final task in tasks) {
+        if (tag == 'stale' && task.isStale) {
+          filteredTasks.add(task);
+        }
+
+        if (tag == 'fresh' && !task.isStale) {
+          filteredTasks.add(task);
+        }
+
         if (task.tags.map((e) => e.toLowerCase()).contains(tag)) {
           filteredTasks.add(task);
         }
@@ -127,6 +132,39 @@ class _TasksListState extends State<TasksList> {
     }
 
     return filteredTasks;
+  }
+}
+
+class _TasksLeftText extends StatelessWidget {
+  const _TasksLeftText({
+    Key? key,
+    required this.amount,
+  }) : super(key: key);
+
+  final int amount;
+  static const _revealDuration = Duration(milliseconds: 500);
+  static const _textStyle = TextStyle(fontStyle: FontStyle.italic);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: _revealDuration,
+      reverseDuration: _revealDuration,
+      child: amount > 1
+          ? Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Tasks left: ',
+                    style: _textStyle,
+                  ),
+                  AnimatedNumbers(number: amount, style: _textStyle),
+                ],
+              ),
+            )
+          : const SizedBox(),
+    );
   }
 }
 

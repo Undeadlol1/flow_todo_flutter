@@ -18,9 +18,19 @@ class TagsList extends StatelessWidget {
         return BlocBuilder<TasksCubit, TasksState>(
           buildWhen: _haveTagsChanged,
           builder: (context, tasksState) {
-            if (_remoteConfig.getBool('are_tags_enabled')) {
+            final tasks = tasksState.tasks;
+
+            if (_remoteConfig.getBool('are_tags_enabled') && tasks.length > 5) {
+              final tags = _getTags(tasksState);
+
+              if (tasks.any((task) => task.isStale)) {
+                tags
+                  ..add('stale')
+                  ..add('fresh');
+              }
+
               return Wrap(
-                children: _getTags(tasksState)
+                children: tags
                     .map(
                       (tag) => Container(
                         margin: const EdgeInsets.symmetric(horizontal: 5),
