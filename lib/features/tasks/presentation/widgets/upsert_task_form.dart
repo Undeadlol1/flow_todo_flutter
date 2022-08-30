@@ -25,24 +25,38 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
   static final _remoteConfig = GetIt.I<FirebaseRemoteConfig>();
   String? _formError;
 
-  late final _form = FormGroup(
-    {
-      _formControlName: FormControl<String>(
-        value: widget.taskToUpdate == null ? '' : widget.taskToUpdate?.title,
-        validators: [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(100),
-          _extractTagsToDisplayThem,
-        ],
-      ),
-    },
-  );
+  late final FormGroup _form;
 
   static final _tagsRegExp =
       RegExp(r'#([^\s]+)+', caseSensitive: false, multiLine: true);
 
-  List<String> _tags = [];
+  List<String> tags = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    String title =
+        widget.taskToUpdate == null ? '' : widget.taskToUpdate?.title ?? '';
+
+    for (var tag in widget.taskToUpdate?.tags ?? []) {
+      title = '$title #$tag';
+    }
+
+    _form = FormGroup(
+      {
+        _formControlName: FormControl<String>(
+          value: title,
+          validators: [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(100),
+            _extractTagsToDisplayThem,
+          ],
+        ),
+      },
+    );
+  }
 
   @override
   void dispose() {
@@ -88,7 +102,7 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
                       'Like so: "My task text #first #second".',
                       style: Theme.of(context).textTheme.caption,
                     ),
-                    _Tags(tags: _tags)
+                    _Tags(tags: tags)
                   ],
                 )
             ],
@@ -102,6 +116,8 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
     if (_form.valid && authState is Authenticated) {
       final titleFormControl = _form.control(_formControlName);
       String? inputText = titleFormControl.value as String;
+      final taskTags = _extractTagsFromText(inputText);
+      final String title = inputText.replaceAll(_tagsRegExp, '').trim();
 
       if (widget.taskToUpdate == null) {
         titleFormControl.unfocus(touched: false);
@@ -118,13 +134,13 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
 
         if (widget.taskToUpdate == null) {
           await GetIt.I<CreateTask>()(
+            title: title,
+            tags: taskTags,
             userId: authState.user.id,
-            tags: _extractTagsFromText(inputText),
-            title: inputText.replaceAll(_tagsRegExp, '').trim(),
           );
         } else {
           await GetIt.I<UpdateTask>()(
-            widget.taskToUpdate!.copyWith(title: inputText),
+            widget.taskToUpdate!.copyWith(title: title, tags: tags),
           );
           GetIt.I<SnackbarService>().displaySnackbar(text: 'Saved!');
         }
@@ -152,8 +168,8 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
     final String text = control.value ?? '';
     List<String> extractedTags = _extractTagsFromText(text);
 
-    if (!listEquals(_tags, extractedTags)) {
-      setState(() => _tags = extractedTags);
+    if (!listEquals(tags, extractedTags)) {
+      setState(() => tags = extractedTags);
     }
 
     return null;

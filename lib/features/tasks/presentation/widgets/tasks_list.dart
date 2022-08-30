@@ -18,8 +18,8 @@ class TasksList extends StatefulWidget {
   final bool shouldIgnoreStaleCondition;
   const TasksList({
     Key? key,
-    this.shouldIgnoreStaleCondition = false,
     this.shouldIgnoreTagsFiltering = false,
+    this.shouldIgnoreStaleCondition = false,
   }) : super(key: key);
 
   @override
@@ -125,7 +125,8 @@ class _TasksListState extends State<TasksList> {
           filteredTasks.add(task);
         }
 
-        if (task.tags.map((e) => e.toLowerCase()).contains(tag)) {
+        if (task.tags.map((e) => e.toLowerCase()).contains(tag) &&
+            !filteredTasks.contains(task)) {
           filteredTasks.add(task);
         }
       }
