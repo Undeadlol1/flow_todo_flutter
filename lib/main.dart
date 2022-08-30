@@ -42,14 +42,14 @@ void main() async {
 
 Future<void> _confiigureRemoteConfig() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
-  if (kDebugMode) {
-    await remoteConfig.setConfigSettings(
-      RemoteConfigSettings(
-        fetchTimeout: const Duration(minutes: 1),
-        minimumFetchInterval: const Duration(minutes: 5),
-      ),
-    );
-  }
+
+  await remoteConfig.setConfigSettings(
+    RemoteConfigSettings(
+      fetchTimeout: const Duration(minutes: 1),
+      minimumFetchInterval:
+          kReleaseMode ? const Duration(hours: 3) : const Duration(minutes: 10),
+    ),
+  );
 
   await remoteConfig.setDefaults(const {
     "are_tags_enabled": false,
