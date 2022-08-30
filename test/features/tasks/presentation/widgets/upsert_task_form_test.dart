@@ -55,6 +55,15 @@ void main() {
     );
 
     testWidgets(
+      'WHEN text submitted with tags THEN calls use case with proper arguments',
+      (tester) async {
+        await tester.pumpAndSumbitSomeText();
+
+        verify(_typicalTaskCreateCall).called(1);
+      },
+    );
+
+    testWidgets(
       'WHEN text input is submitted '
       'AND taskToUpdate argument is provided '
       'THEN updates the task',
@@ -101,14 +110,20 @@ extension on WidgetTester {
 }
 
 extension on WidgetTester {
-  Future<void> pumpAndSumbitSomeText({bool shouldUpdateTask = false}) async {
+  Future<void> pumpAndSumbitSomeText({
+    String text = taskName,
+    bool shouldUpdateTask = false,
+  }) async {
     await pumpWithDependencies(shouldUpdateTask: shouldUpdateTask);
-    await _submitSomeText(this);
+    await _submitSomeText(tester: this, text: text);
   }
 }
 
-Future<void> _submitSomeText(WidgetTester tester) async {
-  await tester.enterText(find.byType(TextField), taskName);
+Future<void> _submitSomeText({
+  required String text,
+  required WidgetTester tester,
+}) async {
+  await tester.enterText(find.byType(TextField), text);
   await tester.testTextInput.receiveAction(TextInputAction.done);
   await tester.pumpAndSettle();
 }
