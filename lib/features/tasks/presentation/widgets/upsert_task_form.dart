@@ -1,6 +1,7 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/update_task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/static_tags_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -107,7 +108,10 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
                           'Like so: "My task text #first #second".',
                           style: Theme.of(context).textTheme.caption,
                         ),
-                        _Tags(tags: tags)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 5),
+                          child: StaticTagsList(tags: tags),
+                        ),
                       ],
                     )
                 ],
@@ -198,42 +202,6 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
       left: 15,
       right: 15,
       bottom: keyboardHeight,
-    );
-  }
-}
-
-class _Tags extends StatelessWidget {
-  const _Tags({
-    Key? key,
-    required List<String> tags,
-  })  : _tags = tags,
-        super(key: key);
-
-  final List<String> _tags;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 500),
-      child: _tags.isNotEmpty
-          ? Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 5),
-              child: Wrap(
-                children: _tags
-                    .map(
-                      (tag) => Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 5,
-                        ),
-                        child: Chip(
-                          label: Text(tag),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-            )
-          : const SizedBox(),
     );
   }
 }

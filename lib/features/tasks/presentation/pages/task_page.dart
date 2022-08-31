@@ -1,4 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/static_tags_list.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/presentation/page_layout.dart';
@@ -74,6 +75,11 @@ class _PageBody extends StatelessWidget {
               padding: const EdgeInsets.all(12.0),
               child: SelectableText(task.title),
             ),
+          ),
+        if (task.tags.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: StaticTagsList(tags: task.tags),
           ),
         if (pageArguments.isTitleEditingVisible)
           UpsertTaskForm(taskToUpdate: task),
