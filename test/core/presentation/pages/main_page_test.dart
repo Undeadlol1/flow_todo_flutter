@@ -169,6 +169,7 @@ void _setupTagsCubitMock() {
 
 void _setupRemoteConfigCubit() {
   const remoteConfigState = RemoteConfigState(
+    areGoalsEnabled: false,
     areQuestsEnabled: false,
     areTagsEnabled: false,
     isOnlyASingleSelectedTaskAllowed: false,

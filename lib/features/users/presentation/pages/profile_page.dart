@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/remote_config/cubit/remote_config_cubit.dart';
 import '../../../authentification/presentation/widgets/sign_out_button.dart';
 import '../../../common/presentation/page_layout.dart';
 import '../../../goals/presentation/pages/goals_page.dart';
@@ -18,13 +19,11 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageLayout(
-      child: BlocBuilder<AuthentificationCubit, AuthentificationState>(
-        builder: (context, authState) {
-          return BlocBuilder<ProfileCubit, ProfileState>(
-            builder: (context, profileState) {
-              final today = DateTime.now();
-              final streak = profileState.profile.dailyStreak;
-
+      child: BlocSelector<RemoteConfigCubit, RemoteConfigState, bool>(
+        selector: (state) => state.areQuestsEnabled,
+        builder: (context, areQuestsEnabled) {
+          return BlocBuilder<AuthentificationCubit, AuthentificationState>(
+            builder: (context, authState) {
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,33 +40,8 @@ class ProfilePage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    ExpansionTile(
-                      expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                      title: const Text('Debug information for developers'),
-                      children: [
-                        SelectableText(
-                          'Your user ID is: ${profileState.profile.userId}',
-                        ),
-                        Text('Today is: $today'),
-                        Text(
-                          'Is streak interrupted: ${streak.isInterrupted().toString()}',
-                        ),
-                        Text('Streak starts at: ${streak.startsAt}'),
-                        Text(
-                          'Streak was updated at: ${profileState.profile.dailyStreak.updatedAt}',
-                        ),
-                        const Text('Is app running in debug mode? $kDebugMode'),
-                        const Text(
-                          'Is app running in release mode? $kReleaseMode',
-                        ),
-                      ],
-                    ),
-                    const _Padding(),
-                    ElevatedButton(
-                      onPressed: () =>
-                          Navigator.pushNamed(context, GoalsPage.pathName),
-                      child: const Text('Go to Goals'),
-                    ),
+                    const _DebugInformation(),
+                    _GoToGoals(isVisible: areQuestsEnabled),
                     const _Padding(),
                     const SignOutButton(),
                     const _Padding(),
@@ -75,8 +49,9 @@ class ProfilePage extends StatelessWidget {
                     const _Padding(),
                     Text(
                       'DANGER ZONE',
-                      style:
-                          TextStyle(color: Theme.of(context).colorScheme.error),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
                     ),
                     const _Padding(),
                     const Divider(),
@@ -89,6 +64,72 @@ class ProfilePage extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _DebugInformation extends StatelessWidget {
+  const _DebugInformation({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (context, profileState) {
+        final today = DateTime.now();
+        final streak = profileState.profile.dailyStreak;
+        return ExpansionTile(
+          expandedCrossAxisAlignment: CrossAxisAlignment.start,
+          title: const Text('Debug information for developers'),
+          children: [
+            SelectableText(
+              'Your user ID is: ${profileState.profile.userId}',
+            ),
+            Text('Today is: $today'),
+            Text(
+              'Is streak interrupted: ${streak.isInterrupted().toString()}',
+            ),
+            Text('Streak starts at: ${streak.startsAt}'),
+            Text(
+              'Streak was updated at: ${profileState.profile.dailyStreak.updatedAt}',
+            ),
+            const Text(
+              'Is app running in debug mode? $kDebugMode',
+            ),
+            const Text(
+              'Is app running in release mode? $kReleaseMode',
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _GoToGoals extends StatelessWidget {
+  final bool isVisible;
+  const _GoToGoals({
+    Key? key,
+    required this.isVisible,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 500),
+      child: isVisible
+          ? Column(
+              children: [
+                const _Padding(),
+                ElevatedButton(
+                  onPressed: () => Navigator.pushNamed(
+                    context,
+                    GoalsPage.pathName,
+                  ),
+                  child: const Text('Go to Goals'),
+                ),
+              ],
+            )
+          : const SizedBox(),
     );
   }
 }

@@ -26,17 +26,19 @@ import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
+import '../../../../test_utilities/mocks/mock_remote_config_cubit.dart';
 import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 import '../../../../test_utilities/mocks/setupers/setup_remote_config_cubit_mock.dart';
 
 class _MockMakeStepForwardOnATask extends Mock
     implements MakeStepForwardOnTheTask {}
 
-late final _mockRemoteConfigCubit;
 final _binding = TestWidgetsFlutterBinding.ensureInitialized();
-final MockProfileCubit _mockProfileCubit = MockProfileCubit();
 final _mockLevelProgressPercentageCalculator =
     MockLevelProgressPercentageCalculator();
+
+final MockProfileCubit _mockProfileCubit = MockProfileCubit();
+RemoteConfigCubit _mockRemoteConfigCubit = MockRemoteConfigCubit();
 
 void main() {
   setUpAll(() {

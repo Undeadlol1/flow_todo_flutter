@@ -20,8 +20,9 @@ class GetRemoteConfig {
 
       remoteConfigCubit.update(
         RemoteConfigState(
-          areQuestsEnabled: _getBoolean('are_quests_enabled'),
           areTagsEnabled: _getBoolean('are_tags_enabled'),
+          areGoalsEnabled: _getBoolean('are_goals_enabled'),
+          areQuestsEnabled: _getBoolean('are_quests_enabled'),
           isOnlyASingleSelectedTaskAllowed:
               _getBoolean('keis_only_single_selected_task_allowedy'),
         ),

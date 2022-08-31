@@ -7,6 +7,7 @@ import '../mock_remote_config_cubit.dart';
 RemoteConfigCubit setupRemoteConfigCubitMock() {
   final remoteConfigCubit = MockRemoteConfigCubit();
   const remoteConfigState = RemoteConfigState(
+    areGoalsEnabled: false,
     areQuestsEnabled: false,
     areTagsEnabled: false,
     isOnlyASingleSelectedTaskAllowed: false,

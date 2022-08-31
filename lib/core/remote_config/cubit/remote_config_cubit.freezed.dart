@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$RemoteConfigState {
   bool get areTagsEnabled => throw _privateConstructorUsedError;
+  bool get areGoalsEnabled => throw _privateConstructorUsedError;
   bool get areQuestsEnabled => throw _privateConstructorUsedError;
   bool get isOnlyASingleSelectedTaskAllowed =>
       throw _privateConstructorUsedError;
@@ -33,6 +34,7 @@ abstract class $RemoteConfigStateCopyWith<$Res> {
       _$RemoteConfigStateCopyWithImpl<$Res>;
   $Res call(
       {bool areTagsEnabled,
+      bool areGoalsEnabled,
       bool areQuestsEnabled,
       bool isOnlyASingleSelectedTaskAllowed});
 }
@@ -49,6 +51,7 @@ class _$RemoteConfigStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? areTagsEnabled = freezed,
+    Object? areGoalsEnabled = freezed,
     Object? areQuestsEnabled = freezed,
     Object? isOnlyASingleSelectedTaskAllowed = freezed,
   }) {
@@ -56,6 +59,10 @@ class _$RemoteConfigStateCopyWithImpl<$Res>
       areTagsEnabled: areTagsEnabled == freezed
           ? _value.areTagsEnabled
           : areTagsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      areGoalsEnabled: areGoalsEnabled == freezed
+          ? _value.areGoalsEnabled
+          : areGoalsEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
       areQuestsEnabled: areQuestsEnabled == freezed
           ? _value.areQuestsEnabled
@@ -78,6 +85,7 @@ abstract class _$$_StateCopyWith<$Res>
   @override
   $Res call(
       {bool areTagsEnabled,
+      bool areGoalsEnabled,
       bool areQuestsEnabled,
       bool isOnlyASingleSelectedTaskAllowed});
 }
@@ -94,6 +102,7 @@ class __$$_StateCopyWithImpl<$Res> extends _$RemoteConfigStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? areTagsEnabled = freezed,
+    Object? areGoalsEnabled = freezed,
     Object? areQuestsEnabled = freezed,
     Object? isOnlyASingleSelectedTaskAllowed = freezed,
   }) {
@@ -101,6 +110,10 @@ class __$$_StateCopyWithImpl<$Res> extends _$RemoteConfigStateCopyWithImpl<$Res>
       areTagsEnabled: areTagsEnabled == freezed
           ? _value.areTagsEnabled
           : areTagsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      areGoalsEnabled: areGoalsEnabled == freezed
+          ? _value.areGoalsEnabled
+          : areGoalsEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
       areQuestsEnabled: areQuestsEnabled == freezed
           ? _value.areQuestsEnabled
@@ -120,11 +133,14 @@ class __$$_StateCopyWithImpl<$Res> extends _$RemoteConfigStateCopyWithImpl<$Res>
 class _$_State implements _State {
   const _$_State(
       {required this.areTagsEnabled,
+      required this.areGoalsEnabled,
       required this.areQuestsEnabled,
       required this.isOnlyASingleSelectedTaskAllowed});
 
   @override
   final bool areTagsEnabled;
+  @override
+  final bool areGoalsEnabled;
   @override
   final bool areQuestsEnabled;
   @override
@@ -132,7 +148,7 @@ class _$_State implements _State {
 
   @override
   String toString() {
-    return 'RemoteConfigState(areTagsEnabled: $areTagsEnabled, areQuestsEnabled: $areQuestsEnabled, isOnlyASingleSelectedTaskAllowed: $isOnlyASingleSelectedTaskAllowed)';
+    return 'RemoteConfigState(areTagsEnabled: $areTagsEnabled, areGoalsEnabled: $areGoalsEnabled, areQuestsEnabled: $areQuestsEnabled, isOnlyASingleSelectedTaskAllowed: $isOnlyASingleSelectedTaskAllowed)';
   }
 
   @override
@@ -142,6 +158,8 @@ class _$_State implements _State {
             other is _$_State &&
             const DeepCollectionEquality()
                 .equals(other.areTagsEnabled, areTagsEnabled) &&
+            const DeepCollectionEquality()
+                .equals(other.areGoalsEnabled, areGoalsEnabled) &&
             const DeepCollectionEquality()
                 .equals(other.areQuestsEnabled, areQuestsEnabled) &&
             const DeepCollectionEquality().equals(
@@ -153,6 +171,7 @@ class _$_State implements _State {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(areTagsEnabled),
+      const DeepCollectionEquality().hash(areGoalsEnabled),
       const DeepCollectionEquality().hash(areQuestsEnabled),
       const DeepCollectionEquality().hash(isOnlyASingleSelectedTaskAllowed));
 
@@ -165,11 +184,14 @@ class _$_State implements _State {
 abstract class _State implements RemoteConfigState {
   const factory _State(
       {required final bool areTagsEnabled,
+      required final bool areGoalsEnabled,
       required final bool areQuestsEnabled,
       required final bool isOnlyASingleSelectedTaskAllowed}) = _$_State;
 
   @override
   bool get areTagsEnabled;
+  @override
+  bool get areGoalsEnabled;
   @override
   bool get areQuestsEnabled;
   @override
