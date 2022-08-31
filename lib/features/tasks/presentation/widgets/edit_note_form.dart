@@ -70,6 +70,7 @@ class _EditNoteFormState extends State<EditNoteForm> {
                       autofocus: widget.autoFocus,
                       formControlName: _formControlName,
                       validationMessages: _getValidationMessages,
+                      textCapitalization: TextCapitalization.sentences,
                       decoration: InputDecoration(
                         labelText: 'Note',
                         errorText: _formError,
