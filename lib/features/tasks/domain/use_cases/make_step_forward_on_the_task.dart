@@ -1,9 +1,12 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flow_todo_flutter_2022/core/services/use_case_exception_handler.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/use_cases/increment_daily_streak_action.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/actions/work_on_task_action.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/entities/task_history_action_type.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task_history.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/data/upsert_profile_repository.dart';
@@ -31,9 +34,12 @@ class MakeStepForwardOnTheTask {
   final SnackbarService snackbarService;
   final UpdateTaskRepository updateTask;
   final WorkOnTaskAction workOnTaskAction;
+  final FirebaseAnalytics firebaseAnalytics;
   final AddPointsToViewer addPointsToViewer;
+  final TaskRewardCalculator rewardCalculator;
   final UpsertProfileRepository updateProfile;
   final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
+  final UseCaseExceptionHandler useCaseExceptionHandler;
   final IncrementDailyStreakAction incrementDailyStreak;
   final NextRepetitionCalculator nextRepetitionCalculator;
   const MakeStepForwardOnTheTask({
@@ -45,10 +51,13 @@ class MakeStepForwardOnTheTask {
     required this.getTodaysDate,
     required this.updateProfile,
     required this.snackbarService,
+    required this.rewardCalculator,
     required this.workOnTaskAction,
     required this.addPointsToViewer,
+    required this.firebaseAnalytics,
     required this.tasksDoneTodayCubit,
     required this.incrementDailyStreak,
+    required this.useCaseExceptionHandler,
     required this.nextRepetitionCalculator,
   });
 
@@ -63,34 +72,42 @@ class MakeStepForwardOnTheTask {
 
     try {
       final updatedTask = _getUpdatedTask(task, isTaskDone, howBigWasTheStep);
-      final pointsToAdd = _getAmountOfPointsToAdd(isTaskDone, howBigWasTheStep);
+      final pointsToAdd =
+          _getAmountOfPointsToAdd(isTaskDone, howBigWasTheStep, task);
 
       _displaySnackbar(isTaskDone, updatedTask);
       await goToMainPage();
       await updateTask(updatedTask);
       await addPointsToViewer(pointsToAdd);
       await incrementDailyStreak();
-    } catch (error) {
-      return _handleErrors(error: error, task: task);
+      await _trackAnalytics(isTaskDone, howBigWasTheStep);
+    } catch (error, stackTrace) {
+      return _handleErrors(error: error, task: task, stackTrace: stackTrace);
     }
   }
 
-  void _handleErrors({required Object error, required Task task}) {
+  void _handleErrors({
+    required Task task,
+    required Object error,
+    required StackTrace stackTrace,
+  }) {
     snackbarService.displaySnackbar(text: error.toString());
 
     tasksCubit.undo();
     profileCubit.undo();
     workOnTaskAction.undoState();
 
-    return goToTaskPage.call(task: task);
+    useCaseExceptionHandler(error, stackTrace);
+
+    return goToTaskPage(task: task);
   }
 
   Profile _getUpdatedProfile() {
     final today = getTodaysDate();
-    final streak = profileCubit.state.profile!.dailyStreak;
+    final streak = profileCubit.state.profile.dailyStreak;
     final tasksDoneToday = tasksDoneTodayCubit.state.tasks.length;
 
-    final updatedProfile = profileCubit.state.profile!.copyWith(
+    final updatedProfile = profileCubit.state.profile.copyWith(
       dailyStreak: streak.copyWith(
         startsAt: streak.isInterrupted() ? today : streak.startsAt,
         updatedAt: streak.shouldStreakIncrement(tasksDoneToday: tasksDoneToday)
@@ -107,7 +124,7 @@ class MakeStepForwardOnTheTask {
     bool isTaskDone,
     Confidence howBigWasTheStep,
   ) {
-    final today = getTodaysDate().millisecondsSinceEpoch;
+    final today = getTodaysDate();
     final nextRepetition = nextRepetitionCalculator(
       task: task,
       confidence: howBigWasTheStep,
@@ -121,7 +138,7 @@ class MakeStepForwardOnTheTask {
       repetitionLevel: nextRepetition.repetitionLevel,
       history: [
         TaskHistory(
-          createdAt: today,
+          createdAt: today.millisecondsSinceEpoch,
           actionType: isTaskDone
               ? TaskHistoryActionType.doneTask
               : howBigWasTheStep == Confidence.good
@@ -136,12 +153,13 @@ class MakeStepForwardOnTheTask {
   int _getAmountOfPointsToAdd(
     bool isTaskDone,
     Confidence howBigWasTheStep,
+    Task task,
   ) {
     return isTaskDone
-        ? 50
+        ? rewardCalculator.taskCompletion(task)
         : howBigWasTheStep == Confidence.good
-            ? 30
-            : 20;
+            ? rewardCalculator.leapForward(task)
+            : rewardCalculator.stepForward(task);
   }
 
   void _displaySnackbar(bool isTaskDone, Task updatedTask) {
@@ -157,5 +175,15 @@ class MakeStepForwardOnTheTask {
       updatedTask.dueAt,
       allowFromNow: true,
     )}';
+  }
+
+  Future<void> _trackAnalytics(bool isTaskDone, Confidence howBigWasTheStep) {
+    return firebaseAnalytics.logEvent(
+      name: isTaskDone
+          ? 'done_task'
+          : howBigWasTheStep == Confidence.good
+              ? 'leap_forward'
+              : 'step_forward',
+    );
   }
 }

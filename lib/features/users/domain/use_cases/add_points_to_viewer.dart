@@ -26,15 +26,15 @@ class AddPointsToViewer {
     try {
       if (profileState is ProfileLoaded) {
         final currentProfile = profileState.profile;
-        final updatedProfile = currentProfile?.copyWith(
+        final updatedProfile = currentProfile.copyWith(
           points: currentProfile.points + pointsToAdd,
           experience: (currentProfile.experience) + pointsToAdd,
         );
 
-        profileCubit.setProfile(updatedProfile!);
+        profileCubit.setProfile(updatedProfile);
 
         if (willUserLevelUp(
-          currentProfile: currentProfile!,
+          currentProfile: currentProfile,
           updatedProfile: updatedProfile,
         )) {
           levelUpAnimation.show();

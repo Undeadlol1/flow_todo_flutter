@@ -16,14 +16,17 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../test_utilities/fakes/fake_get_todays_date.dart';
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/mocks/mock_firebase_analytics.dart';
 import '../../../../test_utilities/mocks/mock_go_to_main_page.dart';
 import '../../../../test_utilities/mocks/mock_go_to_task_page.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
+import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_worked_on_today_cubit.dart';
 import '../../../../test_utilities/mocks/mock_upsert_profile_repository.dart';
 import '../../../../test_utilities/mocks/mock_update_task_repository.dart';
+import '../../../../test_utilities/mocks/mock_use_case_exception_handler.dart';
 
 class _MockAddPointsToViewer extends Mock implements AddPointsToViewer {}
 
@@ -45,11 +48,13 @@ final _mockGoToTaskPage = MockGoToTaskPage();
 final _fakeGetTodaysDate = FakeGetTodaysDate();
 final _mockSnackbarService = MockSnackbarService();
 final _mockWorkOnTaskAction = _MockWorkOnTaskAction();
+final _mockFirebaseAnalytics = MockFirebaseAnalytics();
 final _mockAddPointsToViewer = _MockAddPointsToViewer();
-final _mockTasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
+final _mockRewardCalculator = MockTaskRewardCalculator();
 final _mockUpdateTaskRepository = MockUpdateTaskRepository();
-final _mockTasksWorkedOnTodayCubit = _MockTasksWorkedOnTodayCubit();
+final _mockTasksDoneTodayCubit = MockTasksWorkedOnTodayCubit();
 final _mockUpdateProfileRepository = MockUpsertProfileRepository();
+final _mockTasksWorkedOnTodayCubit = _MockTasksWorkedOnTodayCubit();
 final _mockNextRepetitionCalculator = _MockNextRepetitionCalculator();
 final IncrementDailyStreakAction _mockIncrementDailyStreak =
     _MockIncrementDailyStreak();
@@ -64,6 +69,9 @@ void main() {
       Stream.fromIterable([TasksWorkedOnTodayState.loaded([])]),
       initialState: TasksWorkedOnTodayState.loaded([]),
     );
+
+    when(() => _mockFirebaseAnalytics.logEvent(name: any(named: 'name')))
+        .thenAnswer((_) async {});
   });
 
   setUp(() {
@@ -75,6 +83,9 @@ void main() {
     reset(_mockIncrementDailyStreak);
     reset(_mockUpdateProfileRepository);
 
+    when(() => _mockRewardCalculator.taskCompletion(any())).thenReturn(50);
+    when(() => _mockRewardCalculator.stepForward(any())).thenReturn(50);
+    when(() => _mockRewardCalculator.leapForward(any())).thenReturn(50);
     when(() => _mockTasksDoneTodayCubit.update(any())).thenReturn(null);
     when(() => _mockTasksDoneTodayCubit.state)
         .thenReturn(TasksWorkedOnTodayState.loaded([]));
@@ -91,7 +102,7 @@ void main() {
         }
 
         when(snackBarServiceCall).thenAnswer((_) async {});
-        _mockTypicalCalls(amountOfPointsToVerify: 20);
+        _mockTypicalCalls();
         when(() => _mockUpdateTaskRepository(any()))
             .thenThrow(Exception(errorText));
 
@@ -107,7 +118,7 @@ void main() {
       test('THEN states revert back updates', () async {
         const errorText = 'Something went wrong 123';
 
-        _mockTypicalCalls(amountOfPointsToVerify: 20);
+        _mockTypicalCalls();
         when(() => _mockUpdateTaskRepository(any()))
             .thenThrow(Exception(errorText));
 
@@ -122,7 +133,7 @@ void main() {
       });
 
       test('THEN navigates back to task page', () async {
-        _mockTypicalCalls(amountOfPointsToVerify: 20);
+        _mockTypicalCalls();
         when(() => _mockUpdateTaskRepository(any()))
             .thenThrow(Exception('An error'));
 
@@ -165,7 +176,7 @@ void main() {
       'WHEN confidence is normal '
       'THEN adds task history with proper action type to task via repository',
       () async {
-        _mockTypicalCalls(amountOfPointsToVerify: 20);
+        _mockTypicalCalls();
 
         final taskPassedToRepository =
             await _verifyAndReturnUpdateTaskRepositoryArgument(
@@ -184,7 +195,7 @@ void main() {
       'WHEN confidence is good '
       'THEN adds task history with proper action type to task via repository',
       () async {
-        _mockTypicalCalls(amountOfPointsToVerify: 30);
+        _mockTypicalCalls();
 
         final taskPassedToRepository =
             await _verifyAndReturnUpdateTaskRepositoryArgument(
@@ -205,7 +216,6 @@ void main() {
       _verifyPointsRewarded(
         isTaskDone: true,
         confidence: Confidence.good,
-        amountOfPointsToVerify: 50,
       ),
     );
 
@@ -213,7 +223,6 @@ void main() {
       'WHEN confidence is normal '
       'THEN then rewards 20 points',
       _verifyPointsRewarded(
-        amountOfPointsToVerify: 20,
         confidence: Confidence.normal,
       ),
     );
@@ -222,7 +231,6 @@ void main() {
       'WHEN confidence is good '
       'THEN then rewards 30 points',
       _verifyPointsRewarded(
-        amountOfPointsToVerify: 30,
         confidence: Confidence.good,
       ),
     );
@@ -231,7 +239,7 @@ void main() {
       'WHEN called '
       'THEN calls WorkOnTaskAction',
       () async {
-        _mockTypicalCalls(amountOfPointsToVerify: 30);
+        _mockTypicalCalls();
 
         await _getUseCase()(
           task: taskFixture,
@@ -248,7 +256,7 @@ void main() {
       () async {
         void callTaskRemoverMethod() => _mockTasksCubit.removeTask(taskFixture);
         when(callTaskRemoverMethod).thenReturn(null);
-        _mockTypicalCalls(amountOfPointsToVerify: 30);
+        _mockTypicalCalls();
 
         await _getUseCase()(
           task: taskFixture,
@@ -262,7 +270,7 @@ void main() {
     test(
       'WHEN called THEN calls IncrementStreak service',
       () async {
-        _mockTypicalCalls(amountOfPointsToVerify: 30);
+        _mockTypicalCalls();
 
         await _getUseCase()(
           task: taskFixture,
@@ -284,12 +292,11 @@ void _verifyThatProperHistoryWasAddedToTask({
 }
 
 Future<void> Function() _verifyPointsRewarded({
-  required int amountOfPointsToVerify,
   bool isTaskDone = false,
   Confidence confidence = Confidence.good,
 }) {
   return () async {
-    _mockTypicalCalls(amountOfPointsToVerify: amountOfPointsToVerify);
+    _mockTypicalCalls();
 
     await _getUseCase()(
       task: taskFixture,
@@ -297,7 +304,7 @@ Future<void> Function() _verifyPointsRewarded({
       howBigWasTheStep: confidence,
     );
 
-    verify(() => _mockAddPointsToViewer(amountOfPointsToVerify)).called(1);
+    verify(() => _mockAddPointsToViewer(any())).called(1);
   };
 }
 
@@ -305,7 +312,7 @@ Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument({
   required bool isTaskMarkedAsDone,
   Confidence confidence = Confidence.good,
 }) async {
-  _mockTypicalCalls(amountOfPointsToVerify: isTaskMarkedAsDone ? 50 : 30);
+  _mockTypicalCalls();
 
   await _getUseCase()(
     task: taskFixture,
@@ -313,7 +320,7 @@ Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument({
     howBigWasTheStep: confidence,
   );
 
-  final dateToVerify = _fakeGetTodaysDate.returnedValue.millisecondsSinceEpoch;
+  final dateToVerify = _fakeGetTodaysDate.returnedValue;
   final repositoryTaskArgument =
       (verify(() => _mockUpdateTaskRepository(captureAny())).captured[0]
           as Task);
@@ -327,13 +334,12 @@ Future<Task> _verifyAndReturnUpdateTaskRepositoryArgument({
   return repositoryTaskArgument;
 }
 
-void _mockTypicalCalls({required int amountOfPointsToVerify}) {
+void _mockTypicalCalls() {
   when(() => _mockGoToMainPage()).thenAnswer((_) async {});
   when(() => _mockWorkOnTaskAction.updateState(taskFixture)).thenReturn(null);
   when(() => _mockIncrementDailyStreak()).thenAnswer((_) async {});
   when(() => _mockUpdateTaskRepository(any())).thenAnswer((_) async {});
-  when(() => _mockAddPointsToViewer(amountOfPointsToVerify))
-      .thenAnswer((_) async {});
+  when(() => _mockAddPointsToViewer(any())).thenAnswer((_) async {});
   when(
     () => _mockNextRepetitionCalculator(
       task: taskFixture,
@@ -352,10 +358,13 @@ MakeStepForwardOnTheTask _getUseCase() {
     snackbarService: _mockSnackbarService,
     updateTask: _mockUpdateTaskRepository,
     workOnTaskAction: _mockWorkOnTaskAction,
+    rewardCalculator: _mockRewardCalculator,
+    firebaseAnalytics: _mockFirebaseAnalytics,
     addPointsToViewer: _mockAddPointsToViewer,
-    tasksDoneTodayCubit: _mockTasksWorkedOnTodayCubit,
     updateProfile: _mockUpdateProfileRepository,
     incrementDailyStreak: _mockIncrementDailyStreak,
+    tasksDoneTodayCubit: _mockTasksWorkedOnTodayCubit,
+    useCaseExceptionHandler: MockUseCaseExceptionHandler(),
     nextRepetitionCalculator: _mockNextRepetitionCalculator,
   );
 }

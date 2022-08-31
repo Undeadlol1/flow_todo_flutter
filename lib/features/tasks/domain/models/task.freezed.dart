@@ -35,8 +35,10 @@ mixin _$Task {
   List<String> get tags => throw _privateConstructorUsedError;
   @JsonKey(defaultValue: [])
   List<TaskHistory> get history => throw _privateConstructorUsedError;
-  int? get doneAt => throw _privateConstructorUsedError;
-  int? get updatedAt => throw _privateConstructorUsedError;
+  @OptionalMillisecondsToDateTimePropertyConverter()
+  DateTime? get doneAt => throw _privateConstructorUsedError;
+  @OptionalMillisecondsToDateTimePropertyConverter()
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
   int? get repetitionLevel => throw _privateConstructorUsedError;
   bool get isSelected => throw _privateConstructorUsedError;
 
@@ -59,8 +61,8 @@ abstract class $TaskCopyWith<$Res> {
       @JsonKey(defaultValue: '') String note,
       @JsonKey(defaultValue: []) List<String> tags,
       @JsonKey(defaultValue: []) List<TaskHistory> history,
-      int? doneAt,
-      int? updatedAt,
+      @OptionalMillisecondsToDateTimePropertyConverter() DateTime? doneAt,
+      @OptionalMillisecondsToDateTimePropertyConverter() DateTime? updatedAt,
       int? repetitionLevel,
       bool isSelected});
 }
@@ -129,11 +131,11 @@ class _$TaskCopyWithImpl<$Res> implements $TaskCopyWith<$Res> {
       doneAt: doneAt == freezed
           ? _value.doneAt
           : doneAt // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as DateTime?,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as DateTime?,
       repetitionLevel: repetitionLevel == freezed
           ? _value.repetitionLevel
           : repetitionLevel // ignore: cast_nullable_to_non_nullable
@@ -161,8 +163,8 @@ abstract class _$$_TaskCopyWith<$Res> implements $TaskCopyWith<$Res> {
       @JsonKey(defaultValue: '') String note,
       @JsonKey(defaultValue: []) List<String> tags,
       @JsonKey(defaultValue: []) List<TaskHistory> history,
-      int? doneAt,
-      int? updatedAt,
+      @OptionalMillisecondsToDateTimePropertyConverter() DateTime? doneAt,
+      @OptionalMillisecondsToDateTimePropertyConverter() DateTime? updatedAt,
       int? repetitionLevel,
       bool isSelected});
 }
@@ -232,11 +234,11 @@ class __$$_TaskCopyWithImpl<$Res> extends _$TaskCopyWithImpl<$Res>
       doneAt: doneAt == freezed
           ? _value.doneAt
           : doneAt // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as DateTime?,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as DateTime?,
       repetitionLevel: repetitionLevel == freezed
           ? _value.repetitionLevel
           : repetitionLevel // ignore: cast_nullable_to_non_nullable
@@ -252,7 +254,7 @@ class __$$_TaskCopyWithImpl<$Res> extends _$TaskCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$_Task implements _Task {
+class _$_Task extends _Task {
   const _$_Task(
       {required this.id,
       required this.isDone,
@@ -263,12 +265,13 @@ class _$_Task implements _Task {
       @JsonKey(defaultValue: '') required this.note,
       @JsonKey(defaultValue: []) required final List<String> tags,
       @JsonKey(defaultValue: []) required final List<TaskHistory> history,
-      this.doneAt,
-      this.updatedAt,
+      @OptionalMillisecondsToDateTimePropertyConverter() this.doneAt,
+      @OptionalMillisecondsToDateTimePropertyConverter() this.updatedAt,
       this.repetitionLevel,
       this.isSelected = false})
       : _tags = tags,
-        _history = history;
+        _history = history,
+        super._();
 
   factory _$_Task.fromJson(Map<String, dynamic> json) => _$$_TaskFromJson(json);
 
@@ -307,9 +310,11 @@ class _$_Task implements _Task {
   }
 
   @override
-  final int? doneAt;
+  @OptionalMillisecondsToDateTimePropertyConverter()
+  final DateTime? doneAt;
   @override
-  final int? updatedAt;
+  @OptionalMillisecondsToDateTimePropertyConverter()
+  final DateTime? updatedAt;
   @override
   final int? repetitionLevel;
   @override
@@ -374,7 +379,7 @@ class _$_Task implements _Task {
   }
 }
 
-abstract class _Task implements Task {
+abstract class _Task extends Task {
   const factory _Task(
       {required final String id,
       required final bool isDone,
@@ -391,10 +396,13 @@ abstract class _Task implements Task {
           required final List<String> tags,
       @JsonKey(defaultValue: [])
           required final List<TaskHistory> history,
-      final int? doneAt,
-      final int? updatedAt,
+      @OptionalMillisecondsToDateTimePropertyConverter()
+          final DateTime? doneAt,
+      @OptionalMillisecondsToDateTimePropertyConverter()
+          final DateTime? updatedAt,
       final int? repetitionLevel,
       final bool isSelected}) = _$_Task;
+  const _Task._() : super._();
 
   factory _Task.fromJson(Map<String, dynamic> json) = _$_Task.fromJson;
 
@@ -423,9 +431,11 @@ abstract class _Task implements Task {
   @JsonKey(defaultValue: [])
   List<TaskHistory> get history;
   @override
-  int? get doneAt;
+  @OptionalMillisecondsToDateTimePropertyConverter()
+  DateTime? get doneAt;
   @override
-  int? get updatedAt;
+  @OptionalMillisecondsToDateTimePropertyConverter()
+  DateTime? get updatedAt;
   @override
   int? get repetitionLevel;
   @override

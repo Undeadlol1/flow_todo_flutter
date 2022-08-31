@@ -1,3 +1,5 @@
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/go_to_task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list_item.dart';
 import 'package:flutter/material.dart';
@@ -6,16 +8,25 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
-
-class _MockGoToTaskpage extends Mock implements GoToTaskPage {}
+import '../../../../test_utilities/mocks/mock_go_to_task_page.dart';
+import '../../../../test_utilities/mocks/mock_stale_task_detector.dart';
+import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 
 void main() {
-  final mockGoToTaskpage = _MockGoToTaskpage();
+  final mockGoToTaskpage = MockGoToTaskPage();
+  final mockStaleTaskDetector = MockStaleTaskDetector();
+  final mockTaskRewardCalculator = MockTaskRewardCalculator();
 
   setUpAll(() {
+    registerFallbackValue(taskFixture);
+
+    when(() => mockTaskRewardCalculator.taskCompletion(any())).thenReturn(50);
+    when(() => mockStaleTaskDetector.isStale(any())).thenReturn(false);
     when(() => mockGoToTaskpage(task: taskFixture)).thenAnswer((_) async {});
 
     GetIt.I.registerFactory<GoToTaskPage>(() => mockGoToTaskpage);
+    GetIt.I.registerSingleton<StaleTaskDetector>(mockStaleTaskDetector);
+    GetIt.I.registerSingleton<TaskRewardCalculator>(mockTaskRewardCalculator);
   });
 
   group('GIVEN TasksListItem', () {
@@ -47,11 +58,9 @@ void main() {
 
 extension _PumpWithScaffold on WidgetTester {
   Future<void> pumpWithDependencies(Widget child) {
-    // ignore: unnecessary_this
-    return this.pumpWidget(
-      Directionality(
-        textDirection: TextDirection.ltr,
-        child: child,
+    return pumpWidget(
+      MaterialApp(
+        home: Scaffold(body: child),
       ),
     );
   }

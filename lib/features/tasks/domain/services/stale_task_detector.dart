@@ -1,23 +1,21 @@
+import 'package:injectable/injectable.dart';
+
 import '../models/task.dart';
 
+@lazySingleton
 class StaleTaskDetector {
   StaleTaskDetector();
 
   get now => DateTime.now();
 
-  bool isTale(Task task) {
+  bool isStale(Task task) {
     final bool isTaskCreatedLongAgo =
         _differenceInDaysWithToday(task.createdAt) > 3;
     final bool isTaskReadyButNotWorkedOn =
         _differenceInDaysWithToday(task.dueAt) > 3;
     final bool hasTaskBeenUpdatedRecently = task.updatedAt == null
         ? false
-        : _differenceInDaysWithToday(
-              DateTime.fromMillisecondsSinceEpoch(
-                task.updatedAt!,
-              ),
-            ) <
-            5;
+        : _differenceInDaysWithToday(task.updatedAt!) < 5;
 
     if (hasTaskBeenUpdatedRecently) {
       return false;

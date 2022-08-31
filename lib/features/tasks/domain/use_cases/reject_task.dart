@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/delete_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
@@ -15,36 +16,38 @@ class RejectTask {
   final GoToTaskPage goToTaskPage;
   final SnackbarService snackbarService;
   final AddPointsToViewer addPointsToUser;
+  final FirebaseAnalytics firebaseAnalytics;
   final DeleteTaskRepository deleteTaskRepository;
-
   RejectTask({
     required this.tasksCubit,
     required this.goToMainPage,
     required this.goToTaskPage,
     required this.snackbarService,
     required this.addPointsToUser,
+    required this.firebaseAnalytics,
     required this.deleteTaskRepository,
   });
 
-  static const _encouragingText =
-      "Don't be afraid to get rid of unimportant tasks. You have been awarded with experience";
+  static const _encouragingText = "Don't be afraid to get rid of unimportant "
+      "tasks. You have been awarded with experience";
 
   Future<void> call(Task task) async {
     try {
       goToMainPage();
 
-      tasksCubit.state.tasks.remove(task);
-      tasksCubit.updateList(tasksCubit.state.tasks);
+      tasksCubit.removeTask(task);
       snackbarService.displaySnackbar(text: _encouragingText);
 
-      await deleteTaskRepository(task);
-      return addPointsToUser(10);
+      addPointsToUser(10);
+      deleteTaskRepository(task);
+
+      return firebaseAnalytics.logEvent(name: 'rejected_task');
     } catch (error) {
       snackbarService.displaySnackbar(text: error.toString());
 
       tasksCubit.undo();
 
-      return goToTaskPage.call(task: task);
+      return goToTaskPage(task: task);
     }
   }
 }

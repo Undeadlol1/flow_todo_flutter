@@ -6,9 +6,11 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../../test_utilities/mocks/mock_autentification_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_firebase_auth.dart';
 import '../../../../../test_utilities/mocks/mock_profile_cubit.dart';
+import '../../../../../test_utilities/mocks/mock_tags_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_tasks_worked_on_today_cubit.dart';
 
+final _tagsCubit = MockTagsCubit();
 final _tasksCubit = MockTasksCubit();
 final _firebaseAuth = MockFirebasAuth();
 final _profileCubit = MockProfileCubit();
@@ -24,6 +26,7 @@ class _MockFirebaseFirestore extends Mock implements FirebaseFirestore {
 
 void main() {
   setUp(() {
+    reset(_tagsCubit);
     reset(_tasksCubit);
     reset(_profileCubit);
     reset(_firebaseAuth);
@@ -66,6 +69,7 @@ Future<void> Function() _verifyMockCall(dynamic Function() funcitonToVerify) {
 
 Logout _buildUseCase() {
   return Logout(
+    tagsCubit: _tagsCubit,
     tasksCubit: _tasksCubit,
     profileCubit: _profileCubit,
     firebaseAuth: _firebaseAuth,

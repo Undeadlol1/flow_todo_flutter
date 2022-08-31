@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flow_todo_flutter_2022/features/streaks/domain/models/daily_streak.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/worked_on_tasks_days_in_a_row.dart';
@@ -48,32 +50,29 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return Builder(
       builder: (context) {
         final ProfileState profileState = context.watch<ProfileCubit>().state;
         return BlocConsumer<TasksWorkedOnTodayCubit, TasksWorkedOnTodayState>(
+          buildWhen: (previous, current) => previous.tasks != current.tasks,
           listener: (context, tasksDoneState) {
             _runProgressAnimation(
               context: context,
               tasksDoneTodayState: tasksDoneState,
-              dailyStreak: profileState.profile?.dailyStreak,
+              dailyStreak: profileState.profile.dailyStreak,
+            );
+            previousProgressValue = _getProgressValue(
+              tasksDoneAmount: tasksDoneState.tasks.length,
+              requiredTasksPerDay: profileState.profile.dailyStreak.perDay,
             );
           },
           builder: (context, tasksDoneState) {
-            final int requiredTasksPerDay =
-                profileState.profile?.dailyStreak.perDay ?? 1;
-            final tasksDoneAmount = tasksDoneState.tasks.length;
-            previousProgressValue = _getProgressValue(
-              tasksDoneAmount: tasksDoneAmount,
-              requiredTasksPerDay: requiredTasksPerDay,
-            );
-
             if (_hasFirstAnimationForcefullyRan == false) {
               _runProgressAnimation(
                 context: context,
                 tasksDoneTodayState: tasksDoneState,
-                dailyStreak: profileState.profile?.dailyStreak,
+                dailyStreak: profileState.profile.dailyStreak,
               );
             }
 
@@ -84,10 +83,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const WinsTodayText(),
-                  _ProgressBar(
-                    animation: _animation,
-                    animationController: _animationController,
-                  ),
+                  _ProgressBar(animation: _animation),
                   WorkedOnTasksDaysInARow(
                     areAnimationsEnabled: _hasFirstAnimationForcefullyRan,
                   ),
@@ -120,7 +116,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
     tasksDoneTodayState.whenOrNull(
       loaded: (_) {
         Future.microtask(() {
-          _hasFirstAnimationForcefullyRan = true;
+          setState(() => _hasFirstAnimationForcefullyRan = true);
 
           if (_isAnimationListenerAdded == false) {
             _animation.addListener(() => setState(() {}));
@@ -146,13 +142,8 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
 }
 
 class _ProgressBar extends StatelessWidget {
-  const _ProgressBar({
-    Key? key,
-    required this.animation,
-    required this.animationController,
-  }) : super(key: key);
+  const _ProgressBar({Key? key, required this.animation}) : super(key: key);
 
-  final AnimationController animationController;
   final Animation<double> animation;
 
   @override

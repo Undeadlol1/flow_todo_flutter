@@ -13,8 +13,8 @@ import '../pages/profile_page.dart';
 
 class Avatar extends StatelessWidget {
   final double radius;
-  final bool areNumberAnimationsSuspended;
   final bool isLevelHidden;
+  final bool areNumberAnimationsSuspended;
   const Avatar({
     Key? key,
     this.isLevelHidden = false,
@@ -28,11 +28,11 @@ class Avatar extends StatelessWidget {
       constraints: BoxConstraints.tightFor(width: radius * 2),
       child: Stack(
         children: [
-          InkWell(
+          GestureDetector(
+            onTap: _navigateToProfilePage(context),
             child: Center(
               child: _Image(radius: radius),
             ),
-            onTap: () => Navigator.of(context).pushNamed(ProfilePage.pathName),
           ),
           isLevelHidden
               ? const SizedBox()
@@ -47,6 +47,12 @@ class Avatar extends StatelessWidget {
       ),
     );
   }
+
+  void Function()? _navigateToProfilePage(BuildContext context) {
+    return ModalRoute.of(context)?.settings.name == ProfilePage.pathName
+        ? null
+        : () => Navigator.of(context).pushNamed(ProfilePage.pathName);
+  }
 }
 
 class _LevelBadge extends StatelessWidget {
@@ -59,7 +65,7 @@ class _LevelBadge extends StatelessWidget {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, profileState) {
         if (profileState is ProfileLoaded) {
-          final level = _levelCalculator(profileState.profile?.experience ?? 0)
+          final level = _levelCalculator(profileState.profile.experience)
               .value
               .toString();
 
@@ -192,7 +198,7 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
     if (profileState is! ProfileLoaded) return;
 
     Future.microtask(() {
-      _hasFirstAnimationForcefullyRan = true;
+      setState(() => _hasFirstAnimationForcefullyRan = true);
 
       _animation = Tween<double>(
         end: _getLevelProgress(profileState),

@@ -22,7 +22,7 @@ class GetGoals {
         .onError(_handleException);
   }
 
-  void _handleException(error, _) {
-    useCaseExceptionHandler.call(error!);
+  void _handleException(error, stack) {
+    useCaseExceptionHandler.call(error!, stack);
   }
 }

@@ -44,9 +44,9 @@ class CreateGoal {
       goalsCubit.update([goalToCreate, ...goalsCubit.state.goals]);
 
       return createGoalRepo(goalToCreate);
-    } on Exception catch (error) {
+    } on Exception catch (error, stack) {
       goalsCubit.undo();
-      useCaseExceptionHandler.call(error);
+      useCaseExceptionHandler.call(error, stack);
       rethrow;
     }
   }

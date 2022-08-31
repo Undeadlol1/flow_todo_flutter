@@ -2,7 +2,6 @@ import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/presentation/widgets/animated_numbers.dart';
 import '../cubit/tasks_worked_on_today_cubit.dart';
 
 class WinsTodayText extends StatelessWidget {
@@ -16,8 +15,7 @@ class WinsTodayText extends StatelessWidget {
         final tasksDoneState = context.watch<TasksWorkedOnTodayCubit>().state;
 
         final tasksDoneAmount = tasksDoneState.tasks.length;
-        final requiredTasksPerDay =
-            profileState.profile?.dailyStreak.perDay ?? 3;
+        final requiredTasksPerDay = profileState.profile.dailyStreak.perDay;
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -26,7 +24,7 @@ class WinsTodayText extends StatelessWidget {
             tasksDoneState.maybeMap(
               loaded: (value) => Row(
                 children: [
-                  AnimatedNumbers(number: tasksDoneAmount),
+                  Text(tasksDoneAmount.toString()),
                   Text(
                     tasksDoneAmount >= requiredTasksPerDay
                         ? ' '

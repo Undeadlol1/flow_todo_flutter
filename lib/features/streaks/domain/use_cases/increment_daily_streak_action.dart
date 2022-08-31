@@ -27,7 +27,7 @@ class IncrementDailyStreakAction {
   }
 
   int get _tasksDoneToday => tasksDoneTodayCubit.state.tasks.length;
-  DailyStreak? get _streak => profileCubit.state.profile?.dailyStreak;
+  DailyStreak? get _streak => profileCubit.state.profile.dailyStreak;
 
   bool _shouldDailyStreakIncrement() {
     return _streak?.shouldStreakIncrement(
@@ -40,7 +40,7 @@ class IncrementDailyStreakAction {
     final streak = _streak!;
     final today = getTodaysDate();
 
-    final updatedProfile = profileCubit.state.profile!.copyWith(
+    final updatedProfile = profileCubit.state.profile.copyWith(
       dailyStreak: streak.copyWith(
         updatedAt: today,
         startsAt: streak.isInterrupted() ? today : streak.startsAt,

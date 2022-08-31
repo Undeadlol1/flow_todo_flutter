@@ -1,19 +1,21 @@
 import 'dart:async';
-import 'dart:developer';
+import 'dart:isolate';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutterfire_ui/auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
-import 'core/DI/configure_automatic_di.dart';
-import 'core/DI/configure_manual_di.dart';
-import 'core/presentation/app.dart';
 import 'firebase_options.dart';
+import 'core/presentation/app.dart';
+import 'core/DI/configure_manual_di.dart';
+import 'core/DI/configure_automatic_di.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,23 +24,43 @@ void main() async {
     () async {
       _configureDeviceOrientation();
 
-      await _configureFirebaseServices();
+      await _configureFirebase();
 
-      configureManualDI();
+      _configureCrashlytics();
 
-      configureAutomaticDI();
+      _configurePerformanceMonitoring();
+
+      _configureDI();
+
+      _confiigureRemoteConfig();
 
       runApp(const App());
     },
-    createStorage: () async {
-      log('kReleaseMode: ${kReleaseMode.toString()}');
-      return HydratedStorage.build(
-        storageDirectory: kIsWeb
-            ? HydratedStorage.webStorageDirectory
-            : await getTemporaryDirectory(),
-      );
-    },
+    createStorage: _createStateStorage,
   );
+}
+
+Future<void> _confiigureRemoteConfig() async {
+  final remoteConfig = FirebaseRemoteConfig.instance;
+
+  await remoteConfig.setConfigSettings(
+    RemoteConfigSettings(
+      fetchTimeout: const Duration(minutes: 1),
+      minimumFetchInterval:
+          kReleaseMode ? const Duration(hours: 3) : const Duration(minutes: 10),
+    ),
+  );
+
+  await remoteConfig.setDefaults(const {
+    "are_tags_enabled": false,
+    "is_only_single_selected_task_allowed": true,
+  });
+}
+
+_configureDI() {
+  configureManualDI();
+
+  configureAutomaticDI();
 }
 
 void _configureDeviceOrientation() {
@@ -48,18 +70,41 @@ void _configureDeviceOrientation() {
   ]);
 }
 
-Future<void> _configureFirebaseServices() async {
+Future<void> _configureFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FlutterFireUIAuth.configureProviders([
-    const GoogleProviderConfiguration(
-      clientId:
-          '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
-    ),
-  ]);
-
-  FirebaseAnalytics.instance.app
+  await FirebaseAnalytics.instance.app
       .setAutomaticDataCollectionEnabled(kReleaseMode);
+}
+
+void _configureCrashlytics() {
+  if (kReleaseMode) {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+    // https://firebase.google.com/docs/crashlytics/customize-crash-reports?platform=flutter#errors-outside-flutter
+    Isolate.current.addErrorListener(
+      RawReceivePort((pair) async {
+        final List<dynamic> errorAndStacktrace = pair;
+        await FirebaseCrashlytics.instance.recordError(
+          errorAndStacktrace.first,
+          errorAndStacktrace.last,
+          fatal: true,
+        );
+      }).sendPort,
+    );
+  }
+}
+
+void _configurePerformanceMonitoring() {
+  FirebasePerformance.instance.setPerformanceCollectionEnabled(kReleaseMode);
+}
+
+FutureOr<Storage> _createStateStorage() async {
+  return HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getTemporaryDirectory(),
+  );
 }

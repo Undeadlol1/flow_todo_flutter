@@ -1,14 +1,17 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/countdown.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/positive_choices.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_task_form.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_note.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/edit_note_form.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,8 +22,10 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../test_utilities/fakes/fake_user_level_calculator.dart';
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
+import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 
 class _MockMakeStepForwardOnATask extends Mock
     implements MakeStepForwardOnTheTask {}
@@ -32,6 +37,18 @@ final _mockLevelProgressPercentageCalculator =
 
 void main() {
   setUpAll(() {
+    registerFallbackValue(taskFixture);
+
+    final mockTaskRewardCalculator = MockTaskRewardCalculator();
+    final mockFirebaseRemoteConfig = MockFirebaseRemoteConfig();
+    when(() => mockFirebaseRemoteConfig.getBool(any())).thenReturn(false);
+    when(() => mockTaskRewardCalculator.taskCompletion(any())).thenReturn(50);
+    when(() => mockTaskRewardCalculator.stepForward(any())).thenReturn(50);
+    when(() => mockTaskRewardCalculator.leapForward(any())).thenReturn(50);
+
+    GetIt.I.registerSingleton(StaleTaskDetector());
+    GetIt.I.registerSingleton<FirebaseRemoteConfig>(mockFirebaseRemoteConfig);
+    GetIt.I.registerSingleton<TaskRewardCalculator>(mockTaskRewardCalculator);
     GetIt.I.registerSingleton<MakeStepForwardOnTheTask>(
       _MockMakeStepForwardOnATask(),
     );
@@ -98,7 +115,7 @@ void main() {
       (tester) async {
         await tester.pumpWithDependencies(task: taskFixture.copyWith(note: ''));
 
-        expect(find.byType(UpsertNote), findsNothing);
+        expect(find.byType(EditNoteForm), findsNothing);
         expect(find.byType(UpsertTaskForm), findsNothing);
       },
     );
@@ -108,7 +125,8 @@ void main() {
       _pumpAndRunCallback(
         () => expect(
           find.byWidgetPredicate(
-            (widget) => widget is UpsertNote && widget.note == taskFixture.note,
+            (widget) =>
+                widget is EditNoteForm && widget.note == taskFixture.note,
           ),
           findsOneWidget,
         ),

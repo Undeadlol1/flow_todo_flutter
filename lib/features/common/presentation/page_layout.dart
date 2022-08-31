@@ -1,12 +1,11 @@
 import 'package:build_context_provider/build_context_provider.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/google_sign_in_button.dart';
-import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
+import 'package:flow_todo_flutter_2022/features/authentification/presentation/widgets/sign_out_button.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_level_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterfire_ui/auth.dart' show SignOutButton;
 import 'package:get_it/get_it.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
@@ -28,6 +27,13 @@ class PageLayout extends StatelessWidget {
     this.isNumbersAnimationSuspended = true,
   }) : super(key: key);
 
+  static const _padding = EdgeInsets.only(
+    top: 6,
+    left: 6,
+    right: 6,
+    bottom: 12.0,
+  );
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -41,17 +47,14 @@ class PageLayout extends StatelessWidget {
             children: [
               const ListenerThatRunsFunctionsWithBuildContext(),
               Scaffold(
-                resizeToAvoidBottomInset: true,
+                resizeToAvoidBottomInset: false,
                 drawer: isDrawerHidden == true ? null : const _Drawer(),
                 appBar: isAppBarHidden
                     ? null
                     : AppBar(
-                        actions: [
-                          _UserLevel(
-                            isNumbersAnimationSuspended:
-                                isNumbersAnimationSuspended,
-                          ),
-                          const Padding(
+                        actions: const [
+                          _UserLevelBadge(),
+                          Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                             child: Center(
                               child: Avatar(
@@ -64,12 +67,7 @@ class PageLayout extends StatelessWidget {
                       ),
                 body: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 6,
-                      left: 6,
-                      right: 6,
-                      bottom: 12.0,
-                    ),
+                    padding: _padding,
                     child: child,
                   ),
                 ),
@@ -87,35 +85,22 @@ class PageLayout extends StatelessWidget {
   }
 }
 
-class _UserLevel extends StatelessWidget {
-  final bool isNumbersAnimationSuspended;
-  final UserLevelCalculator _userLevelCalculator = GetIt.I();
-  _UserLevel({Key? key, required this.isNumbersAnimationSuspended})
-      : super(key: key);
+class _UserLevelBadge extends StatelessWidget {
+  static final UserLevelCalculator _userLevelCalculator = GetIt.I();
+  const _UserLevelBadge({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileCubit, ProfileState>(
-      builder: (context, profileState) {
-        if (profileState is ProfileLoaded) {
-          return Container(
-            padding: const EdgeInsets.only(right: 7),
-            child: Chip(
-              label: Row(
-                children: [
-                  const Text('Level: '),
-                  AnimatedNumbers(
-                    number: _userLevelCalculator(
-                      profileState.profile?.experience ?? 0,
-                    ).value,
-                    areNumberAnimationsSuspended: isNumbersAnimationSuspended,
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-        return Container();
+    return BlocSelector<ProfileCubit, ProfileState, int>(
+      selector: (state) => state.profile.experience,
+      builder: (_, experience) {
+        final level = _userLevelCalculator(experience).value.toString();
+        return Container(
+          padding: const EdgeInsets.only(right: 7),
+          child: Chip(
+            label: Text('Level: $level'),
+          ),
+        );
       },
     );
   }
@@ -160,6 +145,7 @@ class _BottomNavigation extends StatelessWidget {
   }
 }
 
+// TODO remove drawer
 class _Drawer extends StatelessWidget {
   const _Drawer({Key? key}) : super(key: key);
 

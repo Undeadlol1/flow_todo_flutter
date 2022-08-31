@@ -20,7 +20,7 @@ void main() {
       isDone: false,
       title: 'title',
       userId: 'userId',
-      updatedAt: updatedAt?.millisecondsSinceEpoch,
+      updatedAt: updatedAt,
       dueAt: dueAt ?? today,
       createdAt: createdAt ?? today,
     );
@@ -32,7 +32,7 @@ void main() {
       'THEN returns true',
       () {
         expect(
-          detector.isTale(buildtask(createdAt: fiveDaysAgo)),
+          detector.isStale(buildtask(createdAt: fiveDaysAgo)),
           isTrue,
         );
       },
@@ -42,7 +42,7 @@ void main() {
       'WHEN task wasn\'t worked on when it is due '
       'THEN returns true',
       () {
-        expect(detector.isTale(buildtask(dueAt: fiveDaysAgo)), isTrue);
+        expect(detector.isStale(buildtask(dueAt: fiveDaysAgo)), isTrue);
       },
     );
 
@@ -51,7 +51,7 @@ void main() {
       'THEN returns false',
       () {
         expect(
-          detector.isTale(
+          detector.isStale(
             buildtask(
               updatedAt: today,
               dueAt: fiveDaysAgo,

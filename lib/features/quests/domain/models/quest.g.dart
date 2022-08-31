@@ -25,7 +25,7 @@ Map<String, dynamic> _$$_QuestToJson(_$_Quest instance) => <String, dynamic>{
       'id': instance.id,
       'isDone': instance.isDone,
       'userId': instance.userId,
-      'type': _$QuestTypeEntityEnumMap[instance.type],
+      'type': _$QuestTypeEntityEnumMap[instance.type]!,
       'valueToAchieve': instance.valueToAchieve,
       'achievementProgress': instance.achievementProgress,
       'initialValue': instance.initialValue,

@@ -23,8 +23,10 @@ _$_Task _$$_TaskFromJson(Map<String, dynamic> json) => _$_Task(
               ?.map((e) => TaskHistory.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      doneAt: json['doneAt'] as int?,
-      updatedAt: json['updatedAt'] as int?,
+      doneAt: const OptionalMillisecondsToDateTimePropertyConverter()
+          .fromJson(json['doneAt'] as int?),
+      updatedAt: const OptionalMillisecondsToDateTimePropertyConverter()
+          .fromJson(json['updatedAt'] as int?),
       repetitionLevel: json['repetitionLevel'] as int?,
       isSelected: json['isSelected'] as bool? ?? false,
     );
@@ -41,8 +43,10 @@ Map<String, dynamic> _$$_TaskToJson(_$_Task instance) => <String, dynamic>{
       'note': instance.note,
       'tags': instance.tags,
       'history': instance.history.map((e) => e.toJson()).toList(),
-      'doneAt': instance.doneAt,
-      'updatedAt': instance.updatedAt,
+      'doneAt': const OptionalMillisecondsToDateTimePropertyConverter()
+          .toJson(instance.doneAt),
+      'updatedAt': const OptionalMillisecondsToDateTimePropertyConverter()
+          .toJson(instance.updatedAt),
       'repetitionLevel': instance.repetitionLevel,
       'isSelected': instance.isSelected,
     };

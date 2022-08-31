@@ -1,3 +1,4 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/user.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
@@ -11,6 +12,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
 
 class _MockCreateTask extends Mock implements CreateTask {}
@@ -30,21 +32,47 @@ final _fakeAuthenticatedCubit = AuthentificationCubit()
 
 void main() {
   setUpAll(() {
+    final mockFirebaseRemoteConfig = MockFirebaseRemoteConfig();
+
     GetIt.I.registerSingleton<CreateTask>(_mockCreateTask);
     GetIt.I.registerSingleton<UpdateTask>(_mockUpdateTask);
     GetIt.I.registerSingleton<SnackbarService>(MockSnackbarService());
+    GetIt.I.registerSingleton<FirebaseRemoteConfig>(mockFirebaseRemoteConfig);
+
+    when(_typicaTaskUpdateCall).thenAnswer(Future.value);
+    when(_typicalTaskCreateCall).thenAnswer(Future.value);
+    when(() => mockFirebaseRemoteConfig.getBool(any())).thenReturn(false);
   });
 
   group('GIVEN UpsertTaskForm', () {
     testWidgets(
       'WHEN text input is submitted THEN creates task',
       (tester) async {
-        when(_typicalTaskCreateCall).thenAnswer((_) async {});
-
-        await _pumpWidget(tester);
-        await _submitSomeText(tester);
+        await tester.pumpAndSumbitSomeText();
 
         verify(_typicalTaskCreateCall).called(1);
+      },
+    );
+
+    testWidgets(
+      'WHEN text submitted with tags '
+      'THEN calls use case with proper arguments',
+      (tester) async {
+        const firstTag = 'FirstTag';
+        const secondTag = 'SecondTag';
+        final tags = [firstTag.toLowerCase(), secondTag.toLowerCase()];
+
+        await tester.pumpAndSumbitSomeText(
+          text: '$taskName #$firstTag #$secondTag',
+        );
+
+        verify(
+          () => _mockCreateTask.call(
+            tags: tags,
+            title: taskName,
+            userId: _userId,
+          ),
+        ).called(1);
       },
     );
 
@@ -53,11 +81,7 @@ void main() {
       'AND taskToUpdate argument is provided '
       'THEN updates the task',
       (tester) async {
-        when(_typicaTaskUpdateCall).thenAnswer((_) async {});
-        when(_typicalTaskCreateCall).thenAnswer((_) async {});
-
-        await _pumpWidget(tester, shouldUpdateTask: true);
-        await _submitSomeText(tester);
+        await tester.pumpAndSumbitSomeText(shouldUpdateTask: true);
 
         verify(_typicaTaskUpdateCall).called(1);
         verifyNever(_typicalTaskCreateCall);
@@ -70,8 +94,7 @@ void main() {
         final exception = Exception('Any error string');
         when(_typicalTaskCreateCall).thenThrow(exception);
 
-        await _pumpWidget(tester);
-        await _submitSomeText(tester);
+        await tester.pumpAndSumbitSomeText();
 
         expect(find.text(exception.toString()), findsOneWidget);
       },
@@ -79,32 +102,47 @@ void main() {
   });
 }
 
-Future<void> _pumpWidget(WidgetTester tester, {bool shouldUpdateTask = false}) {
-  return tester.pumpWidget(
-    BlocProvider<AuthentificationCubit>(
-      create: (context) => _fakeAuthenticatedCubit,
-      child: MaterialApp(
-        navigatorObservers: [_MockNavigatorObserver()],
-        home: Scaffold(
-          body: SingleChildScrollView(
-            child: UpsertTaskForm(
-              taskToUpdate: shouldUpdateTask ? taskFixture : null,
+extension on WidgetTester {
+  Future<void> pumpWithDependencies({bool shouldUpdateTask = false}) async {
+    return pumpWidget(
+      BlocProvider<AuthentificationCubit>(
+        create: (context) => _fakeAuthenticatedCubit,
+        child: MaterialApp(
+          navigatorObservers: [_MockNavigatorObserver()],
+          home: Scaffold(
+            body: SingleChildScrollView(
+              child: UpsertTaskForm(
+                taskToUpdate: shouldUpdateTask ? taskFixture : null,
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
-Future<void> _typicalTaskCreateCall() =>
-    _mockCreateTask(title: taskName, userId: _userId);
+extension on WidgetTester {
+  Future<void> pumpAndSumbitSomeText({
+    String text = taskName,
+    bool shouldUpdateTask = false,
+  }) async {
+    await pumpWithDependencies(shouldUpdateTask: shouldUpdateTask);
+    await _submitSomeText(tester: this, text: text);
+  }
+}
 
-Future<void> _typicaTaskUpdateCall() =>
-    _mockUpdateTask(taskFixture.copyWith(title: taskName));
-
-Future<void> _submitSomeText(WidgetTester tester) async {
-  await tester.enterText(find.byType(TextField), taskName);
+Future<void> _submitSomeText({
+  required String text,
+  required WidgetTester tester,
+}) async {
+  await tester.enterText(find.byType(TextField), text);
   await tester.testTextInput.receiveAction(TextInputAction.done);
   await tester.pumpAndSettle();
 }
+
+Future<void> _typicalTaskCreateCall() =>
+    _mockCreateTask(title: taskName, userId: _userId, tags: []);
+
+Future<void> _typicaTaskUpdateCall() =>
+    _mockUpdateTask(taskFixture.copyWith(title: taskName));

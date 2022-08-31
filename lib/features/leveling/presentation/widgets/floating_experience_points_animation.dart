@@ -17,7 +17,7 @@ class _FloatingExperiencePointsAnimationState
     extends State<FloatingExperiencePointsAnimation> {
   Timer? _hideTextTimer;
   bool _isTextVisible = false;
-  int _expPointsToDisplay = 0;
+  int _expDifference = 0;
   static const _textRevealedDuration = Duration(seconds: 2);
 
   @override
@@ -30,14 +30,13 @@ class _FloatingExperiencePointsAnimationState
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: (context, state) {
-        setState(() => _isTextVisible = true);
-        _hideTextTimer = Timer(
-          _textRevealedDuration,
-          () => setState(() => _isTextVisible = false),
-        );
+        _setTextVisibility(true);
+
+        _hideTextTimer =
+            Timer(_textRevealedDuration, () => _setTextVisibility(false));
       },
-      buildWhen: _buildWhenUserIsRewardedWithExp,
-      listenWhen: _buildWhenUserIsRewardedWithExp,
+      buildWhen: _isExperienceAmountChanged,
+      listenWhen: _isExperienceAmountChanged,
       builder: (context, profileState) {
         return AnimatedOpacity(
           duration: const Duration(milliseconds: 500),
@@ -48,23 +47,26 @@ class _FloatingExperiencePointsAnimationState
               borderRadius: BorderRadius.circular(10),
               color: Theme.of(context).colorScheme.background,
             ),
-            child: Text('+$_expPointsToDisplay'),
+            child: Text('+$_expDifference'),
           ),
         );
       },
     );
   }
 
-  bool _buildWhenUserIsRewardedWithExp(previous, current) {
-    if (previous is ProfileLoaded && current is ProfileLoaded) {
-      final expDifference = _expPointsToDisplay =
-          (current.profile?.experience ?? 0) -
-              (previous.profile?.experience ?? 0);
+  void _setTextVisibility(bool isVisible) =>
+      setState(() => _isTextVisible = isVisible);
 
-      _expPointsToDisplay = expDifference;
-
-      return !expDifference.isNegative;
+  bool _isExperienceAmountChanged(previous, current) {
+    if (previous is! ProfileLoaded || current is! ProfileLoaded) {
+      return false;
     }
-    return false;
+
+    final expDifference =
+        current.profile.experience - previous.profile.experience;
+
+    setState(() => _expDifference = expDifference);
+
+    return expDifference > 0;
   }
 }

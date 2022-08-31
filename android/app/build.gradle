@@ -31,6 +31,8 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 // https://firebase.flutter.dev/docs/manual-installation/android/
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
@@ -79,7 +81,8 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // https://stackoverflow.com/a/71362765
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     // https://firebase.flutter.dev/docs/manual-installation/android/
     implementation 'com.android.support:multidex:1.0.3'
 }

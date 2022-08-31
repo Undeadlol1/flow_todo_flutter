@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/create_task_repository.dart';
@@ -13,6 +14,7 @@ class CreateTask {
   final ProfileCubit profileCubit;
   final GetTodaysDate getTodaysDate;
   final AddPointsToViewer addPointsToUser;
+  final FirebaseAnalytics firebaseAnalytics;
   final UniqueIdGenerator uniqueIdGenerator;
   final CreateTaskRepository createTaskRepository;
   CreateTask({
@@ -20,19 +22,23 @@ class CreateTask {
     required this.profileCubit,
     required this.getTodaysDate,
     required this.addPointsToUser,
+    required this.firebaseAnalytics,
     required this.uniqueIdGenerator,
     required this.createTaskRepository,
   });
 
-  Future<void> call({required String title, required String userId}) async {
+  Future<void> call({
+    required String title,
+    required String userId,
+    required List<String> tags,
+  }) async {
     final profileState = profileCubit.state;
     final taskToCreate = Task(
-      tags: [],
       note: '',
+      tags: tags,
       history: [],
       isDone: false,
       userId: userId,
-      // NOTE .trim is not tested.
       title: title.trim(),
       id: uniqueIdGenerator(),
       dueAt: getTodaysDate(),
@@ -45,6 +51,8 @@ class CreateTask {
     tasksCubit.state.tasks.insert(0, taskToCreate);
     tasksCubit.updateList(tasksCubit.state.tasks);
 
-    return createTaskRepository(taskToCreate);
+    await createTaskRepository(taskToCreate);
+
+    return firebaseAnalytics.logEvent(name: 'create_task');
   }
 }

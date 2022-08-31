@@ -3,11 +3,14 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/selected_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/quests/presentation/cubits/active_quests_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/filter_tasks_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -35,9 +38,11 @@ class _AppState extends State<App> {
   static final FirebaseAnalyticsObserver _firebaseAnalyticsObserver =
       FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance);
 
+  final TagsCubit tagsCubit = GetIt.I();
   final TasksCubit tasksCubit = GetIt.I();
   final GoalsCubit goalsCubit = GetIt.I();
   final ProfileCubit profileCubit = GetIt.I();
+  final RemoteConfigCubit remoteConfigCubit = GetIt.I();
   final ActiveQuestsCubit activeQuestsCubit = GetIt.I();
   final SelectedTasksCubit selectedTasksCubit = GetIt.I();
   final TasksWorkedOnTodayCubit tasksDoneTodayCubit = GetIt.I();
@@ -98,14 +103,15 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    log('current user: ${GetIt.I<firebase_auth.FirebaseAuth>().currentUser?.displayName}');
     return Directionality(
       textDirection: TextDirection.ltr,
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(create: (_) => tagsCubit),
           BlocProvider(create: (_) => tasksCubit),
           BlocProvider(create: (_) => goalsCubit),
           BlocProvider(create: (_) => profileCubit),
+          BlocProvider(create: (_) => remoteConfigCubit),
           BlocProvider(create: (_) => activeQuestsCubit),
           BlocProvider(create: (_) => selectedTasksCubit),
           BlocProvider(create: (_) => tasksDoneTodayCubit),
@@ -122,10 +128,11 @@ class _AppState extends State<App> {
               navigatorObservers: [_firebaseAnalyticsObserver],
               routes: {
                 MainPage.pathName: (contex) => const MainPage(),
-                TaskPage.pathName: (contex) => const TaskPage(),
                 GoalsPage.pathName: (contex) => const GoalsPage(),
                 ProfilePage.pathName: (contex) => const ProfilePage(),
+                TaskPage.pathName: (contex) => const TaskPage(),
                 WorkOnTaskPage.pathName: (contex) => const WorkOnTaskPage(),
+                FilterTasksPage.pathName: (contex) => const FilterTasksPage(),
               },
             ),
             ExperienceProgressBar(
@@ -145,8 +152,10 @@ class _AppState extends State<App> {
   void _syncFirebaseAuthWithAuthenticationCubit(firebase_auth.User? user) {
     log('user: ${user?.email.toString()}');
     if (user == null) {
+      tagsCubit.update({});
       goalsCubit.update([]);
       tasksCubit.updateList([]);
+      remoteConfigCubit.reset();
       selectedTasksCubit.update([]);
       profileCubit.setProfileNotFoundOrUnloaded();
       authentificationCubit.setNotAuthenticated();
@@ -155,8 +164,9 @@ class _AppState extends State<App> {
         User(
           id: user.uid,
           email: user.email ?? '',
-          displayName: user.displayName ?? '',
           avatar: user.photoURL ?? user.providerData.first.photoURL ?? '',
+          displayName:
+              user.displayName ?? user.providerData.first.displayName ?? '',
         ),
       );
     }

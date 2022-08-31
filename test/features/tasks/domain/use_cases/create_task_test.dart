@@ -12,6 +12,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
+import '../../../../test_utilities/mocks/mock_firebase_analytics.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 
@@ -33,6 +34,7 @@ const _uniqueId = 'unique id 123';
 final _mockTasksCubit = MockTasksCubit();
 final _mockProfileCubit = MockProfileCubit();
 final _mockAddPointsToUser = _MockAddPointsToUser();
+final _mockFirebaseAnalytics = MockFirebaseAnalytics();
 final _fakecUniqueIdGenerator = _FakecUniqueIdGenerator();
 final _mockCreateTaskRepository = _MockCreateTaskRepository();
 final _dateToReturn = DateTime.now().subtract(const Duration(days: 10));
@@ -58,6 +60,9 @@ void main() {
       Stream.fromIterable([tasksState]),
       initialState: tasksState,
     );
+
+    when(() => _mockFirebaseAnalytics.logEvent(name: any(named: 'name')))
+        .thenAnswer((_) async {});
   });
 
   setUp(() {
@@ -76,7 +81,7 @@ void main() {
       () async {
         final useCase = _buildUseCase();
 
-        await useCase(title: taskTitle, userId: userId);
+        await useCase(title: taskTitle, userId: userId, tags: []);
 
         expect(_mockTasksCubit.state.tasks, hasLength(1));
       },
@@ -87,7 +92,7 @@ void main() {
       () async {
         _mockProfileCubit.setProfile(profileFixture);
 
-        await _buildUseCase()(title: taskTitle, userId: userId);
+        await _buildUseCase()(title: taskTitle, userId: userId, tags: []);
 
         verify(callToAddPointsMock).called(1);
       },
@@ -96,13 +101,13 @@ void main() {
     test('calls task creation repository', () async {
       final useCase = _buildUseCase();
 
-      await useCase(title: taskTitle, userId: userId);
+      await useCase(title: taskTitle, userId: userId, tags: []);
 
       verify(() => _mockCreateTaskRepository(captureAny())).called(1);
     });
 
     test('calls repository with proper task object', () async {
-      await _buildUseCase()(title: taskTitle, userId: userId);
+      await _buildUseCase()(title: taskTitle, userId: userId, tags: []);
 
       final capturedTask = verify(() => _mockCreateTaskRepository(captureAny()))
           .captured
@@ -115,7 +120,7 @@ void main() {
     });
 
     test('calls repository with proper dates in the task', () async {
-      await _buildUseCase()(title: taskTitle, userId: userId);
+      await _buildUseCase()(title: taskTitle, userId: userId, tags: []);
 
       final taskArgument = verify(() => _mockCreateTaskRepository(captureAny()))
           .captured
@@ -132,6 +137,7 @@ CreateTask _buildUseCase() {
     profileCubit: _mockProfileCubit,
     getTodaysDate: _FakeGetTodaysDate(),
     addPointsToUser: _mockAddPointsToUser,
+    firebaseAnalytics: _mockFirebaseAnalytics,
     uniqueIdGenerator: _fakecUniqueIdGenerator,
     createTaskRepository: _mockCreateTaskRepository,
   );

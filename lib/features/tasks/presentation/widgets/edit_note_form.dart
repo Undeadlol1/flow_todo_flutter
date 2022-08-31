@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +11,11 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../domain/use_cases/update_task_note.dart';
 
-class UpsertNote extends StatefulWidget {
+class EditNoteForm extends StatefulWidget {
   final Task task;
   final String? note;
   final bool autoFocus;
-  const UpsertNote({
+  const EditNoteForm({
     Key? key,
     required this.task,
     this.note,
@@ -22,17 +23,15 @@ class UpsertNote extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<UpsertNote> createState() => _UpsertNoteState();
+  State<EditNoteForm> createState() => _EditNoteFormState();
 }
 
-class _UpsertNoteState extends State<UpsertNote> {
+class _EditNoteFormState extends State<EditNoteForm> {
   static const _formControlName = 'note';
 
   String? _formError;
 
   late final FormGroup _form;
-
-  final _padding = const EdgeInsets.symmetric(horizontal: 15);
 
   @override
   void initState() {
@@ -41,11 +40,7 @@ class _UpsertNoteState extends State<UpsertNote> {
       {
         _formControlName: FormControl<String>(
           value: widget.note,
-          validators: [
-            Validators.required,
-            Validators.minLength(5),
-            Validators.maxLength(1000)
-          ], // custom validator
+          validators: [Validators.maxLength(1000)], // custom validator
         ),
       },
     );
@@ -61,8 +56,7 @@ class _UpsertNoteState extends State<UpsertNote> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthentificationCubit, AuthentificationState>(
       builder: (context, authState) {
-        return Padding(
-          padding: _padding,
+        return CardView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

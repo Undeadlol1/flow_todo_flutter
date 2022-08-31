@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flow_todo_flutter_2022/core/services/use_case_exception_handler.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/models/daily_streak.dart';
@@ -16,28 +18,32 @@ class SignInWithGoogle {
   final FirebaseAuth firebaseAuth;
   final ProfileCubit profileCubit;
   final UniqueIdGenerator uniqueIdGenerator;
+  final FirebaseAnalytics firebaseAnalytics;
+  final FirebaseCrashlytics firebaseCrashlytics;
   final GetProfileRepository getProfileRepository;
   final UpsertProfileRepository upsertProfileRepository;
   final UseCaseExceptionHandler useCaseExceptionHandler;
   const SignInWithGoogle({
     required this.profileCubit,
     required this.firebaseAuth,
+    required this.firebaseAnalytics,
     required this.uniqueIdGenerator,
+    required this.firebaseCrashlytics,
     required this.getProfileRepository,
     required this.upsertProfileRepository,
     required this.useCaseExceptionHandler,
   });
 
-  Future<UserCredential?> call() async {
+  Future<void> call() async {
     try {
       return await _triggerGoogleAuthFlow()
           .then(_getGoogleAuthDetails)
           .then(_signInToFirebaseAuthViaGoogleCredentials)
-          .then(_createProfileIfUserDoesntHaveOne);
-    } catch (e) {
-      useCaseExceptionHandler.call(e);
+          .then(_createProfileIfUserDoesntHaveOne)
+          .then(_assignUserIdInVariousAnalytics);
+    } catch (error, stack) {
+      useCaseExceptionHandler(error, stack);
     }
-    return null;
   }
 
   FutureOr<UserCredential> _signInToFirebaseAuthViaGoogleCredentials(
@@ -62,20 +68,22 @@ class SignInWithGoogle {
     return googleUser;
   }
 
-  FutureOr<UserCredential> _createProfileIfUserDoesntHaveOne(
-    userCredential,
+  FutureOr<Profile> _createProfileIfUserDoesntHaveOne(
+    UserCredential userCredential,
   ) async {
     final userId = userCredential.user!.uid;
-    final viewerFirestoreProfile = await getProfileRepository(userId: userId);
+    Profile? viewerFirestoreProfile =
+        await getProfileRepository(userId: userId);
 
     if (viewerFirestoreProfile == null) {
-      profileCubit.setProfile(await _createProfileAndUpdateState(userId));
+      viewerFirestoreProfile = await _createProfileAndUpdateState(userId);
+      profileCubit.setProfile(viewerFirestoreProfile);
     }
 
-    return userCredential;
+    return viewerFirestoreProfile;
   }
 
-  Future<Profile> _createProfileAndUpdateState(userId) async {
+  Future<Profile> _createProfileAndUpdateState(String userId) async {
     final today = DateTime.now();
     final profileToCreate = Profile(
       points: 0,
@@ -96,5 +104,12 @@ class SignInWithGoogle {
     await upsertProfileRepository(profileToCreate);
 
     return profileToCreate;
+  }
+
+  FutureOr<void> _assignUserIdInVariousAnalytics(Profile profile) async {
+    // TODO abstraction
+    await firebaseCrashlytics.setUserIdentifier(profile.userId);
+    // TODO analytics abstraction.
+    return firebaseAnalytics.setUserId(id: profile.userId);
   }
 }

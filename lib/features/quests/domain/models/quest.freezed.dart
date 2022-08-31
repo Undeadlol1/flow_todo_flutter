@@ -312,7 +312,9 @@ class _$_Quest implements _Quest {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_QuestToJson(this);
+    return _$$_QuestToJson(
+      this,
+    );
   }
 }
 
@@ -334,28 +336,28 @@ abstract class _Quest implements Quest {
   factory _Quest.fromJson(Map<String, dynamic> json) = _$_Quest.fromJson;
 
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  bool get isDone => throw _privateConstructorUsedError;
+  bool get isDone;
   @override
-  String get userId => throw _privateConstructorUsedError;
+  String get userId;
   @override
-  QuestTypeEntity get type => throw _privateConstructorUsedError;
+  QuestTypeEntity get type;
   @override
-  int get valueToAchieve => throw _privateConstructorUsedError;
+  int get valueToAchieve;
   @override
-  int get achievementProgress => throw _privateConstructorUsedError;
+  int get achievementProgress;
   @override
-  int? get initialValue => throw _privateConstructorUsedError;
+  int? get initialValue;
   @override
-  int? get doneAt => throw _privateConstructorUsedError;
+  int? get doneAt;
   @override
-  int? get updatedAt => throw _privateConstructorUsedError;
+  int? get updatedAt;
   @override
-  bool? get isPartOfTutorial => throw _privateConstructorUsedError;
+  bool? get isPartOfTutorial;
   @override
   @MillisecondsToDateTimePropertyConverter()
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$_QuestCopyWith<_$_Quest> get copyWith =>
