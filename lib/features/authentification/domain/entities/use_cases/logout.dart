@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
@@ -14,6 +15,7 @@ class Logout {
   final TasksCubit tasksCubit;
   final ProfileCubit profileCubit;
   final FirebaseAuth firebaseAuth;
+  final RemoteConfigCubit remoteConfigCubit;
   final FirebaseFirestore firebaseFirestore;
   final TasksWorkedOnTodayCubit tasksDoneTodayCubit;
   final AuthentificationCubit authentificationCubit;
@@ -23,6 +25,7 @@ class Logout {
     required this.tasksCubit,
     required this.profileCubit,
     required this.firebaseAuth,
+    required this.remoteConfigCubit,
     required this.firebaseFirestore,
     required this.tasksDoneTodayCubit,
     required this.authentificationCubit,
@@ -30,6 +33,7 @@ class Logout {
 
   Future<void> call() async {
     tagsCubit.update({});
+    remoteConfigCubit.reset();
     tasksCubit.updateList([]);
     tasksDoneTodayCubit.update([]);
     profileCubit.setProfileNotFoundOrUnloaded();

@@ -16,37 +16,12 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$RemoteConfigState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-  }) =>
+  bool get areTagsEnabled => throw _privateConstructorUsedError;
+  bool get isOnlyASingleSelectedTaskAllowed =>
       throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initial,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    required TResult orElse(),
-  }) =>
+
+  @JsonKey(ignore: true)
+  $RemoteConfigStateCopyWith<RemoteConfigState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -55,6 +30,7 @@ abstract class $RemoteConfigStateCopyWith<$Res> {
   factory $RemoteConfigStateCopyWith(
           RemoteConfigState value, $Res Function(RemoteConfigState) then) =
       _$RemoteConfigStateCopyWithImpl<$Res>;
+  $Res call({bool areTagsEnabled, bool isOnlyASingleSelectedTaskAllowed});
 }
 
 /// @nodoc
@@ -65,102 +41,115 @@ class _$RemoteConfigStateCopyWithImpl<$Res>
   final RemoteConfigState _value;
   // ignore: unused_field
   final $Res Function(RemoteConfigState) _then;
-}
-
-/// @nodoc
-abstract class _$$_InitialCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$RemoteConfigStateCopyWithImpl<$Res>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
-      : super(_value, (v) => _then(v as _$_Initial));
 
   @override
-  _$_Initial get _value => super._value as _$_Initial;
+  $Res call({
+    Object? areTagsEnabled = freezed,
+    Object? isOnlyASingleSelectedTaskAllowed = freezed,
+  }) {
+    return _then(_value.copyWith(
+      areTagsEnabled: areTagsEnabled == freezed
+          ? _value.areTagsEnabled
+          : areTagsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOnlyASingleSelectedTaskAllowed: isOnlyASingleSelectedTaskAllowed ==
+              freezed
+          ? _value.isOnlyASingleSelectedTaskAllowed
+          : isOnlyASingleSelectedTaskAllowed // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_StateCopyWith<$Res>
+    implements $RemoteConfigStateCopyWith<$Res> {
+  factory _$$_StateCopyWith(_$_State value, $Res Function(_$_State) then) =
+      __$$_StateCopyWithImpl<$Res>;
+  @override
+  $Res call({bool areTagsEnabled, bool isOnlyASingleSelectedTaskAllowed});
+}
+
+/// @nodoc
+class __$$_StateCopyWithImpl<$Res> extends _$RemoteConfigStateCopyWithImpl<$Res>
+    implements _$$_StateCopyWith<$Res> {
+  __$$_StateCopyWithImpl(_$_State _value, $Res Function(_$_State) _then)
+      : super(_value, (v) => _then(v as _$_State));
+
+  @override
+  _$_State get _value => super._value as _$_State;
+
+  @override
+  $Res call({
+    Object? areTagsEnabled = freezed,
+    Object? isOnlyASingleSelectedTaskAllowed = freezed,
+  }) {
+    return _then(_$_State(
+      areTagsEnabled: areTagsEnabled == freezed
+          ? _value.areTagsEnabled
+          : areTagsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOnlyASingleSelectedTaskAllowed: isOnlyASingleSelectedTaskAllowed ==
+              freezed
+          ? _value.isOnlyASingleSelectedTaskAllowed
+          : isOnlyASingleSelectedTaskAllowed // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
 }
 
 /// @nodoc
 
-class _$_Initial implements _Initial {
-  const _$_Initial();
+class _$_State implements _State {
+  const _$_State(
+      {required this.areTagsEnabled,
+      required this.isOnlyASingleSelectedTaskAllowed});
+
+  @override
+  final bool areTagsEnabled;
+  @override
+  final bool isOnlyASingleSelectedTaskAllowed;
 
   @override
   String toString() {
-    return 'RemoteConfigState.initial()';
+    return 'RemoteConfigState(areTagsEnabled: $areTagsEnabled, isOnlyASingleSelectedTaskAllowed: $isOnlyASingleSelectedTaskAllowed)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Initial);
+        (other.runtimeType == runtimeType &&
+            other is _$_State &&
+            const DeepCollectionEquality()
+                .equals(other.areTagsEnabled, areTagsEnabled) &&
+            const DeepCollectionEquality().equals(
+                other.isOnlyASingleSelectedTaskAllowed,
+                isOnlyASingleSelectedTaskAllowed));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(areTagsEnabled),
+      const DeepCollectionEquality().hash(isOnlyASingleSelectedTaskAllowed));
 
+  @JsonKey(ignore: true)
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-  }) {
-    return initial();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initial,
-  }) {
-    return initial?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-  }) {
-    return initial(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-  }) {
-    return initial?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial(this);
-    }
-    return orElse();
-  }
+  _$$_StateCopyWith<_$_State> get copyWith =>
+      __$$_StateCopyWithImpl<_$_State>(this, _$identity);
 }
 
-abstract class _Initial implements RemoteConfigState {
-  const factory _Initial() = _$_Initial;
+abstract class _State implements RemoteConfigState {
+  const factory _State(
+      {required final bool areTagsEnabled,
+      required final bool isOnlyASingleSelectedTaskAllowed}) = _$_State;
+
+  @override
+  bool get areTagsEnabled;
+  @override
+  bool get isOnlyASingleSelectedTaskAllowed;
+  @override
+  @JsonKey(ignore: true)
+  _$$_StateCopyWith<_$_State> get copyWith =>
+      throw _privateConstructorUsedError;
 }

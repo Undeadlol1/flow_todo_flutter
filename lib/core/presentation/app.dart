@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
@@ -40,6 +41,7 @@ class _AppState extends State<App> {
   final TasksCubit tasksCubit = GetIt.I();
   final GoalsCubit goalsCubit = GetIt.I();
   final ProfileCubit profileCubit = GetIt.I();
+  final RemoteConfigCubit remoteConfigCubit = GetIt.I();
   final SelectedTasksCubit selectedTasksCubit = GetIt.I();
   final TasksWorkedOnTodayCubit tasksDoneTodayCubit = GetIt.I();
   final AuthentificationCubit authentificationCubit = GetIt.I();
@@ -107,6 +109,7 @@ class _AppState extends State<App> {
           BlocProvider(create: (_) => tasksCubit),
           BlocProvider(create: (_) => goalsCubit),
           BlocProvider(create: (_) => profileCubit),
+          BlocProvider(create: (_) => remoteConfigCubit),
           BlocProvider(create: (_) => selectedTasksCubit),
           BlocProvider(create: (_) => tasksDoneTodayCubit),
           BlocProvider(create: (_) => authentificationCubit),
@@ -149,6 +152,7 @@ class _AppState extends State<App> {
       tagsCubit.update({});
       goalsCubit.update([]);
       tasksCubit.updateList([]);
+      remoteConfigCubit.reset();
       selectedTasksCubit.update([]);
       profileCubit.setProfileNotFoundOrUnloaded();
       authentificationCubit.setNotAuthenticated();

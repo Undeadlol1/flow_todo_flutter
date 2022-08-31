@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flow_todo_flutter_2022/core/remote_config/domain/use_cases/get_remote_config.dart';
 import 'package:flow_todo_flutter_2022/features/analytics/data/traces/navigation_to_filter_page_trace.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/use_cases/sign_in_with_google.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
@@ -34,6 +35,8 @@ import '../../../test_utilities/mocks/mock_level_progress_percentage_calculator.
 import '../../../test_utilities/mocks/mock_tags_cubit.dart';
 import '../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 
+class _MockGetRemoteConfig extends Mock implements GetRemoteConfig {}
+
 class _MockSignInWithGoogle extends Mock implements SignInWithGoogle {}
 
 class _MockNavigateToFilterPageTrace extends Mock
@@ -55,6 +58,7 @@ void main() {
       mockHydratedStorage(() {
         GetIt.I.registerSingleton(FilteredTasksCubit());
       });
+      GetIt.I.registerSingleton<GetRemoteConfig>(_MockGetRemoteConfig());
       GetIt.I.registerSingleton<SignInWithGoogle>(_MockSignInWithGoogle());
       GetIt.I.registerSingleton<NavigationToFilterPageTrace>(
         _MockNavigateToFilterPageTrace(),

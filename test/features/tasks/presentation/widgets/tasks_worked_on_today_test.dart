@@ -1,4 +1,3 @@
-import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_worked_on_today.dart';
@@ -68,17 +67,11 @@ void main() {
             find.textContaining(' / ${profileFixture.dailyStreak.perDay}'),
             findsOneWidget,
           );
-          expect(_findAnimatedNumbers(0), findsWidgets);
+          expect(find.text(0.toString()), findsWidgets);
         },
       );
     });
   });
-}
-
-_findAnimatedNumbers(int numberToFind) {
-  return find.byWidgetPredicate(
-    (widget) => widget is AnimatedNumbers && widget.number == numberToFind,
-  );
 }
 
 void _stubProfileState(ProfileState state) {
