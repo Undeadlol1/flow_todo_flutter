@@ -108,7 +108,7 @@ class _StaleTaskExplanation extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: const Text(
         '💩 '
-        'Your task is stale. It\'s title is going to be hidden from tasks list in order to prompt you to come back to it more often.',
+        'Your task is stale. Its title is going to be hidden from tasks list in order to prompt you to come back to it more often.',
         style: TextStyle(fontStyle: FontStyle.italic),
       ),
     );
