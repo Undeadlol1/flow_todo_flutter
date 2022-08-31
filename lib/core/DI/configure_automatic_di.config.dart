@@ -168,6 +168,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       getQuests: get<_i12.GetActiveQuestsRepository>(),
       uniqueIdGenerator: get<_i33.UniqueIdGenerator>(),
       activeQuestsCubit: get<_i3.ActiveQuestsCubit>(),
+      remoteConfigCubit: get<_i24.RemoteConfigCubit>(),
       createQuestRepository: get<_i7.CreateQuestRepository>()));
   gh.singleton<_i44.GetGoals>(_i44.GetGoals(
       goalsCubit: get<_i21.GoalsCubit>(),
@@ -179,7 +180,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       useCaseExceptionHandler: get<_i38.UseCaseExceptionHandler>()));
   gh.factory<_i46.GetRemoteConfig>(() => _i46.GetRemoteConfig(
       remoteConfigCubit: get<_i24.RemoteConfigCubit>(),
-      firebaseRemoteConfig: get<_i47.FirebaseRemoteConfig>()));
+      firebaseRemoteConfig: get<_i47.FirebaseRemoteConfig>(),
+      useCaseExceptionHandler: get<_i38.UseCaseExceptionHandler>()));
   gh.singleton<_i48.GetTasksToDo>(_i48.GetTasksToDo(
       getTasks: get<_i15.GetTasksToDoRepository>(),
       tasksCubit: get<_i31.TasksCubit>(),

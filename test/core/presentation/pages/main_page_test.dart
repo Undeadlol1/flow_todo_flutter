@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/core/remote_config/domain/use_cases/get_remote_config.dart';
 import 'package:flow_todo_flutter_2022/features/analytics/data/traces/navigation_to_filter_page_trace.dart';
 import 'package:flow_todo_flutter_2022/core/presentation/pages/main_page.dart';
@@ -32,6 +33,7 @@ import '../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../test_utilities/mocks/mock_hydrated_storage.dart';
 import '../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
+import '../../../test_utilities/mocks/mock_remote_config_cubit.dart';
 import '../../../test_utilities/mocks/mock_tags_cubit.dart';
 import '../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 
@@ -45,15 +47,18 @@ class _MockNavigateToFilterPageTrace extends Mock
 late ProfileCubit _profileCubit;
 late AuthentificationCubit _authCubit;
 final _tagsCubit = MockTagsCubit();
+final _remoteConfigCubit = MockRemoteConfigCubit();
 
 void main() {
   group('GIVEN MainPage', () {
     setUpAll(() {
       _setupTaskRewardCalculatorMock();
 
+      _setupTagsCubitMock();
+
       _setupRemoteConfigMock();
 
-      _setupTagsCubitMock();
+      _setupRemoteConfigCubit();
 
       mockHydratedStorage(() {
         GetIt.I.registerSingleton(FilteredTasksCubit());
@@ -162,6 +167,20 @@ void _setupTagsCubitMock() {
   when(() => _tagsCubit.close()).thenAnswer((_) async {});
 }
 
+void _setupRemoteConfigCubit() {
+  const remoteConfigState = RemoteConfigState(
+    areQuestsEnabled: false,
+    areTagsEnabled: false,
+    isOnlyASingleSelectedTaskAllowed: false,
+  );
+  whenListen(
+    _remoteConfigCubit,
+    Stream.value(remoteConfigState),
+    initialState: remoteConfigState,
+  );
+  when(() => _remoteConfigCubit.close()).thenAnswer((_) async {});
+}
+
 void _setupTaskRewardCalculatorMock() {
   registerFallbackValue(taskFixture);
 
@@ -181,6 +200,7 @@ extension _PumpWithScaffold on WidgetTester {
             BlocProvider(create: (_) => TasksCubit()),
             BlocProvider(create: (_) => _profileCubit),
             BlocProvider<TagsCubit>(create: (_) => _tagsCubit),
+            BlocProvider<RemoteConfigCubit>(create: (_) => _remoteConfigCubit),
             BlocProvider(create: (_) => TasksWorkedOnTodayCubit()),
           ],
           child: const MaterialApp(

@@ -6,6 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../../test_utilities/mocks/mock_autentification_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_firebase_auth.dart';
 import '../../../../../test_utilities/mocks/mock_profile_cubit.dart';
+import '../../../../../test_utilities/mocks/mock_remote_config_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_tags_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_tasks_worked_on_today_cubit.dart';
@@ -74,6 +75,7 @@ Logout _buildUseCase() {
     profileCubit: _profileCubit,
     firebaseAuth: _firebaseAuth,
     tasksDoneTodayCubit: _tasksDoneTodayCubit,
+    remoteConfigCubit: MockRemoteConfigCubit(),
     firebaseFirestore: _MockFirebaseFirestore(),
     authentificationCubit: _authentificationCubit,
   );

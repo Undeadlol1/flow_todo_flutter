@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
 import 'package:flow_todo_flutter_2022/features/quests/data/create_quest_repository.dart';
 import 'package:flow_todo_flutter_2022/features/quests/data/get_active_quests_repository.dart';
@@ -10,6 +11,7 @@ import 'package:injectable/injectable.dart';
 class GetActiveQuests {
   final ActiveQuestsCubit activeQuestsCubit;
   final UniqueIdGenerator uniqueIdGenerator;
+  final RemoteConfigCubit remoteConfigCubit;
   final GetActiveQuestsRepository getQuests;
   final CreateQuestRepository createQuestRepository;
 
@@ -17,10 +19,13 @@ class GetActiveQuests {
     required this.getQuests,
     required this.uniqueIdGenerator,
     required this.activeQuestsCubit,
+    required this.remoteConfigCubit,
     required this.createQuestRepository,
   });
 
   Future<void> call({required String userId}) async {
+    if (!remoteConfigCubit.state.areQuestsEnabled) return;
+
     activeQuestsCubit.setLoading();
 
     final fetchedQuests = await getQuests(userId: userId);

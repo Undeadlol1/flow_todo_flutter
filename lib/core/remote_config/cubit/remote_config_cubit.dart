@@ -7,6 +7,7 @@ part 'remote_config_cubit.freezed.dart';
 
 const _defaultState = RemoteConfigState(
   areTagsEnabled: false,
+  areQuestsEnabled: false,
   isOnlyASingleSelectedTaskAllowed: true,
 );
 

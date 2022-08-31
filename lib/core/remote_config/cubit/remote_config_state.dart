@@ -4,6 +4,7 @@ part of 'remote_config_cubit.dart';
 class RemoteConfigState with _$RemoteConfigState {
   const factory RemoteConfigState({
     required bool areTagsEnabled,
+    required bool areQuestsEnabled,
     required bool isOnlyASingleSelectedTaskAllowed,
   }) = _State;
 }

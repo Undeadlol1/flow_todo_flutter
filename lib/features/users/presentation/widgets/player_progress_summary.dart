@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/remote_config/cubit/remote_config_cubit.dart';
 import '../../../quests/presentation/widgets/active_quest.dart';
 import '../../../tasks/presentation/widgets/tasks_worked_on_today.dart';
 import 'avatar.dart';
@@ -19,10 +21,7 @@ class PlayerProgressSummary extends StatelessWidget {
           ),
           Column(
             children: [
-              ConstrainedBox(
-                constraints: contraints,
-                child: const ActiveQuest(),
-              ),
+              const _ActiveQuest(contraints: contraints),
               ConstrainedBox(
                 constraints: contraints,
                 child: const TasksWorkedOnToday(),
@@ -31,6 +30,38 @@ class PlayerProgressSummary extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ActiveQuest extends StatelessWidget {
+  const _ActiveQuest({
+    Key? key,
+    required this.contraints,
+  }) : super(key: key);
+
+  final BoxConstraints contraints;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<RemoteConfigCubit, RemoteConfigState, bool>(
+      selector: (state) => state.areQuestsEnabled,
+      builder: (context, bool areQuestsEnabled) {
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          child: areQuestsEnabled
+              ? Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: ConstrainedBox(
+                    constraints: contraints,
+                    child: const ActiveQuest(),
+                  ),
+                )
+              : const SizedBox(
+                  height: 30,
+                ),
+        );
+      },
     );
   }
 }

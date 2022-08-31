@@ -36,8 +36,8 @@ class MainPage extends StatelessWidget {
           isNumbersAnimationSuspended: false,
           floatingActionButton: isProfileLoaded ? const CreateTaskFAB() : null,
           child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
-            listener: (context, authState) {
-              GetIt.I<GetRemoteConfig>()();
+            listener: (context, authState) async {
+              await GetIt.I<GetRemoteConfig>()();
 
               if (authState is Authenticated) {
                 final userId = authState.user.id;
