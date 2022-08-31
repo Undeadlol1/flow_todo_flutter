@@ -1,4 +1,5 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/page_layout.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/countdown.dart';
@@ -26,10 +27,12 @@ import '../../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
+import '../../../../test_utilities/mocks/setupers/setup_remote_config_cubit_mock.dart';
 
 class _MockMakeStepForwardOnATask extends Mock
     implements MakeStepForwardOnTheTask {}
 
+late final _mockRemoteConfigCubit;
 final _binding = TestWidgetsFlutterBinding.ensureInitialized();
 final MockProfileCubit _mockProfileCubit = MockProfileCubit();
 final _mockLevelProgressPercentageCalculator =
@@ -38,6 +41,8 @@ final _mockLevelProgressPercentageCalculator =
 void main() {
   setUpAll(() {
     registerFallbackValue(taskFixture);
+
+    _mockRemoteConfigCubit = setupRemoteConfigCubitMock();
 
     final mockTaskRewardCalculator = MockTaskRewardCalculator();
     final mockFirebaseRemoteConfig = MockFirebaseRemoteConfig();
@@ -182,11 +187,10 @@ extension on WidgetTester {
     return pumpWidget(
       MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (_) => AuthentificationCubit(),
-          ),
-          BlocProvider<ProfileCubit>(
-            create: (_) => _mockProfileCubit,
+          BlocProvider(create: (_) => AuthentificationCubit()),
+          BlocProvider<ProfileCubit>(create: (_) => _mockProfileCubit),
+          BlocProvider<RemoteConfigCubit>(
+            create: (_) => _mockRemoteConfigCubit,
           ),
         ],
         child: MaterialApp(

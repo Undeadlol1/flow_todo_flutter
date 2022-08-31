@@ -1,58 +1,63 @@
-import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 import '../cubit/tasks_cubit.dart';
 
 class TagsList extends StatelessWidget {
   const TagsList({Key? key}) : super(key: key);
-  static final _remoteConfig = GetIt.I<FirebaseRemoteConfig>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TagsCubit, TagsState>(
-      builder: (context, tagsState) {
-        return BlocBuilder<TasksCubit, TasksState>(
-          buildWhen: _haveTagsChanged,
-          builder: (context, tasksState) {
-            final tasks = tasksState.tasks;
+    return BlocSelector<RemoteConfigCubit, RemoteConfigState, bool>(
+      selector: (state) => state.areTagsEnabled,
+      builder: (context, areTagsEnabled) {
+        return BlocBuilder<TagsCubit, TagsState>(
+          builder: (context, tagsState) {
+            return BlocBuilder<TasksCubit, TasksState>(
+              buildWhen: _haveTagsChanged,
+              builder: (context, tasksState) {
+                final tasks = tasksState.tasks;
 
-            if (_remoteConfig.getBool('are_tags_enabled') && tasks.length > 5) {
-              final tags = _getTags(tasksState);
+                if (areTagsEnabled && tasks.length > 5) {
+                  final tags = _getTags(tasksState);
 
-              if (tasks.any((task) => task.isStale)) {
-                tags
-                  ..add('stale')
-                  ..add('fresh');
-              }
+                  if (tasks.any((task) => task.isStale)) {
+                    tags
+                      ..add('stale')
+                      ..add('fresh');
+                  }
 
-              return Wrap(
-                children: tags
-                    .map(
-                      (tag) => Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        child: ChoiceChip(
-                          selected: tagsState.tags.contains(tag),
-                          // TODO extract into a use case
-                          onSelected: (_) {
-                            tagsState.tags.contains(tag)
-                                ? tagsState.tags.remove(tag)
-                                : tagsState.tags.add(tag);
-                            BlocProvider.of<TagsCubit>(context, listen: false)
-                                .update(tagsState.tags);
-                          },
-                          label: Text(tag),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              );
-            } else {
-              return const SizedBox();
-            }
+                  return Wrap(
+                    children: tags
+                        .map(
+                          (tag) => Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            child: ChoiceChip(
+                              selected: tagsState.tags.contains(tag),
+                              // TODO extract into a use case
+                              onSelected: (_) {
+                                tagsState.tags.contains(tag)
+                                    ? tagsState.tags.remove(tag)
+                                    : tagsState.tags.add(tag);
+                                BlocProvider.of<TagsCubit>(
+                                  context,
+                                  listen: false,
+                                ).update(tagsState.tags);
+                              },
+                              label: Text(tag),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              },
+            );
           },
         );
       },

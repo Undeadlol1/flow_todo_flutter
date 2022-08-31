@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+import '../../../../core/remote_config/cubit/remote_config_cubit.dart';
 import '../../../common/services/snackbar_service.dart';
 import '../../domain/models/task.dart';
 import '../../domain/use_cases/create_task.dart';
@@ -68,45 +69,51 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthentificationCubit, AuthentificationState>(
       builder: (context, authState) {
-        return Padding(
-          padding: _getPadding(),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ReactiveForm(
-                formGroup: _form,
-                child: Column(
-                  children: <Widget>[
-                    ReactiveTextField(
-                      autofocus: true,
-                      formControlName: _formControlName,
-                      validationMessages: _getValidationMessages,
-                      textCapitalization: TextCapitalization.sentences,
-                      onSubmitted: () => _handleSubmit(authState: authState),
-                      decoration: InputDecoration(
-                        errorText: _formError,
-                        labelText: 'Enter your task',
-                        border: const UnderlineInputBorder(),
-                      ),
+        return BlocSelector<RemoteConfigCubit, RemoteConfigState, bool>(
+          selector: (state) => state.areTagsEnabled,
+          builder: (context, areTagsEnabled) {
+            return Padding(
+              padding: _getPadding(),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ReactiveForm(
+                    formGroup: _form,
+                    child: Column(
+                      children: <Widget>[
+                        ReactiveTextField(
+                          autofocus: true,
+                          formControlName: _formControlName,
+                          validationMessages: _getValidationMessages,
+                          textCapitalization: TextCapitalization.sentences,
+                          onSubmitted: () =>
+                              _handleSubmit(authState: authState),
+                          decoration: InputDecoration(
+                            errorText: _formError,
+                            labelText: 'Enter your task',
+                            border: const UnderlineInputBorder(),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  if (areTagsEnabled)
+                    Column(
+                      children: [
+                        const SizedBox(height: 20),
+                        Text(
+                          'Hint: you can add tags via hashtags. '
+                          'Enter space, hashtag and your tag. '
+                          'Like so: "My task text #first #second".',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        _Tags(tags: tags)
+                      ],
+                    )
+                ],
               ),
-              if (_remoteConfig.getBool('are_tags_enabled'))
-                Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    Text(
-                      'Hint: you can add tags via hashtags. '
-                      'Enter space, hashtag and your tag. '
-                      'Like so: "My task text #first #second".',
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                    _Tags(tags: tags)
-                  ],
-                )
-            ],
-          ),
+            );
+          },
         );
       },
     );

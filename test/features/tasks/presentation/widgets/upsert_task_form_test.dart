@@ -1,4 +1,5 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/domain/entities/user.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
@@ -14,6 +15,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
+import '../../../../test_utilities/mocks/setupers/setup_remote_config_cubit_mock.dart';
 
 class _MockCreateTask extends Mock implements CreateTask {}
 
@@ -105,8 +107,15 @@ void main() {
 extension on WidgetTester {
   Future<void> pumpWithDependencies({bool shouldUpdateTask = false}) async {
     return pumpWidget(
-      BlocProvider<AuthentificationCubit>(
-        create: (context) => _fakeAuthenticatedCubit,
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthentificationCubit>(
+            create: (_) => _fakeAuthenticatedCubit,
+          ),
+          BlocProvider<RemoteConfigCubit>(
+            create: (_) => setupRemoteConfigCubitMock(),
+          ),
+        ],
         child: MaterialApp(
           navigatorObservers: [_MockNavigatorObserver()],
           home: Scaffold(
