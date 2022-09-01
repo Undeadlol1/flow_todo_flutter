@@ -15,21 +15,21 @@ class GetRemoteConfig {
   });
 
   Future<void> call() async {
-    try {
-      await firebaseRemoteConfig.fetch();
+    return firebaseRemoteConfig.fetch()
+      ..then(_updateCubit)
+      ..onError(useCaseExceptionHandler);
+  }
 
-      remoteConfigCubit.update(
-        RemoteConfigState(
-          areTagsEnabled: _getBoolean('are_tags_enabled'),
-          areGoalsEnabled: _getBoolean('are_goals_enabled'),
-          areQuestsEnabled: _getBoolean('are_quests_enabled'),
-          isOnlyASingleSelectedTaskAllowed:
-              _getBoolean('is_only_single_selected_task_allowed'),
-        ),
-      );
-    } catch (e) {
-      useCaseExceptionHandler.call(e, StackTrace.current);
-    }
+  void _updateCubit(_) {
+    remoteConfigCubit.update(
+      RemoteConfigState(
+        areTagsEnabled: _getBoolean('are_tags_enabled'),
+        areGoalsEnabled: _getBoolean('are_goals_enabled'),
+        areQuestsEnabled: _getBoolean('are_quests_enabled'),
+        isOnlyASingleSelectedTaskAllowed:
+            _getBoolean('is_only_single_selected_task_allowed'),
+      ),
+    );
   }
 
   bool _getBoolean(String code) => firebaseRemoteConfig.getBool(code);
