@@ -24,7 +24,7 @@ class GetRemoteConfig {
           areGoalsEnabled: _getBoolean('are_goals_enabled'),
           areQuestsEnabled: _getBoolean('are_quests_enabled'),
           isOnlyASingleSelectedTaskAllowed:
-              _getBoolean('keis_only_single_selected_task_allowedy'),
+              _getBoolean('is_only_single_selected_task_allowed'),
         ),
       );
     } catch (e) {

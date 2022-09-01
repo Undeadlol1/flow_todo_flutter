@@ -40,9 +40,9 @@ class ToggleTaskSelection {
   bool _isOperationDissalowed(Task task) {
     final isOnlyASingleSelectedTaskAllowed =
         remoteConfigCubit.state.isOnlyASingleSelectedTaskAllowed;
-    final isTaskAlreadySelected =
+    final isATaskAlreadySelected =
         tasksCubit.state.tasks.any((i) => i.isSelected && i.id != task.id);
 
-    return isOnlyASingleSelectedTaskAllowed && isTaskAlreadySelected;
+    return isOnlyASingleSelectedTaskAllowed && isATaskAlreadySelected;
   }
 }
