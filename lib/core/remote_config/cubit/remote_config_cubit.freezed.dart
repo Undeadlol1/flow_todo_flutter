@@ -21,6 +21,56 @@ mixin _$RemoteConfigState {
   bool get areQuestsEnabled => throw _privateConstructorUsedError;
   bool get isOnlyASingleSelectedTaskAllowed =>
       throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)
+        $default, {
+    required TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)
+        defaults,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)?
+        $default, {
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)?
+        defaults,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)?
+        $default, {
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)?
+        defaults,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_State value) $default, {
+    required TResult Function(_Defaults value) defaults,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(_State value)? $default, {
+    TResult Function(_Defaults value)? defaults,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_State value)? $default, {
+    TResult Function(_Defaults value)? defaults,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RemoteConfigStateCopyWith<RemoteConfigState> get copyWith =>
@@ -179,6 +229,83 @@ class _$_State implements _State {
   @override
   _$$_StateCopyWith<_$_State> get copyWith =>
       __$$_StateCopyWithImpl<_$_State>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)
+        $default, {
+    required TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)
+        defaults,
+  }) {
+    return $default(areTagsEnabled, areGoalsEnabled, areQuestsEnabled,
+        isOnlyASingleSelectedTaskAllowed);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)?
+        $default, {
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)?
+        defaults,
+  }) {
+    return $default?.call(areTagsEnabled, areGoalsEnabled, areQuestsEnabled,
+        isOnlyASingleSelectedTaskAllowed);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)?
+        $default, {
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)?
+        defaults,
+    required TResult orElse(),
+  }) {
+    if ($default != null) {
+      return $default(areTagsEnabled, areGoalsEnabled, areQuestsEnabled,
+          isOnlyASingleSelectedTaskAllowed);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_State value) $default, {
+    required TResult Function(_Defaults value) defaults,
+  }) {
+    return $default(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(_State value)? $default, {
+    TResult Function(_Defaults value)? defaults,
+  }) {
+    return $default?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_State value)? $default, {
+    TResult Function(_Defaults value)? defaults,
+    required TResult orElse(),
+  }) {
+    if ($default != null) {
+      return $default(this);
+    }
+    return orElse();
+  }
 }
 
 abstract class _State implements RemoteConfigState {
@@ -199,5 +326,214 @@ abstract class _State implements RemoteConfigState {
   @override
   @JsonKey(ignore: true)
   _$$_StateCopyWith<_$_State> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$_DefaultsCopyWith<$Res>
+    implements $RemoteConfigStateCopyWith<$Res> {
+  factory _$$_DefaultsCopyWith(
+          _$_Defaults value, $Res Function(_$_Defaults) then) =
+      __$$_DefaultsCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {bool areTagsEnabled,
+      bool areGoalsEnabled,
+      bool areQuestsEnabled,
+      bool isOnlyASingleSelectedTaskAllowed});
+}
+
+/// @nodoc
+class __$$_DefaultsCopyWithImpl<$Res>
+    extends _$RemoteConfigStateCopyWithImpl<$Res>
+    implements _$$_DefaultsCopyWith<$Res> {
+  __$$_DefaultsCopyWithImpl(
+      _$_Defaults _value, $Res Function(_$_Defaults) _then)
+      : super(_value, (v) => _then(v as _$_Defaults));
+
+  @override
+  _$_Defaults get _value => super._value as _$_Defaults;
+
+  @override
+  $Res call({
+    Object? areTagsEnabled = freezed,
+    Object? areGoalsEnabled = freezed,
+    Object? areQuestsEnabled = freezed,
+    Object? isOnlyASingleSelectedTaskAllowed = freezed,
+  }) {
+    return _then(_$_Defaults(
+      areTagsEnabled: areTagsEnabled == freezed
+          ? _value.areTagsEnabled
+          : areTagsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      areGoalsEnabled: areGoalsEnabled == freezed
+          ? _value.areGoalsEnabled
+          : areGoalsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      areQuestsEnabled: areQuestsEnabled == freezed
+          ? _value.areQuestsEnabled
+          : areQuestsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOnlyASingleSelectedTaskAllowed: isOnlyASingleSelectedTaskAllowed ==
+              freezed
+          ? _value.isOnlyASingleSelectedTaskAllowed
+          : isOnlyASingleSelectedTaskAllowed // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_Defaults implements _Defaults {
+  _$_Defaults(
+      {this.areTagsEnabled = false,
+      this.areGoalsEnabled = false,
+      this.areQuestsEnabled = false,
+      this.isOnlyASingleSelectedTaskAllowed = true});
+
+  @override
+  @JsonKey()
+  final bool areTagsEnabled;
+  @override
+  @JsonKey()
+  final bool areGoalsEnabled;
+  @override
+  @JsonKey()
+  final bool areQuestsEnabled;
+  @override
+  @JsonKey()
+  final bool isOnlyASingleSelectedTaskAllowed;
+
+  @override
+  String toString() {
+    return 'RemoteConfigState.defaults(areTagsEnabled: $areTagsEnabled, areGoalsEnabled: $areGoalsEnabled, areQuestsEnabled: $areQuestsEnabled, isOnlyASingleSelectedTaskAllowed: $isOnlyASingleSelectedTaskAllowed)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_Defaults &&
+            const DeepCollectionEquality()
+                .equals(other.areTagsEnabled, areTagsEnabled) &&
+            const DeepCollectionEquality()
+                .equals(other.areGoalsEnabled, areGoalsEnabled) &&
+            const DeepCollectionEquality()
+                .equals(other.areQuestsEnabled, areQuestsEnabled) &&
+            const DeepCollectionEquality().equals(
+                other.isOnlyASingleSelectedTaskAllowed,
+                isOnlyASingleSelectedTaskAllowed));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(areTagsEnabled),
+      const DeepCollectionEquality().hash(areGoalsEnabled),
+      const DeepCollectionEquality().hash(areQuestsEnabled),
+      const DeepCollectionEquality().hash(isOnlyASingleSelectedTaskAllowed));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_DefaultsCopyWith<_$_Defaults> get copyWith =>
+      __$$_DefaultsCopyWithImpl<_$_Defaults>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)
+        $default, {
+    required TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)
+        defaults,
+  }) {
+    return defaults(areTagsEnabled, areGoalsEnabled, areQuestsEnabled,
+        isOnlyASingleSelectedTaskAllowed);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)?
+        $default, {
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)?
+        defaults,
+  }) {
+    return defaults?.call(areTagsEnabled, areGoalsEnabled, areQuestsEnabled,
+        isOnlyASingleSelectedTaskAllowed);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)?
+        $default, {
+    TResult Function(bool areTagsEnabled, bool areGoalsEnabled,
+            bool areQuestsEnabled, bool isOnlyASingleSelectedTaskAllowed)?
+        defaults,
+    required TResult orElse(),
+  }) {
+    if (defaults != null) {
+      return defaults(areTagsEnabled, areGoalsEnabled, areQuestsEnabled,
+          isOnlyASingleSelectedTaskAllowed);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_State value) $default, {
+    required TResult Function(_Defaults value) defaults,
+  }) {
+    return defaults(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(_State value)? $default, {
+    TResult Function(_Defaults value)? defaults,
+  }) {
+    return defaults?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_State value)? $default, {
+    TResult Function(_Defaults value)? defaults,
+    required TResult orElse(),
+  }) {
+    if (defaults != null) {
+      return defaults(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Defaults implements RemoteConfigState {
+  factory _Defaults(
+      {final bool areTagsEnabled,
+      final bool areGoalsEnabled,
+      final bool areQuestsEnabled,
+      final bool isOnlyASingleSelectedTaskAllowed}) = _$_Defaults;
+
+  @override
+  bool get areTagsEnabled;
+  @override
+  bool get areGoalsEnabled;
+  @override
+  bool get areQuestsEnabled;
+  @override
+  bool get isOnlyASingleSelectedTaskAllowed;
+  @override
+  @JsonKey(ignore: true)
+  _$$_DefaultsCopyWith<_$_Defaults> get copyWith =>
       throw _privateConstructorUsedError;
 }

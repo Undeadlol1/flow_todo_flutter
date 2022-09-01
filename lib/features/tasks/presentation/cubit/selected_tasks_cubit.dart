@@ -8,6 +8,7 @@ part 'selected_tasks_state.dart';
 part 'selected_tasks_cubit.freezed.dart';
 
 @singleton
+@Deprecated('Cubit is obsolete and needs to be deleted')
 class SelectedTasksCubit extends Cubit<SelectedTasksState> {
   SelectedTasksCubit() : super(const SelectedTasksState([]));
 

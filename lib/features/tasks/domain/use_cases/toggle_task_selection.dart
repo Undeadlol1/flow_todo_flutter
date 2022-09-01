@@ -1,5 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../data/update_task_repository.dart';
@@ -10,20 +10,17 @@ import '../models/task.dart';
 class ToggleTaskSelection {
   final TasksCubit tasksCubit;
   final FirebaseAnalytics firebaseAnalytics;
-  final FirebaseRemoteConfig firebaseRemoteConfig;
+  final RemoteConfigCubit remoteConfigCubit;
   final UpdateTaskRepository updateTaskRepository;
   const ToggleTaskSelection({
     required this.tasksCubit,
     required this.firebaseAnalytics,
-    required this.firebaseRemoteConfig,
+    required this.remoteConfigCubit,
     required this.updateTaskRepository,
   });
 
-  // TODO revisit this logic.
   Future<void> call(Task task) async {
-    if (firebaseRemoteConfig.getBool('is_only_single_selected_task_allowed') &&
-        !(task.isSelected) &&
-        tasksCubit.state.tasks.isNotEmpty) {
+    if (_isOperationDissalowed(task)) {
       return;
     }
 
@@ -38,5 +35,14 @@ class ToggleTaskSelection {
     return firebaseAnalytics.logEvent(
       name: updatedTask.isSelected ? "selected_task" : "deselected_task",
     );
+  }
+
+  bool _isOperationDissalowed(Task task) {
+    final isOnlyASingleSelectedTaskAllowed =
+        remoteConfigCubit.state.isOnlyASingleSelectedTaskAllowed;
+    final isTaskAlreadySelected =
+        tasksCubit.state.tasks.any((i) => i.isSelected && i.id != task.id);
+
+    return isOnlyASingleSelectedTaskAllowed && isTaskAlreadySelected;
   }
 }

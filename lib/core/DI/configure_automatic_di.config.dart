@@ -241,7 +241,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i60.ToggleTaskSelection>(() => _i60.ToggleTaskSelection(
       tasksCubit: get<_i31.TasksCubit>(),
       firebaseAnalytics: get<_i51.FirebaseAnalytics>(),
-      firebaseRemoteConfig: get<_i47.FirebaseRemoteConfig>(),
+      remoteConfigCubit: get<_i24.RemoteConfigCubit>(),
       updateTaskRepository: get<_i36.UpdateTaskRepository>()));
   gh.singleton<_i61.UpdateTask>(_i61.UpdateTask(
       tasksCubit: get<_i31.TasksCubit>(),

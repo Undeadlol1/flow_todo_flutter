@@ -5,12 +5,7 @@ import 'package:injectable/injectable.dart';
 part 'remote_config_state.dart';
 part 'remote_config_cubit.freezed.dart';
 
-const _defaultState = RemoteConfigState(
-  areTagsEnabled: false,
-  areGoalsEnabled: false,
-  areQuestsEnabled: false,
-  isOnlyASingleSelectedTaskAllowed: true,
-);
+final _defaultState = RemoteConfigState.defaults();
 
 @singleton
 class RemoteConfigCubit extends Cubit<RemoteConfigState> {
