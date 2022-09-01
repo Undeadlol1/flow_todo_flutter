@@ -1,17 +1,17 @@
-import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/update_task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/static_tags_list.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../../../../core/remote_config/cubit/remote_config_cubit.dart';
-import '../../../common/services/snackbar_service.dart';
+import 'static_tags_list.dart';
+import 'suggested_tags_list.dart';
 import '../../domain/models/task.dart';
 import '../../domain/use_cases/create_task.dart';
+import '../../domain/use_cases/update_task.dart';
+import '../../../common/services/snackbar_service.dart';
+import '../../../../core/remote_config/cubit/remote_config_cubit.dart';
+import '../../../authentification/presentation/cubit/authentification_cubit.dart';
 
 class UpsertTaskForm extends StatefulWidget {
   final Task? taskToUpdate;
@@ -24,10 +24,17 @@ class UpsertTaskForm extends StatefulWidget {
 class _UpsertTaskFormState extends State<UpsertTaskForm> {
   static const _formControlName = 'title';
 
-  static final _remoteConfig = GetIt.I<FirebaseRemoteConfig>();
   String? _formError;
 
   late final FormGroup _form;
+
+  String get _input => _form.control(_formControlName).value ?? '';
+
+  set _input(String newInput) {
+    _form.value = {
+      _formControlName: newInput,
+    };
+  }
 
   static final _tagsRegExp =
       RegExp(r'#([^\s]+)+', caseSensitive: false, multiLine: true);
@@ -112,8 +119,26 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
                           padding: const EdgeInsets.only(top: 10, bottom: 5),
                           child: StaticTagsList(tags: tags),
                         ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Suggested tags:',
+                            style: Theme.of(context).textTheme.caption,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        SuggestedTagsList(
+                          onChange: (tag) {
+                            final prefixedtag = ' #$tag';
+
+                            _input = _input.contains(prefixedtag)
+                                ? _input.replaceAll(prefixedtag, '')
+                                : _input + prefixedtag;
+                          },
+                        ),
                       ],
-                    )
+                    ),
+                  const SizedBox(height: 10)
                 ],
               ),
             );
