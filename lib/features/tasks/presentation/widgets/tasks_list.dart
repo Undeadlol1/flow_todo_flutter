@@ -160,7 +160,11 @@ class _TasksLeftText extends StatelessWidget {
                     'Tasks left: ',
                     style: _textStyle,
                   ),
-                  AnimatedNumbers(number: amount, style: _textStyle),
+                  AnimatedNumbers(
+                    number: amount,
+                    style: _textStyle,
+                    duration: const Duration(seconds: 1),
+                  ),
                 ],
               ),
             )

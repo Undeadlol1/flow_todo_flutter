@@ -69,20 +69,26 @@ class _PageBody extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(height: 20),
-        if (!pageArguments.isTitleEditingVisible)
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: SelectableText(task.title),
-            ),
-          ),
-        if (task.tags.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: StaticTagsList(tags: task.tags),
-          ),
-        if (pageArguments.isTitleEditingVisible)
-          UpsertTaskForm(taskToUpdate: task),
+        AnimatedSwitcher(
+          duration: const Duration(seconds: 1),
+          child: pageArguments.isTitleEditingVisible
+              ? Column(
+                  children: [
+                    if (task.tags.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: StaticTagsList(tags: task.tags),
+                      ),
+                    UpsertTaskForm(taskToUpdate: task),
+                  ],
+                )
+              : Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: SelectableText(task.title),
+                  ),
+                ),
+        ),
         if (pageArguments.isNoteEditingVisible || task.note.isNotEmpty)
           EditNoteForm(
             task: task,
