@@ -21,7 +21,7 @@ class NegativeChoices extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(Icons.title),
-          title: _buildText('Rename the task'),
+          title: _buildText('Rework the task'),
           onTap: () => _navigateToTaskPage(
             context: context,
             isTitleEditingVisible: true,
