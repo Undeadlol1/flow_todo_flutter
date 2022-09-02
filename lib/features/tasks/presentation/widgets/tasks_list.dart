@@ -1,3 +1,4 @@
+import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
@@ -7,6 +8,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tags_
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'dart:math';
 
 import '../cubit/tasks_cubit.dart';
 import '../pages/filter_tasks_page.dart';
@@ -60,13 +62,12 @@ class _TasksListState extends State<TasksList> {
                 if (tasksState.tasks.isNotEmpty)
                   _TasksLeftText(amount: tasksToDisplay.length),
                 if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
-                ListView.builder(
+                ListView.separated(
                   shrinkWrap: true,
+                  addRepaintBoundaries: true,
                   itemCount: tasksToDisplay.length,
-                  prototypeItem: tasksToDisplay.isEmpty
-                      ? const SizedBox()
-                      : TasksListItem(task: tasksToDisplay.first),
                   physics: const NeverScrollableScrollPhysics(),
+                  separatorBuilder: (_, __) => const _Separator(),
                   itemBuilder: (_, index) {
                     return TasksListItem(
                       task: tasksToDisplay[index],
@@ -133,6 +134,30 @@ class _TasksListState extends State<TasksList> {
     }
 
     return filteredTasks;
+  }
+}
+
+class _Separator extends StatelessWidget {
+  const _Separator({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<RemoteConfigCubit, RemoteConfigState, bool>(
+      selector: (state) => state.doesTasksListSeparatorHasRandomColors,
+      builder: (context, doesTasksListSeparatorHasRandomColors) {
+        return doesTasksListSeparatorHasRandomColors
+            ? Container(
+                color: Color(
+                  (Random().nextDouble() * 0xFFFFFF).toInt(),
+                ).withOpacity(1.0),
+                child: const SizedBox(height: 5),
+              )
+            : const Divider(
+                height: 5,
+                thickness: 2,
+              );
+      },
+    );
   }
 }
 

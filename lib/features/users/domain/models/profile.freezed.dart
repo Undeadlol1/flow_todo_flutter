@@ -197,7 +197,7 @@ class __$$_ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$_Profile with DiagnosticableTreeMixin implements _Profile {
+class _$_Profile implements _Profile {
   const _$_Profile(
       {this.updatedAt,
       required this.id,
@@ -235,24 +235,8 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
   final bool areEcouragingMessagesDisabled;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'Profile(updatedAt: $updatedAt, id: $id, userId: $userId, createdAt: $createdAt, dailyStreak: $dailyStreak, points: $points, experience: $experience, areEcouragingMessagesDisabled: $areEcouragingMessagesDisabled)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Profile'))
-      ..add(DiagnosticsProperty('updatedAt', updatedAt))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('userId', userId))
-      ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('dailyStreak', dailyStreak))
-      ..add(DiagnosticsProperty('points', points))
-      ..add(DiagnosticsProperty('experience', experience))
-      ..add(DiagnosticsProperty(
-          'areEcouragingMessagesDisabled', areEcouragingMessagesDisabled));
   }
 
   @override

@@ -43,6 +43,7 @@ class TasksListItem extends StatelessWidget {
         dense: false,
         enableFeedback: true,
         selected: task.isSelected,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         title: Text(
           isTaskStale ? '💩💩💩' : task.title,
           maxLines: 2,

@@ -7,6 +7,7 @@ class RemoteConfigState with _$RemoteConfigState {
     required bool areGoalsEnabled,
     required bool areQuestsEnabled,
     required bool isOnlyASingleSelectedTaskAllowed,
+    required bool doesTasksListSeparatorHasRandomColors,
   }) = _State;
 
   factory RemoteConfigState.defaults({
@@ -14,5 +15,6 @@ class RemoteConfigState with _$RemoteConfigState {
     @Default(false) final bool areGoalsEnabled,
     @Default(false) final bool areQuestsEnabled,
     @Default(true) final bool isOnlyASingleSelectedTaskAllowed,
+    @Default(false) final bool doesTasksListSeparatorHasRandomColors,
   }) = _Defaults;
 }
