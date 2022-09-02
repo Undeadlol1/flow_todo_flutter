@@ -37,6 +37,9 @@ class TaskPage extends StatelessWidget {
       floatingActionButton: const CountDown(),
       child: Stack(
         children: [
+          args.isNoteEditingVisible || task.note.isNotEmpty
+              ? const SingleChildScrollView(child: _PageBody())
+              : const _PageBody(),
           Positioned(
             right: 0,
             child: IconButton(
@@ -48,9 +51,6 @@ class TaskPage extends StatelessWidget {
               ),
             ),
           ),
-          args.isNoteEditingVisible || task.note.isNotEmpty
-              ? const SingleChildScrollView(child: _PageBody())
-              : const _PageBody()
         ],
       ),
     );
