@@ -1,6 +1,5 @@
 import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
-import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
@@ -11,8 +10,6 @@ import 'package:get_it/get_it.dart';
 import 'dart:math';
 
 import '../cubit/tasks_cubit.dart';
-import '../pages/filter_tasks_page.dart';
-import 'filter_tasks_to_do.dart';
 import 'tasks_list_item.dart';
 
 class TasksList extends StatefulWidget {
@@ -53,31 +50,26 @@ class _TasksListState extends State<TasksList> {
             return const _LoadingIndicator();
           }
 
-          return CardView(
-            child: Column(
-              children: [
-                if (tasksState.tasks.length > 10 &&
-                    _isViewerOnFilterPage(context))
-                  const FilterTasksToDo(),
-                if (tasksState.tasks.isNotEmpty)
-                  _TasksLeftText(amount: tasksToDisplay.length),
-                if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
-                ListView.separated(
-                  shrinkWrap: true,
-                  addRepaintBoundaries: true,
-                  itemCount: tasksToDisplay.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (_, __) => const _Separator(),
-                  itemBuilder: (_, index) {
-                    return TasksListItem(
-                      task: tasksToDisplay[index],
-                      shouldIgnoreStaleCondition:
-                          widget.shouldIgnoreStaleCondition,
-                    );
-                  },
-                ),
-              ],
-            ),
+          return Column(
+            children: [
+              if (tasksState.tasks.isNotEmpty)
+                _TasksLeftText(amount: tasksToDisplay.length),
+              if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
+              ListView.separated(
+                shrinkWrap: true,
+                addRepaintBoundaries: true,
+                itemCount: tasksToDisplay.length,
+                physics: const NeverScrollableScrollPhysics(),
+                separatorBuilder: (_, __) => const _Separator(),
+                itemBuilder: (_, index) {
+                  return TasksListItem(
+                    task: tasksToDisplay[index],
+                    shouldIgnoreStaleCondition:
+                        widget.shouldIgnoreStaleCondition,
+                  );
+                },
+              ),
+            ],
           );
         },
       ),
@@ -208,6 +200,3 @@ class _LoadingIndicator extends StatelessWidget {
     );
   }
 }
-
-bool _isViewerOnFilterPage(BuildContext context) =>
-    ModalRoute.of(context)?.settings.name == FilterTasksPage.pathName;

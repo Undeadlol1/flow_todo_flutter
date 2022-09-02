@@ -72,16 +72,7 @@ class _PageBody extends StatelessWidget {
         AnimatedSwitcher(
           duration: const Duration(seconds: 1),
           child: pageArguments.isTitleEditingVisible
-              ? Column(
-                  children: [
-                    if (task.tags.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: StaticTagsList(tags: task.tags),
-                      ),
-                    UpsertTaskForm(taskToUpdate: task),
-                  ],
-                )
+              ? UpsertTaskForm(taskToUpdate: task)
               : Card(
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -89,6 +80,7 @@ class _PageBody extends StatelessWidget {
                   ),
                 ),
         ),
+        if (task.tags.isNotEmpty) _Tags(task: task),
         if (pageArguments.isNoteEditingVisible || task.note.isNotEmpty)
           EditNoteForm(
             task: task,
@@ -106,6 +98,23 @@ class _PageBody extends StatelessWidget {
         ),
         const SizedBox(height: 20),
       ],
+    );
+  }
+}
+
+class _Tags extends StatelessWidget {
+  const _Tags({
+    Key? key,
+    required this.task,
+  }) : super(key: key);
+
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: StaticTagsList(tags: task.tags),
     );
   }
 }

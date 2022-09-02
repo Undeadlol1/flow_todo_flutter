@@ -243,6 +243,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       updateTaskRepository: get<_i34.UpdateTaskRepository>()));
   gh.singleton<_i60.UpdateTask>(_i60.UpdateTask(
       tasksCubit: get<_i29.TasksCubit>(),
+      filteredTasksCubit: get<_i11.FilteredTasksCubit>(),
       updateTaskRepository: get<_i34.UpdateTaskRepository>()));
   gh.singleton<_i61.UpdateTaskNote>(_i61.UpdateTaskNote(
       tasksCubit: get<_i29.TasksCubit>(),

@@ -1,5 +1,6 @@
 import 'package:flow_todo_flutter_2022/core/remote_config/domain/use_cases/get_remote_config.dart';
 import 'package:flow_todo_flutter_2022/features/analytics/data/traces/navigation_to_filter_page_trace.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/create_task_fab.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/selected_tasks.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/player_progress_summary.dart';
@@ -84,7 +85,7 @@ class MainPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const TasksList(),
+                          const CardView(child: TasksList()),
                         ],
                       ),
                     ),
