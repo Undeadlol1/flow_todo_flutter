@@ -143,7 +143,7 @@ class _Separator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<RemoteConfigCubit, RemoteConfigState, bool>(
-      selector: (state) => state.doesTasksListSeparatorHasRandomColors,
+      selector: (state) => state.isTasksListSeparatorColorRandom,
       builder: (context, doesTasksListSeparatorHasRandomColors) {
         return doesTasksListSeparatorHasRandomColors
             ? Container(

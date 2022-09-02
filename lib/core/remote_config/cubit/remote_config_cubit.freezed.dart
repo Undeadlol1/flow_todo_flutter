@@ -21,7 +21,7 @@ mixin _$RemoteConfigState {
   bool get areQuestsEnabled => throw _privateConstructorUsedError;
   bool get isOnlyASingleSelectedTaskAllowed =>
       throw _privateConstructorUsedError;
-  bool get doesTasksListSeparatorHasRandomColors =>
+  bool get isTasksListSeparatorColorRandom =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
@@ -30,14 +30,14 @@ mixin _$RemoteConfigState {
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)
+            bool isTasksListSeparatorColorRandom)
         $default, {
     required TResult Function(
             bool areTagsEnabled,
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)
+            bool isTasksListSeparatorColorRandom)
         defaults,
   }) =>
       throw _privateConstructorUsedError;
@@ -48,14 +48,14 @@ mixin _$RemoteConfigState {
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)?
+            bool isTasksListSeparatorColorRandom)?
         $default, {
     TResult Function(
             bool areTagsEnabled,
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)?
+            bool isTasksListSeparatorColorRandom)?
         defaults,
   }) =>
       throw _privateConstructorUsedError;
@@ -66,14 +66,14 @@ mixin _$RemoteConfigState {
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)?
+            bool isTasksListSeparatorColorRandom)?
         $default, {
     TResult Function(
             bool areTagsEnabled,
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)?
+            bool isTasksListSeparatorColorRandom)?
         defaults,
     required TResult orElse(),
   }) =>
@@ -113,7 +113,7 @@ abstract class $RemoteConfigStateCopyWith<$Res> {
       bool areGoalsEnabled,
       bool areQuestsEnabled,
       bool isOnlyASingleSelectedTaskAllowed,
-      bool doesTasksListSeparatorHasRandomColors});
+      bool isTasksListSeparatorColorRandom});
 }
 
 /// @nodoc
@@ -131,7 +131,7 @@ class _$RemoteConfigStateCopyWithImpl<$Res>
     Object? areGoalsEnabled = freezed,
     Object? areQuestsEnabled = freezed,
     Object? isOnlyASingleSelectedTaskAllowed = freezed,
-    Object? doesTasksListSeparatorHasRandomColors = freezed,
+    Object? isTasksListSeparatorColorRandom = freezed,
   }) {
     return _then(_value.copyWith(
       areTagsEnabled: areTagsEnabled == freezed
@@ -151,11 +151,11 @@ class _$RemoteConfigStateCopyWithImpl<$Res>
           ? _value.isOnlyASingleSelectedTaskAllowed
           : isOnlyASingleSelectedTaskAllowed // ignore: cast_nullable_to_non_nullable
               as bool,
-      doesTasksListSeparatorHasRandomColors:
-          doesTasksListSeparatorHasRandomColors == freezed
-              ? _value.doesTasksListSeparatorHasRandomColors
-              : doesTasksListSeparatorHasRandomColors // ignore: cast_nullable_to_non_nullable
-                  as bool,
+      isTasksListSeparatorColorRandom: isTasksListSeparatorColorRandom ==
+              freezed
+          ? _value.isTasksListSeparatorColorRandom
+          : isTasksListSeparatorColorRandom // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -171,7 +171,7 @@ abstract class _$$_StateCopyWith<$Res>
       bool areGoalsEnabled,
       bool areQuestsEnabled,
       bool isOnlyASingleSelectedTaskAllowed,
-      bool doesTasksListSeparatorHasRandomColors});
+      bool isTasksListSeparatorColorRandom});
 }
 
 /// @nodoc
@@ -189,7 +189,7 @@ class __$$_StateCopyWithImpl<$Res> extends _$RemoteConfigStateCopyWithImpl<$Res>
     Object? areGoalsEnabled = freezed,
     Object? areQuestsEnabled = freezed,
     Object? isOnlyASingleSelectedTaskAllowed = freezed,
-    Object? doesTasksListSeparatorHasRandomColors = freezed,
+    Object? isTasksListSeparatorColorRandom = freezed,
   }) {
     return _then(_$_State(
       areTagsEnabled: areTagsEnabled == freezed
@@ -209,11 +209,11 @@ class __$$_StateCopyWithImpl<$Res> extends _$RemoteConfigStateCopyWithImpl<$Res>
           ? _value.isOnlyASingleSelectedTaskAllowed
           : isOnlyASingleSelectedTaskAllowed // ignore: cast_nullable_to_non_nullable
               as bool,
-      doesTasksListSeparatorHasRandomColors:
-          doesTasksListSeparatorHasRandomColors == freezed
-              ? _value.doesTasksListSeparatorHasRandomColors
-              : doesTasksListSeparatorHasRandomColors // ignore: cast_nullable_to_non_nullable
-                  as bool,
+      isTasksListSeparatorColorRandom: isTasksListSeparatorColorRandom ==
+              freezed
+          ? _value.isTasksListSeparatorColorRandom
+          : isTasksListSeparatorColorRandom // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -226,7 +226,7 @@ class _$_State implements _State {
       required this.areGoalsEnabled,
       required this.areQuestsEnabled,
       required this.isOnlyASingleSelectedTaskAllowed,
-      required this.doesTasksListSeparatorHasRandomColors});
+      required this.isTasksListSeparatorColorRandom});
 
   @override
   final bool areTagsEnabled;
@@ -237,11 +237,11 @@ class _$_State implements _State {
   @override
   final bool isOnlyASingleSelectedTaskAllowed;
   @override
-  final bool doesTasksListSeparatorHasRandomColors;
+  final bool isTasksListSeparatorColorRandom;
 
   @override
   String toString() {
-    return 'RemoteConfigState(areTagsEnabled: $areTagsEnabled, areGoalsEnabled: $areGoalsEnabled, areQuestsEnabled: $areQuestsEnabled, isOnlyASingleSelectedTaskAllowed: $isOnlyASingleSelectedTaskAllowed, doesTasksListSeparatorHasRandomColors: $doesTasksListSeparatorHasRandomColors)';
+    return 'RemoteConfigState(areTagsEnabled: $areTagsEnabled, areGoalsEnabled: $areGoalsEnabled, areQuestsEnabled: $areQuestsEnabled, isOnlyASingleSelectedTaskAllowed: $isOnlyASingleSelectedTaskAllowed, isTasksListSeparatorColorRandom: $isTasksListSeparatorColorRandom)';
   }
 
   @override
@@ -259,8 +259,8 @@ class _$_State implements _State {
                 other.isOnlyASingleSelectedTaskAllowed,
                 isOnlyASingleSelectedTaskAllowed) &&
             const DeepCollectionEquality().equals(
-                other.doesTasksListSeparatorHasRandomColors,
-                doesTasksListSeparatorHasRandomColors));
+                other.isTasksListSeparatorColorRandom,
+                isTasksListSeparatorColorRandom));
   }
 
   @override
@@ -270,8 +270,7 @@ class _$_State implements _State {
       const DeepCollectionEquality().hash(areGoalsEnabled),
       const DeepCollectionEquality().hash(areQuestsEnabled),
       const DeepCollectionEquality().hash(isOnlyASingleSelectedTaskAllowed),
-      const DeepCollectionEquality()
-          .hash(doesTasksListSeparatorHasRandomColors));
+      const DeepCollectionEquality().hash(isTasksListSeparatorColorRandom));
 
   @JsonKey(ignore: true)
   @override
@@ -286,22 +285,18 @@ class _$_State implements _State {
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)
+            bool isTasksListSeparatorColorRandom)
         $default, {
     required TResult Function(
             bool areTagsEnabled,
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)
+            bool isTasksListSeparatorColorRandom)
         defaults,
   }) {
-    return $default(
-        areTagsEnabled,
-        areGoalsEnabled,
-        areQuestsEnabled,
-        isOnlyASingleSelectedTaskAllowed,
-        doesTasksListSeparatorHasRandomColors);
+    return $default(areTagsEnabled, areGoalsEnabled, areQuestsEnabled,
+        isOnlyASingleSelectedTaskAllowed, isTasksListSeparatorColorRandom);
   }
 
   @override
@@ -312,22 +307,18 @@ class _$_State implements _State {
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)?
+            bool isTasksListSeparatorColorRandom)?
         $default, {
     TResult Function(
             bool areTagsEnabled,
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)?
+            bool isTasksListSeparatorColorRandom)?
         defaults,
   }) {
-    return $default?.call(
-        areTagsEnabled,
-        areGoalsEnabled,
-        areQuestsEnabled,
-        isOnlyASingleSelectedTaskAllowed,
-        doesTasksListSeparatorHasRandomColors);
+    return $default?.call(areTagsEnabled, areGoalsEnabled, areQuestsEnabled,
+        isOnlyASingleSelectedTaskAllowed, isTasksListSeparatorColorRandom);
   }
 
   @override
@@ -338,24 +329,20 @@ class _$_State implements _State {
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)?
+            bool isTasksListSeparatorColorRandom)?
         $default, {
     TResult Function(
             bool areTagsEnabled,
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)?
+            bool isTasksListSeparatorColorRandom)?
         defaults,
     required TResult orElse(),
   }) {
     if ($default != null) {
-      return $default(
-          areTagsEnabled,
-          areGoalsEnabled,
-          areQuestsEnabled,
-          isOnlyASingleSelectedTaskAllowed,
-          doesTasksListSeparatorHasRandomColors);
+      return $default(areTagsEnabled, areGoalsEnabled, areQuestsEnabled,
+          isOnlyASingleSelectedTaskAllowed, isTasksListSeparatorColorRandom);
     }
     return orElse();
   }
@@ -398,7 +385,7 @@ abstract class _State implements RemoteConfigState {
       required final bool areGoalsEnabled,
       required final bool areQuestsEnabled,
       required final bool isOnlyASingleSelectedTaskAllowed,
-      required final bool doesTasksListSeparatorHasRandomColors}) = _$_State;
+      required final bool isTasksListSeparatorColorRandom}) = _$_State;
 
   @override
   bool get areTagsEnabled;
@@ -409,7 +396,7 @@ abstract class _State implements RemoteConfigState {
   @override
   bool get isOnlyASingleSelectedTaskAllowed;
   @override
-  bool get doesTasksListSeparatorHasRandomColors;
+  bool get isTasksListSeparatorColorRandom;
   @override
   @JsonKey(ignore: true)
   _$$_StateCopyWith<_$_State> get copyWith =>
@@ -428,7 +415,7 @@ abstract class _$$_DefaultsCopyWith<$Res>
       bool areGoalsEnabled,
       bool areQuestsEnabled,
       bool isOnlyASingleSelectedTaskAllowed,
-      bool doesTasksListSeparatorHasRandomColors});
+      bool isTasksListSeparatorColorRandom});
 }
 
 /// @nodoc
@@ -448,7 +435,7 @@ class __$$_DefaultsCopyWithImpl<$Res>
     Object? areGoalsEnabled = freezed,
     Object? areQuestsEnabled = freezed,
     Object? isOnlyASingleSelectedTaskAllowed = freezed,
-    Object? doesTasksListSeparatorHasRandomColors = freezed,
+    Object? isTasksListSeparatorColorRandom = freezed,
   }) {
     return _then(_$_Defaults(
       areTagsEnabled: areTagsEnabled == freezed
@@ -468,11 +455,11 @@ class __$$_DefaultsCopyWithImpl<$Res>
           ? _value.isOnlyASingleSelectedTaskAllowed
           : isOnlyASingleSelectedTaskAllowed // ignore: cast_nullable_to_non_nullable
               as bool,
-      doesTasksListSeparatorHasRandomColors:
-          doesTasksListSeparatorHasRandomColors == freezed
-              ? _value.doesTasksListSeparatorHasRandomColors
-              : doesTasksListSeparatorHasRandomColors // ignore: cast_nullable_to_non_nullable
-                  as bool,
+      isTasksListSeparatorColorRandom: isTasksListSeparatorColorRandom ==
+              freezed
+          ? _value.isTasksListSeparatorColorRandom
+          : isTasksListSeparatorColorRandom // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -485,7 +472,7 @@ class _$_Defaults implements _Defaults {
       this.areGoalsEnabled = false,
       this.areQuestsEnabled = false,
       this.isOnlyASingleSelectedTaskAllowed = true,
-      this.doesTasksListSeparatorHasRandomColors = false});
+      this.isTasksListSeparatorColorRandom = false});
 
   @override
   @JsonKey()
@@ -501,11 +488,11 @@ class _$_Defaults implements _Defaults {
   final bool isOnlyASingleSelectedTaskAllowed;
   @override
   @JsonKey()
-  final bool doesTasksListSeparatorHasRandomColors;
+  final bool isTasksListSeparatorColorRandom;
 
   @override
   String toString() {
-    return 'RemoteConfigState.defaults(areTagsEnabled: $areTagsEnabled, areGoalsEnabled: $areGoalsEnabled, areQuestsEnabled: $areQuestsEnabled, isOnlyASingleSelectedTaskAllowed: $isOnlyASingleSelectedTaskAllowed, doesTasksListSeparatorHasRandomColors: $doesTasksListSeparatorHasRandomColors)';
+    return 'RemoteConfigState.defaults(areTagsEnabled: $areTagsEnabled, areGoalsEnabled: $areGoalsEnabled, areQuestsEnabled: $areQuestsEnabled, isOnlyASingleSelectedTaskAllowed: $isOnlyASingleSelectedTaskAllowed, isTasksListSeparatorColorRandom: $isTasksListSeparatorColorRandom)';
   }
 
   @override
@@ -523,8 +510,8 @@ class _$_Defaults implements _Defaults {
                 other.isOnlyASingleSelectedTaskAllowed,
                 isOnlyASingleSelectedTaskAllowed) &&
             const DeepCollectionEquality().equals(
-                other.doesTasksListSeparatorHasRandomColors,
-                doesTasksListSeparatorHasRandomColors));
+                other.isTasksListSeparatorColorRandom,
+                isTasksListSeparatorColorRandom));
   }
 
   @override
@@ -534,8 +521,7 @@ class _$_Defaults implements _Defaults {
       const DeepCollectionEquality().hash(areGoalsEnabled),
       const DeepCollectionEquality().hash(areQuestsEnabled),
       const DeepCollectionEquality().hash(isOnlyASingleSelectedTaskAllowed),
-      const DeepCollectionEquality()
-          .hash(doesTasksListSeparatorHasRandomColors));
+      const DeepCollectionEquality().hash(isTasksListSeparatorColorRandom));
 
   @JsonKey(ignore: true)
   @override
@@ -550,22 +536,18 @@ class _$_Defaults implements _Defaults {
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)
+            bool isTasksListSeparatorColorRandom)
         $default, {
     required TResult Function(
             bool areTagsEnabled,
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)
+            bool isTasksListSeparatorColorRandom)
         defaults,
   }) {
-    return defaults(
-        areTagsEnabled,
-        areGoalsEnabled,
-        areQuestsEnabled,
-        isOnlyASingleSelectedTaskAllowed,
-        doesTasksListSeparatorHasRandomColors);
+    return defaults(areTagsEnabled, areGoalsEnabled, areQuestsEnabled,
+        isOnlyASingleSelectedTaskAllowed, isTasksListSeparatorColorRandom);
   }
 
   @override
@@ -576,22 +558,18 @@ class _$_Defaults implements _Defaults {
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)?
+            bool isTasksListSeparatorColorRandom)?
         $default, {
     TResult Function(
             bool areTagsEnabled,
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)?
+            bool isTasksListSeparatorColorRandom)?
         defaults,
   }) {
-    return defaults?.call(
-        areTagsEnabled,
-        areGoalsEnabled,
-        areQuestsEnabled,
-        isOnlyASingleSelectedTaskAllowed,
-        doesTasksListSeparatorHasRandomColors);
+    return defaults?.call(areTagsEnabled, areGoalsEnabled, areQuestsEnabled,
+        isOnlyASingleSelectedTaskAllowed, isTasksListSeparatorColorRandom);
   }
 
   @override
@@ -602,24 +580,20 @@ class _$_Defaults implements _Defaults {
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)?
+            bool isTasksListSeparatorColorRandom)?
         $default, {
     TResult Function(
             bool areTagsEnabled,
             bool areGoalsEnabled,
             bool areQuestsEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool doesTasksListSeparatorHasRandomColors)?
+            bool isTasksListSeparatorColorRandom)?
         defaults,
     required TResult orElse(),
   }) {
     if (defaults != null) {
-      return defaults(
-          areTagsEnabled,
-          areGoalsEnabled,
-          areQuestsEnabled,
-          isOnlyASingleSelectedTaskAllowed,
-          doesTasksListSeparatorHasRandomColors);
+      return defaults(areTagsEnabled, areGoalsEnabled, areQuestsEnabled,
+          isOnlyASingleSelectedTaskAllowed, isTasksListSeparatorColorRandom);
     }
     return orElse();
   }
@@ -662,7 +636,7 @@ abstract class _Defaults implements RemoteConfigState {
       final bool areGoalsEnabled,
       final bool areQuestsEnabled,
       final bool isOnlyASingleSelectedTaskAllowed,
-      final bool doesTasksListSeparatorHasRandomColors}) = _$_Defaults;
+      final bool isTasksListSeparatorColorRandom}) = _$_Defaults;
 
   @override
   bool get areTagsEnabled;
@@ -673,7 +647,7 @@ abstract class _Defaults implements RemoteConfigState {
   @override
   bool get isOnlyASingleSelectedTaskAllowed;
   @override
-  bool get doesTasksListSeparatorHasRandomColors;
+  bool get isTasksListSeparatorColorRandom;
   @override
   @JsonKey(ignore: true)
   _$$_DefaultsCopyWith<_$_Defaults> get copyWith =>
