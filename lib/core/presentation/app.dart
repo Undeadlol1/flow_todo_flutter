@@ -8,6 +8,7 @@ import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_ma
 import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
 import 'package:flow_todo_flutter_2022/features/quests/presentation/cubits/active_quests_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/filter_tasks_page.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,7 @@ class _AppState extends State<App> {
   final ProfileCubit profileCubit = GetIt.I();
   final RemoteConfigCubit remoteConfigCubit = GetIt.I();
   final ActiveQuestsCubit activeQuestsCubit = GetIt.I();
+  final FilteredTasksCubit filteredTasksCubit = GetIt.I();
   final TasksWorkedOnTodayCubit tasksDoneTodayCubit = GetIt.I();
   final AuthentificationCubit authentificationCubit = GetIt.I();
 
@@ -111,6 +113,7 @@ class _AppState extends State<App> {
           BlocProvider(create: (_) => profileCubit),
           BlocProvider(create: (_) => remoteConfigCubit),
           BlocProvider(create: (_) => activeQuestsCubit),
+          BlocProvider(create: (_) => filteredTasksCubit),
           BlocProvider(create: (_) => tasksDoneTodayCubit),
           BlocProvider(create: (_) => authentificationCubit),
         ],

@@ -113,7 +113,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       () => _i9.DeleteQuestRepository(firestore: get<_i6.FirebaseFirestore>()));
   gh.factory<_i10.DeleteTaskRepository>(
       () => _i10.DeleteTaskRepository(firestore: get<_i6.FirebaseFirestore>()));
-  gh.factory<_i11.FilteredTasksCubit>(() => _i11.FilteredTasksCubit());
+  gh.singleton<_i11.FilteredTasksCubit>(_i11.FilteredTasksCubit());
   gh.factory<_i12.GetActiveQuestsRepository>(() =>
       _i12.GetActiveQuestsRepository(firestore: get<_i6.FirebaseFirestore>()));
   gh.factory<_i13.GetGoalsRepository>(

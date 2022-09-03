@@ -5,6 +5,7 @@ import 'package:flow_todo_flutter_2022/features/authentification/presentation/cu
 import 'package:flow_todo_flutter_2022/features/common/services/snackbar_service.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/create_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/update_task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_task_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,7 @@ import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
 import '../../../../test_utilities/mocks/setupers/setup_remote_config_cubit_mock.dart';
+import '../../../../test_utilities/mocks/setupers/setup_tasks_cubit._mock.dart';
 
 class _MockCreateTask extends Mock implements CreateTask {}
 
@@ -111,6 +113,9 @@ extension on WidgetTester {
         providers: [
           BlocProvider<AuthentificationCubit>(
             create: (_) => _fakeAuthenticatedCubit,
+          ),
+          BlocProvider<TasksCubit>(
+            create: (_) => setupTasksCubitMock(),
           ),
           BlocProvider<RemoteConfigCubit>(
             create: (_) => setupRemoteConfigCubitMock(),

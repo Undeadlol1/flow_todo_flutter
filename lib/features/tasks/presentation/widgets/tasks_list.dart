@@ -6,7 +6,6 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cu
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tags_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'dart:math';
 
 import '../cubit/tasks_cubit.dart';
@@ -26,53 +25,47 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
-  final _filteredTasksCubit = GetIt.I<FilteredTasksCubit>();
-
   @override
   build(_) {
-    return BlocProvider(
-      create: (_) => _filteredTasksCubit,
-      child: Builder(
-        builder: (cx) {
-          final TagsState tagsState = cx.watch<TagsCubit>().state;
-          final TasksState tasksState = cx.watch<TasksCubit>().state;
-          final selectedTasks =
-              tasksState.tasks.where((i) => i.isSelected).toList();
-          final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
-          final List<Task> tasksToDisplay = _getTasksToDisplay(
-            allTasks: tasksState.tasks,
-            filteredTasks: filteredTasks,
-            tags: tagsState.tags.toList(),
-            focusedOnTasks: selectedTasks,
-          );
+    return Builder(
+      builder: (cx) {
+        final TagsState tagsState = cx.watch<TagsCubit>().state;
+        final TasksState tasksState = cx.watch<TasksCubit>().state;
+        final selectedTasks =
+            tasksState.tasks.where((i) => i.isSelected).toList();
+        final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
+        final List<Task> tasksToDisplay = _getTasksToDisplay(
+          allTasks: tasksState.tasks,
+          filteredTasks: filteredTasks,
+          tags: tagsState.tags.toList(),
+          focusedOnTasks: selectedTasks,
+        );
 
-          if (tasksState is TasksLoading) {
-            return const _LoadingIndicator();
-          }
+        if (tasksState is TasksLoading) {
+          return const _LoadingIndicator();
+        }
 
-          return Column(
-            children: [
-              if (tasksState.tasks.isNotEmpty)
-                _TasksLeftText(amount: tasksToDisplay.length),
-              if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
-              ListView.separated(
-                shrinkWrap: true,
-                addRepaintBoundaries: true,
-                itemCount: tasksToDisplay.length,
-                physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (_, __) => const _Separator(),
-                itemBuilder: (_, index) {
-                  return TasksListItem(
-                    task: tasksToDisplay[index],
-                    shouldIgnoreStaleCondition:
-                        widget.shouldIgnoreStaleCondition,
-                  );
-                },
-              ),
-            ],
-          );
-        },
-      ),
+        return Column(
+          children: [
+            if (tasksState.tasks.isNotEmpty)
+              _TasksLeftText(amount: tasksToDisplay.length),
+            if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
+            ListView.separated(
+              shrinkWrap: true,
+              addRepaintBoundaries: true,
+              itemCount: tasksToDisplay.length,
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (_, __) => const _Separator(),
+              itemBuilder: (_, index) {
+                return TasksListItem(
+                  task: tasksToDisplay[index],
+                  shouldIgnoreStaleCondition: widget.shouldIgnoreStaleCondition,
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

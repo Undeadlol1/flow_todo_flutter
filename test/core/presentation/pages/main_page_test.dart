@@ -36,6 +36,7 @@ import '../../../test_utilities/mocks/mock_level_progress_percentage_calculator.
 import '../../../test_utilities/mocks/mock_remote_config_cubit.dart';
 import '../../../test_utilities/mocks/mock_tags_cubit.dart';
 import '../../../test_utilities/mocks/mock_task_reward_calculator.dart';
+import '../../../test_utilities/mocks/setupers/setup_filtered_tasks_cubit_mock.dart';
 
 class _MockGetRemoteConfig extends Mock implements GetRemoteConfig {}
 
@@ -167,6 +168,7 @@ void _setupTagsCubitMock() {
   when(() => _tagsCubit.close()).thenAnswer((_) async {});
 }
 
+// TODO remove this?
 void _setupRemoteConfigCubit() {
   final remoteConfigState = RemoteConfigState.defaults();
   whenListen(
@@ -197,6 +199,9 @@ extension _PumpWithScaffold on WidgetTester {
             BlocProvider(create: (_) => _profileCubit),
             BlocProvider<TagsCubit>(create: (_) => _tagsCubit),
             BlocProvider<RemoteConfigCubit>(create: (_) => _remoteConfigCubit),
+            BlocProvider<FilteredTasksCubit>(
+              create: (_) => setupFileredTasksCubitMock(),
+            ),
             BlocProvider(create: (_) => TasksWorkedOnTodayCubit()),
           ],
           child: const MaterialApp(

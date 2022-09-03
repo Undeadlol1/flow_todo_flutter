@@ -9,6 +9,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/task_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/positive_choices.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/upsert_task_form.dart';
@@ -29,6 +30,7 @@ import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_remote_config_cubit.dart';
 import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 import '../../../../test_utilities/mocks/setupers/setup_remote_config_cubit_mock.dart';
+import '../../../../test_utilities/mocks/setupers/setup_tasks_cubit._mock.dart';
 
 class _MockMakeStepForwardOnATask extends Mock
     implements MakeStepForwardOnTheTask {}
@@ -191,6 +193,7 @@ extension on WidgetTester {
         providers: [
           BlocProvider(create: (_) => AuthentificationCubit()),
           BlocProvider<ProfileCubit>(create: (_) => _mockProfileCubit),
+          BlocProvider<TasksCubit>(create: (_) => setupTasksCubitMock()),
           BlocProvider<RemoteConfigCubit>(
             create: (_) => _mockRemoteConfigCubit,
           ),

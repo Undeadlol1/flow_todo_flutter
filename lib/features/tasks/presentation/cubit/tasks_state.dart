@@ -6,6 +6,7 @@ abstract class TasksState {
 
 class TasksLoading extends TasksState {}
 
+// TODO rename to TasksLoaded
 class TasksUpdated implements TasksState {
   @override
   List<Task> tasks = [];

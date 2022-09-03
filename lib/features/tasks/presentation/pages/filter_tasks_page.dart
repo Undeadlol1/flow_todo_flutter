@@ -6,12 +6,12 @@ import 'package:get_it/get_it.dart';
 
 import '../../../analytics/data/traces/navigation_to_filter_page_trace.dart';
 import '../../../common/presentation/page_layout.dart';
+import '../cubit/filtered_tasks_cubit.dart';
 import '../widgets/filter_tasks_to_do.dart';
 import '../widgets/tasks_list.dart';
 
 class FilterTasksPage extends StatefulWidget {
   static const pathName = '/filter';
-
   const FilterTasksPage({Key? key}) : super(key: key);
 
   @override
@@ -19,6 +19,8 @@ class FilterTasksPage extends StatefulWidget {
 }
 
 class _FilterTasksPageState extends State<FilterTasksPage> {
+  static final _filteredTasksCubit = GetIt.I<FilteredTasksCubit>();
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +28,12 @@ class _FilterTasksPageState extends State<FilterTasksPage> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) async => GetIt.I<NavigationToFilterPageTrace>().stop(),
     );
+  }
+
+  @override
+  void dispose() {
+    _filteredTasksCubit.update([]);
+    super.dispose();
   }
 
   @override

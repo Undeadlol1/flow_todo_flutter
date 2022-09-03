@@ -21,6 +21,7 @@ import '../../../../test_utilities/mocks/mock_hydrated_storage.dart';
 import '../../../../test_utilities/mocks/mock_stale_task_detector.dart';
 import '../../../../test_utilities/mocks/mock_tags_cubit.dart';
 import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
+import '../../../../test_utilities/mocks/setupers/setup_filtered_tasks_cubit_mock.dart';
 import '../../../../test_utilities/mocks/setupers/setup_remote_config_cubit_mock.dart';
 
 final _mockTagsCubit = MockTagsCubit();
@@ -109,6 +110,9 @@ extension on WidgetTester {
               BlocProvider(create: (_) => tasksCubit),
               BlocProvider(create: (_) => ProfileCubit()),
               BlocProvider<TagsCubit>(create: (_) => _mockTagsCubit),
+              BlocProvider<FilteredTasksCubit>(
+                create: (_) => setupFileredTasksCubitMock(),
+              ),
               BlocProvider<RemoteConfigCubit>(
                 create: (_) => setupRemoteConfigCubitMock(),
               ),

@@ -1,10 +1,13 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/static_tags_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../common/presentation/page_layout.dart';
 import '../../../common/presentation/widgets/countdown.dart';
 import '../../domain/models/task.dart';
+import '../cubit/filtered_tasks_cubit.dart';
 import '../widgets/negative_choices.dart';
 import '../widgets/positive_choices.dart';
 import '../widgets/upsert_task_form.dart';
@@ -23,6 +26,7 @@ class TaskPageArguments {
 
 class TaskPage extends StatelessWidget {
   static const pathName = '/task';
+  static final _filteredTasksCubit = GetIt.I<FilteredTasksCubit>();
   const TaskPage({Key? key}) : super(key: key);
 
   @override
@@ -31,27 +35,30 @@ class TaskPage extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as TaskPageArguments;
     final task = args.task;
 
-    return PageLayout(
-      isAppBarHidden: false,
-      isNumbersAnimationSuspended: true,
-      floatingActionButton: const CountDown(),
-      child: Stack(
-        children: [
-          args.isNoteEditingVisible || task.note.isNotEmpty
-              ? const SingleChildScrollView(child: _PageBody())
-              : const _PageBody(),
-          Positioned(
-            right: 0,
-            child: IconButton(
-              key: const Key('edit menu'),
-              icon: const Icon(Icons.more_vert),
-              onPressed: () => showModalBottomSheet(
-                context: context,
-                builder: (_) => NegativeChoices(task: task),
+    return BlocProvider(
+      create: (_) => _filteredTasksCubit,
+      child: PageLayout(
+        isAppBarHidden: false,
+        isNumbersAnimationSuspended: true,
+        floatingActionButton: const CountDown(),
+        child: Stack(
+          children: [
+            args.isNoteEditingVisible || task.note.isNotEmpty
+                ? const SingleChildScrollView(child: _PageBody())
+                : const _PageBody(),
+            Positioned(
+              right: 0,
+              child: IconButton(
+                key: const Key('edit menu'),
+                icon: const Icon(Icons.more_vert),
+                onPressed: () => showModalBottomSheet(
+                  context: context,
+                  builder: (_) => NegativeChoices(task: task),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

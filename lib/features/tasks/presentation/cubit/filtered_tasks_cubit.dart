@@ -7,7 +7,7 @@ import '../../domain/models/task.dart';
 part 'filtered_tasks_state.dart';
 part 'filtered_tasks_cubit.freezed.dart';
 
-@injectable
+@singleton
 class FilteredTasksCubit extends Cubit<FilteredTasksState> {
   FilteredTasksCubit() : super(FilteredTasksState([]));
 
