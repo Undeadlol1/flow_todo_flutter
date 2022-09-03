@@ -15,9 +15,10 @@ class GetRemoteConfig {
   });
 
   Future<void> call() async {
-    return firebaseRemoteConfig.fetch()
-      ..then(_updateCubit)
-      ..onError(useCaseExceptionHandler);
+    await firebaseRemoteConfig
+        .fetchAndActivate()
+        .then(_updateCubit)
+        .onError(useCaseExceptionHandler);
   }
 
   void _updateCubit(_) {
