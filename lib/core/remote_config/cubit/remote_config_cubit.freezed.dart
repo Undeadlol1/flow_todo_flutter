@@ -468,7 +468,7 @@ class __$$_DefaultsCopyWithImpl<$Res>
 
 class _$_Defaults implements _Defaults {
   _$_Defaults(
-      {this.areTagsEnabled = false,
+      {this.areTagsEnabled = true,
       this.areGoalsEnabled = false,
       this.areQuestsEnabled = false,
       this.isOnlyASingleSelectedTaskAllowed = true,

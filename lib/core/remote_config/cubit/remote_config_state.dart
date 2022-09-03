@@ -11,7 +11,7 @@ class RemoteConfigState with _$RemoteConfigState {
   }) = _State;
 
   factory RemoteConfigState.defaults({
-    @Default(false) final bool areTagsEnabled,
+    @Default(true) final bool areTagsEnabled,
     @Default(false) final bool areGoalsEnabled,
     @Default(false) final bool areQuestsEnabled,
     @Default(true) final bool isOnlyASingleSelectedTaskAllowed,
