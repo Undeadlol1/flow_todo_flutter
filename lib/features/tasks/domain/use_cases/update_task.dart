@@ -1,15 +1,18 @@
 import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
 class UpdateTask {
+  final TagsCubit tagsCubit;
   final TasksCubit tasksCubit;
   final FilteredTasksCubit filteredTasksCubit;
   final UpdateTaskRepository updateTaskRepository;
   const UpdateTask({
+    required this.tagsCubit,
     required this.tasksCubit,
     required this.filteredTasksCubit,
     required this.updateTaskRepository,
@@ -19,6 +22,8 @@ class UpdateTask {
     final newTask = updatedTask.copyWith(updatedAt: DateTime.now());
 
     _updateFilteredTasksCubit(newTask);
+
+    tagsCubit.reset();
 
     tasksCubit.updateTask(newTask);
 

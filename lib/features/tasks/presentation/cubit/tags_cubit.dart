@@ -10,4 +10,6 @@ class TagsCubit extends Cubit<TagsState> {
   TagsCubit() : super(TagsState({}));
 
   void update(Set<String> tags) => emit(TagsState(tags));
+
+  void reset() => emit(TagsState({}));
 }
