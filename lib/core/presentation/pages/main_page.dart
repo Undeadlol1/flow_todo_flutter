@@ -19,7 +19,6 @@ import '../../../features/tasks/presentation/pages/filter_tasks_page.dart';
 import '../../../features/tasks/presentation/widgets/tasks_list.dart';
 import '../../../features/users/domain/use_cases/get_profile.dart';
 import '../../../features/users/presentation/cubit/profile_cubit.dart';
-import '../../../features/users/presentation/widgets/player_progress_summary.dart';
 
 class MainPage extends StatelessWidget {
   static const pathName = '/main';
@@ -64,7 +63,7 @@ class MainPage extends StatelessWidget {
                     flex: 3,
                     child: SingleChildScrollView(
                       primary: true,
-                      physics: const ClampingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       child: Column(
                         children: [
                           const SelectedTasks(),
