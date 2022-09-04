@@ -52,10 +52,11 @@ Future<void> _confiigureRemoteConfig() async {
   );
 
   await remoteConfig.setDefaults(const {
-    "are_tags_enabled": false,
+    "are_tags_enabled": true,
     "are_goals_enabled": false,
     "are_quests_enabled": false,
     "is_only_single_selected_task_allowed": true,
+    "is_tasks_list_separator_color_random": false,
   });
 }
 
