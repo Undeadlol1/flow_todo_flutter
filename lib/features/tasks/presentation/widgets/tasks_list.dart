@@ -54,6 +54,7 @@ class _TasksListState extends State<TasksList> {
               ),
             if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
             ListView.separated(
+              primary: false,
               shrinkWrap: true,
               addRepaintBoundaries: true,
               addAutomaticKeepAlives: true,
