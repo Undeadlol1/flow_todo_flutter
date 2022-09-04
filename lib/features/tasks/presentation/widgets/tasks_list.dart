@@ -6,16 +6,18 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cu
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tags_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:math';
+import 'dart:math' hide log;
 
 import '../cubit/tasks_cubit.dart';
 import 'tasks_list_item.dart';
 
 class TasksList extends StatefulWidget {
+  final Widget? child;
   final bool shouldIgnoreTagsFiltering;
   final bool shouldIgnoreStaleCondition;
   const TasksList({
     Key? key,
+    this.child,
     this.shouldIgnoreTagsFiltering = false,
     this.shouldIgnoreStaleCondition = false,
   }) : super(key: key);
@@ -45,28 +47,27 @@ class _TasksListState extends State<TasksList> {
           return const _LoadingIndicator();
         }
 
-        return Column(
+        return ListView(
           children: [
+            if (widget.child != null) widget.child!,
             if (tasksState.tasks.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(bottom: 5),
                 child: _TasksLeftText(amount: tasksToDisplay.length),
               ),
             if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
-            ListView.separated(
-              shrinkWrap: true,
-              addRepaintBoundaries: true,
-              addAutomaticKeepAlives: true,
-              itemCount: tasksToDisplay.length,
-              physics: const NeverScrollableScrollPhysics(),
-              separatorBuilder: (_, __) => const _Separator(),
-              itemBuilder: (_, index) {
-                return TasksListItem(
-                  task: tasksToDisplay[index],
-                  shouldIgnoreStaleCondition: widget.shouldIgnoreStaleCondition,
-                );
-              },
-            ),
+            ...tasksToDisplay.map((e) {
+              return Column(
+                children: [
+                  TasksListItem(
+                    task: e,
+                    shouldIgnoreStaleCondition:
+                        widget.shouldIgnoreStaleCondition,
+                  ),
+                  const _Separator()
+                ],
+              );
+            }).toList(),
           ],
         );
       },
