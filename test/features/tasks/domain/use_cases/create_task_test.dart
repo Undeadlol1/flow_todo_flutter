@@ -47,6 +47,8 @@ void main() {
   callToAddPointsMock() => _mockAddPointsToUser(10);
 
   setUpAll(() {
+    registerFallbackValue([]);
+
     final profileState = ProfileLoaded(profile: profileFixture);
     whenListen(
       _mockProfileCubit,
@@ -54,7 +56,7 @@ void main() {
       initialState: profileState,
     );
 
-    final tasksState = TasksUpdated(tasks: []);
+    final tasksState = TasksState.loaded([]);
     whenListen(
       _mockTasksCubit,
       Stream.fromIterable([tasksState]),
@@ -79,11 +81,15 @@ void main() {
     test(
       'adds task to state',
       () async {
-        final useCase = _buildUseCase();
+        when(() => _mockTasksCubit.updateList(any())).thenReturn(null);
 
-        await useCase(title: taskTitle, userId: userId, tags: []);
+        await _buildUseCase()(title: taskTitle, userId: userId, tags: []);
 
-        expect(_mockTasksCubit.state.tasks, hasLength(1));
+        final verificatiion =
+            verify(() => _mockTasksCubit.updateList(captureAny()));
+        verificatiion.called(1);
+        expect(verificatiion.captured[0], hasLength(1));
+        expect(verificatiion.captured[0][0], isA<Task>());
       },
     );
 

@@ -22,7 +22,7 @@ void main() {
   setUp(() {
     reset(mockTasksCubit);
 
-    final tasksState = TasksUpdated(tasks: []);
+    final tasksState = TasksState.loaded([]);
     whenListen(
       mockTasksCubit,
       Stream.fromIterable([tasksState]),

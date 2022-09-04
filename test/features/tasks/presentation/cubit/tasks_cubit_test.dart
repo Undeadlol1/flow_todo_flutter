@@ -28,7 +28,13 @@ void main() {
       'THEN contains empty tasks list',
       build: () => tasksCubit,
       verify: (cubit) {
-        expect(cubit.state, isA<TasksLoading>());
+        expect(
+          cubit.state.maybeMap(
+            loading: (value) => true,
+            orElse: () => false,
+          ),
+          isTrue,
+        );
         expect(cubit.state.tasks, equals([]));
       },
     );
@@ -39,7 +45,13 @@ void main() {
       build: () => tasksCubit,
       act: (cubit) => cubit.updateList([taskFixture, taskFixture]),
       verify: (cubit) {
-        expect(cubit.state, isA<TasksUpdated>());
+        expect(
+          cubit.state.maybeMap(
+            loaded: (value) => true,
+            orElse: () => false,
+          ),
+          isTrue,
+        );
         expect(cubit.state.tasks, equals([taskFixture, taskFixture]));
       },
     );
@@ -51,7 +63,13 @@ void main() {
       act: (cubit) =>
           cubit.updateTask(taskFixture.copyWith(title: 'a new title')),
       verify: (cubit) {
-        expect(cubit.state, isA<TasksUpdated>());
+        expect(
+          cubit.state.maybeMap(
+            loaded: (value) => true,
+            orElse: () => false,
+          ),
+          isTrue,
+        );
         expect(cubit.state.tasks, hasLength(2));
         expect(cubit.state.tasks.first.title, 'a new title');
       },
@@ -63,7 +81,13 @@ void main() {
       build: () => tasksCubit..updateList([taskFixture2, taskFixture]),
       act: (cubit) => cubit.removeTask(taskFixture2),
       verify: (cubit) {
-        expect(cubit.state, isA<TasksUpdated>());
+        expect(
+          cubit.state.maybeMap(
+            loaded: (value) => true,
+            orElse: () => false,
+          ),
+          isTrue,
+        );
         expect(cubit.state.tasks, equals([taskFixture]));
       },
     );

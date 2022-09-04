@@ -1,15 +1,13 @@
 part of 'tasks_cubit.dart';
 
-abstract class TasksState {
+@freezed
+class TasksState with _$TasksState {
+  TasksState._();
   final List<Task> tasks = [];
-}
 
-class TasksLoading extends TasksState {}
+  factory TasksState.loading() = _loading;
+  factory TasksState.loaded(List<Task> tasks) = _loaded;
 
-// TODO rename to TasksLoaded
-class TasksUpdated implements TasksState {
-  @override
-  List<Task> tasks = [];
-
-  TasksUpdated({required this.tasks});
+  factory TasksState.fromJson(Map<String, Object?> json) =>
+      _$TasksStateFromJson(json);
 }
