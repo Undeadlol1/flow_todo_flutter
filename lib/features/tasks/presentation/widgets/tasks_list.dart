@@ -48,7 +48,10 @@ class _TasksListState extends State<TasksList> {
         return Column(
           children: [
             if (tasksState.tasks.isNotEmpty)
-              _TasksLeftText(amount: tasksToDisplay.length),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: _TasksLeftText(amount: tasksToDisplay.length),
+              ),
             if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
             ListView.separated(
               shrinkWrap: true,

@@ -6,6 +6,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_rewar
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list_item.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
@@ -24,7 +25,11 @@ import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 import '../../../../test_utilities/mocks/setupers/setup_filtered_tasks_cubit_mock.dart';
 import '../../../../test_utilities/mocks/setupers/setup_remote_config_cubit_mock.dart';
 
+class _MockTasksWorkedOnTodayCubit extends Mock
+    implements TasksWorkedOnTodayCubit {}
+
 final _mockTagsCubit = MockTagsCubit();
+final _mockTasksWorkedOnTodayCubit = _MockTasksWorkedOnTodayCubit();
 
 void main() {
   setUpAll(() {
@@ -40,7 +45,14 @@ void main() {
       initialState: TagsState({}),
     );
 
+    whenListen(
+      _mockTasksWorkedOnTodayCubit,
+      Stream.value(TasksWorkedOnTodayState.loaded([])),
+      initialState: TasksWorkedOnTodayState.loaded([]),
+    );
+
     when(() => _mockTagsCubit.close()).thenAnswer((_) async {});
+    when(() => _mockTasksWorkedOnTodayCubit.close()).thenAnswer((_) async {});
     when(() => mockStaleTaskDetector.isStale(any())).thenReturn(false);
     when(() => mockFirebaseRemoteConfig.getBool(any())).thenReturn(false);
     when(() => mockTaskRewardCalculator.taskCompletion(any())).thenReturn(50);
@@ -110,6 +122,9 @@ extension on WidgetTester {
               BlocProvider(create: (_) => tasksCubit),
               BlocProvider(create: (_) => ProfileCubit()),
               BlocProvider<TagsCubit>(create: (_) => _mockTagsCubit),
+              BlocProvider<TasksWorkedOnTodayCubit>(
+                create: (_) => _mockTasksWorkedOnTodayCubit,
+              ),
               BlocProvider<FilteredTasksCubit>(
                 create: (_) => setupFileredTasksCubitMock(),
               ),
