@@ -53,44 +53,38 @@ class MainPage extends StatelessWidget {
                 return const _LoginScreen();
               }
 
-              return Column(
-                children: [
-                  if (profileState is ProfileLoaded)
-                    const Expanded(
-                      flex: 1,
-                      child: PlayerProgressSummary(),
-                    ),
-                  Expanded(
-                    flex: 3,
-                    child: SingleChildScrollView(
-                      primary: true,
-                      physics: const ClampingScrollPhysics(),
-                      child: Column(
-                        children: [
-                          const SelectedTasks(),
-                          TextButton(
-                            onPressed: () async {
-                              await GetIt.I<NavigationToFilterPageTrace>()
-                                  .start();
+              return SingleChildScrollView(
+                primary: true,
+                physics: const ClampingScrollPhysics(),
+                child: Column(
+                  children: [
+                    if (profileState is ProfileLoaded)
+                      const PlayerProgressSummary(),
+                    Column(
+                      children: [
+                        const SelectedTasks(),
+                        TextButton(
+                          onPressed: () async {
+                            await GetIt.I<NavigationToFilterPageTrace>()
+                                .start();
 
-                              // ignore: use_build_context_synchronously
-                              Navigator.of(context)
-                                  .pushNamed(FilterTasksPage.pathName);
-                            },
-                            child: Row(
-                              children: const [
-                                Icon(Icons.manage_search),
-                                SizedBox(width: 10),
-                                Text('Filter tasks'),
-                              ],
-                            ),
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context)
+                                .pushNamed(FilterTasksPage.pathName);
+                          },
+                          child: Row(
+                            children: const [
+                              Icon(Icons.manage_search),
+                              SizedBox(width: 10),
+                              Text('Filter tasks'),
+                            ],
                           ),
-                          const CardView(child: TasksList()),
-                        ],
-                      ),
+                        ),
+                        const CardView(child: TasksList()),
+                      ],
                     ),
-                  )
-                ],
+                  ],
+                ),
               );
             },
           ),

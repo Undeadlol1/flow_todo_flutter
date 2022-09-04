@@ -11,6 +11,7 @@ import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
 import '../../authentification/presentation/cubit/authentification_cubit.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
+import '../../users/presentation/widgets/player_progress_summary.dart';
 
 class PageLayout extends StatelessWidget {
   final Widget child;
@@ -76,6 +77,22 @@ class PageLayout extends StatelessWidget {
                   child: floatingActionButton,
                 ),
                 bottomNavigationBar: const _BottomNavigation(),
+              ),
+              // TODO extract
+              BlocBuilder<ProfileCubit, ProfileState>(
+                builder: (context, state) {
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 500),
+                    child: state is ProfileLoaded
+                        ? const SafeArea(
+                            child: SizedBox(
+                              height: 180,
+                              child: PlayerProgressSummary(),
+                            ),
+                          )
+                        : const SizedBox(),
+                  );
+                },
               ),
             ],
           );
