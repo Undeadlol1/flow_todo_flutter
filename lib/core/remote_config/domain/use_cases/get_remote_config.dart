@@ -28,7 +28,7 @@ class GetRemoteConfig {
         areGoalsEnabled: _getBoolean('are_goals_enabled'),
         areQuestsEnabled: _getBoolean('are_quests_enabled'),
         isTasksListSeparatorColorRandom:
-            _getBoolean('is_tasks_list_separators_color_random'),
+            _getBoolean('is_tasks_list_separator_color_random'),
         isOnlyASingleSelectedTaskAllowed:
             _getBoolean('is_only_single_selected_task_allowed'),
       ),
