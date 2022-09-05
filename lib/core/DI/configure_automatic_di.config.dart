@@ -245,7 +245,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       tagsCubit: get<_i27.TagsCubit>(),
       tasksCubit: get<_i29.TasksCubit>(),
       filteredTasksCubit: get<_i11.FilteredTasksCubit>(),
-      updateTaskRepository: get<_i34.UpdateTaskRepository>()));
+      updateTaskRepository: get<_i34.UpdateTaskRepository>(),
+      useCaseExceptionHandler: get<_i36.UseCaseExceptionHandler>()));
   gh.singleton<_i61.UpdateTaskNote>(_i61.UpdateTaskNote(
       tasksCubit: get<_i29.TasksCubit>(),
       updateTaskRepository: get<_i34.UpdateTaskRepository>()));

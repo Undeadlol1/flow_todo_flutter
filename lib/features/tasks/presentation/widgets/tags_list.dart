@@ -91,8 +91,8 @@ class TagsList extends StatelessWidget {
     return uniqueTags;
   }
 
-  bool _haveTagsChanged(previous, current) {
-    return setEquals(_getTags(previous), _getTags(current));
+  bool _haveTagsChanged(TasksState previous, TasksState current) {
+    return !setEquals(_getTags(previous), _getTags(current));
   }
 }
 

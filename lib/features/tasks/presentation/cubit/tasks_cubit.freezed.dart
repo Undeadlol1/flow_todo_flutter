@@ -122,16 +122,6 @@ class _$_loading extends _loading {
   }
 
   @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_loading);
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
@@ -230,7 +220,7 @@ class __$$_loadedCopyWithImpl<$Res> extends _$TasksStateCopyWithImpl<$Res>
   }) {
     return _then(_$_loaded(
       tasks == freezed
-          ? _value._tasks
+          ? _value.tasks
           : tasks // ignore: cast_nullable_to_non_nullable
               as List<Task>,
     ));
@@ -240,20 +230,15 @@ class __$$_loadedCopyWithImpl<$Res> extends _$TasksStateCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_loaded extends _loaded {
-  _$_loaded(final List<Task> tasks, {final String? $type})
-      : _tasks = tasks,
-        $type = $type ?? 'loaded',
+  _$_loaded(this.tasks, {final String? $type})
+      : $type = $type ?? 'loaded',
         super._();
 
   factory _$_loaded.fromJson(Map<String, dynamic> json) =>
       _$$_loadedFromJson(json);
 
-  final List<Task> _tasks;
   @override
-  List<Task> get tasks {
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_tasks);
-  }
+  List<Task> tasks;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
@@ -262,19 +247,6 @@ class _$_loaded extends _loaded {
   String toString() {
     return 'TasksState.loaded(tasks: $tasks)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_loaded &&
-            const DeepCollectionEquality().equals(other._tasks, _tasks));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_tasks));
 
   @JsonKey(ignore: true)
   @override
@@ -352,12 +324,13 @@ class _$_loaded extends _loaded {
 }
 
 abstract class _loaded extends TasksState {
-  factory _loaded(final List<Task> tasks) = _$_loaded;
+  factory _loaded(List<Task> tasks) = _$_loaded;
   _loaded._() : super._();
 
   factory _loaded.fromJson(Map<String, dynamic> json) = _$_loaded.fromJson;
 
   List<Task> get tasks;
+  set tasks(List<Task> value);
   @JsonKey(ignore: true)
   _$$_loadedCopyWith<_$_loaded> get copyWith =>
       throw _privateConstructorUsedError;

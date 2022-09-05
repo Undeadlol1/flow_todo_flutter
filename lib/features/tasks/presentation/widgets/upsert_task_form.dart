@@ -176,7 +176,7 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
           );
         } else {
           await GetIt.I<UpdateTask>()(
-            widget.taskToUpdate!.copyWith(title: title, tags: tags),
+            widget.taskToUpdate!.copyWith(title: title, tags: taskTags),
           );
           GetIt.I<SnackbarService>().displaySnackbar(text: 'Saved!');
         }

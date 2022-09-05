@@ -1,6 +1,6 @@
 part of 'tasks_cubit.dart';
 
-@freezed
+@unfreezed
 class TasksState with _$TasksState {
   TasksState._();
   final List<Task> tasks = [];
