@@ -108,7 +108,7 @@ class _TasksWorkedOnAmountText extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.tertiaryContainer,
+          color: Theme.of(context).colorScheme.secondaryContainer,
           shape: BoxShape.circle,
         ),
         child: Text(
