@@ -15,6 +15,7 @@ import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_firebase_analytics.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
+import '../../../../test_utilities/mocks/mock_use_case_exception_handler.dart';
 
 class _MockAddPointsToUser extends Mock implements AddPointsToViewer {}
 
@@ -37,6 +38,7 @@ final _mockAddPointsToUser = _MockAddPointsToUser();
 final _mockFirebaseAnalytics = MockFirebaseAnalytics();
 final _fakecUniqueIdGenerator = _FakecUniqueIdGenerator();
 final _mockCreateTaskRepository = _MockCreateTaskRepository();
+final _mockUseCaseExceptionHandler = MockUseCaseExceptionHandler();
 final _dateToReturn = DateTime.now().subtract(const Duration(days: 10));
 
 void main() {
@@ -146,5 +148,6 @@ CreateTask _buildUseCase() {
     firebaseAnalytics: _mockFirebaseAnalytics,
     uniqueIdGenerator: _fakecUniqueIdGenerator,
     createTaskRepository: _mockCreateTaskRepository,
+    useCaseExceptionHandler: _mockUseCaseExceptionHandler,
   );
 }
