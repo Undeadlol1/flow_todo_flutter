@@ -86,9 +86,10 @@ class TagsList extends StatelessWidget {
     final uniqueTags = allTags
         .expand((list) => list.map((e) => e))
         .map((e) => e.toLowerCase())
-        .toSet();
+        .toList()
+      ..sort();
 
-    return uniqueTags;
+    return uniqueTags.toSet();
   }
 
   bool _haveTagsChanged(TasksState previous, TasksState current) {
