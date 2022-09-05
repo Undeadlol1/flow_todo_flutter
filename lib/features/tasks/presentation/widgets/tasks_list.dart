@@ -4,12 +4,13 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tags_list.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'dart:math';
 
 import '../cubit/tasks_cubit.dart';
-import 'tasks_list_item.dart';
 
 class TasksList extends StatefulWidget {
   final bool shouldIgnoreTagsFiltering;
@@ -53,14 +54,13 @@ class _TasksListState extends State<TasksList> {
                 child: _TasksLeftText(amount: tasksToDisplay.length),
               ),
             if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
-            ListView.separated(
-              primary: false,
+            ScrollablePositionedList.separated(
+              separatorBuilder: (_, __) => const _Separator(),
               shrinkWrap: true,
               addRepaintBoundaries: true,
-              addAutomaticKeepAlives: true,
-              itemCount: tasksToDisplay.length,
+              addAutomaticKeepAlives: false,
               physics: const NeverScrollableScrollPhysics(),
-              separatorBuilder: (_, __) => const _Separator(),
+              itemCount: tasksToDisplay.length,
               itemBuilder: (_, index) {
                 return TasksListItem(
                   task: tasksToDisplay[index],
