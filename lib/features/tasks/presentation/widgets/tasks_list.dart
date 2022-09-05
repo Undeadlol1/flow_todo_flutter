@@ -57,7 +57,7 @@ class _TasksListState extends State<TasksList> {
               primary: false,
               shrinkWrap: true,
               addRepaintBoundaries: true,
-              addAutomaticKeepAlives: true,
+              addAutomaticKeepAlives: false,
               itemCount: tasksToDisplay.length,
               physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (_, __) => const _Separator(),
