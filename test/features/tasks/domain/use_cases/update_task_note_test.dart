@@ -28,7 +28,7 @@ void main() {
 
   setUp(() {
     when(() => tasksCubit.state).thenReturn(
-      TasksUpdated(tasks: [taskFixture, taskFixture2]),
+      TasksState.loaded([taskFixture, taskFixture2]),
     );
     when(typicallCubitCall).thenReturn(null);
     when(typicallRepositoryCall).thenAnswer((_) async {});

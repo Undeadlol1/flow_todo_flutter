@@ -41,34 +41,34 @@ class _TasksListState extends State<TasksList> {
           focusedOnTasks: selectedTasks,
         );
 
-        if (tasksState is TasksLoading) {
-          return const _LoadingIndicator();
-        }
-
-        return Column(
-          children: [
-            if (tasksState.tasks.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: _TasksLeftText(amount: tasksToDisplay.length),
+        return tasksState.map(
+          loading: (_) => const _LoadingIndicator(),
+          loaded: (_) => Column(
+            children: [
+              if (tasksState.tasks.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: _TasksLeftText(amount: tasksToDisplay.length),
+                ),
+              if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
+              ListView.separated(
+                primary: false,
+                shrinkWrap: true,
+                addRepaintBoundaries: true,
+                addAutomaticKeepAlives: false,
+                itemCount: tasksToDisplay.length,
+                physics: const NeverScrollableScrollPhysics(),
+                separatorBuilder: (_, __) => const _Separator(),
+                itemBuilder: (_, index) {
+                  return TasksListItem(
+                    task: tasksToDisplay[index],
+                    shouldIgnoreStaleCondition:
+                        widget.shouldIgnoreStaleCondition,
+                  );
+                },
               ),
-            if (widget.shouldIgnoreTagsFiltering == false) const TagsList(),
-            ListView.separated(
-              primary: false,
-              shrinkWrap: true,
-              addRepaintBoundaries: true,
-              addAutomaticKeepAlives: false,
-              itemCount: tasksToDisplay.length,
-              physics: const NeverScrollableScrollPhysics(),
-              separatorBuilder: (_, __) => const _Separator(),
-              itemBuilder: (_, index) {
-                return TasksListItem(
-                  task: tasksToDisplay[index],
-                  shouldIgnoreStaleCondition: widget.shouldIgnoreStaleCondition,
-                );
-              },
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
@@ -193,8 +193,11 @@ class _LoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return const SizedBox(
+      height: 300,
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }

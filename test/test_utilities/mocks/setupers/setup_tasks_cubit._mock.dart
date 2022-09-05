@@ -6,7 +6,7 @@ import '../mock_tasks_cubit.dart';
 
 TasksCubit setupTasksCubitMock() {
   final cubit = MockTasksCubit();
-  final state = TasksUpdated(tasks: []);
+  final state = TasksState.loaded([]);
 
   whenListen(
     cubit,

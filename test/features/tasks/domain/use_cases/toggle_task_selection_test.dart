@@ -31,7 +31,7 @@ void main() {
     registerFallbackValue(taskFixture);
     registerFallbackValue('testing event name');
 
-    when(() => _tasksCubit.state).thenReturn(TasksUpdated(tasks: []));
+    when(() => _tasksCubit.state).thenReturn(TasksState.loaded([]));
     when(() => _tasksCubit.updateTask(any())).thenReturn(null);
     when(() => _mockRemoteConfigCubit.state)
         .thenReturn(RemoteConfigState.defaults());
@@ -44,7 +44,7 @@ void main() {
 
   group('GIVEN ToggleTaskSelection', () {
     test('WHEN there are no selected tasks THEN updates the task', () async {
-      when(() => _tasksCubit.state).thenReturn(TasksUpdated(tasks: []));
+      when(() => _tasksCubit.state).thenReturn(TasksState.loaded([]));
 
       await _getUseCase()(taskFixture);
 
@@ -55,7 +55,7 @@ void main() {
     test('WHEN the task is already selected THEN deselects the task', () async {
       final selectedTask = taskFixture.copyWith(isSelected: true);
       when(() => _tasksCubit.state)
-          .thenReturn(TasksUpdated(tasks: [selectedTask]));
+          .thenReturn(TasksState.loaded([selectedTask]));
 
       await _getUseCase()(selectedTask);
 
@@ -71,7 +71,7 @@ void main() {
           RemoteConfigState.defaults(isOnlyASingleSelectedTaskAllowed: true),
         );
         when(() => _tasksCubit.state).thenReturn(
-          TasksUpdated(tasks: [taskFixture.copyWith(isSelected: true)]),
+          TasksState.loaded([taskFixture.copyWith(isSelected: true)]),
         );
 
         await _getUseCase()(taskFixture2);
@@ -90,7 +90,7 @@ void main() {
           RemoteConfigState.defaults(isOnlyASingleSelectedTaskAllowed: false),
         );
         when(() => _tasksCubit.state).thenReturn(
-          TasksUpdated(tasks: [taskFixture.copyWith(isSelected: true)]),
+          TasksState.loaded([taskFixture.copyWith(isSelected: true)]),
         );
 
         await _getUseCase()(taskFixture2);

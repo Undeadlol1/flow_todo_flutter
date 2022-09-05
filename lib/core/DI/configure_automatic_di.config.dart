@@ -269,7 +269,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       addPointsToUser: get<_i62.AddPointsToViewer>(),
       firebaseAnalytics: get<_i50.FirebaseAnalytics>(),
       uniqueIdGenerator: get<_i31.UniqueIdGenerator>(),
-      createTaskRepository: get<_i8.CreateTaskRepository>()));
+      createTaskRepository: get<_i8.CreateTaskRepository>(),
+      useCaseExceptionHandler: get<_i36.UseCaseExceptionHandler>()));
   gh.singleton<_i65.MakeStepForwardOnTheTask>(_i65.MakeStepForwardOnTheTask(
       tasksCubit: get<_i29.TasksCubit>(),
       updateTask: get<_i34.UpdateTaskRepository>(),

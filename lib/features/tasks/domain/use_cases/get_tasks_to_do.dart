@@ -17,10 +17,6 @@ class GetTasksToDo {
   });
 
   Future<void> call({required String userId}) async {
-    if (tasksCubit.state is! TasksUpdated) {
-      tasksCubit.setLoading();
-    }
-
     await getTasks(userId: userId)
         .then(_updateStateIfNecessary)
         .catchError(exceptionHandler);
