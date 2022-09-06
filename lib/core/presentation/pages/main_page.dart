@@ -85,6 +85,7 @@ class MainPage extends StatelessWidget {
                             ),
                           ),
                           const CardView(child: TasksList()),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
