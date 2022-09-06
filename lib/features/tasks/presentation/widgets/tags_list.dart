@@ -27,14 +27,20 @@ class TagsList extends StatelessWidget {
                   buildWhen: _haveTagsChanged,
                   builder: (context, tasksState) {
                     final tasks = tasksState.tasks;
+                    final areThereStaleTasks =
+                        tasks.any((task) => task.isStale);
+                    final areThereFreshTasks =
+                        tasks.any((task) => !task.isStale);
 
                     if (areTagsEnabled && tasks.length > 5) {
                       final tags = _getTags(tasksState);
 
-                      if (tasks.any((task) => task.isStale)) {
-                        tags
-                          ..add('stale')
-                          ..add('fresh');
+                      if (areThereStaleTasks) {
+                        tags.add('stale');
+                      }
+
+                      if (areThereFreshTasks) {
+                        tags.add('fresh');
                       }
 
                       return Wrap(
