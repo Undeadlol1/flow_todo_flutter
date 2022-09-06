@@ -9,7 +9,7 @@ import 'package:flow_todo_flutter_2022/features/goals/presentation/cubit/goals_c
 import 'package:flow_todo_flutter_2022/features/goals/presentation/pages/goals_page.dart';
 import 'package:flow_todo_flutter_2022/features/quests/presentation/cubits/active_quests_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filter_by_tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/pages/filter_tasks_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +38,7 @@ class _AppState extends State<App> {
   static final FirebaseAnalyticsObserver _firebaseAnalyticsObserver =
       FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance);
 
-  final TagsCubit tagsCubit = GetIt.I();
+  final FilterByTagsCubit tagsCubit = GetIt.I();
   final TasksCubit tasksCubit = GetIt.I();
   final GoalsCubit goalsCubit = GetIt.I();
   final ProfileCubit profileCubit = GetIt.I();

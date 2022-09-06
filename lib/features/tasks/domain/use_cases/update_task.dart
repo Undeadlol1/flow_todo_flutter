@@ -2,13 +2,13 @@ import 'package:flow_todo_flutter_2022/core/services/use_case_exception_handler.
 import 'package:flow_todo_flutter_2022/features/tasks/data/update_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filter_by_tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
 class UpdateTask {
-  final TagsCubit tagsCubit;
+  final FilterByTagsCubit tagsCubit;
   final TasksCubit tasksCubit;
   final FilteredTasksCubit filteredTasksCubit;
   final UpdateTaskRepository updateTaskRepository;

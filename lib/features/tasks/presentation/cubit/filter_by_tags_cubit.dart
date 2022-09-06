@@ -6,8 +6,8 @@ part 'tags_state.dart';
 part 'tags_cubit.freezed.dart';
 
 @singleton
-class TagsCubit extends Cubit<TagsState> {
-  TagsCubit() : super(TagsState({}));
+class FilterByTagsCubit extends Cubit<TagsState> {
+  FilterByTagsCubit() : super(TagsState({}));
 
   void update(Set<String> tags) => emit(TagsState(tags));
 

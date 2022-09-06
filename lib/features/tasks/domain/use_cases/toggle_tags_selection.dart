@@ -1,11 +1,11 @@
 import 'package:flow_todo_flutter_2022/core/services/use_case_exception_handler.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../presentation/cubit/tags_cubit.dart';
+import '../../presentation/cubit/filter_by_tags_cubit.dart';
 
 @injectable
 class ToggleTagsSelection {
-  final TagsCubit tagsCubit;
+  final FilterByTagsCubit tagsCubit;
   final UseCaseExceptionHandler useCaseExceptionHandler;
   const ToggleTagsSelection({
     required this.tagsCubit,

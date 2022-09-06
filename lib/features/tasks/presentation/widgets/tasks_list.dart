@@ -2,7 +2,7 @@ import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cu
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_numbers.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filter_by_tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tags_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +29,7 @@ class _TasksListState extends State<TasksList> {
   build(_) {
     return Builder(
       builder: (cx) {
-        final TagsState tagsState = cx.watch<TagsCubit>().state;
+        final TagsState tagsState = cx.watch<FilterByTagsCubit>().state;
         final TasksState tasksState = cx.watch<TasksCubit>().state;
         final selectedTasks =
             tasksState.tasks.where((i) => i.isSelected).toList();

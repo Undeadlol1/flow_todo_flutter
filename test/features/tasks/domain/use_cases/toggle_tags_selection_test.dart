@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/mocks/mock_use_case_exception_handler.dart';
-import '../../../../test_utilities/mocks/setupers/setup_tags_cubit_mock.dart';
+import '../../../../test_utilities/mocks/setupers/setup_filter_by_tags_cubit_mock.dart';
 
 void main() {
   final useCaseExceptionHandler = MockUseCaseExceptionHandler();
@@ -16,7 +16,7 @@ void main() {
   });
 
   ToggleTagsSelection getUseCase() => ToggleTagsSelection(
-        tagsCubit: setupTagsCubitMock(),
+        tagsCubit: setupFilterByTagsCubitMock(),
         useCaseExceptionHandler: useCaseExceptionHandler,
       );
 

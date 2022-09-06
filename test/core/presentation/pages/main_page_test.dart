@@ -13,7 +13,7 @@ import 'package:flow_todo_flutter_2022/features/leveling/domain/services/user_le
 import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_days_in_a_row_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filter_by_tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/selected_tasks.dart';
@@ -34,7 +34,7 @@ import '../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../test_utilities/mocks/mock_hydrated_storage.dart';
 import '../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
 import '../../../test_utilities/mocks/mock_remote_config_cubit.dart';
-import '../../../test_utilities/mocks/mock_tags_cubit.dart';
+import '../../../test_utilities/mocks/mock_filter_by_tags_cubit.dart';
 import '../../../test_utilities/mocks/mock_task_reward_calculator.dart';
 import '../../../test_utilities/mocks/setupers/setup_filtered_tasks_cubit_mock.dart';
 
@@ -47,7 +47,7 @@ class _MockNavigateToFilterPageTrace extends Mock
 
 late ProfileCubit _profileCubit;
 late AuthentificationCubit _authCubit;
-final _tagsCubit = MockTagsCubit();
+final _tagsCubit = MockFilterByTagsCubit();
 final _remoteConfigCubit = MockRemoteConfigCubit();
 
 void main() {
@@ -197,7 +197,7 @@ extension _PumpWithScaffold on WidgetTester {
             BlocProvider(create: (_) => _authCubit),
             BlocProvider(create: (_) => TasksCubit()),
             BlocProvider(create: (_) => _profileCubit),
-            BlocProvider<TagsCubit>(create: (_) => _tagsCubit),
+            BlocProvider<FilterByTagsCubit>(create: (_) => _tagsCubit),
             BlocProvider<RemoteConfigCubit>(create: (_) => _remoteConfigCubit),
             BlocProvider<FilteredTasksCubit>(
               create: (_) => setupFileredTasksCubitMock(),

@@ -1,7 +1,7 @@
 import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_fade_in_on_visibility.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/toggle_tags_selection.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filter_by_tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class TagsList extends StatelessWidget {
       builder: (_, areTagsEnabled) {
         return BlocBuilder<TasksWorkedOnTodayCubit, TasksWorkedOnTodayState>(
           builder: (_, tasksWorkedOnTodayState) {
-            return BlocBuilder<TagsCubit, TagsState>(
+            return BlocBuilder<FilterByTagsCubit, TagsState>(
               builder: (_, tagsState) {
                 return BlocBuilder<TasksCubit, TasksState>(
                   buildWhen: _haveTagsChanged,

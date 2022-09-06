@@ -7,11 +7,11 @@ import '../../../../../test_utilities/mocks/mock_autentification_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_firebase_auth.dart';
 import '../../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_remote_config_cubit.dart';
-import '../../../../../test_utilities/mocks/mock_tags_cubit.dart';
+import '../../../../../test_utilities/mocks/mock_filter_by_tags_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_tasks_cubit.dart';
 import '../../../../../test_utilities/mocks/mock_tasks_worked_on_today_cubit.dart';
 
-final _tagsCubit = MockTagsCubit();
+final _tagsCubit = MockFilterByTagsCubit();
 final _tasksCubit = MockTasksCubit();
 final _firebaseAuth = MockFirebasAuth();
 final _profileCubit = MockProfileCubit();

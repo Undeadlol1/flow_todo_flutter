@@ -1,4 +1,4 @@
-part of 'tags_cubit.dart';
+part of 'filter_by_tags_cubit.dart';
 
 @unfreezed
 class TagsState with _$TagsState {
