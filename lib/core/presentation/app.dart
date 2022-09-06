@@ -20,7 +20,7 @@ import 'pages/main_page.dart';
 import '../../features/authentification/domain/entities/user.dart';
 import '../../features/authentification/presentation/cubit/authentification_cubit.dart';
 import '../../features/leveling/presentation/widgets/experience_progress_bar.dart';
-import '../../features/tasks/presentation/cubit/tasks_cubit.dart';
+import '../../features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import '../../features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import '../../features/tasks/presentation/pages/task_page.dart';
 import '../../features/tasks/presentation/pages/work_on_task_page.dart';
@@ -39,7 +39,7 @@ class _AppState extends State<App> {
       FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance);
 
   final FilterByTagsCubit tagsCubit = GetIt.I();
-  final TasksCubit tasksCubit = GetIt.I();
+  final TasksToDoCubit tasksCubit = GetIt.I();
   final GoalsCubit goalsCubit = GetIt.I();
   final ProfileCubit profileCubit = GetIt.I();
   final RemoteConfigCubit remoteConfigCubit = GetIt.I();

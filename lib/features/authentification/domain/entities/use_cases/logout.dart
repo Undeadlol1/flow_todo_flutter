@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filter_by_tags_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -12,7 +12,7 @@ import 'package:injectable/injectable.dart';
 @singleton
 class Logout {
   final FilterByTagsCubit tagsCubit;
-  final TasksCubit tasksCubit;
+  final TasksToDoCubit tasksCubit;
   final ProfileCubit profileCubit;
   final FirebaseAuth firebaseAuth;
   final RemoteConfigCubit remoteConfigCubit;

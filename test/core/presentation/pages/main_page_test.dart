@@ -14,7 +14,7 @@ import 'package:flow_todo_flutter_2022/features/streaks/domain/services/streak_d
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filter_by_tags_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/selected_tasks.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_worked_on_today.dart';
@@ -195,7 +195,7 @@ extension _PumpWithScaffold on WidgetTester {
         MultiBlocProvider(
           providers: [
             BlocProvider(create: (_) => _authCubit),
-            BlocProvider(create: (_) => TasksCubit()),
+            BlocProvider(create: (_) => TasksToDoCubit()),
             BlocProvider(create: (_) => _profileCubit),
             BlocProvider<FilterByTagsCubit>(create: (_) => _tagsCubit),
             BlocProvider<RemoteConfigCubit>(create: (_) => _remoteConfigCubit),

@@ -1,13 +1,13 @@
 import 'package:flow_todo_flutter_2022/core/services/use_case_exception_handler.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/get_tasks_to_do_repository.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import 'package:injectable/injectable.dart';
 
 import '../models/task.dart';
 
 @singleton
 class GetTasksToDo {
-  final TasksCubit tasksCubit;
+  final TasksToDoCubit tasksCubit;
   final GetTasksToDoRepository getTasks;
   final UseCaseExceptionHandler exceptionHandler;
   GetTasksToDo({

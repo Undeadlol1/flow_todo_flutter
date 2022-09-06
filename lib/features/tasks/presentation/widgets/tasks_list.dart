@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math';
 
-import '../cubit/tasks_cubit.dart';
+import '../cubit/tasks_to_do_cubit.dart';
 import 'tasks_list_item.dart';
 
 class TasksList extends StatefulWidget {
@@ -30,7 +30,7 @@ class _TasksListState extends State<TasksList> {
     return Builder(
       builder: (cx) {
         final FilterByTagsState tagsState = cx.watch<FilterByTagsCubit>().state;
-        final TasksState tasksState = cx.watch<TasksCubit>().state;
+        final TasksToDoState tasksState = cx.watch<TasksToDoCubit>().state;
         final selectedTasks =
             tasksState.tasks.where((i) => i.isSelected).toList();
         final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
@@ -81,20 +81,20 @@ class _TasksListState extends State<TasksList> {
     required List<Task> filteredTasks,
   }) {
     if (widget.shouldIgnoreTagsFiltering == false && tags.isNotEmpty) {
-      final allTasksWithouthSelectedTasks =
+      final allTasksWithoutSelectedTasks =
           allTasks.where((task) => !focusedOnTasks.contains(task)).toList();
       return _filterTasksByTag(
         tags: tags,
-        tasks: allTasksWithouthSelectedTasks,
+        tasks: allTasksWithoutSelectedTasks,
       );
     }
 
-    final allTasksWitouthFilteredTasks = filteredTasks.isEmpty
+    final allTasksWitoutFilteredTasks = filteredTasks.isEmpty
         ? allTasks
         : allTasks.where((task) => filteredTasks.contains(task)).toList();
 
     final allTasksListWithoutSelectedAndFilteredTasks =
-        allTasksWitouthFilteredTasks
+        allTasksWitoutFilteredTasks
             .where((task) => !focusedOnTasks.contains(task))
             .toList();
     return allTasksListWithoutSelectedAndFilteredTasks;

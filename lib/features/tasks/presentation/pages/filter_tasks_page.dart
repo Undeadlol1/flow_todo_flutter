@@ -1,5 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -43,7 +43,7 @@ class _FilterTasksPageState extends State<FilterTasksPage> {
       isDrawerHidden: true,
       isNumbersAnimationSuspended: false,
       child: SingleChildScrollView(
-        child: BlocBuilder<TasksCubit, TasksState>(
+        child: BlocBuilder<TasksToDoCubit, TasksToDoState>(
           builder: (context, tasksState) {
             return CardView(
               child: Column(

@@ -1,5 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mocktail/mocktail.dart';
@@ -11,11 +11,11 @@ import '../../../../test_utilities/mocks/mock_hydrated_storage.dart';
 class _MockStorage extends Mock implements Storage {}
 
 void main() {
-  late TasksCubit tasksCubit;
+  late TasksToDoCubit tasksCubit;
   late Storage hydratedStorage;
 
   setUp(() async {
-    tasksCubit = await mockHydratedStorage(() => TasksCubit());
+    tasksCubit = await mockHydratedStorage(() => TasksToDoCubit());
 
     hydratedStorage = _MockStorage();
     when(() => hydratedStorage.write(any(), any<dynamic>()))
@@ -23,7 +23,7 @@ void main() {
   });
 
   group('GIVEN TasksCubit', () {
-    blocTest<TasksCubit, TasksState>(
+    blocTest<TasksToDoCubit, TasksToDoState>(
       'WHEN is loaded initially '
       'THEN contains empty tasks list',
       build: () => tasksCubit,
@@ -39,7 +39,7 @@ void main() {
       },
     );
 
-    blocTest<TasksCubit, TasksState>(
+    blocTest<TasksToDoCubit, TasksToDoState>(
       'WHEN updateList is called '
       'THEN contains updated tasks list',
       build: () => tasksCubit,
@@ -56,7 +56,7 @@ void main() {
       },
     );
 
-    blocTest<TasksCubit, TasksState>(
+    blocTest<TasksToDoCubit, TasksToDoState>(
       'WHEN is updateTask is called '
       'THEN updates the task in the list',
       build: () => tasksCubit..updateList([taskFixture, taskFixture2]),
@@ -75,7 +75,7 @@ void main() {
       },
     );
 
-    blocTest<TasksCubit, TasksState>(
+    blocTest<TasksToDoCubit, TasksToDoState>(
       'WHEN removeTask method is called'
       'THEN removes the task from the state',
       build: () => tasksCubit..updateList([taskFixture2, taskFixture]),

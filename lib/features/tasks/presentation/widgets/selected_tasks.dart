@@ -2,7 +2,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -17,7 +17,7 @@ class SelectedTasks extends StatelessWidget {
 
   @override
   build(context) {
-    return BlocBuilder<TasksCubit, TasksState>(
+    return BlocBuilder<TasksToDoCubit, TasksToDoState>(
       builder: (context, tasksState) {
         final tasks = tasksState.tasks.where((i) => i.isSelected).toList();
         final totalExperience = _getTotalExperience(tasks);

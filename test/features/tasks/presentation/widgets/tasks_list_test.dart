@@ -5,7 +5,7 @@ import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filter_by_tags_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list_item.dart';
@@ -71,7 +71,7 @@ void main() {
       'THEN displays nothing',
       (tester) async {
         await mockHydratedStorage(() async {
-          final cubit = TasksCubit()..updateList([]);
+          final cubit = TasksToDoCubit()..updateList([]);
 
           await tester.pumpWithDependencies(
             tasksCubit: cubit,
@@ -88,7 +88,8 @@ void main() {
           (tester) async {
         await mockHydratedStorage(
           () async {
-            final cubit = TasksCubit()..updateList([taskFixture, taskFixture]);
+            final cubit = TasksToDoCubit()
+              ..updateList([taskFixture, taskFixture]);
 
             await tester.pumpWithDependencies(
               tasksCubit: cubit,
@@ -106,11 +107,11 @@ void main() {
 extension on WidgetTester {
   Future<void> pumpWithDependencies({
     required Widget child,
-    required TasksCubit tasksCubit,
+    required TasksToDoCubit tasksCubit,
   }) {
-    if (GetIt.I.isRegistered<TasksCubit>()) {
+    if (GetIt.I.isRegistered<TasksToDoCubit>()) {
       tasksCubit.close();
-      GetIt.I.unregister<TasksCubit>();
+      GetIt.I.unregister<TasksToDoCubit>();
     }
     GetIt.I.registerSingleton(tasksCubit);
 

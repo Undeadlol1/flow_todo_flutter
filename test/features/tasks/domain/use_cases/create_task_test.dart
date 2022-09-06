@@ -4,7 +4,7 @@ import 'package:flow_todo_flutter_2022/features/common/services/unique_id_genera
 import 'package:flow_todo_flutter_2022/features/tasks/data/create_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/create_task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,7 +14,7 @@ import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_firebase_analytics.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
-import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
+import '../../../../test_utilities/mocks/mock_tasks_to_do_cubit.dart';
 import '../../../../test_utilities/mocks/mock_use_case_exception_handler.dart';
 
 class _MockAddPointsToUser extends Mock implements AddPointsToViewer {}
@@ -32,7 +32,7 @@ class _FakeGetTodaysDate extends Fake implements GetTodaysDate {
 }
 
 const _uniqueId = 'unique id 123';
-final _mockTasksCubit = MockTasksCubit();
+final _mockTasksCubit = MockTasksToDoCubit();
 final _mockProfileCubit = MockProfileCubit();
 final _mockAddPointsToUser = _MockAddPointsToUser();
 final _mockFirebaseAnalytics = MockFirebaseAnalytics();
@@ -58,7 +58,7 @@ void main() {
       initialState: profileState,
     );
 
-    final tasksState = TasksState.loaded([]);
+    final tasksState = TasksToDoState.loaded([]);
     whenListen(
       _mockTasksCubit,
       Stream.fromIterable([tasksState]),

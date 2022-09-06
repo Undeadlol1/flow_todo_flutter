@@ -85,7 +85,7 @@ import '../../features/tasks/presentation/cubit/filter_by_tags_cubit.dart'
     as _i11;
 import '../../features/tasks/presentation/cubit/filtered_tasks_cubit.dart'
     as _i12;
-import '../../features/tasks/presentation/cubit/tasks_cubit.dart' as _i29;
+import '../../features/tasks/presentation/cubit/tasks_to_do_cubit.dart' as _i29;
 import '../../features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart'
     as _i30;
 import '../../features/users/data/get_profile_repository.dart' as _i15;
@@ -143,7 +143,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i27.StreakDaysInARowCalculator>(
       () => _i27.StreakDaysInARowCalculator());
   gh.factory<_i28.TaskRewardCalculator>(() => _i28.TaskRewardCalculator());
-  gh.singleton<_i29.TasksCubit>(_i29.TasksCubit());
+  gh.singleton<_i29.TasksToDoCubit>(_i29.TasksToDoCubit());
   gh.singleton<_i30.TasksWorkedOnTodayCubit>(_i30.TasksWorkedOnTodayCubit());
   gh.singleton<_i31.UniqueIdGenerator>(_i31.UniqueIdGenerator());
   gh.lazySingleton<_i32.UpdateGoalRepository>(
@@ -182,7 +182,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       useCaseExceptionHandler: get<_i36.UseCaseExceptionHandler>()));
   gh.singleton<_i46.GetTasksToDo>(_i46.GetTasksToDo(
       getTasks: get<_i16.GetTasksToDoRepository>(),
-      tasksCubit: get<_i29.TasksCubit>(),
+      tasksCubit: get<_i29.TasksToDoCubit>(),
       exceptionHandler: get<_i36.UseCaseExceptionHandler>()));
   gh.singleton<_i47.GetTasksWorkedOnToday>(_i47.GetTasksWorkedOnToday(
       tasksDoneTodayCubit: get<_i30.TasksWorkedOnTodayCubit>(),
@@ -212,7 +212,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       buildContextProvider: get<_i20.BuildContextProvider>()));
   gh.singleton<_i54.Logout>(_i54.Logout(
       tagsCubit: get<_i11.FilterByTagsCubit>(),
-      tasksCubit: get<_i29.TasksCubit>(),
+      tasksCubit: get<_i29.TasksToDoCubit>(),
       profileCubit: get<_i23.ProfileCubit>(),
       firebaseAuth: get<_i55.FirebaseAuth>(),
       remoteConfigCubit: get<_i24.RemoteConfigCubit>(),
@@ -243,18 +243,18 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       tagsCubit: get<_i11.FilterByTagsCubit>(),
       useCaseExceptionHandler: get<_i36.UseCaseExceptionHandler>()));
   gh.factory<_i60.ToggleTaskSelection>(() => _i60.ToggleTaskSelection(
-      tasksCubit: get<_i29.TasksCubit>(),
+      tasksCubit: get<_i29.TasksToDoCubit>(),
       firebaseAnalytics: get<_i50.FirebaseAnalytics>(),
       remoteConfigCubit: get<_i24.RemoteConfigCubit>(),
       updateTaskRepository: get<_i34.UpdateTaskRepository>()));
   gh.singleton<_i61.UpdateTask>(_i61.UpdateTask(
       tagsCubit: get<_i11.FilterByTagsCubit>(),
-      tasksCubit: get<_i29.TasksCubit>(),
+      tasksCubit: get<_i29.TasksToDoCubit>(),
       filteredTasksCubit: get<_i12.FilteredTasksCubit>(),
       updateTaskRepository: get<_i34.UpdateTaskRepository>(),
       useCaseExceptionHandler: get<_i36.UseCaseExceptionHandler>()));
   gh.singleton<_i62.UpdateTaskNote>(_i62.UpdateTaskNote(
-      tasksCubit: get<_i29.TasksCubit>(),
+      tasksCubit: get<_i29.TasksToDoCubit>(),
       updateTaskRepository: get<_i34.UpdateTaskRepository>()));
   gh.factory<_i63.AddPointsToViewer>(() => _i63.AddPointsToViewer(
       profileCubit: get<_i23.ProfileCubit>(),
@@ -270,7 +270,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       uniqueIdGenerator: get<_i31.UniqueIdGenerator>(),
       useCaseExceptionHandler: get<_i36.UseCaseExceptionHandler>()));
   gh.lazySingleton<_i65.CreateTask>(() => _i65.CreateTask(
-      tasksCubit: get<_i29.TasksCubit>(),
+      tasksCubit: get<_i29.TasksToDoCubit>(),
       profileCubit: get<_i23.ProfileCubit>(),
       getTodaysDate: get<_i18.GetTodaysDate>(),
       addPointsToUser: get<_i63.AddPointsToViewer>(),
@@ -279,7 +279,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       createTaskRepository: get<_i8.CreateTaskRepository>(),
       useCaseExceptionHandler: get<_i36.UseCaseExceptionHandler>()));
   gh.singleton<_i66.MakeStepForwardOnTheTask>(_i66.MakeStepForwardOnTheTask(
-      tasksCubit: get<_i29.TasksCubit>(),
+      tasksCubit: get<_i29.TasksToDoCubit>(),
       updateTask: get<_i34.UpdateTaskRepository>(),
       profileCubit: get<_i23.ProfileCubit>(),
       goToMainPage: get<_i19.GoToMainPage>(),
@@ -296,7 +296,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       useCaseExceptionHandler: get<_i36.UseCaseExceptionHandler>(),
       nextRepetitionCalculator: get<_i67.NextRepetitionCalculator>()));
   gh.singleton<_i68.RejectTask>(_i68.RejectTask(
-      tasksCubit: get<_i29.TasksCubit>(),
+      tasksCubit: get<_i29.TasksToDoCubit>(),
       goToMainPage: get<_i19.GoToMainPage>(),
       goToTaskPage: get<_i49.GoToTaskPage>(),
       snackbarService: get<_i25.SnackbarService>(),

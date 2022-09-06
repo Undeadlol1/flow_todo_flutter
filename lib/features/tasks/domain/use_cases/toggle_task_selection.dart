@@ -3,12 +3,12 @@ import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cu
 import 'package:injectable/injectable.dart';
 
 import '../../data/update_task_repository.dart';
-import '../../presentation/cubit/tasks_cubit.dart';
+import '../../presentation/cubit/tasks_to_do_cubit.dart';
 import '../models/task.dart';
 
 @injectable
 class ToggleTaskSelection {
-  final TasksCubit tasksCubit;
+  final TasksToDoCubit tasksCubit;
   final FirebaseAnalytics firebaseAnalytics;
   final RemoteConfigCubit remoteConfigCubit;
   final UpdateTaskRepository updateTaskRepository;

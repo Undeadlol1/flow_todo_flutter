@@ -1,6 +1,6 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filtered_tasks_cubit.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
@@ -29,7 +29,7 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        final activeTasks = context.watch<TasksCubit>().state.tasks;
+        final activeTasks = context.watch<TasksToDoCubit>().state.tasks;
 
         return Focus(
           onFocusChange: (hasFocus) {

@@ -2,7 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flow_todo_flutter_2022/features/common/domain/use_cases/go_to_main_page.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/delete_task_repository.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/use_cases/add_points_to_viewer.dart';
 import 'package:injectable/injectable.dart';
 
@@ -11,7 +11,7 @@ import 'go_to_task_page.dart';
 
 @singleton
 class RejectTask {
-  final TasksCubit tasksCubit;
+  final TasksToDoCubit tasksCubit;
   final GoToMainPage goToMainPage;
   final GoToTaskPage goToTaskPage;
   final SnackbarService snackbarService;

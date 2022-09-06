@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'tasks_cubit.dart';
+part of 'tasks_to_do_cubit.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

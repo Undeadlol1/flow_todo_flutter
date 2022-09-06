@@ -21,12 +21,12 @@ import '../../../spaced_repetition/domain/entities/confidence.dart';
 import '../../../spaced_repetition/domain/services/next_repetition_calculator.dart';
 import '../../../users/domain/use_cases/add_points_to_viewer.dart';
 import '../../data/update_task_repository.dart';
-import '../../presentation/cubit/tasks_cubit.dart';
+import '../../presentation/cubit/tasks_to_do_cubit.dart';
 import '../models/task.dart';
 
 @singleton
 class MakeStepForwardOnTheTask {
-  final TasksCubit tasksCubit;
+  final TasksToDoCubit tasksCubit;
   final ProfileCubit profileCubit;
   final GoToMainPage goToMainPage;
   final GoToTaskPage goToTaskPage;

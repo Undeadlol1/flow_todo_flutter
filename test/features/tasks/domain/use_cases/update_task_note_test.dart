@@ -1,15 +1,15 @@
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/update_task_note.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture_2.dart';
-import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
+import '../../../../test_utilities/mocks/mock_tasks_to_do_cubit.dart';
 import '../../../../test_utilities/mocks/mock_update_task_repository.dart';
 
 void main() {
-  final tasksCubit = MockTasksCubit();
+  final tasksCubit = MockTasksToDoCubit();
   final mockUpdateTaskRepository = MockUpdateTaskRepository();
 
   const updatedNoteText = 'A new note to be inserted to task';
@@ -28,7 +28,7 @@ void main() {
 
   setUp(() {
     when(() => tasksCubit.state).thenReturn(
-      TasksState.loaded([taskFixture, taskFixture2]),
+      TasksToDoState.loaded([taskFixture, taskFixture2]),
     );
     when(typicallCubitCall).thenReturn(null);
     when(typicallRepositoryCall).thenAnswer((_) async {});

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-TasksToDoState _$TasksStateFromJson(Map<String, dynamic> json) {
+TasksToDoState _$TasksToDoStateFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
     case 'loading':
       return _loading.fromJson(json);
@@ -22,13 +22,13 @@ TasksToDoState _$TasksStateFromJson(Map<String, dynamic> json) {
       return _loaded.fromJson(json);
 
     default:
-      throw CheckedFromJsonException(json, 'runtimeType', 'TasksState',
+      throw CheckedFromJsonException(json, 'runtimeType', 'TasksToDoState',
           'Invalid union type "${json['runtimeType']}"!');
   }
 }
 
 /// @nodoc
-mixin _$TasksState {
+mixin _$TasksToDoState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
@@ -71,15 +71,16 @@ mixin _$TasksState {
 }
 
 /// @nodoc
-abstract class $TasksStateCopyWith<$Res> {
-  factory $TasksStateCopyWith(
+abstract class $TasksToDoStateCopyWith<$Res> {
+  factory $TasksToDoStateCopyWith(
           TasksToDoState value, $Res Function(TasksToDoState) then) =
-      _$TasksStateCopyWithImpl<$Res>;
+      _$TasksToDoStateCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$TasksStateCopyWithImpl<$Res> implements $TasksStateCopyWith<$Res> {
-  _$TasksStateCopyWithImpl(this._value, this._then);
+class _$TasksToDoStateCopyWithImpl<$Res>
+    implements $TasksToDoStateCopyWith<$Res> {
+  _$TasksToDoStateCopyWithImpl(this._value, this._then);
 
   final TasksToDoState _value;
   // ignore: unused_field
@@ -94,7 +95,7 @@ abstract class _$$_loadingCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_loadingCopyWithImpl<$Res> extends _$TasksStateCopyWithImpl<$Res>
+class __$$_loadingCopyWithImpl<$Res> extends _$TasksToDoStateCopyWithImpl<$Res>
     implements _$$_loadingCopyWith<$Res> {
   __$$_loadingCopyWithImpl(_$_loading _value, $Res Function(_$_loading) _then)
       : super(_value, (v) => _then(v as _$_loading));
@@ -118,7 +119,7 @@ class _$_loading extends _loading {
 
   @override
   String toString() {
-    return 'TasksState.loading()';
+    return 'TasksToDoState.loading()';
   }
 
   @override
@@ -206,7 +207,7 @@ abstract class _$$_loadedCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_loadedCopyWithImpl<$Res> extends _$TasksStateCopyWithImpl<$Res>
+class __$$_loadedCopyWithImpl<$Res> extends _$TasksToDoStateCopyWithImpl<$Res>
     implements _$$_loadedCopyWith<$Res> {
   __$$_loadedCopyWithImpl(_$_loaded _value, $Res Function(_$_loaded) _then)
       : super(_value, (v) => _then(v as _$_loaded));
@@ -245,7 +246,7 @@ class _$_loaded extends _loaded {
 
   @override
   String toString() {
-    return 'TasksState.loaded(tasks: $tasks)';
+    return 'TasksToDoState.loaded(tasks: $tasks)';
   }
 
   @JsonKey(ignore: true)

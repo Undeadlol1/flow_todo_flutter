@@ -22,7 +22,7 @@ import '../../../../test_utilities/mocks/mock_go_to_task_page.dart';
 import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
 import '../../../../test_utilities/mocks/mock_snackbar_service.dart';
 import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
-import '../../../../test_utilities/mocks/mock_tasks_cubit.dart';
+import '../../../../test_utilities/mocks/mock_tasks_to_do_cubit.dart';
 import '../../../../test_utilities/mocks/mock_tasks_worked_on_today_cubit.dart';
 import '../../../../test_utilities/mocks/mock_upsert_profile_repository.dart';
 import '../../../../test_utilities/mocks/mock_update_task_repository.dart';
@@ -41,7 +41,7 @@ class _MockNextRepetitionCalculator extends Mock
 class _MockTasksWorkedOnTodayCubit extends Mock
     implements TasksWorkedOnTodayCubit {}
 
-final _mockTasksCubit = MockTasksCubit();
+final _mockTasksCubit = MockTasksToDoCubit();
 final _mockProfileCubit = MockProfileCubit();
 final _mockGoToMainPage = MockGoToMainPage();
 final _mockGoToTaskPage = MockGoToTaskPage();

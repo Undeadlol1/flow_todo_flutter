@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/remote_config/cubit/remote_config_cubit.dart';
-import '../cubit/tasks_cubit.dart';
+import '../cubit/tasks_to_do_cubit.dart';
 
 class SuggestedTagsList extends StatefulWidget {
   final String title;
@@ -26,7 +26,7 @@ class _SuggestedTagsListState extends State<SuggestedTagsList> {
     return BlocSelector<RemoteConfigCubit, RemoteConfigState, bool>(
       selector: (state) => state.areTagsEnabled,
       builder: (context, areTagsEnabled) {
-        return BlocBuilder<TasksCubit, TasksState>(
+        return BlocBuilder<TasksToDoCubit, TasksToDoState>(
           buildWhen: _haveTagsChanged,
           builder: (context, tasksState) {
             final tags = _getTagsUniqueTags(tasksState);
@@ -75,7 +75,7 @@ class _SuggestedTagsListState extends State<SuggestedTagsList> {
     );
   }
 
-  Set<String> _getTagsUniqueTags(TasksState tasksState) {
+  Set<String> _getTagsUniqueTags(TasksToDoState tasksState) {
     final allTags = tasksState.tasks.map((e) => e.tags);
     final uniqueTags = allTags
         .expand((list) => list.map((e) => e))
@@ -86,7 +86,7 @@ class _SuggestedTagsListState extends State<SuggestedTagsList> {
     return uniqueTags.toSet();
   }
 
-  bool _haveTagsChanged(TasksState previous, TasksState current) {
+  bool _haveTagsChanged(TasksToDoState previous, TasksToDoState current) {
     return setEquals(_getTagsUniqueTags(previous), _getTagsUniqueTags(current));
   }
 }

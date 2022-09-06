@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../cubit/tasks_cubit.dart';
+import '../cubit/tasks_to_do_cubit.dart';
 
 class TagsList extends StatelessWidget {
   const TagsList({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class TagsList extends StatelessWidget {
           builder: (_, tasksWorkedOnTodayState) {
             return BlocBuilder<FilterByTagsCubit, FilterByTagsState>(
               builder: (_, tagsState) {
-                return BlocBuilder<TasksCubit, TasksState>(
+                return BlocBuilder<TasksToDoCubit, TasksToDoState>(
                   buildWhen: _haveTagsChanged,
                   builder: (context, tasksState) {
                     final tasks = tasksState.tasks;
@@ -81,7 +81,7 @@ class TagsList extends StatelessWidget {
     );
   }
 
-  Set<String> _getTags(TasksState tasksState) {
+  Set<String> _getTags(TasksToDoState tasksState) {
     final allTags = tasksState.tasks.map((e) => e.tags);
     final uniqueTags = allTags
         .expand((list) => list.map((e) => e))
@@ -92,7 +92,7 @@ class TagsList extends StatelessWidget {
     return uniqueTags.toSet();
   }
 
-  bool _haveTagsChanged(TasksState previous, TasksState current) {
+  bool _haveTagsChanged(TasksToDoState previous, TasksToDoState current) {
     return !setEquals(_getTags(previous), _getTags(current));
   }
 }

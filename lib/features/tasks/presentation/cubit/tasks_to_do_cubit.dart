@@ -5,20 +5,21 @@ import 'package:replay_bloc/replay_bloc.dart';
 
 import '../../domain/models/task.dart';
 
-part 'tasks_state.dart';
-part 'tasks_cubit.g.dart';
-part 'tasks_cubit.freezed.dart';
+part 'tasks_to_do_state.dart';
+part 'tasks_to_do_cubit.g.dart';
+part 'tasks_to_do_cubit.freezed.dart';
 
 @singleton
-class TasksCubit extends HydratedCubit<TasksState> with ReplayCubitMixin {
-  TasksCubit() : super(TasksState.loading());
+class TasksToDoCubit extends HydratedCubit<TasksToDoState>
+    with ReplayCubitMixin {
+  TasksToDoCubit() : super(TasksToDoState.loading());
 
   void updateList(List<Task> tasks) {
-    emit(TasksState.loaded(tasks));
+    emit(TasksToDoState.loaded(tasks));
   }
 
   void setLoading() {
-    emit(TasksState.loading());
+    emit(TasksToDoState.loading());
   }
 
   void removeTask(Task task) {
@@ -33,7 +34,8 @@ class TasksCubit extends HydratedCubit<TasksState> with ReplayCubitMixin {
   }
 
   @override
-  Map<String, dynamic> toJson(TasksState state) => state.toJson();
+  Map<String, dynamic> toJson(TasksToDoState state) => state.toJson();
   @override
-  TasksState fromJson(Map<String, dynamic> json) => TasksState.fromJson(json);
+  TasksToDoState fromJson(Map<String, dynamic> json) =>
+      TasksToDoState.fromJson(json);
 }
