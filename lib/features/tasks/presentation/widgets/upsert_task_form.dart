@@ -119,15 +119,8 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
                           padding: const EdgeInsets.only(top: 10, bottom: 5),
                           child: StaticTagsList(tags: tags),
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Suggested tags:',
-                            style: Theme.of(context).textTheme.caption,
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
                         SuggestedTagsList(
+                          title: "Suggested tags:",
                           onChange: (tag) {
                             final prefixedtag = ' #$tag';
 
