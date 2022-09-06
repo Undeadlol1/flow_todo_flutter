@@ -20,13 +20,14 @@ mixin _$TagsState {
   set tags(Set<String> value) => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $TagsStateCopyWith<TagsState> get copyWith =>
+  $TagsStateCopyWith<FilterByTagsState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $TagsStateCopyWith<$Res> {
-  factory $TagsStateCopyWith(TagsState value, $Res Function(TagsState) then) =
+  factory $TagsStateCopyWith(
+          FilterByTagsState value, $Res Function(FilterByTagsState) then) =
       _$TagsStateCopyWithImpl<$Res>;
   $Res call({Set<String> tags});
 }
@@ -35,9 +36,9 @@ abstract class $TagsStateCopyWith<$Res> {
 class _$TagsStateCopyWithImpl<$Res> implements $TagsStateCopyWith<$Res> {
   _$TagsStateCopyWithImpl(this._value, this._then);
 
-  final TagsState _value;
+  final FilterByTagsState _value;
   // ignore: unused_field
-  final $Res Function(TagsState) _then;
+  final $Res Function(FilterByTagsState) _then;
 
   @override
   $Res call({
@@ -101,7 +102,7 @@ class _$_State implements _State {
       __$$_StateCopyWithImpl<_$_State>(this, _$identity);
 }
 
-abstract class _State implements TagsState {
+abstract class _State implements FilterByTagsState {
   factory _State(Set<String> tags) = _$_State;
 
   @override

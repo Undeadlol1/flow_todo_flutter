@@ -162,8 +162,8 @@ void _setupRemoteConfigMock() {
 void _setupTagsCubitMock() {
   whenListen(
     _tagsCubit,
-    Stream.value(TagsState({})),
-    initialState: TagsState({}),
+    Stream.value(FilterByTagsState({})),
+    initialState: FilterByTagsState({}),
   );
   when(() => _tagsCubit.close()).thenAnswer((_) async {});
 }

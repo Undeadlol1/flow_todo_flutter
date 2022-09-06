@@ -6,7 +6,7 @@ import '../mock_filter_by_tags_cubit.dart';
 
 FilterByTagsCubit setupFilterByTagsCubitMock() {
   final cubit = MockFilterByTagsCubit();
-  final state = TagsState({});
+  final state = FilterByTagsState({});
 
   whenListen(
     cubit,

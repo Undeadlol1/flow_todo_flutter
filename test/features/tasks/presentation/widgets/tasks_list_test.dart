@@ -41,8 +41,8 @@ void main() {
 
     whenListen(
       _mockTagsCubit,
-      Stream.value(TagsState({})),
-      initialState: TagsState({}),
+      Stream.value(FilterByTagsState({})),
+      initialState: FilterByTagsState({}),
     );
 
     whenListen(

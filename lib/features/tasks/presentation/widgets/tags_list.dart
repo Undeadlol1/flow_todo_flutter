@@ -21,7 +21,7 @@ class TagsList extends StatelessWidget {
       builder: (_, areTagsEnabled) {
         return BlocBuilder<TasksWorkedOnTodayCubit, TasksWorkedOnTodayState>(
           builder: (_, tasksWorkedOnTodayState) {
-            return BlocBuilder<FilterByTagsCubit, TagsState>(
+            return BlocBuilder<FilterByTagsCubit, FilterByTagsState>(
               builder: (_, tagsState) {
                 return BlocBuilder<TasksCubit, TasksState>(
                   buildWhen: _haveTagsChanged,

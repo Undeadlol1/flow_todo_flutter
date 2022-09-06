@@ -29,7 +29,7 @@ class _TasksListState extends State<TasksList> {
   build(_) {
     return Builder(
       builder: (cx) {
-        final TagsState tagsState = cx.watch<FilterByTagsCubit>().state;
+        final FilterByTagsState tagsState = cx.watch<FilterByTagsCubit>().state;
         final TasksState tasksState = cx.watch<TasksCubit>().state;
         final selectedTasks =
             tasksState.tasks.where((i) => i.isSelected).toList();
