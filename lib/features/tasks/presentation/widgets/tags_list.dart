@@ -1,15 +1,18 @@
 import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_fade_in_on_visibility.dart';
+import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/toggle_tags_selection.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tags_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../cubit/tasks_cubit.dart';
 
 class TagsList extends StatelessWidget {
   const TagsList({Key? key}) : super(key: key);
+  static final ToggleTagsSelection _toggleTagsSelection = GetIt.I();
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +55,7 @@ class TagsList extends StatelessWidget {
                                     : null,
                                 visualDensity: VisualDensity.compact,
                                 selected: tagsState.tags.contains(tag),
-                                // TODO extract into a use case
-                                onSelected: (_) {
-                                  tagsState.tags.contains(tag)
-                                      ? tagsState.tags.remove(tag)
-                                      : tagsState.tags.add(tag);
-                                  BlocProvider.of<TagsCubit>(
-                                    context,
-                                    listen: false,
-                                  ).update(tagsState.tags);
-                                },
+                                onSelected: (_) => _toggleTagsSelection(tag),
                                 label: Text(tag),
                               ),
                             );
