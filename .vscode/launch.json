@@ -5,9 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "flow_todo_flutter_2022",
+            "name": "flow_todo_flutter_2022 (debug mode)",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "flutterMode": "debug"
         },
         {
             "name": "flow_todo_flutter_2022 (profile mode)",
