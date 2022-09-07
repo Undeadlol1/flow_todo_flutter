@@ -36,7 +36,6 @@ class _GoalsPageState extends State<GoalsPage> {
   Widget build(BuildContext context) {
     return PageLayout(
       isAppBarHidden: false,
-      isDrawerHidden: true,
       isNumbersAnimationSuspended: true,
       floatingActionButton: CreateGoalFAB(),
       child: Column(

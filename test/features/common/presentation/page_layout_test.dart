@@ -63,7 +63,6 @@ Future<void> _pumpWidget({
         ],
         child: MaterialApp(
           home: PageLayout(
-            isDrawerHidden: isDrawerHidden,
             child: Container(),
           ),
         ),

@@ -32,7 +32,6 @@ class MainPage extends StatelessWidget {
         final isProfileLoaded = profileState is ProfileLoaded;
         return PageLayout(
           isAppBarHidden: true,
-          isDrawerHidden: true,
           isNumbersAnimationSuspended: false,
           floatingActionButton: isProfileLoaded ? const CreateTaskFAB() : null,
           child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
@@ -63,7 +62,7 @@ class MainPage extends StatelessWidget {
                     flex: 3,
                     child: SingleChildScrollView(
                       primary: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
+                      physics: const PageScrollPhysics(),
                       child: Column(
                         children: [
                           const SelectedTasks(),

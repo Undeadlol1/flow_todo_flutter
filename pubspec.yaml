@@ -23,7 +23,6 @@ dependencies:
   freezed_annotation: ^2.0.3
   liquid_progress_indicator: ^0.4.0
   extended_image: ^6.2.1
-  water_drop_nav_bar: ^2.2.0+3
   path_provider: ^2.0.11
   flex_color_scheme: ^5.0.1
   percent_indicator: ^4.2.2

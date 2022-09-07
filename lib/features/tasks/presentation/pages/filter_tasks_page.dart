@@ -40,7 +40,6 @@ class _FilterTasksPageState extends State<FilterTasksPage> {
   build(context) {
     return PageLayout(
       isAppBarHidden: false,
-      isDrawerHidden: true,
       isNumbersAnimationSuspended: false,
       child: SingleChildScrollView(
         child: BlocBuilder<TasksToDoCubit, TasksToDoState>(

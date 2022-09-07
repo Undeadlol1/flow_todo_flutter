@@ -1064,13 +1064,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  water_drop_nav_bar:
-    dependency: "direct main"
-    description:
-      name: water_drop_nav_bar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.0+3"
   web_socket_channel:
     dependency: transitive
     description:
