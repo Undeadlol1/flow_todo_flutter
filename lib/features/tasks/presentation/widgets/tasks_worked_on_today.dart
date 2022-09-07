@@ -17,7 +17,7 @@ class TasksWorkedOnToday extends StatefulWidget {
 }
 
 class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   bool _isAnimationListenerAdded = false;
   bool _hasFirstAnimationForcefullyRan = false;
   double previousProgressValue = 0;
