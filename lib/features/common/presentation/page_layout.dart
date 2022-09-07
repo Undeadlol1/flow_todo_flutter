@@ -145,7 +145,6 @@ class _BottomNavigation extends StatelessWidget {
   }
 }
 
-// TODO remove drawer
 class _Drawer extends StatelessWidget {
   const _Drawer({Key? key}) : super(key: key);
 

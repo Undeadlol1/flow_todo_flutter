@@ -1,7 +1,6 @@
 import 'package:flow_todo_flutter_2022/features/streaks/domain/models/daily_streak.dart';
 import 'package:flow_todo_flutter_2022/features/users/domain/entities/profile_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 
 part 'profile.freezed.dart';
 part 'profile.g.dart';

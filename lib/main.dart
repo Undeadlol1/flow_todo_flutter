@@ -1,21 +1,21 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/foundation.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
-import 'firebase_options.dart';
-import 'core/presentation/app.dart';
-import 'core/DI/configure_manual_di.dart';
 import 'core/DI/configure_automatic_di.dart';
+import 'core/DI/configure_manual_di.dart';
+import 'core/presentation/app.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ void main() async {
 
       _configureDI();
 
-      _confiigureRemoteConfig();
+      _configureRemoteConfig();
 
       runApp(const App());
     },
@@ -40,7 +40,7 @@ void main() async {
   );
 }
 
-Future<void> _confiigureRemoteConfig() async {
+Future<void> _configureRemoteConfig() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
 
   await remoteConfig.setConfigSettings(

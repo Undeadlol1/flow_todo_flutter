@@ -18,7 +18,7 @@ final _mockRemoteConfigCubit = MockRemoteConfigCubit();
 final _updateTaskRepository = MockUpdateTaskRepository();
 
 void main() {
-  ToggleTaskSelection _getUseCase() {
+  ToggleTaskSelection getUseCase() {
     return ToggleTaskSelection(
       tasksCubit: _tasksCubit,
       firebaseAnalytics: _mockFirebaseAnalytics,
@@ -46,7 +46,7 @@ void main() {
     test('WHEN there are no selected tasks THEN updates the task', () async {
       when(() => _tasksCubit.state).thenReturn(TasksToDoState.loaded([]));
 
-      await _getUseCase()(taskFixture);
+      await getUseCase()(taskFixture);
 
       final updatedTask = taskFixture.copyWith(isSelected: true);
       _verifyTaskUpdates(updatedTask);
@@ -57,7 +57,7 @@ void main() {
       when(() => _tasksCubit.state)
           .thenReturn(TasksToDoState.loaded([selectedTask]));
 
-      await _getUseCase()(selectedTask);
+      await getUseCase()(selectedTask);
 
       _verifyTaskUpdates(selectedTask.copyWith(isSelected: false));
     });
@@ -74,7 +74,7 @@ void main() {
           TasksToDoState.loaded([taskFixture.copyWith(isSelected: true)]),
         );
 
-        await _getUseCase()(taskFixture2);
+        await getUseCase()(taskFixture2);
 
         verifyNever(() => _tasksCubit.updateTask(any()));
         verifyNever(() => _updateTaskRepository.call(any()));
@@ -93,7 +93,7 @@ void main() {
           TasksToDoState.loaded([taskFixture.copyWith(isSelected: true)]),
         );
 
-        await _getUseCase()(taskFixture2);
+        await getUseCase()(taskFixture2);
 
         _verifyTaskUpdates(taskFixture2.copyWith(isSelected: true));
       },

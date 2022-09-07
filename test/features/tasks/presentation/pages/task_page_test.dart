@@ -194,7 +194,8 @@ extension on WidgetTester {
           BlocProvider(create: (_) => AuthentificationCubit()),
           BlocProvider<ProfileCubit>(create: (_) => _mockProfileCubit),
           BlocProvider<TasksToDoCubit>(
-              create: (_) => setupTasksToDoCubitMock()),
+            create: (_) => setupTasksToDoCubitMock(),
+          ),
           BlocProvider<RemoteConfigCubit>(
             create: (_) => _mockRemoteConfigCubit,
           ),
