@@ -42,6 +42,10 @@ class _TasksListState extends State<TasksList> {
           filteredTasks: filteredTasks,
           focusedOnTasks: selectedTasks,
         );
+        final bool doesTasksListSeparatorHasRandomColors = cx.select(
+          (RemoteConfigCubit cubit) =>
+              cubit.state.isTasksListSeparatorColorRandom,
+        );
 
         return tasksState.map(
           loading: (_) => const _LoadingIndicator(),
@@ -60,7 +64,9 @@ class _TasksListState extends State<TasksList> {
                 addAutomaticKeepAlives: true,
                 itemCount: tasksToDisplay.length,
                 physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (_, __) => const _Separator(),
+                separatorBuilder: (_, __) => _Separator(
+                  isRandomizedColor: doesTasksListSeparatorHasRandomColors,
+                ),
                 itemBuilder: (_, index) {
                   return TasksListItem(
                     task: tasksToDisplay[index],
@@ -130,26 +136,25 @@ class _TasksListState extends State<TasksList> {
 }
 
 class _Separator extends StatelessWidget {
-  const _Separator({Key? key}) : super(key: key);
+  final bool isRandomizedColor;
+  const _Separator({
+    Key? key,
+    required this.isRandomizedColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<RemoteConfigCubit, RemoteConfigState, bool>(
-      selector: (state) => state.isTasksListSeparatorColorRandom,
-      builder: (context, doesTasksListSeparatorHasRandomColors) {
-        return doesTasksListSeparatorHasRandomColors
-            ? Container(
-                color: Color(
-                  (Random().nextDouble() * 0xFFFFFF).toInt(),
-                ).withOpacity(1.0),
-                child: const SizedBox(height: 5),
-              )
-            : const Divider(
-                height: 5,
-                thickness: 2,
-              );
-      },
-    );
+    return isRandomizedColor
+        ? Container(
+            color: Color(
+              (Random().nextDouble() * 0xFFFFFF).toInt(),
+            ).withOpacity(1.0),
+            child: const SizedBox(height: 5),
+          )
+        : const Divider(
+            height: 5,
+            thickness: 2,
+          );
   }
 }
 
