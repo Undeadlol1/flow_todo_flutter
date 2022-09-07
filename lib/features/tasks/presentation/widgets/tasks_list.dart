@@ -56,8 +56,8 @@ class _TasksListState extends State<TasksList> {
               ListView.separated(
                 primary: false,
                 shrinkWrap: true,
-                addRepaintBoundaries: true,
-                addAutomaticKeepAlives: false,
+                addRepaintBoundaries: false,
+                addAutomaticKeepAlives: true,
                 itemCount: tasksToDisplay.length,
                 physics: const NeverScrollableScrollPhysics(),
                 separatorBuilder: (_, __) => const _Separator(),
