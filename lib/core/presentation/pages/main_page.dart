@@ -62,7 +62,7 @@ class MainPage extends StatelessWidget {
                     flex: 3,
                     child: SingleChildScrollView(
                       primary: true,
-                      physics: const PageScrollPhysics(),
+                      physics: const RangeMaintainingScrollPhysics(),
                       child: Column(
                         children: [
                           const SelectedTasks(),
