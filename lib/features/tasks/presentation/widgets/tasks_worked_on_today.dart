@@ -53,18 +53,19 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
   Widget build(context) {
     return Builder(
       builder: (context) {
-        final ProfileState profileState = context.watch<ProfileCubit>().state;
+        final DailyStreak streak = context
+            .select((ProfileCubit cubit) => cubit.state.profile.dailyStreak);
         return BlocConsumer<TasksWorkedOnTodayCubit, TasksWorkedOnTodayState>(
           buildWhen: (previous, current) => previous.tasks != current.tasks,
           listener: (context, tasksDoneState) {
             _runProgressAnimation(
               context: context,
               tasksDoneTodayState: tasksDoneState,
-              dailyStreak: profileState.profile.dailyStreak,
+              dailyStreak: streak,
             );
             previousProgressValue = _getProgressValue(
               tasksDoneAmount: tasksDoneState.tasks.length,
-              requiredTasksPerDay: profileState.profile.dailyStreak.perDay,
+              requiredTasksPerDay: streak.perDay,
             );
           },
           builder: (context, tasksDoneState) {
@@ -72,7 +73,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
               _runProgressAnimation(
                 context: context,
                 tasksDoneTodayState: tasksDoneState,
-                dailyStreak: profileState.profile.dailyStreak,
+                dailyStreak: streak,
               );
             }
 

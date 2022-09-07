@@ -29,15 +29,17 @@ class _TasksListState extends State<TasksList> {
   build(_) {
     return Builder(
       builder: (cx) {
-        final FilterByTagsState tagsState = cx.watch<FilterByTagsCubit>().state;
+        final Set<String> tags =
+            cx.select((FilterByTagsCubit cubit) => cubit.state.tags);
         final TasksToDoState tasksState = cx.watch<TasksToDoCubit>().state;
         final selectedTasks =
             tasksState.tasks.where((i) => i.isSelected).toList();
-        final filteredTasks = cx.watch<FilteredTasksCubit>().state.tasks;
+        final filteredTasks =
+            cx.select((FilteredTasksCubit cubit) => cubit.state.tasks);
         final List<Task> tasksToDisplay = _getTasksToDisplay(
+          tags: tags,
           allTasks: tasksState.tasks,
           filteredTasks: filteredTasks,
-          tags: tagsState.tags.toList(),
           focusedOnTasks: selectedTasks,
         );
 
@@ -75,7 +77,7 @@ class _TasksListState extends State<TasksList> {
   }
 
   List<Task> _getTasksToDisplay({
-    required List<String> tags,
+    required Set<String> tags,
     required List<Task> allTasks,
     required List<Task> focusedOnTasks,
     required List<Task> filteredTasks,
@@ -101,7 +103,7 @@ class _TasksListState extends State<TasksList> {
   }
 
   List<Task> _filterTasksByTag({
-    required List<String> tags,
+    required Set<String> tags,
     required List<Task> tasks,
   }) {
     final List<Task> filteredTasks = [];

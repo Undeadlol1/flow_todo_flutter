@@ -130,64 +130,66 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: _runAnimation,
-      builder: (BuildContext context, profileState) {
-        final authState = context.watch<AuthentificationCubit>().state;
+      builder: (context, profileState) {
+        return BlocBuilder<AuthentificationCubit, AuthentificationState>(
+          builder: (context, authState) {
+            if (profileState is! ProfileLoaded || authState is! Authenticated) {
+              return const SizedBox();
+            }
 
-        if (profileState is! ProfileLoaded || authState is! Authenticated) {
-          return const SizedBox();
-        }
+            if (_hasFirstAnimationForcefullyRan == false) {
+              _runAnimation(context, profileState);
+            }
 
-        if (_hasFirstAnimationForcefullyRan == false) {
-          _runAnimation(context, profileState);
-        }
+            _previousValueOfProgressCircle = _getLevelProgress(profileState);
 
-        _previousValueOfProgressCircle = _getLevelProgress(profileState);
+            final lineWidth = widget.radius / 10;
+            final int preferredImageSize = (widget.radius * 6).toInt();
 
-        final lineWidth = widget.radius / 10;
-        final int preferredImageSize = (widget.radius * 6).toInt();
-
-        return AnimatedBuilder(
-          animation: _animation,
-          builder: (context, child) {
-            return CircularPercentIndicator(
-              lineWidth: lineWidth,
-              percent: _animation.value,
-              radius: widget.radius + lineWidth,
-              progressColor: Theme.of(context).colorScheme.primary,
-              center: child,
+            return AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return CircularPercentIndicator(
+                  lineWidth: lineWidth,
+                  percent: _animation.value,
+                  radius: widget.radius + lineWidth,
+                  progressColor: Theme.of(context).colorScheme.primary,
+                  center: child,
+                );
+              },
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    radius: widget.radius,
+                    foregroundImage: authState.user.avatar == null
+                        ? null
+                        : ResizeImage(
+                            ExtendedNetworkImageProvider(
+                              authState.user.avatar!,
+                              printError: true,
+                              scale: 1,
+                              cache: true,
+                              cacheMaxAge: const Duration(days: 4),
+                            ),
+                            width: preferredImageSize,
+                            height: preferredImageSize,
+                          ),
+                    // child: CircularProgressIndicator(value: widgetProgress),
+                  ),
+                  if (widget.radius >= 60)
+                    Positioned(
+                      width: widget.radius,
+                      height: widget.radius,
+                      right: widget.radius / 2,
+                      bottom: widget.radius / 2,
+                      child: const Center(
+                        child: FloatingExperiencePointsAnimation(),
+                      ),
+                    ),
+                ],
+              ),
             );
           },
-          child: Stack(
-            children: [
-              CircleAvatar(
-                radius: widget.radius,
-                foregroundImage: authState.user.avatar == null
-                    ? null
-                    : ResizeImage(
-                        ExtendedNetworkImageProvider(
-                          authState.user.avatar!,
-                          printError: true,
-                          scale: 1,
-                          cache: true,
-                          cacheMaxAge: const Duration(days: 4),
-                        ),
-                        width: preferredImageSize,
-                        height: preferredImageSize,
-                      ),
-                // child: CircularProgressIndicator(value: widgetProgress),
-              ),
-              if (widget.radius >= 60)
-                Positioned(
-                  width: widget.radius,
-                  height: widget.radius,
-                  right: widget.radius / 2,
-                  bottom: widget.radius / 2,
-                  child: const Center(
-                    child: FloatingExperiencePointsAnimation(),
-                  ),
-                ),
-            ],
-          ),
         );
       },
     );

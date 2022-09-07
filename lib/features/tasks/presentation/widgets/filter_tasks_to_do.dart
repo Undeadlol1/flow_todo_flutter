@@ -29,7 +29,8 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        final activeTasks = context.watch<TasksToDoCubit>().state.tasks;
+        final activeTasks =
+            context.select((TasksToDoCubit cubit) => cubit.state.tasks);
 
         return Focus(
           onFocusChange: (hasFocus) {

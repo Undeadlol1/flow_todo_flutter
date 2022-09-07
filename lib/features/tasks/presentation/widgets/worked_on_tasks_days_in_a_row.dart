@@ -16,10 +16,8 @@ class WorkedOnTasksDaysInARow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final ProfileState profileState = context.watch<ProfileCubit>().state;
-
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (context, profileState) {
         final dailyStreak = profileState.profile.dailyStreak;
         final int daysInARow = dailyStreak.isInterrupted()
             ? 0

@@ -15,9 +15,8 @@ class ActiveQuest extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return Builder(
-      builder: (context) {
-        final questsState = context.watch<ActiveQuestsCubit>().state;
+    return BlocBuilder<ActiveQuestsCubit, ActiveQuestsState>(
+      builder: (context, questsState) {
         return questsState.maybeMap(
           orElse: _getLoadingWidget,
           loaded: (_) {

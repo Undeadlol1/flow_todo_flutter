@@ -11,11 +11,12 @@ class WinsTodayText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        final profileState = context.watch<ProfileCubit>().state;
         final tasksDoneState = context.watch<TasksWorkedOnTodayCubit>().state;
-
         final tasksDoneAmount = tasksDoneState.tasks.length;
-        final requiredTasksPerDay = profileState.profile.dailyStreak.perDay;
+
+        final requiredTasksPerDay = context.select(
+          (ProfileCubit cubit) => cubit.state.profile.dailyStreak.perDay,
+        );
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
