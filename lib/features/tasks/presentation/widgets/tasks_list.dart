@@ -63,6 +63,7 @@ class _TasksListState extends State<TasksList> {
                 addRepaintBoundaries: false,
                 addAutomaticKeepAlives: true,
                 itemCount: tasksToDisplay.length,
+                cacheExtent: (81 * tasksToDisplay.length).toDouble(),
                 physics: const NeverScrollableScrollPhysics(),
                 separatorBuilder: (_, __) => _Separator(
                   isRandomizedColor: doesTasksListSeparatorHasRandomColors,
