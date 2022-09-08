@@ -17,7 +17,6 @@ import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/filter_
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_to_do_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/cubit/tasks_worked_on_today_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/selected_tasks.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_worked_on_today.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/presentation/widgets/tasks_list.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/cubit/profile_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/users/presentation/widgets/player_progress_summary.dart';
@@ -28,7 +27,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../test_utilities/fakes/fake_user_level_calculator.dart';
-import '../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../test_utilities/mocks/mock_hydrated_storage.dart';
@@ -49,10 +47,14 @@ late ProfileCubit _profileCubit;
 late AuthentificationCubit _authCubit;
 final _tagsCubit = MockFilterByTagsCubit();
 final _remoteConfigCubit = MockRemoteConfigCubit();
+final _mockLevelProgressPercentageCalculator =
+    MockLevelProgressPercentageCalculator();
 
 void main() {
   group('GIVEN MainPage', () {
     setUpAll(() {
+      registerFallbackValue(0);
+
       _setupTaskRewardCalculatorMock();
 
       _setupTagsCubitMock();
@@ -60,6 +62,9 @@ void main() {
       _setupRemoteConfigMock();
 
       _setupRemoteConfigCubit();
+
+      when(() => _mockLevelProgressPercentageCalculator.call(any()))
+          .thenReturn(0);
 
       mockHydratedStorage(() {
         GetIt.I.registerSingleton(FilteredTasksCubit());
@@ -74,7 +79,7 @@ void main() {
         const StreakDaysInARowCalculator(),
       );
       GetIt.I.registerSingleton<LevelProgressPercentageCalculator>(
-        MockLevelProgressPercentageCalculator(),
+        _mockLevelProgressPercentageCalculator,
       );
     });
 
@@ -113,19 +118,6 @@ void main() {
         expect(find.byType(SelectedTasks), findsOneWidget);
       },
     );
-
-    group("WHEN user is logged in THEN", () {
-      setUp(() => _profileCubit.setProfile(profileFixture));
-
-      testWidgets(
-        "displays TasksDoneToday",
-        (WidgetTester tester) async {
-          await tester.pumpWithDependencies();
-
-          expect(find.byType(TasksWorkedOnToday), findsOneWidget);
-        },
-      );
-    });
 
     testWidgets(
       "WHEN user is not logged in "
