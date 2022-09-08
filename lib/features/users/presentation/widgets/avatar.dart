@@ -130,42 +130,48 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: _runAnimation,
+      buildWhen: _hasExperienceChanged,
+      listenWhen: _hasExperienceChanged,
       builder: (context, profileState) {
-        return BlocBuilder<AuthentificationCubit, AuthentificationState>(
-          builder: (context, authState) {
-            if (profileState is! ProfileLoaded || authState is! Authenticated) {
-              return const SizedBox();
-            }
+        if (profileState is! ProfileLoaded) {
+          return const SizedBox();
+        }
 
-            if (_hasFirstAnimationForcefullyRan == false) {
-              _runAnimation(context, profileState);
-            }
+        if (_hasFirstAnimationForcefullyRan == false) {
+          _runAnimation(context, profileState);
+        }
 
-            _previousValueOfProgressCircle = _getLevelProgress(profileState);
+        _previousValueOfProgressCircle = _getLevelProgress(profileState);
 
+        return AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
             final lineWidth = widget.radius / 10;
-            final int preferredImageSize = (widget.radius * 6).toInt();
 
-            return AnimatedBuilder(
-              animation: _animation,
-              builder: (context, child) {
-                return CircularPercentIndicator(
-                  lineWidth: lineWidth,
-                  percent: _animation.value,
-                  radius: widget.radius + lineWidth,
-                  progressColor: Theme.of(context).colorScheme.primary,
-                  center: child,
-                );
-              },
-              child: Stack(
-                children: [
-                  CircleAvatar(
+            return CircularPercentIndicator(
+              lineWidth: lineWidth,
+              percent: _animation.value,
+              radius: widget.radius + lineWidth,
+              progressColor: Theme.of(context).colorScheme.primary,
+              center: child,
+            );
+          },
+          child: Stack(
+            children: [
+              BlocSelector<AuthentificationCubit, AuthentificationState,
+                  String?>(
+                selector: (state) =>
+                    state is Authenticated ? state.user.avatar : null,
+                builder: (context, avatar) {
+                  final int preferredImageSize = (widget.radius * 6).toInt();
+
+                  return CircleAvatar(
                     radius: widget.radius,
-                    foregroundImage: authState.user.avatar == null
+                    foregroundImage: avatar == null
                         ? null
                         : ResizeImage(
                             ExtendedNetworkImageProvider(
-                              authState.user.avatar!,
+                              avatar,
                               printError: true,
                               scale: 1,
                               cache: true,
@@ -175,22 +181,21 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
                             width: preferredImageSize,
                             height: preferredImageSize,
                           ),
-                    // child: CircularProgressIndicator(value: widgetProgress),
-                  ),
-                  if (widget.radius >= 60)
-                    Positioned(
-                      width: widget.radius,
-                      height: widget.radius,
-                      right: widget.radius / 2,
-                      bottom: widget.radius / 2,
-                      child: const Center(
-                        child: FloatingExperiencePointsAnimation(),
-                      ),
-                    ),
-                ],
+                  );
+                },
               ),
-            );
-          },
+              if (widget.radius >= 60)
+                Positioned(
+                  width: widget.radius,
+                  height: widget.radius,
+                  right: widget.radius / 2,
+                  bottom: widget.radius / 2,
+                  child: const Center(
+                    child: FloatingExperiencePointsAnimation(),
+                  ),
+                ),
+            ],
+          ),
         );
       },
     );
@@ -217,6 +222,10 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
         ..reset()
         ..forward();
     });
+  }
+
+  bool _hasExperienceChanged(ProfileState previous, ProfileState current) {
+    return previous.profile.experience != current.profile.experience;
   }
 
   double _getLevelProgress(profileState) {
