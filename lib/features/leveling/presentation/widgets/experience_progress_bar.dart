@@ -72,7 +72,7 @@ class _ExperienceProgressBarState extends State<ExperienceProgressBar>
                       borderWidth: 0.0,
                       direction: Axis.horizontal,
                       borderColor: Colors.transparent,
-                      center: _buildProgressText(progressPercent),
+                      center: Text(progressPercent.toString()),
                       backgroundColor: widget.themeData.backgroundColor,
                       valueColor: AlwaysStoppedAnimation(
                         widget.themeData.primaryColor,
@@ -94,7 +94,7 @@ class _ExperienceProgressBarState extends State<ExperienceProgressBar>
                             ),
                           ),
                         ),
-                        _buildProgressText(progressPercent),
+                        Text(progressPercent.toString())
                       ],
                     );
                   }
@@ -106,6 +106,4 @@ class _ExperienceProgressBarState extends State<ExperienceProgressBar>
       },
     );
   }
-
-  Text _buildProgressText(int progressPercent) => Text("$progressPercent%");
 }
