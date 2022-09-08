@@ -1,10 +1,10 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flow_todo_flutter_2022/features/authentification/presentation/cubit/authentification_cubit.dart';
+import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/animated_circular_progress_indicator.dart';
 import 'package:flow_todo_flutter_2022/features/leveling/presentation/widgets/floating_experience_points_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 import '../../../leveling/domain/services/level_progress_percentage_calculator.dart';
 import '../../../leveling/domain/services/user_level_calculator.dart';
@@ -63,6 +63,7 @@ class _LevelBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
+      buildWhen: _hasExperienceChanged,
       builder: (context, profileState) {
         if (profileState is ProfileLoaded) {
           final level = _levelCalculator(profileState.profile.experience)
@@ -97,65 +98,25 @@ class _Image extends StatefulWidget {
   State<_Image> createState() => _ImageState();
 }
 
-class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
-  bool _isAnimationListenerAdded = false;
-  bool _hasFirstAnimationForcefullyRan = false;
-  double _previousValueOfProgressCircle = 0;
-  late Animation<double> _animation;
-  late final AnimationController _animationController;
-
+class _ImageState extends State<_Image> {
   final LevelProgressPercentageCalculator _progressPercentageCalculator =
       GetIt.I();
 
   @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1500),
-    );
-    _animation = Tween<double>(
-      end: 0,
-      begin: 0,
-    ).animate(_animationController);
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileCubit, ProfileState>(
-      listener: _runAnimation,
+    return BlocBuilder<ProfileCubit, ProfileState>(
       buildWhen: _hasExperienceChanged,
-      listenWhen: _hasExperienceChanged,
       builder: (context, profileState) {
         if (profileState is! ProfileLoaded) {
           return const SizedBox();
         }
 
-        if (_hasFirstAnimationForcefullyRan == false) {
-          _runAnimation(context, profileState);
-        }
+        final lineWidth = widget.radius / 10;
 
-        _previousValueOfProgressCircle = _getLevelProgress(profileState);
-
-        return AnimatedBuilder(
-          animation: _animation,
-          builder: (context, child) {
-            final lineWidth = widget.radius / 10;
-
-            return CircularPercentIndicator(
-              lineWidth: lineWidth,
-              percent: _animation.value,
-              radius: widget.radius + lineWidth,
-              progressColor: Theme.of(context).colorScheme.primary,
-              center: child,
-            );
-          },
+        return AnimatedCircularProgressIndicator(
+          percent: _getLevelProgress(profileState),
+          radius: widget.radius,
+          lineWidth: lineWidth,
           child: Stack(
             children: [
               BlocSelector<AuthentificationCubit, AuthentificationState,
@@ -201,37 +162,14 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
     );
   }
 
-  void _runAnimation(context, profileState) {
-    if (!mounted) return;
-    if (profileState is! ProfileLoaded) return;
-
-    Future.microtask(() {
-      setState(() => _hasFirstAnimationForcefullyRan = true);
-
-      _animation = Tween<double>(
-        end: _getLevelProgress(profileState),
-        begin: _previousValueOfProgressCircle,
-      ).animate(_animationController);
-
-      if (_isAnimationListenerAdded == false) {
-        _animation.addListener(() => setState(() {}));
-        _isAnimationListenerAdded = true;
-      }
-
-      _animationController
-        ..reset()
-        ..forward();
-    });
-  }
-
-  bool _hasExperienceChanged(ProfileState previous, ProfileState current) {
-    return previous.profile.experience != current.profile.experience;
-  }
-
   double _getLevelProgress(profileState) {
     final experience = (profileState.profile?.experience ?? 0);
     final progressPercent = _progressPercentageCalculator(experience).floor();
     final widgetProgress = double.parse('${progressPercent / 100}');
     return widgetProgress;
   }
+}
+
+bool _hasExperienceChanged(ProfileState previous, ProfileState current) {
+  return previous.profile.experience != current.profile.experience;
 }
