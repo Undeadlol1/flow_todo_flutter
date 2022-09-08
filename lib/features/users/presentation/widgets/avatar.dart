@@ -169,6 +169,7 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
                               printError: true,
                               scale: 1,
                               cache: true,
+                              retries: 2,
                               cacheMaxAge: const Duration(days: 4),
                             ),
                             width: preferredImageSize,
