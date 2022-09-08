@@ -14,6 +14,23 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+TasksWorkedOnTodayState _$TasksWorkedOnTodayStateFromJson(
+    Map<String, dynamic> json) {
+  switch (json['runtimeType']) {
+    case 'loading':
+      return _loading.fromJson(json);
+    case 'loaded':
+      return _loaded.fromJson(json);
+
+    default:
+      throw CheckedFromJsonException(
+          json,
+          'runtimeType',
+          'TasksWorkedOnTodayState',
+          'Invalid union type "${json['runtimeType']}"!');
+  }
+}
+
 /// @nodoc
 mixin _$TasksWorkedOnTodayState {
   @optionalTypeArgs
@@ -54,6 +71,7 @@ mixin _$TasksWorkedOnTodayState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -92,9 +110,17 @@ class __$$_loadingCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_loading extends _loading {
-  _$_loading() : super._();
+  _$_loading({final String? $type})
+      : $type = $type ?? 'loading',
+        super._();
+
+  factory _$_loading.fromJson(Map<String, dynamic> json) =>
+      _$$_loadingFromJson(json);
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -107,6 +133,7 @@ class _$_loading extends _loading {
         (other.runtimeType == runtimeType && other is _$_loading);
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -171,11 +198,20 @@ class _$_loading extends _loading {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_loadingToJson(
+      this,
+    );
+  }
 }
 
 abstract class _loading extends TasksWorkedOnTodayState {
   factory _loading() = _$_loading;
   _loading._() : super._();
+
+  factory _loading.fromJson(Map<String, dynamic> json) = _$_loading.fromJson;
 }
 
 /// @nodoc
@@ -209,11 +245,15 @@ class __$$_loadedCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_loaded extends _loaded {
-  _$_loaded(final List<Task> tasks)
+  _$_loaded(final List<Task> tasks, {final String? $type})
       : _tasks = tasks,
+        $type = $type ?? 'loaded',
         super._();
+
+  factory _$_loaded.fromJson(Map<String, dynamic> json) =>
+      _$$_loadedFromJson(json);
 
   final List<Task> _tasks;
   @override
@@ -221,6 +261,9 @@ class _$_loaded extends _loaded {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_tasks);
   }
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -235,6 +278,7 @@ class _$_loaded extends _loaded {
             const DeepCollectionEquality().equals(other._tasks, _tasks));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_tasks));
@@ -305,11 +349,20 @@ class _$_loaded extends _loaded {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_loadedToJson(
+      this,
+    );
+  }
 }
 
 abstract class _loaded extends TasksWorkedOnTodayState {
   factory _loaded(final List<Task> tasks) = _$_loaded;
   _loaded._() : super._();
+
+  factory _loaded.fromJson(Map<String, dynamic> json) = _$_loaded.fromJson;
 
   List<Task> get tasks;
   @JsonKey(ignore: true)

@@ -7,4 +7,7 @@ class TasksWorkedOnTodayState with _$TasksWorkedOnTodayState {
 
   factory TasksWorkedOnTodayState.loading() = _loading;
   factory TasksWorkedOnTodayState.loaded(List<Task> tasks) = _loaded;
+
+  factory TasksWorkedOnTodayState.fromJson(Map<String, Object?> json) =>
+      _$TasksWorkedOnTodayStateFromJson(json);
 }
