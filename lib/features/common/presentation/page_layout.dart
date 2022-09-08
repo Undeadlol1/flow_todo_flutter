@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../authentification/presentation/cubit/authentification_cubit.dart';
 import '../../users/presentation/cubit/profile_cubit.dart';
 
 class PageLayout extends StatelessWidget {
@@ -36,43 +35,39 @@ class PageLayout extends StatelessWidget {
         systemNavigationBarIconBrightness: Brightness.dark,
         systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
       ),
-      child: BlocBuilder<AuthentificationCubit, AuthentificationState>(
-        builder: (BuildContext context, authentication) {
-          return Stack(
-            children: [
-              const ListenerThatRunsFunctionsWithBuildContext(),
-              Scaffold(
-                resizeToAvoidBottomInset: false,
-                appBar: isAppBarHidden
-                    ? null
-                    : AppBar(
-                        actions: const [
-                          _UserLevelBadge(),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Center(
-                              child: Avatar(
-                                radius: 16,
-                                isLevelHidden: true,
-                              ),
-                            ),
+      child: Stack(
+        children: [
+          const ListenerThatRunsFunctionsWithBuildContext(),
+          Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: isAppBarHidden
+                ? null
+                : AppBar(
+                    actions: const [
+                      _UserLevelBadge(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Center(
+                          child: Avatar(
+                            radius: 16,
+                            isLevelHidden: true,
                           ),
-                        ],
+                        ),
                       ),
-                body: SafeArea(
-                  child: Padding(
-                    padding: _padding,
-                    child: child,
+                    ],
                   ),
-                ),
-                floatingActionButton: Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: floatingActionButton,
-                ),
+            body: SafeArea(
+              child: Padding(
+                padding: _padding,
+                child: child,
               ),
-            ],
-          );
-        },
+            ),
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: floatingActionButton,
+            ),
+          ),
+        ],
       ),
     );
   }
