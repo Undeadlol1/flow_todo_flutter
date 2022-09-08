@@ -1,4 +1,3 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/get_todays_date.dart';
 import 'package:flow_todo_flutter_2022/features/common/services/unique_id_generator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/data/create_task_repository.dart';
@@ -13,9 +12,9 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_firebase_analytics.dart';
-import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
-import '../../../../test_utilities/mocks/mock_tasks_to_do_cubit.dart';
 import '../../../../test_utilities/mocks/mock_use_case_exception_handler.dart';
+import '../../../../test_utilities/mocks/setupers/setup_profiile_cubit_mock.dart';
+import '../../../../test_utilities/mocks/setupers/setup_tasks_to_do_cubit._mock.dart';
 
 class _MockAddPointsToUser extends Mock implements AddPointsToViewer {}
 
@@ -32,8 +31,10 @@ class _FakeGetTodaysDate extends Fake implements GetTodaysDate {
 }
 
 const _uniqueId = 'unique id 123';
-final _mockTasksCubit = MockTasksToDoCubit();
-final _mockProfileCubit = MockProfileCubit();
+
+late TasksToDoCubit _mockTasksCubit;
+late ProfileCubit _mockProfileCubit;
+
 final _mockAddPointsToUser = _MockAddPointsToUser();
 final _mockFirebaseAnalytics = MockFirebaseAnalytics();
 final _fakecUniqueIdGenerator = _FakecUniqueIdGenerator();
@@ -51,19 +52,8 @@ void main() {
   setUpAll(() {
     registerFallbackValue([]);
 
-    final profileState = ProfileLoaded(profile: profileFixture);
-    whenListen(
-      _mockProfileCubit,
-      Stream.fromIterable([profileState]),
-      initialState: profileState,
-    );
-
-    final tasksState = TasksToDoState.loaded([]);
-    whenListen(
-      _mockTasksCubit,
-      Stream.fromIterable([tasksState]),
-      initialState: tasksState,
-    );
+    _mockTasksCubit = setupTasksToDoCubitMock();
+    _mockProfileCubit = setupProfileCubitMock();
 
     when(() => _mockFirebaseAnalytics.logEvent(name: any(named: 'name')))
         .thenAnswer((_) async {});
@@ -76,7 +66,7 @@ void main() {
     registerFallbackValue(taskFixture);
 
     when(() => callToAddPointsMock()).thenAnswer((_) async {});
-    when((() => _mockCreateTaskRepository(any()))).thenAnswer((_) async {});
+    when(() => _mockCreateTaskRepository(any())).thenAnswer((_) async {});
   });
 
   group('GIVEN CrateTask WHEN called THEN', () {
