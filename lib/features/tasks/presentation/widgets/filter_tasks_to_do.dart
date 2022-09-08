@@ -27,11 +27,9 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final activeTasks =
-            context.select((TasksToDoCubit cubit) => cubit.state.tasks);
-
+    return BlocSelector<TasksToDoCubit, TasksToDoState, List<Task>>(
+      selector: (state) => state.tasks,
+      builder: (context, activeTasks) {
         return Focus(
           onFocusChange: (hasFocus) {
             if (hasFocus == false) {

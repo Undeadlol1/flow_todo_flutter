@@ -14,13 +14,13 @@ class ToggleTagsSelection {
 
   Future<void> call(String tag) async {
     try {
-      final tagsState = tagsCubit.state;
+      final updatedTags = <String>{...tagsCubit.state.tags};
 
-      tagsState.tags.contains(tag)
-          ? tagsState.tags.remove(tag)
-          : tagsState.tags.add(tag);
+      updatedTags.contains(tag)
+          ? updatedTags.remove(tag)
+          : updatedTags.add(tag);
 
-      tagsCubit.update(tagsState.tags);
+      tagsCubit.update(updatedTags);
     } catch (error, stack) {
       useCaseExceptionHandler(error, stack);
     }

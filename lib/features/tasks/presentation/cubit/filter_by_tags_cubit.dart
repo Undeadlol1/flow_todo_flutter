@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
 part 'filter_by_tags_state.dart';
-part 'tags_cubit.freezed.dart';
+part 'filter_by_tags_cubit.freezed.dart';
 
 @singleton
 class FilterByTagsCubit extends Cubit<FilterByTagsState> {

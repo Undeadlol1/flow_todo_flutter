@@ -15,26 +15,26 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$TagsState {
+mixin _$FilterByTagsState {
   Set<String> get tags => throw _privateConstructorUsedError;
-  set tags(Set<String> value) => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $TagsStateCopyWith<FilterByTagsState> get copyWith =>
+  $FilterByTagsStateCopyWith<FilterByTagsState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TagsStateCopyWith<$Res> {
-  factory $TagsStateCopyWith(
+abstract class $FilterByTagsStateCopyWith<$Res> {
+  factory $FilterByTagsStateCopyWith(
           FilterByTagsState value, $Res Function(FilterByTagsState) then) =
-      _$TagsStateCopyWithImpl<$Res>;
+      _$FilterByTagsStateCopyWithImpl<$Res>;
   $Res call({Set<String> tags});
 }
 
 /// @nodoc
-class _$TagsStateCopyWithImpl<$Res> implements $TagsStateCopyWith<$Res> {
-  _$TagsStateCopyWithImpl(this._value, this._then);
+class _$FilterByTagsStateCopyWithImpl<$Res>
+    implements $FilterByTagsStateCopyWith<$Res> {
+  _$FilterByTagsStateCopyWithImpl(this._value, this._then);
 
   final FilterByTagsState _value;
   // ignore: unused_field
@@ -54,7 +54,8 @@ class _$TagsStateCopyWithImpl<$Res> implements $TagsStateCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$$_StateCopyWith<$Res> implements $TagsStateCopyWith<$Res> {
+abstract class _$$_StateCopyWith<$Res>
+    implements $FilterByTagsStateCopyWith<$Res> {
   factory _$$_StateCopyWith(_$_State value, $Res Function(_$_State) then) =
       __$$_StateCopyWithImpl<$Res>;
   @override
@@ -62,7 +63,7 @@ abstract class _$$_StateCopyWith<$Res> implements $TagsStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_StateCopyWithImpl<$Res> extends _$TagsStateCopyWithImpl<$Res>
+class __$$_StateCopyWithImpl<$Res> extends _$FilterByTagsStateCopyWithImpl<$Res>
     implements _$$_StateCopyWith<$Res> {
   __$$_StateCopyWithImpl(_$_State _value, $Res Function(_$_State) _then)
       : super(_value, (v) => _then(v as _$_State));
@@ -76,7 +77,7 @@ class __$$_StateCopyWithImpl<$Res> extends _$TagsStateCopyWithImpl<$Res>
   }) {
     return _then(_$_State(
       tags == freezed
-          ? _value.tags
+          ? _value._tags
           : tags // ignore: cast_nullable_to_non_nullable
               as Set<String>,
     ));
@@ -86,15 +87,31 @@ class __$$_StateCopyWithImpl<$Res> extends _$TagsStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_State implements _State {
-  _$_State(this.tags);
+  _$_State(final Set<String> tags) : _tags = tags;
 
+  final Set<String> _tags;
   @override
-  Set<String> tags;
+  Set<String> get tags {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableSetView(_tags);
+  }
 
   @override
   String toString() {
-    return 'TagsState(tags: $tags)';
+    return 'FilterByTagsState(tags: $tags)';
   }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_State &&
+            const DeepCollectionEquality().equals(other._tags, _tags));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_tags));
 
   @JsonKey(ignore: true)
   @override
@@ -103,11 +120,10 @@ class _$_State implements _State {
 }
 
 abstract class _State implements FilterByTagsState {
-  factory _State(Set<String> tags) = _$_State;
+  factory _State(final Set<String> tags) = _$_State;
 
   @override
   Set<String> get tags;
-  set tags(Set<String> value);
   @override
   @JsonKey(ignore: true)
   _$$_StateCopyWith<_$_State> get copyWith =>
