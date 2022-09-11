@@ -121,13 +121,7 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
                         ),
                         SuggestedTagsList(
                           title: "Suggested tags:",
-                          onChange: (tag) {
-                            final prefixedtag = ' #$tag';
-
-                            _input = _input.contains(prefixedtag)
-                                ? _input.replaceAll(prefixedtag, '')
-                                : _input + prefixedtag;
-                          },
+                          onChange: _handleTagsUpdate,
                         ),
                       ],
                     ),
@@ -211,6 +205,14 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
         .map((e) => e.toLowerCase())
         .toSet()
         .toList();
+  }
+
+  _handleTagsUpdate(String tag) {
+    final prefixedtag = ' #$tag';
+
+    _input = _input.contains(prefixedtag)
+        ? _input.replaceAll(prefixedtag, '')
+        : _input + prefixedtag;
   }
 
   EdgeInsets _getPadding() {
