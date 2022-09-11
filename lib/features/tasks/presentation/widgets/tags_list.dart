@@ -43,30 +43,38 @@ class TagsList extends StatelessWidget {
                         tags.add('fresh');
                       }
 
-                      return Wrap(
-                        children: tags.map(
-                          (tag) {
-                            final int tasksDoneTodayWithTag =
-                                tasksWorkedOnTodayState.tasks
-                                    .where((i) => i.tags.contains(tag))
-                                    .length;
-                            return Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 5),
-                              child: FilterChip(
-                                showCheckmark: false,
-                                avatar: tasksDoneTodayWithTag > 0
-                                    ? _TasksWorkedOnAmountText(
-                                        amount: tasksDoneTodayWithTag,
-                                      )
-                                    : null,
-                                visualDensity: VisualDensity.compact,
-                                selected: tagsState.tags.contains(tag),
-                                onSelected: (_) => _toggleTagsSelection(tag),
-                                label: Text(tag),
-                              ),
-                            );
-                          },
-                        ).toList(),
+                      return ExpansionTile(
+                        title: const Text('Tags'),
+                        children: <Widget>[
+                          Wrap(
+                            children: tags.map(
+                              (tag) {
+                                final int tasksDoneTodayWithTag =
+                                    tasksWorkedOnTodayState.tasks
+                                        .where((i) => i.tags.contains(tag))
+                                        .length;
+                                return Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: FilterChip(
+                                    showCheckmark: false,
+                                    avatar: tasksDoneTodayWithTag > 0
+                                        ? _TasksWorkedOnAmountText(
+                                            amount: tasksDoneTodayWithTag,
+                                          )
+                                        : null,
+                                    visualDensity: VisualDensity.compact,
+                                    selected: tagsState.tags.contains(tag),
+                                    onSelected: (_) =>
+                                        _toggleTagsSelection(tag),
+                                    label: Text(tag),
+                                  ),
+                                );
+                              },
+                            ).toList(),
+                          ),
+                          const SizedBox(height: 10),
+                        ],
                       );
                     } else {
                       return const SizedBox();
