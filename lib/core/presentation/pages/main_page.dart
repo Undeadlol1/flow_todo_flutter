@@ -40,6 +40,7 @@ class MainPage extends StatelessWidget {
 
               if (authState is Authenticated) {
                 final userId = authState.user.id;
+
                 GetIt.I<GetProfile>()(userId: userId);
                 GetIt.I<GetTasksToDo>()(userId: userId);
                 GetIt.I<GetActiveQuests>()(userId: userId);
@@ -83,7 +84,9 @@ class MainPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const CardView(child: TasksList()),
+                          const RepaintBoundary(
+                            child: CardView(child: TasksList()),
+                          ),
                           const SizedBox(height: 20),
                         ],
                       ),
