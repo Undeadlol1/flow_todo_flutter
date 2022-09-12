@@ -61,7 +61,6 @@ class _TasksListState extends State<TasksList> {
                 primary: false,
                 shrinkWrap: true,
                 addRepaintBoundaries: false,
-                addAutomaticKeepAlives: true,
                 itemCount: tasksToDisplay.length,
                 cacheExtent: (81 * tasksToDisplay.length).toDouble(),
                 physics: const NeverScrollableScrollPhysics(),
