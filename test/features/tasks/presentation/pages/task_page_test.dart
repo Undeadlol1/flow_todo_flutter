@@ -22,13 +22,12 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_utilities/fakes/fake_user_level_calculator.dart';
-import '../../../../test_utilities/fixtures/profile_fixture.dart';
 import '../../../../test_utilities/fixtures/task_fixture.dart';
 import '../../../../test_utilities/mocks/mock_firebase_remote_config.dart';
 import '../../../../test_utilities/mocks/mock_level_progress_percentage_calculator.dart';
-import '../../../../test_utilities/mocks/mock_profile_cubit.dart';
-import '../../../../test_utilities/mocks/mock_remote_config_cubit.dart';
+import '../../../../test_utilities/mocks/mock_stale_task_detector.dart';
 import '../../../../test_utilities/mocks/mock_task_reward_calculator.dart';
+import '../../../../test_utilities/mocks/setupers/setup_profiile_cubit_mock.dart';
 import '../../../../test_utilities/mocks/setupers/setup_remote_config_cubit_mock.dart';
 import '../../../../test_utilities/mocks/setupers/setup_tasks_to_do_cubit._mock.dart';
 
@@ -39,8 +38,7 @@ final _binding = TestWidgetsFlutterBinding.ensureInitialized();
 final _mockLevelProgressPercentageCalculator =
     MockLevelProgressPercentageCalculator();
 
-final MockProfileCubit _mockProfileCubit = MockProfileCubit();
-RemoteConfigCubit _mockRemoteConfigCubit = MockRemoteConfigCubit();
+late RemoteConfigCubit _mockRemoteConfigCubit;
 
 void main() {
   setUpAll(() {
@@ -48,14 +46,16 @@ void main() {
 
     _mockRemoteConfigCubit = setupRemoteConfigCubitMock();
 
+    final mockStaleTaskDetector = MockStaleTaskDetector();
     final mockTaskRewardCalculator = MockTaskRewardCalculator();
     final mockFirebaseRemoteConfig = MockFirebaseRemoteConfig();
+    when(() => mockStaleTaskDetector.isStale(any())).thenReturn(false);
     when(() => mockFirebaseRemoteConfig.getBool(any())).thenReturn(false);
     when(() => mockTaskRewardCalculator.taskCompletion(any())).thenReturn(50);
     when(() => mockTaskRewardCalculator.stepForward(any())).thenReturn(50);
     when(() => mockTaskRewardCalculator.leapForward(any())).thenReturn(50);
 
-    GetIt.I.registerSingleton(StaleTaskDetector());
+    GetIt.I.registerSingleton<StaleTaskDetector>(mockStaleTaskDetector);
     GetIt.I.registerSingleton<FirebaseRemoteConfig>(mockFirebaseRemoteConfig);
     GetIt.I.registerSingleton<TaskRewardCalculator>(mockTaskRewardCalculator);
     GetIt.I.registerSingleton<MakeStepForwardOnTheTask>(
@@ -70,11 +70,6 @@ void main() {
         _mockLevelProgressPercentageCalculator,
       );
 
-      final profileLoaded = ProfileLoaded(profile: profileFixture);
-      when(() => _mockProfileCubit.close()).thenAnswer((_) async => {});
-      when(() => _mockProfileCubit.state).thenReturn(profileLoaded);
-      when(() => _mockProfileCubit.stream)
-          .thenAnswer((_) => Stream.fromIterable([profileLoaded]));
       when(() => _mockLevelProgressPercentageCalculator(any())).thenReturn(1.0);
     });
 
@@ -192,7 +187,7 @@ extension on WidgetTester {
       MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => AuthentificationCubit()),
-          BlocProvider<ProfileCubit>(create: (_) => _mockProfileCubit),
+          BlocProvider<ProfileCubit>(create: (_) => setupProfileCubitMock()),
           BlocProvider<TasksToDoCubit>(
             create: (_) => setupTasksToDoCubitMock(),
           ),

@@ -42,10 +42,7 @@ class _TasksListState extends State<TasksList> {
           filteredTasks: filteredTasks,
           focusedOnTasks: selectedTasks,
         );
-        final bool doesTasksListSeparatorHasRandomColors = cx.select(
-          (RemoteConfigCubit cubit) =>
-              cubit.state.isTasksListSeparatorColorRandom,
-        );
+        final remoteConfig = cx.watch<RemoteConfigCubit>().state;
 
         return tasksState.map(
           loading: (_) => const _LoadingIndicator(),
@@ -65,13 +62,15 @@ class _TasksListState extends State<TasksList> {
                 cacheExtent: (81 * tasksToDisplay.length).toDouble(),
                 physics: const NeverScrollableScrollPhysics(),
                 separatorBuilder: (_, __) => _Separator(
-                  isRandomizedColor: doesTasksListSeparatorHasRandomColors,
+                  isRandomizedColor:
+                      remoteConfig.isTasksListSeparatorColorRandom,
                 ),
                 itemBuilder: (_, index) {
                   return TasksListItem(
                     task: tasksToDisplay[index],
                     shouldIgnoreStaleCondition:
-                        widget.shouldIgnoreStaleCondition,
+                        widget.shouldIgnoreStaleCondition ||
+                            remoteConfig.isStaleDetectionEnabled,
                   );
                 },
               ),

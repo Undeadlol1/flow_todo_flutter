@@ -1,10 +1,13 @@
+import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
 import '../models/task.dart';
 
 @lazySingleton
 class StaleTaskDetector {
-  StaleTaskDetector();
+  final RemoteConfigCubit remoteConfigCubit;
+  StaleTaskDetector({required this.remoteConfigCubit});
 
   get now => DateTime.now();
 
@@ -16,6 +19,14 @@ class StaleTaskDetector {
     final bool hasTaskBeenUpdatedRecently = task.updatedAt == null
         ? false
         : _differenceInDaysWithToday(task.updatedAt!) < 5;
+
+    debugPrint(
+      'remote config: ${remoteConfigCubit.state.isStaleDetectionEnabled}',
+    );
+
+    if (!remoteConfigCubit.state.isStaleDetectionEnabled) {
+      return false;
+    }
 
     if (hasTaskBeenUpdatedRecently) {
       return false;
