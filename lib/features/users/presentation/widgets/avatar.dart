@@ -128,17 +128,16 @@ class _ImageState extends State<_Image> {
 
                   return CircleAvatar(
                     radius: widget.radius,
+                    backgroundColor: Theme.of(context).primaryColorDark,
+                    backgroundImage: ResizeImage(
+                      _getImageProvider(profileState.profile.id),
+                      width: preferredImageSize,
+                      height: preferredImageSize,
+                    ),
                     foregroundImage: avatar == null
                         ? null
                         : ResizeImage(
-                            ExtendedNetworkImageProvider(
-                              avatar,
-                              printError: true,
-                              scale: 1,
-                              cache: true,
-                              retries: 2,
-                              cacheMaxAge: const Duration(days: 4),
-                            ),
+                            _getImageProvider(avatar),
                             width: preferredImageSize,
                             height: preferredImageSize,
                           ),
@@ -159,6 +158,17 @@ class _ImageState extends State<_Image> {
           ),
         );
       },
+    );
+  }
+
+  ExtendedNetworkImageProvider _getImageProvider(String url) {
+    return ExtendedNetworkImageProvider(
+      url,
+      scale: 1,
+      retries: 2,
+      cache: true,
+      printError: true,
+      cacheMaxAge: const Duration(days: 4),
     );
   }
 
