@@ -1,4 +1,5 @@
 import 'package:flow_todo_flutter_2022/features/leveling/domain/services/level_progress_percentage_calculator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -49,13 +50,15 @@ class _ImageState extends State<AvatarImage> {
                   return CircleAvatar(
                     radius: widget.radius,
                     backgroundColor: Theme.of(context).primaryColorDark,
-                    backgroundImage: ResizeImage(
-                      _getImageProvider(
-                        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-                      ),
-                      width: preferredImageSize,
-                      height: preferredImageSize,
-                    ),
+                    backgroundImage: kReleaseMode
+                        ? ResizeImage(
+                            _getImageProvider(
+                              'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+                            ),
+                            width: preferredImageSize,
+                            height: preferredImageSize,
+                          )
+                        : null,
                     foregroundImage: avatar == null
                         ? null
                         : ResizeImage(
