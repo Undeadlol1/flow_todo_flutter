@@ -13,7 +13,7 @@ class _CountDownState extends State<CountDown> {
   late final Timer _timer;
   late final Stopwatch _stopwatch;
 
-  final _countdownDuration = const Duration(minutes: 5);
+  static const _countdownDuration = Duration(minutes: 5);
 
   @override
   void initState() {

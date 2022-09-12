@@ -63,6 +63,7 @@ class MainPage extends StatelessWidget {
                     flex: 3,
                     child: SingleChildScrollView(
                       primary: true,
+                      physics: const BouncingScrollPhysics(),
                       child: Column(
                         children: [
                           const SelectedTasks(),
