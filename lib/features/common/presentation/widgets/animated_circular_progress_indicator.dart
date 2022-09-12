@@ -61,20 +61,18 @@ class _AnimatedCircularProgressIndicatorState
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: AnimatedBuilder(
-        animation: _animation,
-        builder: (_, notAnimatedChild) {
-          return CircularPercentIndicator(
-            center: notAnimatedChild,
-            percent: _animation.value,
-            lineWidth: widget.lineWidth,
-            radius: widget.radius + widget.lineWidth,
-            progressColor: Theme.of(context).colorScheme.primary,
-          );
-        },
-        child: Center(child: widget.child),
-      ),
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (_, notAnimatedChild) {
+        return CircularPercentIndicator(
+          center: notAnimatedChild,
+          percent: _animation.value,
+          lineWidth: widget.lineWidth,
+          radius: widget.radius + widget.lineWidth,
+          progressColor: Theme.of(context).colorScheme.primary,
+        );
+      },
+      child: Center(child: widget.child),
     );
   }
 

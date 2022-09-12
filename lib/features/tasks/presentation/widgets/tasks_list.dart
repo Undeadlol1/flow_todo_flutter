@@ -138,10 +138,8 @@ class _TasksListState extends State<TasksList> {
 
 class _Separator extends StatelessWidget {
   final bool isRandomizedColor;
-  const _Separator({
-    Key? key,
-    required this.isRandomizedColor,
-  }) : super(key: key);
+  const _Separator({Key? key, required this.isRandomizedColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -160,10 +158,7 @@ class _Separator extends StatelessWidget {
 }
 
 class _TasksLeftText extends StatelessWidget {
-  const _TasksLeftText({
-    Key? key,
-    required this.amount,
-  }) : super(key: key);
+  const _TasksLeftText({Key? key, required this.amount}) : super(key: key);
 
   final int amount;
   static const _revealDuration = Duration(milliseconds: 500);
