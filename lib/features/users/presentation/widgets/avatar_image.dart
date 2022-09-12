@@ -54,7 +54,7 @@ class _ImageState extends State<AvatarImage> {
                     backgroundColor: Theme.of(context).primaryColorDark,
                     backgroundImage: ResizeImage(
                       _getImageProvider(
-                        'https://avatars.dicebear.com/api/adventurer-neutral/${profileState.profile.id}.svg',
+                        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
                       ),
                       width: preferredImageSize,
                       height: preferredImageSize,
