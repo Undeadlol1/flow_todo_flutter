@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
@@ -30,7 +32,7 @@ class TasksListItem extends StatelessWidget {
       key: ValueKey<String>(task.id),
       direction: DismissDirection.startToEnd,
       background: const _DismissibleBackground(),
-      onDismissed: (DismissDirection direction) {
+      onDismissed: (direction) {
         GetIt.I<FirebaseAnalytics>()
             .logEvent(name: 'swiped to complete the task');
         GetIt.I<MakeStepForwardOnTheTask>()(
@@ -44,18 +46,41 @@ class TasksListItem extends StatelessWidget {
         enableFeedback: true,
         selected: task.isSelected,
         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-        title: Text(
-          isTaskStale ? '💩💩💩' : task.title,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(
-          'Reward: ${isTaskStale ? '🤑' : _rewardCalculator.taskCompletion(task)} experience',
-        ),
+        title: isTaskStale
+            ? const _StaleTitle()
+            : Text(
+                task.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+        subtitle: isTaskStale
+            ? const _StaleSubtitle()
+            : Text(
+                'Reward: ${_rewardCalculator.taskCompletion(task)} experience',
+              ),
         onTap: () => GetIt.I<GoToTaskPage>()(task: task),
         onLongPress: () => GetIt.I<ToggleTaskSelection>()(task),
       ),
     );
+  }
+}
+
+class _StaleTitle extends StatelessWidget {
+  const _StaleTitle({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    log('text');
+    return const Text('💩💩💩');
+  }
+}
+
+class _StaleSubtitle extends StatelessWidget {
+  const _StaleSubtitle({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Reward: 🤑 experience');
   }
 }
 
