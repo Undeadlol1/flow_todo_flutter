@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
-import 'package:flow_todo_flutter_2022/features/tasks/domain/services/stale_task_detector.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/make_step_forward_on_the_task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/use_cases/toggle_task_selection.dart';
@@ -21,13 +20,11 @@ class TasksListItem extends StatelessWidget {
     this.shouldIgnoreStaleCondition = false,
   }) : super(key: key);
 
-  static final StaleTaskDetector _staleTaskDetector = GetIt.I();
   static final TaskRewardCalculator _rewardCalculator = GetIt.I();
 
   @override
   Widget build(BuildContext context) {
-    final isTaskStale =
-        shouldIgnoreStaleCondition ? false : _staleTaskDetector.isStale(task);
+    final isTaskStale = shouldIgnoreStaleCondition ? false : task.isStale;
     return Dismissible(
       key: ValueKey<String>(task.id),
       direction: DismissDirection.startToEnd,
