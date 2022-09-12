@@ -42,24 +42,26 @@ class _FilterTasksPageState extends State<FilterTasksPage> {
       isAppBarHidden: false,
       isNumbersAnimationSuspended: false,
       child: SingleChildScrollView(
-        child: BlocBuilder<TasksToDoCubit, TasksToDoState>(
-          builder: (context, tasksState) {
-            return CardView(
-              child: Column(
-                children: [
-                  if (tasksState.tasks.length > 10)
-                    const Padding(
+        child: CardView(
+          child: Column(
+            children: [
+              BlocBuilder<TasksToDoCubit, TasksToDoState>(
+                builder: (context, tasksState) {
+                  return Visibility(
+                    visible: tasksState.tasks.length > 10,
+                    child: const Padding(
                       padding: EdgeInsets.only(bottom: 10),
                       child: FilterTasksToDo(),
                     ),
-                  const TasksList(
-                    shouldIgnoreTagsFiltering: true,
-                    shouldIgnoreStaleCondition: true,
-                  ),
-                ],
+                  );
+                },
               ),
-            );
-          },
+              const TasksList(
+                shouldIgnoreTagsFiltering: true,
+                shouldIgnoreStaleCondition: true,
+              ),
+            ],
+          ),
         ),
       ),
     );

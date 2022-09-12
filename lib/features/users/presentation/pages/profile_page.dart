@@ -10,6 +10,7 @@ import '../../../../core/remote_config/cubit/remote_config_cubit.dart';
 import '../../../authentification/presentation/widgets/sign_out_button.dart';
 import '../../../common/presentation/page_layout.dart';
 import '../../../goals/presentation/pages/goals_page.dart';
+import '../../domain/models/profile.dart';
 import '../widgets/avatar.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -19,48 +20,43 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageLayout(
-      child: BlocSelector<RemoteConfigCubit, RemoteConfigState, bool>(
-        selector: (state) => state.areQuestsEnabled,
-        builder: (context, areQuestsEnabled) {
-          return BlocBuilder<AuthentificationCubit, AuthentificationState>(
-            builder: (context, authState) {
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CardView(
-                      child: Column(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Center(child: Avatar(radius: 60)),
-                          ),
-                          if (authState is Authenticated)
-                            Text(authState.user.displayName),
-                        ],
+      child: BlocBuilder<AuthentificationCubit, AuthentificationState>(
+        builder: (context, authState) {
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CardView(
+                  child: Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Center(child: Avatar(radius: 60)),
                       ),
-                    ),
-                    const _DebugInformation(),
-                    _GoToGoals(isVisible: areQuestsEnabled),
-                    const _Padding(),
-                    const SignOutButton(),
-                    const _Padding(),
-                    const Divider(),
-                    const _Padding(),
-                    Text(
-                      'DANGER ZONE',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
-                    const _Padding(),
-                    const Divider(),
-                    const _Padding(),
-                    const ResetExpereinceButton()
-                  ],
+                      if (authState is Authenticated)
+                        Text(authState.user.displayName),
+                    ],
+                  ),
                 ),
-              );
-            },
+                const _DebugInformation(),
+                const _GoToGoals(),
+                const _Padding(),
+                const SignOutButton(),
+                const _Padding(),
+                const Divider(),
+                const _Padding(),
+                Text(
+                  'DANGER ZONE',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ),
+                const _Padding(),
+                const Divider(),
+                const _Padding(),
+                const ResetExpereinceButton()
+              ],
+            ),
           );
         },
       ),
@@ -73,16 +69,17 @@ class _DebugInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileCubit, ProfileState>(
-      builder: (context, profileState) {
+    return BlocSelector<ProfileCubit, ProfileState, Profile>(
+      selector: (state) => state.profile,
+      builder: (context, profile) {
         final today = DateTime.now();
-        final streak = profileState.profile.dailyStreak;
+        final streak = profile.dailyStreak;
         return ExpansionTile(
           expandedCrossAxisAlignment: CrossAxisAlignment.start,
           title: const Text('Debug information for developers'),
           children: [
             SelectableText(
-              'Your user ID is: ${profileState.profile.userId}',
+              'Your user ID is: ${profile.userId}',
             ),
             Text('Today is: $today'),
             Text(
@@ -90,7 +87,7 @@ class _DebugInformation extends StatelessWidget {
             ),
             Text('Streak starts at: ${streak.startsAt}'),
             Text(
-              'Streak was updated at: ${profileState.profile.dailyStreak.updatedAt}',
+              'Streak was updated at: ${profile.dailyStreak.updatedAt}',
             ),
             const Text(
               'Is app running in debug mode? $kDebugMode',
@@ -106,38 +103,34 @@ class _DebugInformation extends StatelessWidget {
 }
 
 class _GoToGoals extends StatelessWidget {
-  final bool isVisible;
-  const _GoToGoals({
-    Key? key,
-    required this.isVisible,
-  }) : super(key: key);
+  const _GoToGoals({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 500),
-      child: isVisible
-          ? Column(
-              children: [
-                const _Padding(),
-                ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(
-                    context,
-                    GoalsPage.pathName,
+    return BlocSelector<RemoteConfigCubit, RemoteConfigState, bool>(
+      selector: (state) => state.areQuestsEnabled,
+      builder: (context, areQuestsEnabled) {
+        return areQuestsEnabled
+            ? Column(
+                children: [
+                  const _Padding(),
+                  ElevatedButton(
+                    onPressed: () => Navigator.pushNamed(
+                      context,
+                      GoalsPage.pathName,
+                    ),
+                    child: const Text('Go to Goals'),
                   ),
-                  child: const Text('Go to Goals'),
-                ),
-              ],
-            )
-          : const SizedBox(),
+                ],
+              )
+            : const SizedBox();
+      },
     );
   }
 }
 
 class _Padding extends StatelessWidget {
-  const _Padding({
-    Key? key,
-  }) : super(key: key);
+  const _Padding({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
