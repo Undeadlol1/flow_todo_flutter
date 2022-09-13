@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flow_todo_flutter_2022/features/spaced_repetition/domain/entities/confidence.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
@@ -67,7 +65,6 @@ class _StaleTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('text');
     return const Text('💩💩💩');
   }
 }

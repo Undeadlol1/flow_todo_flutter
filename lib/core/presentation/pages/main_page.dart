@@ -13,8 +13,8 @@ import '../../../features/authentification/presentation/cubit/authentification_c
 import '../../../features/authentification/presentation/widgets/google_sign_in_button.dart';
 import '../../../features/common/presentation/page_layout.dart';
 import '../../../features/quests/domain/use_cases/get_active_quests.dart';
-import '../../../features/tasks/domain/use_cases/get_tasks_worked_on_today.dart';
 import '../../../features/tasks/domain/use_cases/get_tasks_to_do.dart';
+import '../../../features/tasks/domain/use_cases/get_tasks_worked_on_today.dart';
 import '../../../features/tasks/presentation/pages/filter_tasks_page.dart';
 import '../../../features/tasks/presentation/widgets/tasks_list.dart';
 import '../../../features/users/domain/use_cases/get_profile.dart';
@@ -55,10 +55,7 @@ class MainPage extends StatelessWidget {
               return Column(
                 children: [
                   if (profileState is ProfileLoaded)
-                    const Expanded(
-                      flex: 1,
-                      child: PlayerProgressSummary(),
-                    ),
+                    const PlayerProgressSummary(),
                   Expanded(
                     flex: 3,
                     child: SingleChildScrollView(
