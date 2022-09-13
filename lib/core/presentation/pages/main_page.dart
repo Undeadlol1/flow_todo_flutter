@@ -99,30 +99,11 @@ class MainPage extends StatelessWidget {
   }
 }
 
-class _LoginScreen extends StatefulWidget {
+class _LoginScreen extends StatelessWidget {
   const _LoginScreen({Key? key}) : super(key: key);
 
-  @override
-  State<_LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<_LoginScreen> {
-  static const imageUrl =
+  static const _imageUrl =
       'https://media.giphy.com/media/dzaUX7CAG0Ihi/giphy.gif';
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    if (kReleaseMode) {
-      precacheImage(
-        const NetworkImage(
-          imageUrl,
-        ),
-        context,
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,8 +111,7 @@ class _LoginScreenState extends State<_LoginScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (kReleaseMode) RepaintBoundary(child: Image.network(imageUrl)),
-          Image.network(imageUrl),
+          if (kReleaseMode) RepaintBoundary(child: Image.network(_imageUrl)),
           const SizedBox(height: 10),
           const Text('Please sign in to start:'),
           const SizedBox(height: 10),
