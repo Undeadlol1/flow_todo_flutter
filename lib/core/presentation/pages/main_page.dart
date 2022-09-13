@@ -53,11 +53,11 @@ class MainPage extends StatelessWidget {
               }
 
               return Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   if (profileState is ProfileLoaded)
                     const PlayerProgressSummary(),
                   Expanded(
-                    flex: 3,
                     child: SingleChildScrollView(
                       primary: true,
                       physics: const BouncingScrollPhysics(),
@@ -99,8 +99,30 @@ class MainPage extends StatelessWidget {
   }
 }
 
-class _LoginScreen extends StatelessWidget {
+class _LoginScreen extends StatefulWidget {
   const _LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<_LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<_LoginScreen> {
+  static const imageUrl =
+      'https://media.giphy.com/media/dzaUX7CAG0Ihi/giphy.gif';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (kReleaseMode) {
+      precacheImage(
+        const NetworkImage(
+          imageUrl,
+        ),
+        context,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,10 +130,8 @@ class _LoginScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (kReleaseMode)
-            Image.network(
-              'https://media.giphy.com/media/dzaUX7CAG0Ihi/giphy.gif',
-            ),
+          if (kReleaseMode) RepaintBoundary(child: Image.network(imageUrl)),
+          Image.network(imageUrl),
           const SizedBox(height: 10),
           const Text('Please sign in to start:'),
           const SizedBox(height: 10),
