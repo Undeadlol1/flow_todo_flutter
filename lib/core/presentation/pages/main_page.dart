@@ -36,10 +36,10 @@ class MainPage extends StatelessWidget {
           floatingActionButton: isProfileLoaded ? const CreateTaskFAB() : null,
           child: BlocConsumer<AuthentificationCubit, AuthentificationState>(
             listener: (context, authState) async {
-              await GetIt.I<GetRemoteConfig>()();
-
               if (authState is Authenticated) {
                 final userId = authState.user.id;
+
+                await GetIt.I<GetRemoteConfig>()();
 
                 GetIt.I<GetProfile>()(userId: userId);
                 GetIt.I<GetTasksToDo>()(userId: userId);
