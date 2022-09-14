@@ -35,15 +35,12 @@ class SignInWithGoogle {
   });
 
   Future<void> call() async {
-    try {
-      return await _triggerGoogleAuthFlow()
-          .then(_getGoogleAuthDetails)
-          .then(_signInToFirebaseAuthViaGoogleCredentials)
-          .then(_createProfileIfUserDoesntHaveOne)
-          .then(_assignUserIdInVariousAnalytics);
-    } catch (error, stack) {
-      useCaseExceptionHandler(error, stack);
-    }
+    return await _triggerGoogleAuthFlow()
+        .then(_getGoogleAuthDetails)
+        .then(_signInToFirebaseAuthViaGoogleCredentials)
+        .then(_createProfileIfUserDoesntHaveOne)
+        .then(_assignUserIdInVariousAnalytics)
+        .onError(useCaseExceptionHandler);
   }
 
   FutureOr<UserCredential> _signInToFirebaseAuthViaGoogleCredentials(
