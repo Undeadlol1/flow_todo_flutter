@@ -37,9 +37,8 @@ class PlayerProgressSummary extends StatelessWidget {
 }
 
 class _ActiveQuest extends StatelessWidget {
-  const _ActiveQuest({Key? key, required this.contraints}) : super(key: key);
-
   final BoxConstraints contraints;
+  const _ActiveQuest({Key? key, required this.contraints}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
