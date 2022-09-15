@@ -9,6 +9,7 @@ class RemoteConfigState with _$RemoteConfigState {
     required bool isStaleDetectionEnabled,
     required bool isOnlyASingleSelectedTaskAllowed,
     required bool isTasksListSeparatorColorRandom,
+    required bool isMassCompletionOfSelectedTasksAvailable,
   }) = _State;
 
   factory RemoteConfigState.defaults({
@@ -18,5 +19,6 @@ class RemoteConfigState with _$RemoteConfigState {
     @Default(false) final bool isStaleDetectionEnabled,
     @Default(true) final bool isOnlyASingleSelectedTaskAllowed,
     @Default(false) final bool isTasksListSeparatorColorRandom,
+    @Default(false) final bool isMassCompletionOfSelectedTasksAvailable,
   }) = _Defaults;
 }

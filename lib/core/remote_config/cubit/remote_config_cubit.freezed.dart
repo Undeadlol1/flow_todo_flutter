@@ -24,6 +24,8 @@ mixin _$RemoteConfigState {
       throw _privateConstructorUsedError;
   bool get isTasksListSeparatorColorRandom =>
       throw _privateConstructorUsedError;
+  bool get isMassCompletionOfSelectedTasksAvailable =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
@@ -32,7 +34,8 @@ mixin _$RemoteConfigState {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)
         $default, {
     required TResult Function(
             bool areTagsEnabled,
@@ -40,7 +43,8 @@ mixin _$RemoteConfigState {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)
         defaults,
   }) =>
       throw _privateConstructorUsedError;
@@ -52,7 +56,8 @@ mixin _$RemoteConfigState {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)?
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)?
         $default, {
     TResult Function(
             bool areTagsEnabled,
@@ -60,7 +65,8 @@ mixin _$RemoteConfigState {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)?
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)?
         defaults,
   }) =>
       throw _privateConstructorUsedError;
@@ -72,7 +78,8 @@ mixin _$RemoteConfigState {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)?
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)?
         $default, {
     TResult Function(
             bool areTagsEnabled,
@@ -80,7 +87,8 @@ mixin _$RemoteConfigState {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)?
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)?
         defaults,
     required TResult orElse(),
   }) =>
@@ -121,7 +129,8 @@ abstract class $RemoteConfigStateCopyWith<$Res> {
       bool areQuestsEnabled,
       bool isStaleDetectionEnabled,
       bool isOnlyASingleSelectedTaskAllowed,
-      bool isTasksListSeparatorColorRandom});
+      bool isTasksListSeparatorColorRandom,
+      bool isMassCompletionOfSelectedTasksAvailable});
 }
 
 /// @nodoc
@@ -141,6 +150,7 @@ class _$RemoteConfigStateCopyWithImpl<$Res>
     Object? isStaleDetectionEnabled = freezed,
     Object? isOnlyASingleSelectedTaskAllowed = freezed,
     Object? isTasksListSeparatorColorRandom = freezed,
+    Object? isMassCompletionOfSelectedTasksAvailable = freezed,
   }) {
     return _then(_value.copyWith(
       areTagsEnabled: areTagsEnabled == freezed
@@ -169,6 +179,11 @@ class _$RemoteConfigStateCopyWithImpl<$Res>
           ? _value.isTasksListSeparatorColorRandom
           : isTasksListSeparatorColorRandom // ignore: cast_nullable_to_non_nullable
               as bool,
+      isMassCompletionOfSelectedTasksAvailable:
+          isMassCompletionOfSelectedTasksAvailable == freezed
+              ? _value.isMassCompletionOfSelectedTasksAvailable
+              : isMassCompletionOfSelectedTasksAvailable // ignore: cast_nullable_to_non_nullable
+                  as bool,
     ));
   }
 }
@@ -185,7 +200,8 @@ abstract class _$$_StateCopyWith<$Res>
       bool areQuestsEnabled,
       bool isStaleDetectionEnabled,
       bool isOnlyASingleSelectedTaskAllowed,
-      bool isTasksListSeparatorColorRandom});
+      bool isTasksListSeparatorColorRandom,
+      bool isMassCompletionOfSelectedTasksAvailable});
 }
 
 /// @nodoc
@@ -205,6 +221,7 @@ class __$$_StateCopyWithImpl<$Res> extends _$RemoteConfigStateCopyWithImpl<$Res>
     Object? isStaleDetectionEnabled = freezed,
     Object? isOnlyASingleSelectedTaskAllowed = freezed,
     Object? isTasksListSeparatorColorRandom = freezed,
+    Object? isMassCompletionOfSelectedTasksAvailable = freezed,
   }) {
     return _then(_$_State(
       areTagsEnabled: areTagsEnabled == freezed
@@ -233,6 +250,11 @@ class __$$_StateCopyWithImpl<$Res> extends _$RemoteConfigStateCopyWithImpl<$Res>
           ? _value.isTasksListSeparatorColorRandom
           : isTasksListSeparatorColorRandom // ignore: cast_nullable_to_non_nullable
               as bool,
+      isMassCompletionOfSelectedTasksAvailable:
+          isMassCompletionOfSelectedTasksAvailable == freezed
+              ? _value.isMassCompletionOfSelectedTasksAvailable
+              : isMassCompletionOfSelectedTasksAvailable // ignore: cast_nullable_to_non_nullable
+                  as bool,
     ));
   }
 }
@@ -246,7 +268,8 @@ class _$_State implements _State {
       required this.areQuestsEnabled,
       required this.isStaleDetectionEnabled,
       required this.isOnlyASingleSelectedTaskAllowed,
-      required this.isTasksListSeparatorColorRandom});
+      required this.isTasksListSeparatorColorRandom,
+      required this.isMassCompletionOfSelectedTasksAvailable});
 
   @override
   final bool areTagsEnabled;
@@ -260,10 +283,12 @@ class _$_State implements _State {
   final bool isOnlyASingleSelectedTaskAllowed;
   @override
   final bool isTasksListSeparatorColorRandom;
+  @override
+  final bool isMassCompletionOfSelectedTasksAvailable;
 
   @override
   String toString() {
-    return 'RemoteConfigState(areTagsEnabled: $areTagsEnabled, areGoalsEnabled: $areGoalsEnabled, areQuestsEnabled: $areQuestsEnabled, isStaleDetectionEnabled: $isStaleDetectionEnabled, isOnlyASingleSelectedTaskAllowed: $isOnlyASingleSelectedTaskAllowed, isTasksListSeparatorColorRandom: $isTasksListSeparatorColorRandom)';
+    return 'RemoteConfigState(areTagsEnabled: $areTagsEnabled, areGoalsEnabled: $areGoalsEnabled, areQuestsEnabled: $areQuestsEnabled, isStaleDetectionEnabled: $isStaleDetectionEnabled, isOnlyASingleSelectedTaskAllowed: $isOnlyASingleSelectedTaskAllowed, isTasksListSeparatorColorRandom: $isTasksListSeparatorColorRandom, isMassCompletionOfSelectedTasksAvailable: $isMassCompletionOfSelectedTasksAvailable)';
   }
 
   @override
@@ -284,7 +309,10 @@ class _$_State implements _State {
                 isOnlyASingleSelectedTaskAllowed) &&
             const DeepCollectionEquality().equals(
                 other.isTasksListSeparatorColorRandom,
-                isTasksListSeparatorColorRandom));
+                isTasksListSeparatorColorRandom) &&
+            const DeepCollectionEquality().equals(
+                other.isMassCompletionOfSelectedTasksAvailable,
+                isMassCompletionOfSelectedTasksAvailable));
   }
 
   @override
@@ -295,7 +323,9 @@ class _$_State implements _State {
       const DeepCollectionEquality().hash(areQuestsEnabled),
       const DeepCollectionEquality().hash(isStaleDetectionEnabled),
       const DeepCollectionEquality().hash(isOnlyASingleSelectedTaskAllowed),
-      const DeepCollectionEquality().hash(isTasksListSeparatorColorRandom));
+      const DeepCollectionEquality().hash(isTasksListSeparatorColorRandom),
+      const DeepCollectionEquality()
+          .hash(isMassCompletionOfSelectedTasksAvailable));
 
   @JsonKey(ignore: true)
   @override
@@ -311,7 +341,8 @@ class _$_State implements _State {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)
         $default, {
     required TResult Function(
             bool areTagsEnabled,
@@ -319,7 +350,8 @@ class _$_State implements _State {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)
         defaults,
   }) {
     return $default(
@@ -328,7 +360,8 @@ class _$_State implements _State {
         areQuestsEnabled,
         isStaleDetectionEnabled,
         isOnlyASingleSelectedTaskAllowed,
-        isTasksListSeparatorColorRandom);
+        isTasksListSeparatorColorRandom,
+        isMassCompletionOfSelectedTasksAvailable);
   }
 
   @override
@@ -340,7 +373,8 @@ class _$_State implements _State {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)?
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)?
         $default, {
     TResult Function(
             bool areTagsEnabled,
@@ -348,7 +382,8 @@ class _$_State implements _State {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)?
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)?
         defaults,
   }) {
     return $default?.call(
@@ -357,7 +392,8 @@ class _$_State implements _State {
         areQuestsEnabled,
         isStaleDetectionEnabled,
         isOnlyASingleSelectedTaskAllowed,
-        isTasksListSeparatorColorRandom);
+        isTasksListSeparatorColorRandom,
+        isMassCompletionOfSelectedTasksAvailable);
   }
 
   @override
@@ -369,7 +405,8 @@ class _$_State implements _State {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)?
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)?
         $default, {
     TResult Function(
             bool areTagsEnabled,
@@ -377,7 +414,8 @@ class _$_State implements _State {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)?
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)?
         defaults,
     required TResult orElse(),
   }) {
@@ -388,7 +426,8 @@ class _$_State implements _State {
           areQuestsEnabled,
           isStaleDetectionEnabled,
           isOnlyASingleSelectedTaskAllowed,
-          isTasksListSeparatorColorRandom);
+          isTasksListSeparatorColorRandom,
+          isMassCompletionOfSelectedTasksAvailable);
     }
     return orElse();
   }
@@ -432,7 +471,8 @@ abstract class _State implements RemoteConfigState {
       required final bool areQuestsEnabled,
       required final bool isStaleDetectionEnabled,
       required final bool isOnlyASingleSelectedTaskAllowed,
-      required final bool isTasksListSeparatorColorRandom}) = _$_State;
+      required final bool isTasksListSeparatorColorRandom,
+      required final bool isMassCompletionOfSelectedTasksAvailable}) = _$_State;
 
   @override
   bool get areTagsEnabled;
@@ -446,6 +486,8 @@ abstract class _State implements RemoteConfigState {
   bool get isOnlyASingleSelectedTaskAllowed;
   @override
   bool get isTasksListSeparatorColorRandom;
+  @override
+  bool get isMassCompletionOfSelectedTasksAvailable;
   @override
   @JsonKey(ignore: true)
   _$$_StateCopyWith<_$_State> get copyWith =>
@@ -465,7 +507,8 @@ abstract class _$$_DefaultsCopyWith<$Res>
       bool areQuestsEnabled,
       bool isStaleDetectionEnabled,
       bool isOnlyASingleSelectedTaskAllowed,
-      bool isTasksListSeparatorColorRandom});
+      bool isTasksListSeparatorColorRandom,
+      bool isMassCompletionOfSelectedTasksAvailable});
 }
 
 /// @nodoc
@@ -487,6 +530,7 @@ class __$$_DefaultsCopyWithImpl<$Res>
     Object? isStaleDetectionEnabled = freezed,
     Object? isOnlyASingleSelectedTaskAllowed = freezed,
     Object? isTasksListSeparatorColorRandom = freezed,
+    Object? isMassCompletionOfSelectedTasksAvailable = freezed,
   }) {
     return _then(_$_Defaults(
       areTagsEnabled: areTagsEnabled == freezed
@@ -515,6 +559,11 @@ class __$$_DefaultsCopyWithImpl<$Res>
           ? _value.isTasksListSeparatorColorRandom
           : isTasksListSeparatorColorRandom // ignore: cast_nullable_to_non_nullable
               as bool,
+      isMassCompletionOfSelectedTasksAvailable:
+          isMassCompletionOfSelectedTasksAvailable == freezed
+              ? _value.isMassCompletionOfSelectedTasksAvailable
+              : isMassCompletionOfSelectedTasksAvailable // ignore: cast_nullable_to_non_nullable
+                  as bool,
     ));
   }
 }
@@ -528,7 +577,8 @@ class _$_Defaults implements _Defaults {
       this.areQuestsEnabled = false,
       this.isStaleDetectionEnabled = false,
       this.isOnlyASingleSelectedTaskAllowed = true,
-      this.isTasksListSeparatorColorRandom = false});
+      this.isTasksListSeparatorColorRandom = false,
+      this.isMassCompletionOfSelectedTasksAvailable = false});
 
   @override
   @JsonKey()
@@ -548,10 +598,13 @@ class _$_Defaults implements _Defaults {
   @override
   @JsonKey()
   final bool isTasksListSeparatorColorRandom;
+  @override
+  @JsonKey()
+  final bool isMassCompletionOfSelectedTasksAvailable;
 
   @override
   String toString() {
-    return 'RemoteConfigState.defaults(areTagsEnabled: $areTagsEnabled, areGoalsEnabled: $areGoalsEnabled, areQuestsEnabled: $areQuestsEnabled, isStaleDetectionEnabled: $isStaleDetectionEnabled, isOnlyASingleSelectedTaskAllowed: $isOnlyASingleSelectedTaskAllowed, isTasksListSeparatorColorRandom: $isTasksListSeparatorColorRandom)';
+    return 'RemoteConfigState.defaults(areTagsEnabled: $areTagsEnabled, areGoalsEnabled: $areGoalsEnabled, areQuestsEnabled: $areQuestsEnabled, isStaleDetectionEnabled: $isStaleDetectionEnabled, isOnlyASingleSelectedTaskAllowed: $isOnlyASingleSelectedTaskAllowed, isTasksListSeparatorColorRandom: $isTasksListSeparatorColorRandom, isMassCompletionOfSelectedTasksAvailable: $isMassCompletionOfSelectedTasksAvailable)';
   }
 
   @override
@@ -572,7 +625,10 @@ class _$_Defaults implements _Defaults {
                 isOnlyASingleSelectedTaskAllowed) &&
             const DeepCollectionEquality().equals(
                 other.isTasksListSeparatorColorRandom,
-                isTasksListSeparatorColorRandom));
+                isTasksListSeparatorColorRandom) &&
+            const DeepCollectionEquality().equals(
+                other.isMassCompletionOfSelectedTasksAvailable,
+                isMassCompletionOfSelectedTasksAvailable));
   }
 
   @override
@@ -583,7 +639,9 @@ class _$_Defaults implements _Defaults {
       const DeepCollectionEquality().hash(areQuestsEnabled),
       const DeepCollectionEquality().hash(isStaleDetectionEnabled),
       const DeepCollectionEquality().hash(isOnlyASingleSelectedTaskAllowed),
-      const DeepCollectionEquality().hash(isTasksListSeparatorColorRandom));
+      const DeepCollectionEquality().hash(isTasksListSeparatorColorRandom),
+      const DeepCollectionEquality()
+          .hash(isMassCompletionOfSelectedTasksAvailable));
 
   @JsonKey(ignore: true)
   @override
@@ -599,7 +657,8 @@ class _$_Defaults implements _Defaults {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)
         $default, {
     required TResult Function(
             bool areTagsEnabled,
@@ -607,7 +666,8 @@ class _$_Defaults implements _Defaults {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)
         defaults,
   }) {
     return defaults(
@@ -616,7 +676,8 @@ class _$_Defaults implements _Defaults {
         areQuestsEnabled,
         isStaleDetectionEnabled,
         isOnlyASingleSelectedTaskAllowed,
-        isTasksListSeparatorColorRandom);
+        isTasksListSeparatorColorRandom,
+        isMassCompletionOfSelectedTasksAvailable);
   }
 
   @override
@@ -628,7 +689,8 @@ class _$_Defaults implements _Defaults {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)?
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)?
         $default, {
     TResult Function(
             bool areTagsEnabled,
@@ -636,7 +698,8 @@ class _$_Defaults implements _Defaults {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)?
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)?
         defaults,
   }) {
     return defaults?.call(
@@ -645,7 +708,8 @@ class _$_Defaults implements _Defaults {
         areQuestsEnabled,
         isStaleDetectionEnabled,
         isOnlyASingleSelectedTaskAllowed,
-        isTasksListSeparatorColorRandom);
+        isTasksListSeparatorColorRandom,
+        isMassCompletionOfSelectedTasksAvailable);
   }
 
   @override
@@ -657,7 +721,8 @@ class _$_Defaults implements _Defaults {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)?
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)?
         $default, {
     TResult Function(
             bool areTagsEnabled,
@@ -665,7 +730,8 @@ class _$_Defaults implements _Defaults {
             bool areQuestsEnabled,
             bool isStaleDetectionEnabled,
             bool isOnlyASingleSelectedTaskAllowed,
-            bool isTasksListSeparatorColorRandom)?
+            bool isTasksListSeparatorColorRandom,
+            bool isMassCompletionOfSelectedTasksAvailable)?
         defaults,
     required TResult orElse(),
   }) {
@@ -676,7 +742,8 @@ class _$_Defaults implements _Defaults {
           areQuestsEnabled,
           isStaleDetectionEnabled,
           isOnlyASingleSelectedTaskAllowed,
-          isTasksListSeparatorColorRandom);
+          isTasksListSeparatorColorRandom,
+          isMassCompletionOfSelectedTasksAvailable);
     }
     return orElse();
   }
@@ -720,7 +787,8 @@ abstract class _Defaults implements RemoteConfigState {
       final bool areQuestsEnabled,
       final bool isStaleDetectionEnabled,
       final bool isOnlyASingleSelectedTaskAllowed,
-      final bool isTasksListSeparatorColorRandom}) = _$_Defaults;
+      final bool isTasksListSeparatorColorRandom,
+      final bool isMassCompletionOfSelectedTasksAvailable}) = _$_Defaults;
 
   @override
   bool get areTagsEnabled;
@@ -734,6 +802,8 @@ abstract class _Defaults implements RemoteConfigState {
   bool get isOnlyASingleSelectedTaskAllowed;
   @override
   bool get isTasksListSeparatorColorRandom;
+  @override
+  bool get isMassCompletionOfSelectedTasksAvailable;
   @override
   @JsonKey(ignore: true)
   _$$_DefaultsCopyWith<_$_Defaults> get copyWith =>

@@ -32,6 +32,8 @@ class GetRemoteConfig {
             _getBoolean('is_tasks_list_separator_color_random'),
         isOnlyASingleSelectedTaskAllowed:
             _getBoolean('is_only_single_selected_task_allowed'),
+        isMassCompletionOfSelectedTasksAvailable:
+            _getBoolean('is_mass_completion_of_selected_tasks_available'),
       ),
     );
   }

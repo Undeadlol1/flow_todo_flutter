@@ -1,4 +1,5 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flow_todo_flutter_2022/core/remote_config/cubit/remote_config_cubit.dart';
 import 'package:flow_todo_flutter_2022/features/common/presentation/widgets/card_view.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/models/task.dart';
 import 'package:flow_todo_flutter_2022/features/tasks/domain/services/task_reward_calculator.dart';
@@ -17,44 +18,54 @@ class SelectedTasks extends StatelessWidget {
 
   @override
   build(context) {
-    return BlocBuilder<TasksToDoCubit, TasksToDoState>(
-      builder: (context, tasksState) {
-        final tasks = tasksState.tasks.where((i) => i.isSelected).toList();
-        final totalExperience = _getTotalExperience(tasks);
-        final isOnlyASingleTaskAllowed = firebaseRemoteConfig
-            .getBool('is_only_single_selected_task_allowed');
+    return BlocBuilder<RemoteConfigCubit, RemoteConfigState>(
+      builder: (_, remoteConfigState) {
+        return BlocSelector<TasksToDoCubit, TasksToDoState, List<Task>>(
+          selector: (state) => state.tasks.where((i) => i.isSelected).toList(),
+          builder: (context, selectedTasks) {
+            final remoteConfig = remoteConfigState;
+            final totalExperience = _getTotalExperience(selectedTasks);
 
-        if (tasks.isEmpty) {
-          return const SizedBox();
-        }
+            if (selectedTasks.isEmpty) {
+              return const SizedBox();
+            }
 
-        return CardView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: _textPadding,
-                child: Text(
-                  'Selected task${isOnlyASingleTaskAllowed ? '' : 's'}:',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+            return CardView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (remoteConfig.isMassCompletionOfSelectedTasksAvailable)
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text('Complete all'),
+                    ),
+                  Padding(
+                    padding: _textPadding,
+                    child: Text(
+                      'Selected task${remoteConfig.isOnlyASingleSelectedTaskAllowed ? '' : 's'}:',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                  Padding(
+                    padding: _textPadding,
+                    child: Text(
+                      '${remoteConfig.isOnlyASingleSelectedTaskAllowed ? '' : '($totalExperience total experience) '}(rewards are doubled)',
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                  ),
+                  const Divider(thickness: 0),
+                  ListView.builder(
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: selectedTasks.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, index) =>
+                        TasksListItem(task: selectedTasks[index]),
+                  ),
+                ],
               ),
-              Padding(
-                padding: _textPadding,
-                child: Text(
-                  '${isOnlyASingleTaskAllowed ? '' : '($totalExperience total experience) '}(rewards are doubled)',
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
-              ),
-              const Divider(thickness: 0),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: tasks.length,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (_, index) => TasksListItem(task: tasks[index]),
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
