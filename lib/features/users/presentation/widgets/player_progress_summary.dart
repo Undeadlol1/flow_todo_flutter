@@ -19,14 +19,16 @@ class PlayerProgressSummary extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             child: const Avatar(radius: 60),
           ),
-          Column(
-            children: [
-              const _ActiveQuest(contraints: contraints),
-              ConstrainedBox(
-                constraints: contraints,
-                child: const TasksWorkedOnToday(),
-              ),
-            ],
+          Center(
+            child: Column(
+              children: [
+                const _ActiveQuest(contraints: contraints),
+                ConstrainedBox(
+                  constraints: contraints,
+                  child: const TasksWorkedOnToday(),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -35,10 +37,7 @@ class PlayerProgressSummary extends StatelessWidget {
 }
 
 class _ActiveQuest extends StatelessWidget {
-  const _ActiveQuest({
-    Key? key,
-    required this.contraints,
-  }) : super(key: key);
+  const _ActiveQuest({Key? key, required this.contraints}) : super(key: key);
 
   final BoxConstraints contraints;
 
@@ -57,9 +56,7 @@ class _ActiveQuest extends StatelessWidget {
                     child: const ActiveQuest(),
                   ),
                 )
-              : const SizedBox(
-                  height: 30,
-                ),
+              : const SizedBox(height: 0),
         );
       },
     );

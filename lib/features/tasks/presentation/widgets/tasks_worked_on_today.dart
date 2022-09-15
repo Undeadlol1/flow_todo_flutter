@@ -18,13 +18,15 @@ class TasksWorkedOnToday extends StatefulWidget {
 
 class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
     with SingleTickerProviderStateMixin {
+  double _previousProgressValue = 0;
   bool _isAnimationListenerAdded = false;
   bool _hasFirstAnimationForcefullyRan = false;
-  double previousProgressValue = 0;
+
   late Animation<double> _animation;
   late final AnimationController _animationController;
 
   static const _padding = EdgeInsets.only(
+    top: 12,
     left: 16,
     right: 16,
     bottom: 4,
@@ -63,7 +65,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
               tasksDoneTodayState: tasksDoneState,
               dailyStreak: streak,
             );
-            previousProgressValue = _getProgressValue(
+            _previousProgressValue = _getProgressValue(
               tasksDoneAmount: tasksDoneState.tasks.length,
               requiredTasksPerDay: streak.perDay,
             );
@@ -111,7 +113,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
     );
     _animation = Tween<double>(
       end: progressValue,
-      begin: previousProgressValue,
+      begin: _previousProgressValue,
     ).animate(_animationController);
 
     tasksDoneTodayState.whenOrNull(
