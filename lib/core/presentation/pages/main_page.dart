@@ -115,7 +115,7 @@ class _LoginScreen extends StatelessWidget {
           const SizedBox(height: 10),
           const Text('Please sign in to start:'),
           const SizedBox(height: 10),
-          GoogleSignInButton(),
+          const GoogleSignInButton(),
         ],
       ),
     );
