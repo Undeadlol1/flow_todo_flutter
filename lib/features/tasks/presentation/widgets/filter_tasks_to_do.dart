@@ -43,6 +43,7 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
             ),
             child: TextField(
               autofocus: _isViewerOnFilterPage(context),
+              textCapitalization: TextCapitalization.sentences,
               toolbarOptions: const ToolbarOptions(
                 cut: true,
                 copy: true,
