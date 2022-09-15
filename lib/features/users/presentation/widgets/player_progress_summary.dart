@@ -44,7 +44,7 @@ class _ActiveQuest extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocSelector<RemoteConfigCubit, RemoteConfigState, bool>(
       selector: (state) => state.areQuestsEnabled,
-      builder: (context, bool areQuestsEnabled) {
+      builder: (context, areQuestsEnabled) {
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
           child: areQuestsEnabled
