@@ -18,13 +18,11 @@ class GetTasksWorkedOnToday {
   Future<void> call({required String userId}) async {
     try {
       final tasks = await getTasksDoneTodayRepository(userId: userId);
-      // TODO this logic needs to be tested.
       tasks.removeWhere((i) {
         if (i.history.isEmpty) {
           return true;
         }
 
-        // TODO test/fix history order;
         switch (i.history.last.actionType) {
           case TaskHistoryActionType.doneTask:
             return false;
