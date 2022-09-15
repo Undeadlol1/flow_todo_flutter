@@ -34,6 +34,7 @@ class CreateTask {
     required String title,
     required String userId,
     required List<String> tags,
+    bool isSelected = false,
   }) async {
     try {
       final profileState = profileCubit.state;
@@ -44,6 +45,7 @@ class CreateTask {
         isDone: false,
         userId: userId,
         title: title.trim(),
+        isSelected: isSelected,
         id: uniqueIdGenerator(),
         dueAt: getTodaysDate(),
         createdAt: getTodaysDate(),

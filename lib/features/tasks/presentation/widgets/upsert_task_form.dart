@@ -22,17 +22,18 @@ class UpsertTaskForm extends StatefulWidget {
 }
 
 class _UpsertTaskFormState extends State<UpsertTaskForm> {
-  static const _formControlName = 'title';
+  static const _titleControlName = 'title';
+  static const _checkBoxControlName = 'checkbox';
 
   String? _formError;
 
   late final FormGroup _form;
 
-  String get _input => _form.control(_formControlName).value ?? '';
+  String get _input => _form.control(_titleControlName).value ?? '';
 
   set _input(String newInput) {
     _form.value = {
-      _formControlName: newInput,
+      _titleControlName: newInput,
     };
   }
 
@@ -54,7 +55,7 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
 
     _form = FormGroup(
       {
-        _formControlName: FormControl<String>(
+        _titleControlName: FormControl<String>(
           value: title,
           validators: [
             Validators.required,
@@ -62,6 +63,9 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
             Validators.maxLength(100),
             _extractTagsToDisplayThem,
           ],
+        ),
+        _checkBoxControlName: FormControl<bool>(
+          value: false,
         ),
       },
     );
@@ -91,7 +95,7 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
                       children: <Widget>[
                         ReactiveTextField(
                           autofocus: true,
-                          formControlName: _formControlName,
+                          formControlName: _titleControlName,
                           validationMessages: _getValidationMessages,
                           textCapitalization: TextCapitalization.sentences,
                           onSubmitted: () =>
@@ -102,13 +106,21 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
                             border: const UnderlineInputBorder(),
                           ),
                         ),
+                        if (widget.taskToUpdate == null)
+                          ReactiveCheckboxListTile(
+                            title: Text(
+                              'Is task focused on?',
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            formControlName: _checkBoxControlName,
+                          ),
                       ],
                     ),
                   ),
                   if (areTagsEnabled)
                     Column(
                       children: [
-                        const SizedBox(height: 20),
+                        const Divider(),
                         Text(
                           'Hint: you can add tags via hashtags. '
                           'Enter space, hashtag and your tag. '
@@ -137,7 +149,7 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
 
   void _handleSubmit({required AuthentificationState authState}) async {
     if (_form.valid && authState is Authenticated) {
-      final titleFormControl = _form.control(_formControlName);
+      final titleFormControl = _form.control(_titleControlName);
       String? inputText = titleFormControl.value as String;
       final taskTags = _extractTagsFromText(inputText);
       final String title = inputText.replaceAll(_tagsRegExp, '').trim();
@@ -160,6 +172,7 @@ class _UpsertTaskFormState extends State<UpsertTaskForm> {
             title: title,
             tags: taskTags,
             userId: authState.user.id,
+            isSelected: _form.control(_checkBoxControlName).value,
           );
         } else {
           await GetIt.I<UpdateTask>()(
