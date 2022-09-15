@@ -7,7 +7,6 @@ import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:remove_emoji/remove_emoji.dart';
 
 import '../../domain/models/task.dart';
-import '../pages/filter_tasks_page.dart';
 
 class FilterTasksToDo extends StatefulWidget {
   const FilterTasksToDo({Key? key}) : super(key: key);
@@ -42,7 +41,7 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
               horizontal: 10,
             ),
             child: TextField(
-              autofocus: _isViewerOnFilterPage(context),
+              autofocus: true,
               textCapitalization: TextCapitalization.sentences,
               toolbarOptions: const ToolbarOptions(
                 cut: true,
@@ -130,7 +129,4 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
 
   String _normalizeString(String string) =>
       string.toLowerCase().replaceAll(' ', '');
-
-  bool _isViewerOnFilterPage(BuildContext context) =>
-      ModalRoute.of(context)?.settings.name == FilterTasksPage.pathName;
 }
