@@ -39,16 +39,16 @@ class _FilterTasksPageState extends State<FilterTasksPage> {
   @override
   build(context) {
     return PageLayout(
-      isAppBarHidden: false,
       isNumbersAnimationSuspended: false,
       child: SingleChildScrollView(
         child: CardView(
           child: Column(
             children: [
-              BlocBuilder<TasksToDoCubit, TasksToDoState>(
-                builder: (context, tasksState) {
+              BlocSelector<TasksToDoCubit, TasksToDoState, int>(
+                selector: (state) => state.tasks.length,
+                builder: (context, amountOfTasks) {
                   return Visibility(
-                    visible: tasksState.tasks.length > 10,
+                    visible: amountOfTasks > 10,
                     child: const Padding(
                       padding: EdgeInsets.only(bottom: 10),
                       child: FilterTasksToDo(),

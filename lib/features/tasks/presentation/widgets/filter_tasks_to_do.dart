@@ -25,7 +25,7 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return BlocSelector<TasksToDoCubit, TasksToDoState, List<Task>>(
       selector: (state) => state.tasks,
       builder: (context, activeTasks) {
@@ -51,18 +51,13 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
               ),
               controller: _inputController,
               decoration: InputDecoration(
+                hintText: 'Filter tasks',
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
-                hintText: 'Filter tasks',
                 suffixIcon: _inputController.text.isEmpty
                     ? null
                     : IconButton(
-                        onPressed: () {
-                          _unfocusInputField();
-                          _inputController.clear();
-                          _resetFilteredTasksList();
-                          setState(() {});
-                        },
+                        onPressed: _resetInput,
                         icon: const Icon(Icons.clear),
                       ),
               ),
@@ -121,11 +116,17 @@ class _FilterTasksToDoState extends State<FilterTasksToDo> {
     return filteredTasks;
   }
 
+  void _resetInput() {
+    _unfocusInputField();
+    _inputController.clear();
+    _resetFilteredTasksList();
+    setState(() {});
+  }
+
   void _unfocusInputField() => FocusManager.instance..primaryFocus?.unfocus();
 
-  void _resetFilteredTasksList() {
-    context.read<FilteredTasksCubit>().update([]);
-  }
+  void _resetFilteredTasksList() =>
+      context.read<FilteredTasksCubit>().update([]);
 
   String _normalizeString(String string) =>
       string.toLowerCase().replaceAll(' ', '');
