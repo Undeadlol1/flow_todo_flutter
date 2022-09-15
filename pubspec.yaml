@@ -37,7 +37,7 @@ dependencies:
   bloc: ^8.0.3
   replay_bloc: ^0.2.1
   flutter_bloc: ^8.0.1
-  hydrated_bloc: ^9.0.0-dev.2
+  hydrated_bloc: 9.0.0-dev.2
   firebase_core: ^1.17.1
   firebase_auth: ^3.3.19
   firebase_analytics: ^9.3.0
