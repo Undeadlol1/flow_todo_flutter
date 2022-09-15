@@ -16,9 +16,8 @@ class TagsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<RemoteConfigCubit, RemoteConfigState, bool>(
-      selector: (state) => state.areTagsEnabled,
-      builder: (_, areTagsEnabled) {
+    return BlocBuilder<RemoteConfigCubit, RemoteConfigState>(
+      builder: (_, remoteConfig) {
         return BlocBuilder<TasksWorkedOnTodayCubit, TasksWorkedOnTodayState>(
           builder: (_, tasksWorkedOnTodayState) {
             return BlocBuilder<FilterByTagsCubit, FilterByTagsState>(
@@ -27,12 +26,14 @@ class TagsList extends StatelessWidget {
                   buildWhen: _haveTagsChanged,
                   builder: (context, tasksState) {
                     final tasks = tasksState.tasks;
-                    final areThereStaleTasks =
-                        tasks.any((task) => task.isStale);
-                    final areThereFreshTasks =
-                        tasks.any((task) => !task.isStale);
 
-                    if (areTagsEnabled && tasks.length > 5) {
+                    if (remoteConfig.areTagsEnabled && tasks.length > 5) {
+                      final areThereStaleTasks =
+                          remoteConfig.isStaleDetectionEnabled &&
+                              tasks.any((task) => task.isStale);
+                      final areThereFreshTasks =
+                          remoteConfig.isStaleDetectionEnabled &&
+                              tasks.any((task) => !task.isStale);
                       final tags = _getTags(tasksState);
 
                       if (areThereStaleTasks) {
