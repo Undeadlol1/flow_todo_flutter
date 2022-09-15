@@ -87,7 +87,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const WinsTodayText(),
-                  _ProgressBar(value: _animation.value),
+                  _ProgressBar(animation: _animation),
                   WorkedOnTasksDaysInARow(
                     areAnimationsEnabled: _hasFirstAnimationForcefullyRan,
                   ),
@@ -123,7 +123,6 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
           setState(() => _hasFirstAnimationForcefullyRan = true);
 
           if (_isAnimationListenerAdded == false) {
-            _animation.addListener(() => setState(() {}));
             _isAnimationListenerAdded = true;
           }
 
@@ -146,15 +145,15 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
 }
 
 class _ProgressBar extends StatelessWidget {
-  final double value;
-  const _ProgressBar({Key? key, required this.value}) : super(key: key);
+  final Animation<double> animation;
+  const _ProgressBar({Key? key, required this.animation}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: LinearProgressIndicator(
-        value: value <= 0 ? 0.01 : value,
+        value: animation.value <= 0 ? 0.01 : animation.value,
       ),
     );
   }
