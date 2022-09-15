@@ -58,7 +58,8 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
         final DailyStreak streak = context
             .select((ProfileCubit cubit) => cubit.state.profile.dailyStreak);
         return BlocConsumer<TasksWorkedOnTodayCubit, TasksWorkedOnTodayState>(
-          buildWhen: (previous, current) => previous.tasks != current.tasks,
+          buildWhen: (previous, current) =>
+              previous.tasks.length != current.tasks.length,
           listener: (context, tasksDoneState) {
             _runProgressAnimation(
               context: context,
@@ -86,7 +87,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const WinsTodayText(),
-                  _ProgressBar(animation: _animation),
+                  _ProgressBar(value: _animation.value),
                   WorkedOnTasksDaysInARow(
                     areAnimationsEnabled: _hasFirstAnimationForcefullyRan,
                   ),
@@ -145,16 +146,15 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
 }
 
 class _ProgressBar extends StatelessWidget {
-  const _ProgressBar({Key? key, required this.animation}) : super(key: key);
-
-  final Animation<double> animation;
+  final double value;
+  const _ProgressBar({Key? key, required this.value}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: LinearProgressIndicator(
-        value: animation.value <= 0 ? 0.01 : animation.value,
+        value: value <= 0 ? 0.01 : value,
       ),
     );
   }
