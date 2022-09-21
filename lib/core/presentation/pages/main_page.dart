@@ -27,9 +27,9 @@ class MainPage extends StatelessWidget {
 
   @override
   build(context) {
-    return BlocBuilder<ProfileCubit, ProfileState>(
-      builder: (context, profileState) {
-        final isProfileLoaded = profileState is ProfileLoaded;
+    return BlocSelector<ProfileCubit, ProfileState, bool>(
+      selector: (state) => state.profile is ProfileLoaded,
+      builder: (context, isProfileLoaded) {
         return PageLayout(
           isAppBarHidden: true,
           isNumbersAnimationSuspended: false,
@@ -55,8 +55,7 @@ class MainPage extends StatelessWidget {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (profileState is ProfileLoaded)
-                    const PlayerProgressSummary(),
+                  if (isProfileLoaded) const PlayerProgressSummary(),
                   Expanded(
                     child: SingleChildScrollView(
                       primary: true,
