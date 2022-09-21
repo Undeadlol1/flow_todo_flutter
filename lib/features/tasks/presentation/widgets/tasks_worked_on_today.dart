@@ -58,8 +58,7 @@ class _TasksWorkedOnTodayState extends State<TasksWorkedOnToday>
         final DailyStreak streak = context
             .select((ProfileCubit cubit) => cubit.state.profile.dailyStreak);
         return BlocConsumer<TasksWorkedOnTodayCubit, TasksWorkedOnTodayState>(
-          buildWhen: (previous, current) =>
-              previous.tasks.length != current.tasks.length,
+          buildWhen: (previous, current) => previous.tasks != current.tasks,
           listener: (context, tasksDoneState) {
             _runProgressAnimation(
               context: context,
@@ -152,8 +151,13 @@ class _ProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: LinearProgressIndicator(
-        value: animation.value <= 0 ? 0.01 : animation.value,
+      child: AnimatedBuilder(
+        animation: animation,
+        builder: (_, __) {
+          return LinearProgressIndicator(
+            value: animation.value <= 0 ? 0.01 : animation.value,
+          );
+        },
       ),
     );
   }
