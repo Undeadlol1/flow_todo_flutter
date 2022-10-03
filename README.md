@@ -1,16 +1,3 @@
-# flow_todo_flutter_2022
+This is a TODO app designed for procrastinators. It features user leveling and spaced repetition systems.
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Note for people looking to hire me: this is a hobby project initially intended to be closed source. I allowed myself a lot of liberties and experiementation during development of this app. Please keep that in mind.
