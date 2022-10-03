@@ -1,10 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flow_todo_flutter_2022">
+
    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <application
         android:label="flow_todo_flutter_2022"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
