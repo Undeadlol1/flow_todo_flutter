@@ -28,7 +28,7 @@ class MainPage extends StatelessWidget {
   @override
   build(context) {
     return BlocSelector<ProfileCubit, ProfileState, bool>(
-      selector: (state) => state.profile is ProfileLoaded,
+      selector: (state) => state is ProfileLoaded,
       builder: (context, isProfileLoaded) {
         return PageLayout(
           isAppBarHidden: true,
